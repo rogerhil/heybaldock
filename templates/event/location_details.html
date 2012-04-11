@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block content %}
+
+{% object_manage_buttons user 'location' location.id %}
+<h1>{% trans "Location details" %}</h1>
+{% include "event/location.html" %}
+<a class="button" href="/eventos/locais/">{% trans 'More locations' %}</a>
+<div class="clear"></div>
+
+{% endblock %}

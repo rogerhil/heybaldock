@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<h4>{{ location.name }}</h4>
+<p>
+    {{ location.address }}<br />
+    {% trans 'ZIpcode: ' %}{{ location.zipcode }}<br />
+    {{ location.city }} - {{ location.state }}<br />
+    Telefones: {{ location.phone1|default:"" }}
+               {{ location.phone2|default:"" }}
+               {{ location.phone3|default:"" }}
+               {{ location.phone4|default:"" }}
+</p>
+<p>{{ location.description }}</p>

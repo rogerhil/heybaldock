@@ -1,0 +1,22 @@
+{% load i18n %}
+<ul class="video_album_list">
+{% for album in albums %}
+    <li class="video_album_item" videoalbum_url="{{ album.url }}">
+        <div class="video_album_cover">
+            <img src="{{ album.cover_url }}" />
+        </div>
+        <div class="video_album_info">
+            <p><strong>{{ album.name }}</strong></p>
+            <p>{{ album.description }}</p>
+            <p>
+                {% blocktrans count counter=album.count %}
+                    {{ counter }} video
+                {% plural %}
+                    {{ counter }} videos
+                {% endblocktrans %}
+            </p>
+        </div>
+        <div class="clear"></div>
+    </li>
+{% endfor %}
+</ul>

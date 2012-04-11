@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<div class="video_album">
+    <h1>{{ album.name }}</h1>
+    <h3>{{ album.description }}</h3>
+    {% with album.event as event %}
+    {% if event %}
+        <br />
+        <p>
+            <a href="{% url event_details event.id %}">
+            {% blocktrans with name=event.name date=event.datetime %}
+                These videos are related to the "{{ name }}" event performed on {{ date }}.
+            {% endblocktrans %}
+            </a>
+        </p>
+    {% endif %}
+    {% endwith %}
+    <p><strong>{% trans 'Number of videos:' %}</strong> {{ album.count }}</p>
+    <ul>
+    {% for video in album.videos.all %}
+        <li>
+            <p><strong>{{ video.title }}</strong></p>
+            {% if video.description %}<p>{{ video.description }}</p>{% endif %}
+            {% if video.recorded %}<p>{{ video.recorded }}</p>{% endif %}
+            <div class="video_embed">{{ video.embed_code|safe }}</div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>

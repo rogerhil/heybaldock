@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript">
+        {% if ui_tags %}
+        CMS_TAGS = {{ ui_tags|safe }};
+        {% endif %}
+        JS_FIELDS = {{ form.js_fields_json|safe }};
+    </script>
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+
+<div class="manage_buttons margin10">
+    <a class="red" href="{% url section_view section.slug %}">{% trans "Cancel" %}</a>
+</div>
+
+<div id="draft">
+    <h1 class="draft_head">
+    {% if not object %}
+        {% trans "Draft - Add" %} {{ model }}
+     {% else %}
+        {% if form.draft.id %}
+            {% trans "Draft - Edit" %} {{ from.draft.content_type }}
+        {% else %}
+            {% trans "Draft - Edit" %} {{ model }}
+        {% endif %}
+    {% endif %}
+    </h1>
+
+    <div class="pretty_form">
+        <form action="{% if not object %}{% if draft %}{% url edit_draft form.draft.id %}{% else %}{% url add_draft_new model %}{% endif %}{% else %}{% if form.draft.id %}{% url edit_draft form.draft.id %}{% else %}{% url add_draft model object.id %}{% endif %}{% endif %}" method="post" name="draft_form">
+            {% csrf_token %}
+            <ul class="draft_fields">
+                {{ form.as_ul }}
+            </ul>
+            <input class="login_submit" type="submit" value="Save draft" />
+            <div class="clear"></div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

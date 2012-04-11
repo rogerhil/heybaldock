@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<div class="table_list">
+    <table>
+        <thead>
+            <th width="200px">
+                {% trans "Name" %}
+            </th>
+            <th>
+                {% trans "Location" %}
+            </th>
+            <th width="140px">
+                {% trans "Date" %}
+            </th>
+
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr class="{% cycle odd,even %}" onclick="window.location = '{% url event_details event.id %}'">
+                <td>{{ event.name }}</td>
+                <td>{{ event.location.name }}</td>
+                <td>{{ event.datetime }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

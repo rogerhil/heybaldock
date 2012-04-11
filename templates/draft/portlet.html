@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% if drafts_related and user.is_authenticated %}
+<div class="portlet">
+    <h2>{% trans 'Drafts' %}</h2>
+    <ul>
+    {% for draft in drafts_related %}
+        <li>
+            <a href="{% url view_draft draft.id %}">
+                {{ draft }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}

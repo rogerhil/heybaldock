@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block content %}
+
+<h1>{% trans "Locations list" %}</h1>
+
+<div class="table_list">
+    <table>
+        <thead>
+            <th width="200px">
+                {% trans "Name" %}
+            </th>
+            <th>
+                {% trans "Address" %}
+            </th>
+            <th width="140px">
+                {% trans "City" %}
+            </th>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+            <tr class="{% cycle odd,even %}" onclick="window.location = '{% url location_details location.id %}'">
+                <td>{{ location.name }}</td>
+                <td>{{ location.address }}</td>
+                <td>{{ location.city }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

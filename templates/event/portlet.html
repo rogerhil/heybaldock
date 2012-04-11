@@ -1,0 +1,20 @@
+{% load i18n %}
+{% if events %}
+<div class="portlet">
+    {% if user.is_authenticated %}
+    <div class="manage_buttons">
+        <a href="{% url add_draft_new 'event' %}">{% trans "Add" %}</a>
+    </div>
+    {% endif %}
+    <h2>Próximos Eventos</h2>
+    <ul>
+    {% for event in events %}
+        <li>
+            <a href="{% url event_details event.id %}">
+                {{ event }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}

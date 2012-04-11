@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+{% endblock %}
+
+{% block content %}
+
+<div id="login">
+    <h1>{% trans "Login" %}</h1>
+    <div class="pretty_form">
+        <form action="{% url login %}" method="post">
+            {% csrf_token %}
+            <ul>
+                {{ form.as_ul }}
+            </ul>
+            <input class="login_submit" type="submit" value="Login" />
+            <div class="clear"></div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

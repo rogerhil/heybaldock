@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/media/css/prettyPhoto.css" type="text/css" />
+    <script type="text/javascript" src="/media/js/jquery/jquery.prettyPhoto.js"></script>
+    <script type="text/javascript" src="/media/js/photos.js"></script>
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Photo album" %}</h1>
+{% object_manage_buttons user 'photoalbum' album.id %}
+<div class="manage_buttons">
+    <a href="{% url section_view 'fotos' %}">{% trans "View all" %}</a>
+</div>
+{% include "photo/album_details.html" %}
+<div class="clear"></div>
+
+{% endblock %}

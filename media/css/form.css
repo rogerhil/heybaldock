@@ -1,0 +1,174 @@
+
+.pretty_form li {
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+.pretty_form label {
+    display: block;
+    float: left;
+    width: 120px;
+    text-align: right;
+    font-size: 14px;
+    margin: 6px 10px 0px 0px;
+}
+
+.pretty_form input[type=text],
+.pretty_form input[type=password],
+.pretty_form textarea {
+    border-width: 1px;
+    border-style: inset;
+    background-color: #eae6cc;
+    background-image: url(/media/img/content_bg.png);
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    color: #4b5c6c;
+    font-size: 14px;
+    width: 440px;
+}
+
+.pretty_form input[placeholder],
+.pretty_form textarea[placeholder] {
+    color: #999;
+}
+
+.pretty_form ul.errorlist li {
+    margin: 0px 0px 0px 120px;
+    color: #e44b49;
+}
+
+.pretty_form select {
+    display: block;
+}
+
+.pretty_form .helptext {
+    display: block;
+    margin-left: 131px;
+    color: gray;
+}
+
+.cmstag {
+    text-align: center;
+    background-color: #f7d453;
+    border: 2px solid #4b5c6c;
+    border-radius: 5px;
+    width: 300px;
+	color: #000;
+	font-weight: bold;
+    padding: 5px;
+}
+
+span.red {
+    color: #e44b49;
+}
+
+/* PHOTO UPLOAD */
+
+li.photo_upload {
+    background: url(/media/img/content_bg_2.png) repeat;
+    height: 100px;
+    width: 440px;
+    border-radius: 7px;
+    margin: 10px 0px 0px 115px;
+    padding: 10px;
+    position: relative;
+}
+
+li div.info {
+    float: left;
+    width: 310px;
+    height: 60px;
+}
+
+li.photo_upload label {
+    display: block;
+    width: 310px;
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+li.photo_upload div.progress_bar {
+    border-radius: 7px;
+    width: 250px;
+    height: 25px;
+    border: 1px solid #eae6cc;
+    text-align: center;
+    padding-top: 10px;
+    font-size: 15px;
+    position: absolute;
+    top: 35px;
+    background-color: #91af62;
+    background-image: url(/media/img/content_bg_2.png);
+    background-repeat: no-repeat;
+    background-position: 0;
+}
+
+li.photo_upload div.file_size {
+    width: 50px;
+    height: 25px;
+    text-align: center;
+    padding-top: 10px;
+    font-size: 15px;
+    position: absolute;
+    top: 35px;
+    left: 270px;
+}
+
+li.photo_upload div.description {
+    width: 280px;
+    height: 25px;
+    position: absolute;
+    top: 80px;
+}
+
+li.photo_upload div.description input[type=text] {
+    width: 290px;
+}
+
+li.photo_upload div.preview {
+    border-radius: 7px;
+    float: right;
+    margin-top: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+li.photo_upload div.view {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+li.photo_upload div.preview img {
+    border-radius: 7px;
+}
+
+li.photo_upload div.preview img:hover {
+    opacity: 0.6;
+}
+
+li.photo_upload a.remove {
+    background-image: url(/media/img/cross_16.png);
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+
+li.photo_upload a.remove_disabled {
+    background-image: url(/media/img/cross_16_d.png);
+}
+
+li.photo_upload a.remove:hover {
+    background-image: url(/media/img/cross_16_h.png);
+}
+
+li.photo_upload a.remove_disabled:hover {
+    background-image: url(/media/img/cross_16_d.png);
+}

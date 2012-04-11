@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block content %}
+<h1>{% trans 'Events history' %}</h1>
+{% with events_history as events %}
+    {% include "event/event_list.html" %}
+{% endwith %}
+<br />
+<a class="button" href="{% url section_view 'eventos' %}">{% trans 'Upcoming events' %}</a>
+<div class="clear"></div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block content %}
+<h1>{% trans "Video album" %}</h1>
+{% object_manage_buttons user 'videoalbum' album.id %}
+<div class="manage_buttons">
+    <a href="{% url section_view 'videos' %}">{% trans "View all" %}</a>
+</div>
+{% include "video/album_details.html" %}
+<div class="clear"></div>
+
+{% endblock %}

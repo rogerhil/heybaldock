@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block stylesheet %}
+    <script type="text/javascript" src="/media/js/videos.js"></script>
+{% endblock %}
+
+{% block content %}
+
+{% object_manage_buttons user 'event' event.id %}
+{% include "event/details.html" %}
+<a class="button" href="/eventos/">{% trans 'More events' %}</a>
+<div class="clear"></div>
+
+{% endblock %}

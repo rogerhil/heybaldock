@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block stylesheet %}
+    {% if section.media %}
+        {% for script in section.media.scripts %}
+            <script type="text/javascript" src="{{ script }}"></script>
+        {% endfor %}
+        {% for style in section.media.styles %}
+            <link rel="stylesheet" href="{{ style }}" type="text/css" />
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% object_manage_buttons user 'section' section.id %}
+{% include "section/section_content.html" %}
+{% endblock %}
