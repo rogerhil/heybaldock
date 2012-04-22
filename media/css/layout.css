@@ -631,13 +631,20 @@ ul.photo_list li {
     padding: 10px 10px 7px 10px;
     border-radius: 7px;
     position: relative;
-    width: 184px;
     margin: 0px -1px 0px 0px;
 }
 
 ul.photo_list li:hover {
     background: url(/media/img/content_bg_2.png) repeat;
     cursor: pointer;
+}
+
+ul.photo_list img {
+    border-radius: 7px;
+    margin: 0;
+    padding: 0;
+    width: 184px;
+    height: 122px;
 }
 
 ul.list_pair li {
@@ -655,10 +662,19 @@ ul.list_quadruplet li {
     margin: 0px -2px 0px -2px;
 }
 
-ul.photo_list img {
-    border-radius: 7px;
-    margin: 0;
-    padding: 0;
+ul.list_pair img {
+    width: 285px;
+    height: 190px;
+}
+
+ul.list_triplet img {
+    width: 184px;
+    height: 122px;
+}
+
+ul.list_quadruplet img {
+    width: 136px;
+    height: 90px;
 }
 
 ul.photo_list p {

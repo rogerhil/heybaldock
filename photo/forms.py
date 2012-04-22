@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 
 from draft import forms
 from models import PhotoAlbum
-from image import ImageHandler
+from image import ImageHandler, ImageHandlerException
 
 class AlbumForm(forms.CmsForm):
     """
@@ -48,6 +48,11 @@ class AlbumForm(forms.CmsForm):
             handler.load_by_filename_album(name, self.instance)
         else:
             handler.load_by_filename_user(name, self.user)
+
+        if not handler.urls():
+            handler.load_by_filename_user(name, self.user)
+            if not handler.urls():
+                raise ImageHandlerException("Image %s not found." % name)
 
         img = {
             'name': {'value': name},
