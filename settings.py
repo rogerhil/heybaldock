@@ -186,3 +186,8 @@ IMAGE_SIZES = {
     'big': (480, 360),
     'huge': (960, 720)
 }
+
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT =  587
+MAIL_USER = "heybaldock@gmail.com"
+MAIL_PASSWORD = "supertogether"

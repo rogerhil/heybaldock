@@ -14,5 +14,10 @@
 
 {% block content %}
 {% object_manage_buttons user 'section' section.id %}
+{% if message %}
+    <div class="message {{ message.type }}">
+        {{ message.text }}
+    </div>
+{% endif %}
 {% include "section/section_content.html" %}
 {% endblock %}

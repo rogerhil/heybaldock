@@ -4,6 +4,9 @@ from django.shortcuts import get_object_or_404
 
 from section.decorators import render_to
 from models import Event, Location
+from maps import search_zip
+from lib.decorators import ajax
+
 
 @render_to("event/event_details.html")
 def event_details(request, id):
@@ -25,3 +28,8 @@ def location_details(request, id):
     location = get_object_or_404(Location, id=id)
     return dict(location=location)
 
+@ajax
+def address_by_zipcode(request):
+    zipcode = request.GET['zipcode']
+    data = search_zip(zipcode)
+    return {'success': True, 'data': data}

@@ -1,3 +1,6 @@
+{% load common %}
+
+{% call section.content_rendered with request as rendered %}
 <h1>{{ section.title }}</h1>
 <h3>{{ section.description }}</h3>
-<p>{{ section.content_rendered }}</p>
+<p>{{ rendered }}</p>

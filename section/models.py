@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template_from_string
-from django.template.context import Context
+from django.template.context import RequestContext
 
 from draft.models import ContentDraft
 from event.models import Event
@@ -34,11 +34,11 @@ class Section(models.Model):
     def __unicode__(self):
         return self.menu_title
 
-    def content_rendered(self):
+    def content_rendered(self, request):
         content = "{% load wysiwygtags %}\n" + self.content
         template = get_template_from_string(content)
         c = dict()
-        return template.render(Context(c))
+        return template.render(RequestContext(request, c))
 
     def draft_data(self):
         data = {
@@ -59,6 +59,8 @@ class Section(models.Model):
             return {'scripts': ['/media/js/videos.js']}
         if self.slug == 'fotos':
             return {'scripts': ['/media/js/photos.js']}
+        if self.slug == 'contato':
+            return {'styles': ['/media/css/form.css']}
 
     @staticmethod
     def form():

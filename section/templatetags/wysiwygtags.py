@@ -8,6 +8,7 @@ from django.utils.translation import ugettext as _
 from event.models import Event
 from video.models import VideoAlbum
 from photo.models import PhotoAlbum
+from contact.forms import ContactForm
 
 register = template.Library()
 
@@ -16,6 +17,7 @@ UI_TAGS = [
     ('event_history_button', _('Event History Button Link')),
     ('video_albums', _('Video Albums list')),
     ('photo_albums', _('Photo Albums list')),
+    ('contact_form', _('Contact Form')),
 ]
 
 @register.simple_tag()
@@ -42,3 +44,13 @@ def photo_albums():
     albums = PhotoAlbum.objects.filter(listable=True).order_by('-updated')
     c = dict(albums=albums)
     return render_to_string("photo/photo_albums.html", Context(c))
+
+@register.inclusion_tag("contact/contact_form.html", takes_context=True)
+def contact_form(context):
+    request = context['request']
+    if request.POST:
+        form = ContactForm(request.POST)
+    else:
+        form = ContactForm()
+    c = dict(form=form)
+    return c

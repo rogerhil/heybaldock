@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class="pretty_form">
+    <form action="{% url contact_send_mail %}" method="post">
+        <ul>
+            {{ form.as_ul }}
+        </ul>
+        <input class="login_submit" type="submit" value="{% trans "Send" %}" />
+        <div class="clear"></div>
+    </form>
+</div>

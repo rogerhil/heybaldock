@@ -755,3 +755,29 @@ div.photo_album div.view_action a.quadruplet span {
     height: 7px;
     margin: 2px 0px 0px 2px;
 }
+
+div.message {
+    border-radius: 7px;
+    background-color: #91af62;
+    color: #eae6cc;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+div#map_canvas {
+    border-radius: 5px;
+    border: 3px solid;
+    width: 605px;
+    height: 400px;
+    margin-top: 10px;
+    display: none;
+}
+
+form div#map_canvas {
+    width: 570px;
+}
+
+div.loading_icon {
+    position: absolute;
+}

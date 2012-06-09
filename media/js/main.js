@@ -67,4 +67,15 @@ function animateImages() {
 	});
 }
 
+function showLoadingIconNearTo($obj, position) {
+	var $loading = $('<div class="loading_icon"><img src="/media/img/loading_24.png" /></div>');
+	var pos = $obj.position();
+	for (var k in position) {
+		$loading.css(k, (pos[k] + position[k]) + "px");
+	}
+	$('body').append($loading);
+}
 
+function dropAllLoadingIcons() {
+	$('div.loading_icon').remove();
+}

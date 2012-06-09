@@ -11,3 +11,11 @@
                {{ location.phone4|default:"" }}
 </p>
 <p>{{ location.description }}</p>
+<div id="map_canvas"></div>
+
+<script type="text/javascript">
+    $(window).load(function () {
+        initialize();
+        codeLatLng({{ location.latitude }}, {{ location.longitude }});
+    });
+</script>

@@ -32,6 +32,23 @@
     color: #999;
 }
 
+.pretty_form input[type=button] {
+    margin-top: 10px;
+    border-radius: 7px;
+    border: none;
+    background-color: #91af62;
+    color: #eae6cc;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+
+.pretty_form input[type=button]:hover {
+    color: #4b5c6c;
+}
+
 .pretty_form ul.errorlist li {
     margin: 0px 0px 0px 120px;
     color: #e44b49;

@@ -3,6 +3,16 @@
 
 {% block stylesheet %}
 <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+
+{% if draft.object.media %}
+    {% for script in draft.object.media.scripts %}
+        <script type="text/javascript" src="{{ script }}"></script>
+    {% endfor %}
+    {% for style in draft.object.media.styles %}
+        <link rel="stylesheet" href="{{ style }}" type="text/css" />
+    {% endfor %}
+{% endif %}
+
 {% endblock %}
 
 {% block content %}

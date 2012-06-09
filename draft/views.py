@@ -72,7 +72,7 @@ def _edit(request, object, model=None, draft=None):
             form = form_class(user=user, instance=object)
         elif draft:
             form = form_class(user=user, draft=draft)
-
+    print form.errors
     ui_tags = simplejson.dumps(UI_TAGS)
     return dict(form=form, object=object, model=model, draft=draft,
                 ui_tags=ui_tags)

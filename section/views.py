@@ -7,7 +7,7 @@ def section_home(request):
     return section_view(request, "home")
 
 @render_to("section/section.html")
-def section_view(request, slug):
+def section_view(request, slug, message=None):
     section = get_object_or_404(Section, slug=slug)
-    return dict(section=section)
+    return dict(section=section, request=request, message=message)
 
