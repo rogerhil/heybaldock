@@ -21,6 +21,7 @@ class PhotoAlbum(models.Model):
     count = models.IntegerField(default=0)
     listable = models.BooleanField(default=True, help_text=_('This album will be displayed on the Photos section'))
     event = models.ForeignKey(Event, null=True, blank=True, related_name="photo_albums", help_text=_('In case this album is associated with some event, this field is not required'))
+    flyer = models.BooleanField(default=False, help_text=_('These album photos will be displayed on the flyers area of the event'))
 
     template_view = "photo/album_details.html"
     template_varname = "album"

@@ -13,7 +13,7 @@ class AlbumForm(forms.CmsForm):
 
     class Meta:
         model = PhotoAlbum
-        fields = ('name', 'description', 'listable', 'event')
+        fields = ('name', 'description', 'listable', 'flyer', 'event')
 
 
     class Media:

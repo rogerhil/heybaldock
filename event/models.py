@@ -113,3 +113,10 @@ class Event(models.Model):
         from forms import EventForm
         return EventForm
 
+    @property
+    def photos(self):
+        return self.photo_albums.filter(flyer=False)
+
+    @property
+    def flyers(self):
+        return self.photo_albums.filter(flyer=True)

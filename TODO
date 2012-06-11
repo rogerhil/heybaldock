@@ -1,3 +1,5 @@
+Show photos in event details
+Show flyers in event details
 Delete Items
 Last updated text in sections
 Social Buttons - FB, Twitter, Pinterest etc
@@ -7,12 +9,16 @@ Drafts box fix
 Drafts delete after X times
 
 PO translations
+Datetime brazilian format
 Comming Soon Page
 Under Maintenance Page
 
 Poll
 PhotoAlbum to Location
 Insert Image WYSIWYG
+
+
+ * Nice to have:
 Contact - captcha
 Contact HTML
 Icons: success, warning, error, info, etc...

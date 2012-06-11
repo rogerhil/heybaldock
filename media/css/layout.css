@@ -781,3 +781,23 @@ form div#map_canvas {
 div.loading_icon {
     position: absolute;
 }
+
+.event_flyer {
+    float: left;
+    margin-right: 10px;
+    max-height: 360px;
+    max-width: 360px;
+    overflow: hidden;
+}
+
+.event_flyer span {
+    cursor: pointer;
+}
+
+.event_flyer span:hover {
+    opacity: .8;
+}
+
+.event_details {
+    max-height: 255px;
+}

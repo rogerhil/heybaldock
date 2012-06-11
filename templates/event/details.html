@@ -1,16 +1,40 @@
 {% load i18n %}
+{% load photoutils %}
+<div class="event_flyer">
+    {% with event.flyers as albums %}
+        {% for album in albums %}
+            {% for img in album.photos.all %}
+                <span href="{% img_url img 'huge' %}">
+                    <img src="{% img_url img 'big' %}" />
+                </span>
+            {% endfor %}
+        {% endfor %}
+    {% endwith %}
+</div>
+<div class="event_details">
+    <h1>{{ event.name }}</h1>
+    <h3>{{ event.description }}</h3>
+    <p>{% autoescape off %}{{ event.content }}{% endautoescape %}</p>
+    <p>Data: {{ event.starts_at }}</p>
+</div>
 
-<h1>{{ event.name }}</h1>
-<h3>{{ event.description }}</h3>
-<p>{% autoescape off %}{{ event.content }}{% endautoescape %}</p>
-<p>Data: {{ event.starts_at }}</p>
 {% with event.location as location %}
     {% include "event/location.html" %}
 {% endwith %}
 <div class="clear"></div>
+<br />
+{% with event.photos as albums %}
+    {% if albums %}
+    <h3>{% trans 'See the photos related to this event below' %}</h3>
+    {% include "photo/photo_albums.html" %}
+    {% endif %}
+{% endwith %}
+<div class="clear"></div>
+<br />
 {% with event.video_albums.all as albums %}
     {% if albums %}
     <h3>{% trans 'See the videos related to this event below' %}</h3>
     {% include "video/video_albums.html" %}
     {% endif %}
 {% endwith %}
+<div class="clear"></div>
