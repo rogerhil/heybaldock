@@ -1,12 +1,24 @@
 {% extends "base.html" %}
 {% load i18n draftutils %}
 
+{% block stylesheet %}
+    <script type="text/javascript" src="/media/js/video.js"></script>
+{% endblock %}
+
 {% block content %}
 <h1>{% trans "Video album" %}</h1>
 {% object_manage_buttons user 'videoalbum' album.id %}
 <div class="manage_buttons">
     <a href="{% url section_view 'videos' %}">{% trans "View all" %}</a>
 </div>
+{% if user.is_authenticated %}
+    <div class="clear"></div><br />
+    <div class="manage_buttons">
+        <form action="{% url delete_video_album album.id %}" method="post" name="delete_action">
+            <a href="javascript:deleteVideoAlbum();" class="red">{% trans "Delete this Video Album" %}</a>
+        </form>
+    </div>
+{% endif %}
 {% include "video/album_details.html" %}
 <div class="clear"></div>
 

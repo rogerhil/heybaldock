@@ -2,12 +2,12 @@ import os
 
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.utils.translation import ugettext_lazy as _
 
 from event.models import Event
 from image import ImageHandler
-from signals import photo_post_save
+from signals import photo_post_save, photo_post_delete, photo_album_post_delete
 
 
 class PhotoAlbum(models.Model):
@@ -40,6 +40,10 @@ class PhotoAlbum(models.Model):
             photo = photos[0]
             self.cover_url = photo.image
 
+    def handler(self):
+        handler = ImageHandler()
+        handler.load_by_album(self)
+        return handler
 
 class Photo(models.Model):
     """
@@ -68,3 +72,5 @@ class Photo(models.Model):
         return handler
 
 post_save.connect(photo_post_save, sender=Photo)
+post_delete.connect(photo_post_delete, sender=Photo)
+post_delete.connect(photo_album_post_delete, sender=PhotoAlbum)

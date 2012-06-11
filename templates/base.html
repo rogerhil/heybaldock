@@ -91,6 +91,14 @@
 
             <div class="grid_2">
                 <div id="content">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="clear"></div>
                     {% block content %}{% endblock %}
                 </div>
             </div>

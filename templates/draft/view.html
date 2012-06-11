@@ -21,7 +21,7 @@
 <div class="manage_buttons margin10">
     <form action="{% url delete_draft draft.id %}" method="post">
         {% csrf_token %}
-        <input type="submit" class="red" value="{% trans "Delete" %}" />
+        <input type="submit" class="red" value="{% trans "Delete this draft" %}" />
     </form>
     <a href="{% url edit_draft draft.id %}">{% trans "Edit" %}</a>
     <form action="{% url publish_draft draft.id %}" method="post">

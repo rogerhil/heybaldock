@@ -1,14 +1,9 @@
-from datetime import datetime
-
 from django import template
-from django.template.context import Context
-from django.template.loader import render_to_string
 
 register = template.Library()
 
 class CallNode(template.Node):
     def __init__(self,object, method, args=None, kwargs=None, context_name=None):
-        print args
         self.object = template.Variable(object)
         self.method = method
         if args:
@@ -37,7 +32,6 @@ class CallNode(template.Node):
         kwargs = {}
         if self.args:
             for arg in self.args:
-                print arg, context
                 args.append(arg.resolve(context))
         if self.kwargs:
             for key in self.kwargs:

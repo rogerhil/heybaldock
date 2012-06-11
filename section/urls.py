@@ -4,7 +4,7 @@ import views
 
 urlpatterns = patterns('',
     url(r'^$', views.section_home, name='section_home'),
-    url(r'^(?P<slug>\w+)/$', views.section_view, name='section_view', kwargs={'message': {}}),
+    url(r'^(?P<slug>\w+)/$', views.section_view, name='section_view'),
 
 )
 

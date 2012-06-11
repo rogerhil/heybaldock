@@ -13,6 +13,14 @@
 <div class="manage_buttons">
     <a href="{% url section_view 'fotos' %}">{% trans "View all" %}</a>
 </div>
+{% if user.is_authenticated %}
+    <div class="clear"></div><br />
+    <div class="manage_buttons">
+        <form action="{% url delete_photo_album album.id %}" method="post" name="delete_action">
+            <a href="javascript:deletePhotoAlbum();" class="red">{% trans "Delete this Photo Album" %}</a>
+        </form>
+    </div>
+{% endif %}
 {% include "photo/album_details.html" %}
 <div class="clear"></div>
 

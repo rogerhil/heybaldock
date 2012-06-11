@@ -44,6 +44,10 @@ class ImageHandler(object):
         self.album = album
         self._set_path_by_album()
 
+    def load_by_album(self, album):
+        self.album = album
+        self._set_path_by_album()
+
     def _set_path_by_user(self):
         self.path = os.path.join(settings.DRAFT_UPLOAD_PATH_NEW,
                                  self.user.username)
