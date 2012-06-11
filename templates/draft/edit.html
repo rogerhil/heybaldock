@@ -3,8 +3,6 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
-    <script type="text/javascript" src="/media/js/maps.js"></script>
     <script type="text/javascript">
         {% if ui_tags %}
         CMS_TAGS = {{ ui_tags|safe }};
@@ -12,6 +10,14 @@
         JS_FIELDS = {{ form.js_fields_json|safe }};
     </script>
     {{ form.media }}
+    {% if model_class.media %}
+        {% for script in model_class.media.scripts %}
+            <script type="text/javascript" src="{{ script }}"></script>
+        {% endfor %}
+        {% for style in model_class.media.styles %}
+            <link rel="stylesheet" href="{{ style }}" type="text/css" />
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}

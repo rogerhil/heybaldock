@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load common %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
@@ -40,7 +41,8 @@
         </ul>
     </h1>
     <div class="clear"></div>
-    {{ draft.render }}
+    {% call draft.render with request as rendered %}
+    {{ rendered }}
     <div class="clear"></div>
 </div>
 

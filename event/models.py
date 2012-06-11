@@ -56,6 +56,8 @@ class Location(models.Model):
 
     template_view = "event/location.html"
     template_varname = "location"
+    media = {'scripts': ['/media/js/maps.js',
+                         'https://maps.google.com/maps/api/js?sensor=true']}
 
     def __unicode__(self):
         return "%s - %s" % (self.name, self.address)
@@ -73,10 +75,6 @@ class Location(models.Model):
         from forms import LocationForm
         return LocationForm
 
-    @property
-    def media(self):
-        return {'scripts': ['/media/js/maps.js',
-                            'https://maps.google.com/maps/api/js?sensor=true']}
 
 
 class Event(models.Model):
@@ -91,6 +89,10 @@ class Event(models.Model):
 
     template_view = "event/details.html"
     template_varname = "event"
+    media = {'scripts': ['/media/js/maps.js',
+                         'https://maps.google.com/maps/api/js?sensor=true',
+                         '/media/js/jquery/jquery.ui.timepicker.addon.js',
+                         '/media/js/eventform.js']}
 
     def __unicode__(self):
         return "%s - %s" % (self.name, self.datetime)

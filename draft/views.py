@@ -21,9 +21,9 @@ def view(request, id):
 @render_to("draft/edit.html")
 def add_new(request, model):
     ct = ContentType.objects.get(model=model)
-
+    model_class = ct.model_class()
     if request.POST:
-        form = ct.model_class().form()(user=request.user, data=request.POST)
+        form = model_class.form()(user=request.user, data=request.POST)
         valid = form.is_valid()
         js_valid = form.js_is_valid(request.POST)
         if valid and js_valid:
@@ -31,14 +31,15 @@ def add_new(request, model):
             url = reverse('view_draft', args=(form.draft.id,))
             return HttpResponseRedirect(url)
     else:
-        form = ct.model_class().form()(user=request.user)
-    return dict(form=form, model=model)
+        form = model_class.form()(user=request.user)
+    return dict(form=form, model=model, model_class=model_class)
 
 
 @login_required
 def add(request, model, id):
     ct = ContentType.objects.get(model=model)
-    object = get_object_or_404(ct.model_class(), id=id)
+    model_class = ct.model_class()
+    object = get_object_or_404(model_class, id=id)
     return _edit(request, object, model=model)
 
 @login_required
@@ -49,8 +50,11 @@ def edit(request, id):
 @render_to("draft/edit.html")
 def _edit(request, object, model=None, draft=None):
     user = request.user
-    form_class = object and object.form() or \
-                 draft.content_type.model_class().form()
+    if draft:
+        model_class = draft.content_type.model_class()
+    else:
+        model_class = type(object)
+    form_class = object and object.form() or model_class.form()
     if request.POST:
         if draft and object:
             form = form_class(user=user, draft=draft, instance=object,
@@ -75,7 +79,7 @@ def _edit(request, object, model=None, draft=None):
     print form.errors
     ui_tags = simplejson.dumps(UI_TAGS)
     return dict(form=form, object=object, model=model, draft=draft,
-                ui_tags=ui_tags)
+                ui_tags=ui_tags, model_class=model_class)
 
 @login_required
 @require_POST

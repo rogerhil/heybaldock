@@ -12,13 +12,16 @@ _ACTIONS = {
     'videoalbum_add': {'url': reverse('add_draft_new', args=('videoalbum',)),
                        'name': _('Add video album')},
     'photoalbum_add': {'url': reverse('add_draft_new', args=('photoalbum',)),
-                       'name': _('Add photo album')}
+                       'name': _('Add photo album')},
+    'event_add': {'url': reverse('add_draft_new', args=('event',)),
+                       'name': _('Add new event')}
 }
 
 ACTIONS = {
     'section': {
         'videos': [_ACTIONS['videoalbum_add']],
-        'fotos': [_ACTIONS['photoalbum_add']]
+        'fotos': [_ACTIONS['photoalbum_add']],
+        'eventos': [_ACTIONS['event_add']],
     },
     'videoalbum': [_ACTIONS['videoalbum_add']],
     'photoalbum': [_ACTIONS['photoalbum_add']]

@@ -15,6 +15,7 @@
 {% block content %}
 {% object_manage_buttons user 'section' section.id %}
 {% if message %}
+    {{ section.media }}
     <div class="message {{ message.type }}">
         {{ message.text }}
     </div>

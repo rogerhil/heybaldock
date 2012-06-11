@@ -3,12 +3,16 @@
 
 {% block stylesheet %}
     <script type="text/javascript" src="/media/js/videos.js"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript" src="/media/js/maps.js"></script>
 {% endblock %}
 
 {% block content %}
 
 {% object_manage_buttons user 'event' event.id %}
 {% include "event/details.html" %}
+<div class="clear"></div>
+<br />
 <a class="button" href="/eventos/">{% trans 'More events' %}</a>
 <div class="clear"></div>
 

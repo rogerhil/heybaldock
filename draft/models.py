@@ -3,7 +3,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.loader import get_template
-from django.template.context import Context
+from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as ug
 
@@ -40,7 +40,7 @@ class ContentDraft(models.Model):
             self.user
         )
 
-    def render(self):
+    def render(self, request):
         model = self.content_type.model_class()
         template = get_template(model.template_view)
         varname = model.template_varname
@@ -70,7 +70,7 @@ class ContentDraft(models.Model):
             else:
                 setattr(obj, key, value)
         c = {varname: obj}
-        rendered = template.render(Context(c))
+        rendered = template.render(RequestContext(request, c))
         # Restoring managers to class - hack
         for relname, relmanager in relmanagers.items():
             setattr(model, relname, relmanager)
