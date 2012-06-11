@@ -1,5 +1,3 @@
-Show photos in event details
-Show flyers in event details
 Delete Items
 Last updated text in sections
 Social Buttons - FB, Twitter, Pinterest etc
@@ -7,6 +5,7 @@ South
 User Profile
 Drafts box fix
 Drafts delete after X times
+Fix event content WYSIWYG pretty button {% ... %}
 
 PO translations
 Datetime brazilian format
