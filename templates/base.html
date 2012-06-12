@@ -84,7 +84,9 @@
             </div>
             <div class="grid_1">
                 <div id="search">
-                    <input type="text" name="search" value="" placeholder="search..." />
+                    <form action="{% url search %}" method="get">
+                        <input type="text" name="query" value="{{ query }}" placeholder="search..." />
+                    </form>
                 </div>
             </div>
             <div class="clear"></div>

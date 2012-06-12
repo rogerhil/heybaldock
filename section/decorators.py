@@ -83,9 +83,12 @@ def _get_section_drafts_related(c, request):
         model_title = trans(model)
     else:
         slug = request.get_full_path().split('/')[1]
-        section = SECTIONS_MAP[slug]
-        drafts = dfilter(CT_MAP['section'], SECTIONS_MAP_SLUG_ID[slug])
-        model_title = trans(section.menu_title)
+        if slug == 'busca':
+            section = SECTIONS_MAP['home']
+        else:
+            section = SECTIONS_MAP[slug]
+            drafts = dfilter(CT_MAP['section'], SECTIONS_MAP_SLUG_ID[slug])
+            model_title = trans(section.menu_title)
     if not isinstance(drafts, list):
         drafts.order_by('-content_date')
     return dict(section=section,

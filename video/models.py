@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 
 from lib.youtube import youtube_id_by_url
 from signals import video_post_save
@@ -21,6 +21,9 @@ class VideoAlbum(models.Model):
 
     template_view = "video/album_details.html"
     template_varname = "album"
+
+    def __unicode__(self):
+        return ugettext("Video Album %s" % self.name)
 
     @staticmethod
     def form():
@@ -46,6 +49,9 @@ class Video(models.Model):
     thumbnail = models.URLField(_("Thumbnail"))
     thumbnail_small = models.URLField(_("Small thumbnail"))
     url = models.URLField(_("Url"))
+
+    def __unicode__(self):
+        return ugettext("Video %s" % self.title)
 
     def embed_code(self):
         id = youtube_id_by_url(self.url)

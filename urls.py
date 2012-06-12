@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'fotos/', include('heybaldock.photo.urls')),
     url(r'contato/', include('heybaldock.contact.urls')),
     url(r'draft/', include('heybaldock.draft.urls')),
+    url(r'busca/', include('heybaldock.search.urls')),
     url(r'', include('heybaldock.section.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )

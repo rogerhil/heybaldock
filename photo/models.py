@@ -3,7 +3,7 @@ import os
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save, post_delete
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext
 
 from event.models import Event
 from image import ImageHandler
@@ -25,6 +25,9 @@ class PhotoAlbum(models.Model):
 
     template_view = "photo/album_details.html"
     template_varname = "album"
+
+    def __unicode__(self):
+        return ugettext("Photo Album %s" % self.name)
 
     @staticmethod
     def form():
@@ -61,6 +64,9 @@ class Photo(models.Model):
         urls = self._handler.urls()
         for attr, url in urls.items():
             setattr(self, attr, url)
+
+    def __unicode__(self):
+        return ugettext("Photo %s" % self.description)
 
     def image_url(self, size):
         url = getattr(self, 'image_%s_url' % size, '')

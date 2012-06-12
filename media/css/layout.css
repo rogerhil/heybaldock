@@ -510,6 +510,37 @@ h1.draft_head label {
 
 }
 
+#search_results ul {
+    list-style: none;
+}
+
+#search_results li {
+    *margin-bottom: 10px;
+    border-bottom: 1px dashed #4b5c6c;
+}
+
+#search_results div.search_image {
+    float: left;
+    margin-right: 10px;
+}
+
+#search_results div.search_image img {
+    border-radius: 7px;
+}
+
+#search_results div.search_result {
+    border-radius: 7px;
+    padding: 5px 5px 3px 5px;
+}
+
+#search_results div.search_result:hover {
+    background-image: url(/media/img/content_bg_2.png);
+    cursor: pointer;
+}
+
+#search_results span.summary {
+    font-size: 11px;
+}
 
 /* VIDEO ALBUM */
 
