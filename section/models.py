@@ -2,13 +2,13 @@ from datetime import datetime
 
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template_from_string
 from django.template.context import RequestContext
 
 from draft.models import ContentDraft
-from event.models import Event
 
 SECTIONS = {
     'home': {},
@@ -27,6 +27,8 @@ class Section(models.Model):
     description = models.CharField(_("Description"), max_length=255)
     slug = models.CharField(_("Menu title"), max_length=16, unique=True)
     content = models.TextField(_("Content"))
+    updated = models.DateField(auto_now=True)
+    user_updated = models.ForeignKey(User)
 
     template_view = "section/section_content.html"
     template_varname = 'section'

@@ -16,4 +16,9 @@
 {% object_manage_buttons user 'section' section.id %}
 <div class="clear"></div>
 {% include "section/section_content.html" %}
+<div class="clear"></div>
+<div class="last_updated">
+    {% trans 'Last updated at' %} {{ section.updated }} by {{ section.user_updated }}
+</div>
+<div class="clear"></div>
 {% endblock %}

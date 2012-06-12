@@ -801,3 +801,8 @@ div.loading_icon {
 .event_details {
     max-height: 255px;
 }
+
+.last_updated {
+    float: right;
+    font-size: 12px;
+}
