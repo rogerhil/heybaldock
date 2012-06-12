@@ -1,9 +1,7 @@
-Last updated text in sections
-Social Buttons - FB, Twitter, Pinterest etc
-South
-User Profile
 Drafts box fix
 Drafts delete after X times
+Social Buttons - FB, Twitter, Pinterest etc
+South
 Fix event content WYSIWYG pretty button {% ... %}
 
 PO translations
@@ -17,6 +15,7 @@ Insert Image WYSIWYG
 
 
  * Nice to have:
+Avatar photo for user
 Photo Album associated to Event for flyers, like for location
 Contact - captcha
 Contact HTML

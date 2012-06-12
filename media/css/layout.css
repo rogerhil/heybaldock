@@ -342,6 +342,10 @@ h1.draft_head label {
     width: 100%;
 }
 
+#logo {
+    width: 400px;
+}
+
 #logo,
 #logo .beatles_cover,
 #logo .shadow_big,
@@ -400,6 +404,14 @@ h1.draft_head label {
     color: #e9892c !important;
 }
 
+#profile label {
+    width: 200px;
+}
+
+#profile input[type=text],
+#profile input[type=password] {
+    width: 360px;
+}
 
 #menu {
     color: #4b5c6c;
