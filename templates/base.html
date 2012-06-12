@@ -84,7 +84,7 @@
             </div>
             <div class="grid_1">
                 <div id="search">
-                    <input type="text" name="search" value="Search..." />
+                    <input type="text" name="search" value="" placeholder="search..." />
                 </div>
             </div>
             <div class="clear"></div>
@@ -108,9 +108,11 @@
                 {% include "draft/portlet.html" %}
                 {% include "event/portlet.html" %}
                 {% include "event/location_portlet.html" %}
+                {% comment %}
                 <div class="portlet">
                     <h2>Enquete</h2>
                 </div>
+                {% endcomment %}
                 <div class="portlet" id="empty_portlet">
                     &nbsp;
                 </div>

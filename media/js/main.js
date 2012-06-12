@@ -1,11 +1,9 @@
 $(window).load(function () {
 	//formFieldsWidth();
 	$("div.menu_item").mouseover(function () {
-		$(this).fadeOut(1);
-		$(this).fadeIn();
-
-
+		//$(this).animate({"box-shadow": "#e9892c 0px -=5px"}, "slow");
 	});
+	$("#search input").placeholder('Search...');
 	animateImages();
 });
 

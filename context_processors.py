@@ -12,10 +12,6 @@ def main(request):
     now = datetime.now()
     events = Event.objects.filter(starts_at__gte=now).order_by('-starts_at')[:10]
     locations = Location.objects.all().order_by('name')[:10]
-
-    #if request.user.is_authenticated():
-    #    drafts = section.drafts_related()
-
     c = dict(sections=SECTIONS,
              events=events,
              locations=locations,

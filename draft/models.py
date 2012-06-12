@@ -2,12 +2,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
 from django.template.loader import get_template
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as ug
 
 from lib import fields
+from signals import content_draft_post_save
 
 
 class FakeRelatedManager(object):
@@ -75,3 +77,6 @@ class ContentDraft(models.Model):
         for relname, relmanager in relmanagers.items():
             setattr(model, relname, relmanager)
         return rendered
+
+
+post_save.connect(content_draft_post_save, sender=ContentDraft)

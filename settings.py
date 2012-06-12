@@ -191,3 +191,5 @@ SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT =  587
 MAIL_USER = "heybaldock@gmail.com"
 MAIL_PASSWORD = "supertogether"
+
+MAX_DRAFTS_PER_OBJECT = 20

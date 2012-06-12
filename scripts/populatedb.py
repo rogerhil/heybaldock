@@ -11,10 +11,10 @@ user = User.objects.get(username='rogerhil')
 
 SECTIONS = [
     'Home',
-    ('Eventos', '{% include "event/event_list.html" %}'),
+    ('Eventos', '{% upcoming_events %}<br/>{% event_history_button %}'),
     ('Fotos', '{% photo_albums %}'),
     ('Videos', '{% video_albums %}'),
-    'Contato'
+    ('Contato', '{% contact_form %}'),
 ]
 
 LOCATIONS = [
