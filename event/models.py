@@ -103,7 +103,8 @@ class Event(models.Model):
         if self.starts_at == self.ends_at:
             return start
         end = self.ends_at.strftime("%d/%m/%Y")
-        return ugettext("from %s to %s") % (start, end)
+        args = dict(start=start, end=end)
+        return ugettext("from %(start)s to %(end)s") % args
 
     def url(self):
         return reverse('event_details', args=(self.id,))

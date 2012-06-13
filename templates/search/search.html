@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+{% endblock %}
+
+{% block content %}
+
+<div id="search_results">
+    <h1>{% trans "Search results" %}</h1>
+    <div class="clear"></div>
+    {% if result.count %}
+        <ul>
+        {% for item in result.items %}
+            <li>
+                <a href="{{ item.url }}">
+                    <div class="search_result">
+                        {% if item.image_url %}
+                        <div class="search_image">
+                            <img src="{{ item.image_url }}" />
+                        </div>
+                        {% endif %}
+                        <div class="search_details">
+                            {{ item.title }}<br />
+                            {% for s in item.summary %}
+                                <span class="summary">{% autoescape off %}{{ s|striptags }}{% endautoescape %}</span><br/>
+                            {% endfor %}
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        {% trans 'No results found' %}
+    {% endif %}
+    <div class="clear"></div>
+</div>
+
+{% endblock %}
+

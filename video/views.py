@@ -41,8 +41,9 @@ def delete_video_album(request, id):
         msg = _('The video album "%s" was successfully deleted.' % name)
         messages.add_message(request, messages.SUCCESS, msg)
     except Exception, err:
-        msg = _('Error while trying to delete the "%s" video album. %s' % \
-                                                                (name, err))
+        args = dict(name=name, err=err)
+        msg = _('Error while trying to delete the "%(name)s" ' \
+                'video album. %(err)s' % args)
         messages.add_message(request, messages.ERROR, msg)
     url = reverse('section_view', args=('videos',))
     return HttpResponseRedirect(url)

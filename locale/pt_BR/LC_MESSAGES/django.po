@@ -1,0 +1,605 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-12 23:26-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#: auth/views.py:45
+msgid "Your changes were successfully saved."
+msgstr ""
+
+#: auth/views.py:49 auth/views.py:60
+msgid "Please fix the errors below."
+msgstr ""
+
+#: auth/views.py:56
+msgid "Your password was successfully changed."
+msgstr ""
+
+#: contact/forms.py:10 event/models.py:40 event/models.py:83
+#: photo/models.py:16 templates/event/event_list.html:7
+#: templates/event/location_list.html:21 video/models.py:13 video/models.py:45
+msgid "Name"
+msgstr ""
+
+#: contact/forms.py:11
+msgid "E-mail"
+msgstr ""
+
+#: contact/forms.py:12
+msgid "Subject"
+msgstr ""
+
+#: contact/forms.py:13
+msgid "Message"
+msgstr ""
+
+#: contact/mail.py:13
+#, python-format
+msgid "Message from website: %s"
+msgstr ""
+
+#: contact/mail.py:15
+#, python-format
+msgid ""
+"Message from %(name)s, e-mail: %(email)s\n"
+"\n"
+msgstr ""
+
+#: contact/views.py:15
+msgid "Your message has been successfully sent"
+msgstr ""
+
+#: draft/templatetags/draftutils.py:13
+msgid "Add video album"
+msgstr ""
+
+#: draft/templatetags/draftutils.py:15
+msgid "Add photo album"
+msgstr ""
+
+#: draft/templatetags/draftutils.py:17
+msgid "Add new event"
+msgstr ""
+
+#: event/models.py:41 event/models.py:84 photo/models.py:17 photo/models.py:54
+#: section/models.py:27 video/models.py:14 video/models.py:46
+msgid "Description"
+msgstr ""
+
+#: event/models.py:42
+msgid "Zip code"
+msgstr ""
+
+#: event/models.py:43
+msgid "Street"
+msgstr ""
+
+#: event/models.py:44
+msgid "District"
+msgstr ""
+
+#: event/models.py:45
+msgid "Number"
+msgstr ""
+
+#: event/models.py:46
+msgid "Complement"
+msgstr ""
+
+#: event/models.py:47 templates/event/location_list.html:27
+msgid "City"
+msgstr ""
+
+#: event/models.py:48
+msgid "State"
+msgstr ""
+
+#: event/models.py:49
+msgid "Country"
+msgstr ""
+
+#: event/models.py:52 photo/models.py:55 video/models.py:47
+msgid "Album"
+msgstr ""
+
+#: event/models.py:53
+msgid "Phone 1"
+msgstr ""
+
+#: event/models.py:54
+msgid "Phone 2"
+msgstr ""
+
+#: event/models.py:55
+msgid "Phone 3"
+msgstr ""
+
+#: event/models.py:85 section/models.py:29
+msgid "Content"
+msgstr ""
+
+#: event/models.py:88 section/decorators.py:22
+#: templates/event/event_list.html:10
+msgid "Location"
+msgstr ""
+
+#: event/models.py:107
+#, python-format
+msgid "from %(start)s to %(end)s"
+msgstr ""
+
+#: event/views.py:35
+#, python-format
+msgid "The event \"%s\" was successfully deleted."
+msgstr ""
+
+#: event/views.py:39
+#, python-format
+msgid "Error while trying to delete the \"%(name)s\" event. %(err)s"
+msgstr ""
+
+#: event/views.py:61
+#, python-format
+msgid "The location \"%s\" was successfully deleted."
+msgstr ""
+
+#: event/views.py:65
+#, python-format
+msgid "Error while trying to delete the \"%(name)s\" location. %(err)s"
+msgstr ""
+
+#: lib/youtube.py:16
+msgid "Please provide a valid url"
+msgstr ""
+
+#: lib/youtube.py:21
+msgid "Only youtube videos are allowed."
+msgstr ""
+
+#: lib/youtube.py:26 lib/youtube.py:44
+msgid "Invalid youtube video url."
+msgstr ""
+
+#: photo/forms.py:77
+msgid "A photo album must have at least one photo"
+msgstr ""
+
+#: photo/forms.py:91
+msgid "Photo description cannot be empty"
+msgstr ""
+
+#: photo/models.py:18 video/models.py:15
+msgid "Created"
+msgstr ""
+
+#: photo/models.py:19 video/models.py:16
+msgid "Updated"
+msgstr ""
+
+#: photo/models.py:20
+msgid "Cover url"
+msgstr ""
+
+#: photo/models.py:22
+msgid "This album will be displayed on the Photos section"
+msgstr ""
+
+#: photo/models.py:23 video/models.py:20
+msgid ""
+"In case this album is associated with some event, this field is not required"
+msgstr ""
+
+#: photo/models.py:24
+msgid "These album photos will be displayed on the flyers area of the event"
+msgstr ""
+
+#: photo/models.py:30
+#, python-format
+msgid "Photo Album %s"
+msgstr ""
+
+#: photo/models.py:56 templates/draft/view.html:39
+#: templates/event/event_list.html:13 video/models.py:48
+msgid "Date"
+msgstr ""
+
+#: photo/models.py:57
+msgid "Image"
+msgstr ""
+
+#: photo/models.py:69
+#, python-format
+msgid "Photo %s"
+msgstr ""
+
+#: photo/views.py:48
+#, python-format
+msgid "The photo album \"%s\" was successfully deleted."
+msgstr ""
+
+#: photo/views.py:52
+#, python-format
+msgid "Error while trying to delete the \"%(name)s\" photo album. %(err)s"
+msgstr ""
+
+#: section/decorators.py:21
+msgid "Event"
+msgstr ""
+
+#: section/decorators.py:23 section/decorators.py:26
+msgid "Video Album"
+msgstr ""
+
+#: section/decorators.py:24 section/decorators.py:25
+msgid "Photo Album"
+msgstr ""
+
+#: section/decorators.py:29
+#, python-format
+msgid "%s section"
+msgstr ""
+
+#: section/models.py:25 section/models.py:28
+msgid "Menu title"
+msgstr ""
+
+#: section/models.py:26
+msgid "Title"
+msgstr ""
+
+#: section/templatetags/wysiwygtags.py:16
+msgid "Upcoming Events List"
+msgstr ""
+
+#: section/templatetags/wysiwygtags.py:17
+msgid "Event History Button Link"
+msgstr ""
+
+#: section/templatetags/wysiwygtags.py:18
+msgid "Video Albums list"
+msgstr ""
+
+#: section/templatetags/wysiwygtags.py:19
+msgid "Photo Albums list"
+msgstr ""
+
+#: section/templatetags/wysiwygtags.py:20
+msgid "Contact Form"
+msgstr ""
+
+#: section/templatetags/wysiwygtags.py:21
+msgid "Facebook Like Button"
+msgstr ""
+
+#: templates/base.html:110
+msgid "EDIT MODE"
+msgstr ""
+
+#: templates/auth/login.html:11 templates/auth/login.html.py:18
+msgid "Login"
+msgstr ""
+
+#: templates/auth/profile.html:12
+msgid "My profile"
+msgstr ""
+
+#: templates/auth/profile.html:21
+msgid "Save"
+msgstr ""
+
+#: templates/auth/profile.html:25
+msgid "Change password"
+msgstr ""
+
+#: templates/auth/profile.html:34
+msgid "Change"
+msgstr ""
+
+#: templates/contact/contact_form.html:8
+msgid "Send"
+msgstr ""
+
+#: templates/draft/edit.html:26
+msgid "Cancel"
+msgstr ""
+
+#: templates/draft/edit.html:32
+#, python-format
+msgid "Draft - Add %(model)s"
+msgstr ""
+
+#: templates/draft/edit.html:35
+#, python-format
+msgid "Draft - Edit %(ct)s"
+msgstr ""
+
+#: templates/draft/edit.html:37
+#, python-format
+msgid "Draft - Edit %(model)s"
+msgstr ""
+
+#: templates/draft/edit.html:48
+msgid "Save draft"
+msgstr ""
+
+#: templates/draft/object_manage_buttons.html:7 templates/draft/view.html:26
+msgid "Edit"
+msgstr ""
+
+#: templates/draft/portlet.html:6
+#, python-format
+msgid "Drafts related to %(title)s"
+msgstr ""
+
+#: templates/draft/view.html:24
+msgid "Delete this draft"
+msgstr ""
+
+#: templates/draft/view.html:30
+msgid "Publish"
+msgstr ""
+
+#: templates/draft/view.html:35
+msgid "Draft"
+msgstr ""
+
+#: templates/draft/view.html:37
+msgid "Object"
+msgstr ""
+
+#: templates/draft/view.html:38
+msgid "Type"
+msgstr ""
+
+#: templates/draft/view.html:40
+msgid "Made by"
+msgstr ""
+
+#: templates/event/details.html:28
+msgid "See the photos related to this event below"
+msgstr ""
+
+#: templates/event/details.html:36
+msgid "See the videos related to this event below"
+msgstr ""
+
+#: templates/event/event_details.html:15
+#, python-format
+msgid "Hey Baldock Event %(name)s"
+msgstr ""
+
+#: templates/event/event_details.html:27
+msgid "Delete this Event"
+msgstr ""
+
+#: templates/event/event_details.html:34
+msgid "More events"
+msgstr ""
+
+#: templates/event/event_history.html:5
+msgid "Hey Baldock Events History"
+msgstr ""
+
+#: templates/event/event_history.html:6
+msgid "List of events performed by Hey Baldock Beatles Cover Band"
+msgstr ""
+
+#: templates/event/event_history.html:12
+#: templates/event/event_history_button.html:3
+msgid "Events history"
+msgstr ""
+
+#: templates/event/event_history.html:19
+msgid "Upcoming events"
+msgstr ""
+
+#: templates/event/location.html:6
+msgid "ZIpcode: "
+msgstr ""
+
+#: templates/event/location_details.html:11
+#, python-format
+msgid "Hey Baldock Location %(name)s"
+msgstr ""
+
+#: templates/event/location_details.html:23
+msgid "Delete this Location"
+msgstr ""
+
+#: templates/event/location_details.html:27
+msgid "Location details"
+msgstr ""
+
+#: templates/event/location_details.html:31
+msgid "More locations"
+msgstr ""
+
+#: templates/event/location_list.html:5
+msgid "Hey Baldock Locations List"
+msgstr ""
+
+#: templates/event/location_list.html:6
+msgid "List of locations that Hey Baldock used to make its presentations."
+msgstr ""
+
+#: templates/event/location_list.html:13
+msgid "Locations list"
+msgstr ""
+
+#: templates/event/location_list.html:24
+msgid "Address"
+msgstr ""
+
+#: templates/event/location_portlet.html:5
+#: templates/photo/photo_album_view.html:22
+#: templates/video/video_album_view.html:20
+msgid "View all"
+msgstr ""
+
+#: templates/event/location_portlet.html:7 templates/event/portlet.html:6
+msgid "Add"
+msgstr ""
+
+#: templates/event/location_portlet.html:10
+msgid "Locations"
+msgstr ""
+
+#: templates/photo/album_details.html:12
+#, python-format
+msgid ""
+"\n"
+"                These photos are related to the \"%(name)s\" event performed "
+"on %(date)s.\n"
+"            "
+msgstr ""
+
+#: templates/photo/album_details.html:20
+msgid "Number of photos:"
+msgstr ""
+
+#: templates/photo/photo_album_view.html:11
+#, python-format
+msgid "Hey Baldock Photo Album %(name)s"
+msgstr ""
+
+#: templates/photo/photo_album_view.html:19
+msgid "Photo album"
+msgstr ""
+
+#: templates/photo/photo_album_view.html:28
+msgid "Delete this Photo Album"
+msgstr ""
+
+#: templates/photo/photo_albums.html:12
+#, python-format
+msgid ""
+"\n"
+"                    %(counter)s photo\n"
+"                "
+msgid_plural ""
+"\n"
+"                    %(counter)s photos\n"
+"                "
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/search/search.html:11
+msgid "Search results"
+msgstr ""
+
+#: templates/search/search.html:37
+msgid "No results found"
+msgstr ""
+
+#: templates/section/section.html:16
+#, python-format
+msgid "Hey Baldock %(title)s"
+msgstr ""
+
+#: templates/section/section.html:28
+#, python-format
+msgid ""
+"\n"
+"        Last updated at %(updated)s by %(user_updated)s\n"
+"    "
+msgstr ""
+
+#: templates/video/album_details.html:11
+#, python-format
+msgid ""
+"\n"
+"                These videos are related to the \"%(name)s\" event performed "
+"on %(date)s.\n"
+"            "
+msgstr ""
+
+#: templates/video/album_details.html:18
+msgid "Number of videos:"
+msgstr ""
+
+#: templates/video/video_album_view.html:9
+msgid "Hey Baldock Video Album"
+msgstr ""
+
+#: templates/video/video_album_view.html:17
+msgid "Video album"
+msgstr ""
+
+#: templates/video/video_album_view.html:26
+msgid "Delete this Video Album"
+msgstr ""
+
+#: templates/video/video_albums.html:12
+#, python-format
+msgid ""
+"\n"
+"                    %(counter)s video\n"
+"                "
+msgid_plural ""
+"\n"
+"                    %(counter)s videos\n"
+"                "
+msgstr[0] ""
+msgstr[1] ""
+
+#: video/forms.py:43
+msgid "A video album must have at least one video url"
+msgstr ""
+
+#: video/forms.py:56
+msgid "Url cannot be empty"
+msgstr ""
+
+#: video/forms.py:72
+msgid "This video is provided more than once"
+msgstr ""
+
+#: video/models.py:17 video/models.py:51
+msgid "Url"
+msgstr ""
+
+#: video/models.py:19
+msgid "This album will be displayed on the Videos section"
+msgstr ""
+
+#: video/models.py:26
+#, python-format
+msgid "Video Album %s"
+msgstr ""
+
+#: video/models.py:49
+msgid "Thumbnail"
+msgstr ""
+
+#: video/models.py:50
+msgid "Small thumbnail"
+msgstr ""
+
+#: video/models.py:54
+#, python-format
+msgid "Video %s"
+msgstr ""
+
+#: video/views.py:41
+#, python-format
+msgid "The video album \"%s\" was successfully deleted."
+msgstr ""
+
+#: video/views.py:45
+#, python-format
+msgid "Error while trying to delete the \"%(name)s\" video album. %(err)s"
+msgstr ""

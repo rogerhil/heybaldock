@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+{% endblock %}
+
+
+{% block content %}
+
+<div id="profile">
+    <h1>{% trans "My profile" %}</h1>
+    <div class="pretty_form">
+        <form action="{% url profile %}" method="post">
+            {% csrf_token %}
+            <ul>
+                {{ user_form.as_ul }}
+            </ul>
+            <br />
+            <input type="hidden" name="is_user_form" value="true" />
+            <input class="button" type="submit" value="{% trans "Save" %}" />
+            <div class="clear"></div>
+        </form>
+    </div>
+    <h1>{% trans "Change password" %}</h1>
+    <div class="pretty_form">
+        <form action="{% url profile %}" method="post">
+            {% csrf_token %}
+            <ul>
+                {{ password_form.as_ul }}
+            </ul>
+            <br />
+            <input type="hidden" name="is_change_password_form" value="true" />
+            <input class="button" type="submit" value="{% trans "Change" %}" />
+            <div class="clear"></div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

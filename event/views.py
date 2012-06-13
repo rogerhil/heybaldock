@@ -35,8 +35,9 @@ def delete_event(request, id):
         msg = _('The event "%s" was successfully deleted.' % name)
         messages.add_message(request, messages.SUCCESS, msg)
     except Exception, err:
-        msg = _('Error while trying to delete the "%s" event. %s' % \
-                                                                (name, err))
+        args = dict(name=name, err=err)
+        msg = _('Error while trying to delete the "%(name)s" ' \
+                'event. %(err)s' % args)
         messages.add_message(request, messages.ERROR, msg)
     url = reverse('section_view', args=('eventos',))
     return HttpResponseRedirect(url)
@@ -60,8 +61,9 @@ def delete_location(request, id):
         msg = _('The location "%s" was successfully deleted.' % name)
         messages.add_message(request, messages.SUCCESS, msg)
     except Exception, err:
-        msg = _('Error while trying to delete the "%s" location. %s' % \
-                                                                (name, err))
+        args = dict(name=name, err=err)
+        msg = _('Error while trying to delete the "%(name)s" ' \
+                'location. %(err)s' % args)
         messages.add_message(request, messages.ERROR, msg)
     url = reverse('location_list')
     return HttpResponseRedirect(url)

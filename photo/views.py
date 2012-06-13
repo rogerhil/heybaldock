@@ -48,8 +48,9 @@ def delete_photo_album(request, id):
         msg = _('The photo album "%s" was successfully deleted.' % name)
         messages.add_message(request, messages.SUCCESS, msg)
     except Exception, err:
-        msg = _('Error while trying to delete the "%s" photo album. %s' % \
-                                                                (name, err))
+        args = dict(name=name, err=err)
+        msg = _('Error while trying to delete the "%(name)s" ' \
+                'photo album. %(err)s' % args)
         messages.add_message(request, messages.ERROR, msg)
     url = reverse('section_view', args=('fotos',))
     return HttpResponseRedirect(url)

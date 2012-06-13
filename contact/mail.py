@@ -11,7 +11,8 @@ def send_mail(name, fromemail, subject, msg):
     smtp.ehlo()
     smtp.login(settings.MAIL_USER, settings.MAIL_PASSWORD)
     subject = _("Message from website: %s" % subject)
-    msgfrom = _("Message from %s, e-mail: %s\n\n" % (name, fromemail))
+    args = dict(name=name, email=fromemail)
+    msgfrom = _("Message from %(name)s, e-mail: %(email)s\n\n" % args)
     mimemsg = MIMEText(msgfrom + msg, 'plain', 'utf-8')
     mimemsg["Subject"] = subject
     mimemsg["From"] = fromemail
