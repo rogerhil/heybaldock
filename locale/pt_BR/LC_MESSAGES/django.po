@@ -19,38 +19,38 @@ msgstr ""
 
 #: auth/views.py:45
 msgid "Your changes were successfully saved."
-msgstr ""
+msgstr "Suas mudanças foram salvas com sucesso."
 
 #: auth/views.py:49 auth/views.py:60
 msgid "Please fix the errors below."
-msgstr ""
+msgstr "Por favor corrija os erros abaixo."
 
 #: auth/views.py:56
 msgid "Your password was successfully changed."
-msgstr ""
+msgstr "Sua senha foi modificada com sucesso."
 
 #: contact/forms.py:10 event/models.py:40 event/models.py:83
 #: photo/models.py:16 templates/event/event_list.html:7
 #: templates/event/location_list.html:21 video/models.py:13 video/models.py:45
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: contact/forms.py:11
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 #: contact/forms.py:12
 msgid "Subject"
-msgstr ""
+msgstr "Assunto"
 
 #: contact/forms.py:13
 msgid "Message"
-msgstr ""
+msgstr "Mensagem"
 
 #: contact/mail.py:13
 #, python-format
 msgid "Message from website: %s"
-msgstr ""
+msgstr "Mensagem do website: %s"
 
 #: contact/mail.py:15
 #, python-format
@@ -58,178 +58,181 @@ msgid ""
 "Message from %(name)s, e-mail: %(email)s\n"
 "\n"
 msgstr ""
+"Mensagem de %(name)s, e-mail: %(email)s\n"
+"\n"
 
 #: contact/views.py:15
 msgid "Your message has been successfully sent"
-msgstr ""
+msgstr "Sua mensagem foi enviada com sucesso"
 
 #: draft/templatetags/draftutils.py:13
 msgid "Add video album"
-msgstr ""
+msgstr "Adicionar álbum de vídeos"
 
 #: draft/templatetags/draftutils.py:15
 msgid "Add photo album"
-msgstr ""
+msgstr "Adicionar álbum de fotos"
 
 #: draft/templatetags/draftutils.py:17
 msgid "Add new event"
-msgstr ""
+msgstr "Adicionar novo evento"
 
 #: event/models.py:41 event/models.py:84 photo/models.py:17 photo/models.py:54
 #: section/models.py:27 video/models.py:14 video/models.py:46
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: event/models.py:42
 msgid "Zip code"
-msgstr ""
+msgstr "CEP"
 
 #: event/models.py:43
 msgid "Street"
-msgstr ""
+msgstr "Logradouro"
 
 #: event/models.py:44
 msgid "District"
-msgstr ""
+msgstr "Bairro"
 
 #: event/models.py:45
 msgid "Number"
-msgstr ""
+msgstr "Número"
 
 #: event/models.py:46
 msgid "Complement"
-msgstr ""
+msgstr "Complemento"
 
 #: event/models.py:47 templates/event/location_list.html:27
 msgid "City"
-msgstr ""
+msgstr "Cidade"
 
 #: event/models.py:48
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #: event/models.py:49
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: event/models.py:52 photo/models.py:55 video/models.py:47
 msgid "Album"
-msgstr ""
+msgstr "Álbum"
 
 #: event/models.py:53
 msgid "Phone 1"
-msgstr ""
+msgstr "Telefone 1"
 
 #: event/models.py:54
 msgid "Phone 2"
-msgstr ""
+msgstr "Telefone 2"
 
 #: event/models.py:55
 msgid "Phone 3"
-msgstr ""
+msgstr "Telefone 3"
 
 #: event/models.py:85 section/models.py:29
 msgid "Content"
-msgstr ""
+msgstr "Conteúdo"
 
 #: event/models.py:88 section/decorators.py:22
 #: templates/event/event_list.html:10
 msgid "Location"
-msgstr ""
+msgstr "Local"
 
 #: event/models.py:107
 #, python-format
 msgid "from %(start)s to %(end)s"
-msgstr ""
+msgstr "de %(start)s até %(end)s"
 
 #: event/views.py:35
 #, python-format
 msgid "The event \"%s\" was successfully deleted."
-msgstr ""
+msgstr "O evento \"%s\" foi removido com sucesso."
 
 #: event/views.py:39
 #, python-format
 msgid "Error while trying to delete the \"%(name)s\" event. %(err)s"
-msgstr ""
+msgstr "Erro ocorrido ao tentar remover o evento \"%(name)s\". %(err)s"
 
 #: event/views.py:61
 #, python-format
 msgid "The location \"%s\" was successfully deleted."
-msgstr ""
+msgstr "O local \"%s\" foi removido com sucesso."
 
 #: event/views.py:65
 #, python-format
 msgid "Error while trying to delete the \"%(name)s\" location. %(err)s"
-msgstr ""
+msgstr "Erro ocorrido ao tentar remover o local \"%(name)s\". %(err)s"
 
 #: lib/youtube.py:16
 msgid "Please provide a valid url"
-msgstr ""
+msgstr "Favor fornecer uma url válida"
 
 #: lib/youtube.py:21
 msgid "Only youtube videos are allowed."
-msgstr ""
+msgstr "Somente vídeos do youtube são permitidos"
 
 #: lib/youtube.py:26 lib/youtube.py:44
 msgid "Invalid youtube video url."
-msgstr ""
+msgstr "Url de vídeo do youtube inválida"
 
 #: photo/forms.py:77
 msgid "A photo album must have at least one photo"
-msgstr ""
+msgstr "Um álbum de fotos precisa ter ao menos uma foto"
 
 #: photo/forms.py:91
 msgid "Photo description cannot be empty"
-msgstr ""
+msgstr "A descrição da foto não pode ser vazia"
 
 #: photo/models.py:18 video/models.py:15
 msgid "Created"
-msgstr ""
+msgstr "Criado"
 
 #: photo/models.py:19 video/models.py:16
 msgid "Updated"
-msgstr ""
+msgstr "Atualizado"
 
 #: photo/models.py:20
 msgid "Cover url"
-msgstr ""
+msgstr "Cover url"
 
 #: photo/models.py:22
 msgid "This album will be displayed on the Photos section"
-msgstr ""
+msgstr "Este ábum será exibido na seção de Fotos"
 
 #: photo/models.py:23 video/models.py:20
 msgid ""
 "In case this album is associated with some event, this field is not required"
 msgstr ""
+"Caso este álbum seja associado a algum evento. Este campo não é obrigatório."
 
 #: photo/models.py:24
 msgid "These album photos will be displayed on the flyers area of the event"
-msgstr ""
+msgstr "As fotos deste álbum serão exibidas na área de Flyers do evento associado"
 
 #: photo/models.py:30
 #, python-format
 msgid "Photo Album %s"
-msgstr ""
+msgstr "Álbum de Fotos %s"
 
 #: photo/models.py:56 templates/draft/view.html:39
 #: templates/event/event_list.html:13 video/models.py:48
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: photo/models.py:57
 msgid "Image"
-msgstr ""
+msgstr "Imagem"
 
 #: photo/models.py:69
 #, python-format
 msgid "Photo %s"
-msgstr ""
+msgstr "Foto %s"
 
 #: photo/views.py:48
 #, python-format
 msgid "The photo album \"%s\" was successfully deleted."
-msgstr ""
+msgstr "O álbum de fotos \"%s\" foi removido com sucesso."
 
 #: photo/views.py:52
 #, python-format
@@ -238,225 +241,225 @@ msgstr ""
 
 #: section/decorators.py:21
 msgid "Event"
-msgstr ""
+msgstr "Evento"
 
 #: section/decorators.py:23 section/decorators.py:26
 msgid "Video Album"
-msgstr ""
+msgstr "Álbum de Vídeos"
 
 #: section/decorators.py:24 section/decorators.py:25
 msgid "Photo Album"
-msgstr ""
+msgstr "Álbum de Fotos"
 
 #: section/decorators.py:29
 #, python-format
 msgid "%s section"
-msgstr ""
+msgstr "Seção %s"
 
 #: section/models.py:25 section/models.py:28
 msgid "Menu title"
-msgstr ""
+msgstr "Título do menu"
 
 #: section/models.py:26
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: section/templatetags/wysiwygtags.py:16
 msgid "Upcoming Events List"
-msgstr ""
+msgstr "Lista de eventos recentes"
 
 #: section/templatetags/wysiwygtags.py:17
 msgid "Event History Button Link"
-msgstr ""
+msgstr "Botão link para histórico de eventos"
 
 #: section/templatetags/wysiwygtags.py:18
 msgid "Video Albums list"
-msgstr ""
+msgstr "Lista de Álbuns de Vídeos"
 
 #: section/templatetags/wysiwygtags.py:19
 msgid "Photo Albums list"
-msgstr ""
+msgstr "Lista de Álbuns de Fotos"
 
 #: section/templatetags/wysiwygtags.py:20
 msgid "Contact Form"
-msgstr ""
+msgstr "Formulário de contato"
 
 #: section/templatetags/wysiwygtags.py:21
 msgid "Facebook Like Button"
-msgstr ""
+msgstr "Botão Like do Facebook"
 
 #: templates/base.html:110
 msgid "EDIT MODE"
-msgstr ""
+msgstr "MODO DE EDIÇÃO"
 
 #: templates/auth/login.html:11 templates/auth/login.html.py:18
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #: templates/auth/profile.html:12
 msgid "My profile"
-msgstr ""
+msgstr "Meu profile"
 
 #: templates/auth/profile.html:21
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: templates/auth/profile.html:25
 msgid "Change password"
-msgstr ""
+msgstr "Modificar senha"
 
 #: templates/auth/profile.html:34
 msgid "Change"
-msgstr ""
+msgstr "Modificar"
 
 #: templates/contact/contact_form.html:8
 msgid "Send"
-msgstr ""
+msgstr "Enviar"
 
 #: templates/draft/edit.html:26
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: templates/draft/edit.html:32
 #, python-format
 msgid "Draft - Add %(model)s"
-msgstr ""
+msgstr "Rascunho - Adicionar %(model)s"
 
 #: templates/draft/edit.html:35
 #, python-format
 msgid "Draft - Edit %(ct)s"
-msgstr ""
+msgstr "Rascunho - Editar %(ct)s"
 
 #: templates/draft/edit.html:37
 #, python-format
 msgid "Draft - Edit %(model)s"
-msgstr ""
+msgstr "Rascunho - Editar %(model)s"
 
 #: templates/draft/edit.html:48
 msgid "Save draft"
-msgstr ""
+msgstr "Salvar rascunho"
 
 #: templates/draft/object_manage_buttons.html:7 templates/draft/view.html:26
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: templates/draft/portlet.html:6
 #, python-format
 msgid "Drafts related to %(title)s"
-msgstr ""
+msgstr "Rascunhos relacionados a %(title)s"
 
 #: templates/draft/view.html:24
 msgid "Delete this draft"
-msgstr ""
+msgstr "Remover este rascunho"
 
 #: templates/draft/view.html:30
 msgid "Publish"
-msgstr ""
+msgstr "Publicar"
 
 #: templates/draft/view.html:35
 msgid "Draft"
-msgstr ""
+msgstr "Rascunho"
 
 #: templates/draft/view.html:37
 msgid "Object"
-msgstr ""
+msgstr "Objeto"
 
 #: templates/draft/view.html:38
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: templates/draft/view.html:40
 msgid "Made by"
-msgstr ""
+msgstr "Feito por"
 
 #: templates/event/details.html:28
 msgid "See the photos related to this event below"
-msgstr ""
+msgstr "Veja as fotos abaixo relacionadas a este evento"
 
 #: templates/event/details.html:36
 msgid "See the videos related to this event below"
-msgstr ""
+msgstr "Veja os vídeos abaixo relacionados a este evento"
 
 #: templates/event/event_details.html:15
 #, python-format
 msgid "Hey Baldock Event %(name)s"
-msgstr ""
+msgstr "Evento da Hey Baldock %(name)s"
 
 #: templates/event/event_details.html:27
 msgid "Delete this Event"
-msgstr ""
+msgstr "Remover este Evento"
 
 #: templates/event/event_details.html:34
 msgid "More events"
-msgstr ""
+msgstr "Mais eventos"
 
 #: templates/event/event_history.html:5
 msgid "Hey Baldock Events History"
-msgstr ""
+msgstr "Histórico de Eventos da Hey Baldock"
 
 #: templates/event/event_history.html:6
 msgid "List of events performed by Hey Baldock Beatles Cover Band"
-msgstr ""
+msgstr "Listagem de eventos realizados pela banda Hey Baldock Beatles Cover"
 
 #: templates/event/event_history.html:12
 #: templates/event/event_history_button.html:3
 msgid "Events history"
-msgstr ""
+msgstr "Histórico de eventos"
 
 #: templates/event/event_history.html:19
 msgid "Upcoming events"
-msgstr ""
+msgstr "Eventos recentes"
 
 #: templates/event/location.html:6
 msgid "ZIpcode: "
-msgstr ""
+msgstr "CEP: "
 
 #: templates/event/location_details.html:11
 #, python-format
 msgid "Hey Baldock Location %(name)s"
-msgstr ""
+msgstr "Hey Baldock - Local %(name)s"
 
 #: templates/event/location_details.html:23
 msgid "Delete this Location"
-msgstr ""
+msgstr "Remover este local"
 
 #: templates/event/location_details.html:27
 msgid "Location details"
-msgstr ""
+msgstr "Detalhes do local"
 
 #: templates/event/location_details.html:31
 msgid "More locations"
-msgstr ""
+msgstr "Mais locais"
 
 #: templates/event/location_list.html:5
 msgid "Hey Baldock Locations List"
-msgstr ""
+msgstr "Hey Baldock - Listagem de locais"
 
 #: templates/event/location_list.html:6
 msgid "List of locations that Hey Baldock used to make its presentations."
-msgstr ""
+msgstr "Listagem de locais cuja banda Hey Baldock costuma fazer apresentações"
 
 #: templates/event/location_list.html:13
 msgid "Locations list"
-msgstr ""
+msgstr "Listagem de locais"
 
 #: templates/event/location_list.html:24
 msgid "Address"
-msgstr ""
+msgstr "Endereço"
 
 #: templates/event/location_portlet.html:5
 #: templates/photo/photo_album_view.html:22
 #: templates/video/video_album_view.html:20
 msgid "View all"
-msgstr ""
+msgstr "Ver todos"
 
 #: templates/event/location_portlet.html:7 templates/event/portlet.html:6
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 #: templates/event/location_portlet.html:10
 msgid "Locations"
-msgstr ""
+msgstr "Locais"
 
 #: templates/photo/album_details.html:12
 #, python-format
@@ -466,23 +469,27 @@ msgid ""
 "on %(date)s.\n"
 "            "
 msgstr ""
+"\n"
+"                Estas fotos são relacionadas ao evento \"%(name)s\" realizado "
+"em %(date)s.\n"
+"            "
 
 #: templates/photo/album_details.html:20
 msgid "Number of photos:"
-msgstr ""
+msgstr "Número de fotos:"
 
 #: templates/photo/photo_album_view.html:11
 #, python-format
 msgid "Hey Baldock Photo Album %(name)s"
-msgstr ""
+msgstr "Álbum de Fotos da Hey Baldock - %(name)s"
 
 #: templates/photo/photo_album_view.html:19
 msgid "Photo album"
-msgstr ""
+msgstr "Álbum de fotos"
 
 #: templates/photo/photo_album_view.html:28
 msgid "Delete this Photo Album"
-msgstr ""
+msgstr "Remover este ábum de fotos"
 
 #: templates/photo/photo_albums.html:12
 #, python-format
@@ -494,21 +501,21 @@ msgid_plural ""
 "\n"
 "                    %(counter)s photos\n"
 "                "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s foto\n"
+msgstr[1] "%(counter)s fotos\n"
 
 #: templates/search/search.html:11
 msgid "Search results"
-msgstr ""
+msgstr "Resultados da busca"
 
 #: templates/search/search.html:37
 msgid "No results found"
-msgstr ""
+msgstr "Nenhum resultado encontrado"
 
 #: templates/section/section.html:16
 #, python-format
 msgid "Hey Baldock %(title)s"
-msgstr ""
+msgstr "Hey Baldock - %(title)s"
 
 #: templates/section/section.html:28
 #, python-format
@@ -517,6 +524,9 @@ msgid ""
 "        Last updated at %(updated)s by %(user_updated)s\n"
 "    "
 msgstr ""
+"\n"
+"        Última atualização em %(updated)s por %(user_updated)s\n"
+"    "
 
 #: templates/video/album_details.html:11
 #, python-format
@@ -526,22 +536,26 @@ msgid ""
 "on %(date)s.\n"
 "            "
 msgstr ""
+"\n"
+"                Estes vídeos são relacionados ao evento \"%(name)s\" realizado "
+"em %(date)s.\n"
+"            "
 
 #: templates/video/album_details.html:18
 msgid "Number of videos:"
-msgstr ""
+msgstr "Número de vídeos:"
 
 #: templates/video/video_album_view.html:9
 msgid "Hey Baldock Video Album"
-msgstr ""
+msgstr "Álbum de Vídeos da Hey Baldock"
 
 #: templates/video/video_album_view.html:17
 msgid "Video album"
-msgstr ""
+msgstr "Álbum de Vídeos"
 
 #: templates/video/video_album_view.html:26
 msgid "Delete this Video Album"
-msgstr ""
+msgstr "Remover este Álbum de Vídeos"
 
 #: templates/video/video_albums.html:12
 #, python-format
@@ -553,53 +567,53 @@ msgid_plural ""
 "\n"
 "                    %(counter)s videos\n"
 "                "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s vídeo\n"
+msgstr[1] "%(counter)s vídeos\n"
 
 #: video/forms.py:43
 msgid "A video album must have at least one video url"
-msgstr ""
+msgstr "Um álbum de vídeo precisar ter ao menos uma url de vídeo"
 
 #: video/forms.py:56
 msgid "Url cannot be empty"
-msgstr ""
+msgstr "A url não pode ser vazia"
 
 #: video/forms.py:72
 msgid "This video is provided more than once"
-msgstr ""
+msgstr "Este vídeo foi fornecido mais de uma vez"
 
 #: video/models.py:17 video/models.py:51
 msgid "Url"
-msgstr ""
+msgstr "Url"
 
 #: video/models.py:19
 msgid "This album will be displayed on the Videos section"
-msgstr ""
+msgstr "Este ábum será exibido na seção de Vídeos"
 
 #: video/models.py:26
 #, python-format
 msgid "Video Album %s"
-msgstr ""
+msgstr "Álbum de Vídeos %s"
 
 #: video/models.py:49
 msgid "Thumbnail"
-msgstr ""
+msgstr "Thumbnail"
 
 #: video/models.py:50
 msgid "Small thumbnail"
-msgstr ""
+msgstr "Thumbnail pequeno"
 
 #: video/models.py:54
 #, python-format
 msgid "Video %s"
-msgstr ""
+msgstr "Vídeo %s"
 
 #: video/views.py:41
 #, python-format
 msgid "The video album \"%s\" was successfully deleted."
-msgstr ""
+msgstr "O ábum de vídeo \"%s\" foi removido com sucesso."
 
 #: video/views.py:45
 #, python-format
 msgid "Error while trying to delete the \"%(name)s\" video album. %(err)s"
-msgstr ""
+msgstr "Erro occorrido ao tentar remover o álbum de vídeos \"%(name)s\". %(err)s"
