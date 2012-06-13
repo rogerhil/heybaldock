@@ -88,105 +88,106 @@
                 </div>
             </div>
             <div class="clear"></div>
-
-            <div class="grid_3">
-                {% if user.is_authenticated %}
-                <div class="profile_area">
-                    <a href="{% url profile %}">{{ user }}</a>
-                    <a href="{% url logout %}">Logout</a>
-                    <div class="clear"></div>
-                </div>
-                {% endif %}
-                <div id="logo">
-                    <div>Hey Baldock <span class="beatles_cover">Beatles Cover</span></div>
-                    <div class="shadow"><span class="shadow_big">Hey Baldock</span> <span class="beatles_cover shadow_small">Beatles Cover</span></div>
-                </div>
-            </div>
-            <div class="clear"></div>
-
-            {% if user.is_authenticated %}
-            <div class="grid_3 edit_mode">
-                <div>
-                    {% trans "EDIT MODE" %}
-                </div>
-            </div>
-            <div class="clear"></div>
-            {% endif %}
-
-            <div class="grid_2">
-                <div id="menu">
-                    {% for s in sections %}
-                        <a href="{% ifequal s.slug 'home' %}/{% else %}{% url section_view s.slug %}{% endifequal %}">
-                            <div class="menu_item {% ifequal s.id section.id %}selected{% endifequal %}">
-                                {{ s.menu_title }}
-                            </div>
-                        </a>
-                    {% endfor %}
-                    <div class="clear"></div>
-                </div>
-            </div>
-            <div class="grid_1">
-                <div id="search">
-                    <form action="{% url search %}" method="get">
-                        <input type="text" name="query" value="{{ query }}" placeholder="search..." />
-                    </form>
-                </div>
-            </div>
-            <div class="clear"></div>
-
-            <div class="grid_2">
-                <div id="content">
-                    {% if messages %}
-                        {% for message in messages %}
-                        <div class="message {{ message.tags }}">
-                            {{ message }}
-                        </div>
-                        {% endfor %}
+            {% block container %}
+                <div class="grid_3">
+                    {% if user.is_authenticated %}
+                    <div class="profile_area">
+                        <a href="{% url profile %}">{{ user }}</a>
+                        <a href="{% url logout %}">Logout</a>
+                        <div class="clear"></div>
+                    </div>
                     {% endif %}
-                    <div class="clear"></div>
-                    {% block content %}{% endblock %}
+                    <div id="logo">
+                        <div>Hey Baldock <span class="beatles_cover">Beatles Cover</span></div>
+                        <div class="shadow"><span class="shadow_big">Hey Baldock</span> <span class="beatles_cover shadow_small">Beatles Cover</span></div>
+                    </div>
                 </div>
-            </div>
+                <div class="clear"></div>
 
-            <div class="grid_1">
-                {% block right_column %}
-                {% include "draft/portlet.html" %}
-                {% include "event/portlet.html" %}
-                {% include "event/location_portlet.html" %}
-                {% comment %}
-                <div class="portlet">
-                    <h2>Enquete</h2>
+                {% if user.is_authenticated %}
+                <div class="grid_3 edit_mode">
+                    <div>
+                        {% trans "EDIT MODE" %}
+                    </div>
                 </div>
-                {% endcomment %}
-                <div class="portlet" id="empty_portlet">
-                    &nbsp;
-                </div>
-                {% endblock %}
-            </div>
-            <div class="clear"></div>
+                <div class="clear"></div>
+                {% endif %}
 
-            <div id="footer">
+                <div class="grid_2">
+                    <div id="menu">
+                        {% for s in sections %}
+                            <a href="{% ifequal s.slug 'home' %}/{% else %}{% url section_view s.slug %}{% endifequal %}">
+                                <div class="menu_item {% ifequal s.id section.id %}selected{% endifequal %}">
+                                    {{ s.menu_title }}
+                                </div>
+                            </a>
+                        {% endfor %}
+                        <div class="clear"></div>
+                    </div>
+                </div>
                 <div class="grid_1">
-                    <a href="http://www.djangoproject.com" target="_black">
-                        <img src="/media/img/madewithdjango.gif" />
-                    </a>
+                    <div id="search">
+                        <form action="{% url search %}" method="get">
+                            <input type="text" name="query" value="{{ query }}" placeholder="search..." />
+                        </form>
+                    </div>
                 </div>
-                <div class="grid_1 textcenter">
-                    <p>Hey Baldock - The Beatles Cover</p>
+                <div class="clear"></div>
+
+                <div class="grid_2">
+                    <div id="content">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="message {{ message.tags }}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="clear"></div>
+                        {% block content %}{% endblock %}
+                    </div>
                 </div>
-                <div class="grid_1 textright">
-                    <p>
-                        <a href="mailto:heybaldock@gmail.com">heybaldock@gmail.com</a> - (31) 9154.6245
-                    </p>
+
+                <div class="grid_1">
+                    {% block right_column %}
+                    {% include "draft/portlet.html" %}
+                    {% include "event/portlet.html" %}
+                    {% include "event/location_portlet.html" %}
+                    {% comment %}
+                    <div class="portlet">
+                        <h2>Enquete</h2>
+                    </div>
+                    {% endcomment %}
+                    <div class="portlet" id="empty_portlet">
+                        &nbsp;
+                    </div>
+                    {% endblock %}
                 </div>
-            </div>
-            <div class="clear"></div>
-            <div class="left" style="margin-left: 360px;">
-                <img src="/media/img/yellow_submarine.png" />
-            </div>
-            <div class="right">
-                <img src="/media/img/brass_band.png" />
-            </div>
+                <div class="clear"></div>
+
+                <div id="footer">
+                    <div class="grid_1">
+                        <a href="http://www.djangoproject.com" target="_black">
+                            <img src="/media/img/madewithdjango.gif" />
+                        </a>
+                    </div>
+                    <div class="grid_1 textcenter">
+                        <p>Hey Baldock - The Beatles Cover</p>
+                    </div>
+                    <div class="grid_1 textright">
+                        <p>
+                            <a href="mailto:heybaldock@gmail.com">heybaldock@gmail.com</a> - (31) 9154.6245
+                        </p>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="left" style="margin-left: 360px;">
+                    <img src="/media/img/yellow_submarine.png" />
+                </div>
+                <div class="right">
+                    <img src="/media/img/brass_band.png" />
+                </div>
+            {% endblock %}
         </div>
     </body>
 </html>

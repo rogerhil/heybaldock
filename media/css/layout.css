@@ -404,6 +404,30 @@ h1.draft_head label {
     color: #e9892c !important;
 }
 
+#logo_big {
+    width: 100%;
+}
+
+#logo_big,
+#logo_big div {
+    font-size: 140px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+#logo_big .beatles_cover {
+    font-size: 80px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+#logo_big #logo {
+    width: 900px;
+    text-align: center;
+    margin: 10px auto 0 auto;
+}
+
+
 #profile label {
     width: 200px;
 }

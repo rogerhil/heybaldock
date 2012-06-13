@@ -198,3 +198,11 @@ FACEBOOK_APP_ID = 407367935973504
 FACEBOOK_SECRET_KEY = "29613824f0098dbf6ffe85324052a36d"
 
 SITE_DOMAIN = "localhost:8000"
+
+COMMING_SOON = False
+UNDER_MAINTENANCE = False
+
+try:
+    from local_settings import *
+except:
+    pass
