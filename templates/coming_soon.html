@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block open_grap_tags %}
+    <meta property="og:title" content="{% trans 'Hey Baldock Page Comming Soon' %}"/>
+    <meta property="og:description" content="{% trans 'Hey Baldock Page Comming Soon' %}"/>
+    <meta property="og:image" content="http://{{ site_domain }}/media/img/profile.png"/>
+    <meta property="og:url" content="http://{{ site_domain }}"/>
+{% endblock %}
+
+{% block container %}
+    <div class="grid_3" style="font-color: white;">
+        {% include "facebook_like.html" %}
+    </div>
+    <div class="grid_3" id="logo_big">
+        <div id="logo">
+            <div>Hey Baldock</div>
+            <span class="beatles_cover">Beatles Cover</span><br/>
+            <span class="beatles_cover">{% trans "Page Comming Soon" %}</span>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-13 00:40-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#: media/js/event.js:16
+msgid ""
+"Are you sure you want to delete this Event? WARNING: ALL RELATED PHOTOS AND "
+"VIDEOS WILL BE LOST!!! the only way to rescue back will be through drafts."
+msgstr ""
+"Você tem certeza que deseja remover este Evento? ALERTA: TODAS AS FOTOS "
+"EVÍDEOS RELACIONADOS SERÃO PERDIDOS!!! A única forma de recuperá-los será "
+"através dos rascunhos."
+
+#: media/js/location.js:3
+msgid ""
+"Are you sure you want to delete this Location? WARNING: ALL RELATED EVENTS "
+"WILL BE LOST!!! The only way to rescue back will be through drafts."
+msgstr ""
+"Você tem certeza que deseja remover este Local? ALERTA: TODAS OS EVENTOS "
+"RELACIONADOS SERÃO PERDIDOS!!! A única forma de recuperá-los será através "
+"dos rascunhos."
+
+#: media/js/locationform.js:41
+msgid "You must check over the address on map before submit the form."
+msgstr "Você deve conferir o endereço no mapa antes de submeter o formulário"
+
+#: media/js/maps.js:31
+msgid "This field is required"
+msgstr "Este campo é obrigatório"
+
+#: media/js/maps.js:103
+msgid "Searching the address by zip code..."
+msgstr "Buscando endereço através do CEP"
+
+#: media/js/maps.js:134
+msgid " is an invalid zipcode, please check over again."
+msgstr " é um CEP inválido, por favor confira novamente"
+
+#: media/js/photoalbumform.js:3
+msgid "Photos"
+msgstr "Fotos"
+
+#: media/js/photoalbumform.js:41
+msgid "Saved"
+msgstr "Salvo"
+
+#: media/js/photoalbumform.js:59
+msgid "Type the image description here..."
+msgstr "Digite a descrição da imagem..."
+
+#: media/js/photoalbumform.js:84
+msgid "This file is not an image."
+msgstr "Este arquivo não é uma imagem."
+
+#: media/js/photoalbumform.js:97
+msgid "Click to see bigger"
+msgstr "Clique para vizualizar maior"
+
+#: media/js/photos.js:15
+msgid ""
+"Are you sure you want to delete this PhotoAlbum? WARNING: ALL RELATED PHOTOS "
+"WILL BE LOST!!! the only way to rescue back will be through drafts."
+msgstr ""
+"Você tem certeza que deseja remover este Álbum de Fotos? ALERTA: TODOS AS "
+"FOTOS RELACIONADAS SERÃO PERDIDAS!!! A única forma de recuperá-las será "
+"através dos rascunhos."
+
+#: media/js/video.js:3
+msgid ""
+"Are you sure you want to delete this Video Album? WARNING: ALL RELATED "
+"VIDEOS WILL BE LOST!!! the only way to rescue back will be through drafts."
+msgstr ""
+"Você tem certeza que deseja remover este Álbum de Vídeos? ALERTA: TODOS OS "
+"VÍDEOS RELACIONADOS SERÃO PERDIDOS!!! A única forma de recuperá-los será "
+"através dos rascunhos."
+
+#: media/js/videoalbumform.js:4
+msgid "Add more url"
+msgstr "Adicionar mais url"
