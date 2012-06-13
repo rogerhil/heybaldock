@@ -17,8 +17,49 @@
         {% block stylesheet %}
         {% endblock %}
         <script type="text/javascript" src="/media/js/last.js"></script>
+
+        {% block open_grap_tags %}
+        {% endblock %}
+        <meta property="og:type" content="band"/>
+        <meta property="og:site_name" content="Hey Baldock - Beatles Cover Band"/>
+        <meta property="fb:admins" content="1520271889"/>
+
     </head>
     <body>
+        <!-- Facebook API -->
+        <div id="fb-root"></div>
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId: '{{ facebook_app_id }}',
+                    channelUrl: 'http://{{ site_domain }}{% url facebook_channel %}',
+                    status: true, // check login status
+                    cookie: true, // enable cookies to allow the server to access the session
+                    xfbml: true  // parse XFBML
+                });
+            };
+
+            // Load the SDK Asynchronously
+            (function(d){
+                var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement('script'); js.id = id; js.async = true;
+                js.src = "//connect.facebook.net/en_US/all.js";
+                ref.parentNode.insertBefore(js, ref);
+                window.setTimeout(function () {
+
+                    fullHeight();
+                }, 2000);
+                window.setTimeout(function () {
+                    fullHeight();
+                }, 4000);
+                window.setTimeout(function () {
+                    fullHeight();
+                }, 6000);
+            }(document));
+        </script>
+        <!-- End of Facebook API -->
+
         <div id="yellow_submarine_bar"></div>
         <div id="background-top"></div>
 

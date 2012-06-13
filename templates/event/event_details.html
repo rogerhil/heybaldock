@@ -11,6 +11,13 @@
     <script type="text/javascript" src="/media/js/maps.js"></script>
 {% endblock %}
 
+{% block open_grap_tags %}
+    <meta property="og:title" content="{% trans 'Hey Baldock Event' %} {{ event.name }}"/>
+    <meta property="og:description" content="{{ event.description }}"/>
+    <meta property="og:image" content="http://{{ site_domain }}/{{ event.first_flyer.image_big_url }}"/>
+    <meta property="og:url" content="http://{{ site_domain }}{{ event.url }}"/>
+{% endblock %}
+
 {% block content %}
 
 {% object_manage_buttons user 'event' event.id %}

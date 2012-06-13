@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
+from django.views.generic import TemplateView
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,6 +16,7 @@ urlpatterns = patterns('',
     url(r'busca/', include('heybaldock.search.urls')),
     url(r'', include('heybaldock.section.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^fbchannel.html', TemplateView.as_view(template_name="channel.html"), name="facebook_channel")
 )
 
 if settings.DEBUG:

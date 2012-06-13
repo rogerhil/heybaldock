@@ -18,6 +18,7 @@ UI_TAGS = [
     ('video_albums', _('Video Albums list')),
     ('photo_albums', _('Photo Albums list')),
     ('contact_form', _('Contact Form')),
+    ('facebook_like_button', _('Facebook Like Button')),
 ]
 
 @register.simple_tag()
@@ -54,3 +55,7 @@ def contact_form(context):
         form = ContactForm()
     c = dict(form=form)
     return c
+
+@register.simple_tag()
+def facebook_like_button():
+    return render_to_string("facebook_like.html", Context({}))

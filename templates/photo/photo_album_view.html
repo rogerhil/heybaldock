@@ -7,6 +7,14 @@
     <script type="text/javascript" src="/media/js/photos.js"></script>
 {% endblock %}
 
+{% block open_grap_tags %}
+    <meta property="og:title" content="{% trans 'Hey Baldock Photo Album' %} {{ album.name }}"/>
+    <meta property="og:description" content="{{ album.description }}"/>
+    <meta property="og:image" content="http://{{ site_domain }}/{{ album.cover_url }}"/>
+    <meta property="og:url" content="http://{{ site_domain }}{{ album.url }}"/>
+{% endblock %}
+
+
 {% block content %}
 <h1>{% trans "Photo album" %}</h1>
 {% object_manage_buttons user 'photoalbum' album.id %}
@@ -21,6 +29,7 @@
         </form>
     </div>
 {% endif %}
+{% include "facebook_like.html" %}
 {% include "photo/album_details.html" %}
 <div class="clear"></div>
 

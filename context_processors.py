@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from django.conf import settings
+
 from section.models import Section
 from event.models import Event, Location
 
@@ -15,5 +17,7 @@ def main(request):
     c = dict(sections=SECTIONS,
              events=events,
              locations=locations,
-             request_get=request.GET)
+             request_get=request.GET,
+             site_domain=settings.SITE_DOMAIN,
+             facebook_app_id=settings.FACEBOOK_APP_ID)
     return c

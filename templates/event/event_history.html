@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 {% load i18n draftutils %}
 
+{% block open_grap_tags %}
+    <meta property="og:title" content="{% trans 'Hey Baldock Events History' %}"/>
+    <meta property="og:description" content="{% trans 'List of events performed by Hey Baldock Beatles Cover Band' %}"/>
+    <meta property="og:image" content="http://{{ site_domain }}/media/img/profile_fb.png"/>
+    <meta property="og:url" content="http://{{ site_domain }}{% url event_history %}"/>
+{% endblock %}
+
 {% block content %}
 <h1>{% trans 'Events history' %}</h1>
+{% include "facebook_like.html" %}
+<br />
 {% with events_history as events %}
     {% include "event/event_list.html" %}
 {% endwith %}
 <br />
 <a class="button" href="{% url section_view 'eventos' %}">{% trans 'Upcoming events' %}</a>
 <div class="clear"></div>
-
 {% endblock %}

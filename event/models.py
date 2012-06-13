@@ -120,3 +120,11 @@ class Event(models.Model):
     @property
     def flyers(self):
         return self.photo_albums.filter(flyer=True)
+
+    @property
+    def first_flyer(self):
+        flyers = [i for i in self.flyers]
+        if flyers:
+            photos = [i for i in flyers[0].photos.all()]
+            if photos:
+                return photos[0]
