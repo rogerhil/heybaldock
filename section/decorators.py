@@ -26,7 +26,7 @@ TRANSLATIONS = {
     'video album': _('Video Album'),
 }
 
-trans = lambda x: TRANSLATIONS.get(x, _("%s section" % x))
+trans = lambda x: TRANSLATIONS.get(x, x)
 
 CT_MAP = {}
 
