@@ -1,7 +1,8 @@
 $(window).load(function () {
 	var $input = $("input[type=submit]", "form[name=draft_form]");
 	var $videosBlock = $('<div class="videos"><ul class="urls"></ul></div><div class="clear"></div>');
-	var $addButton = $('<div class="manage_buttons"><a>Add more url</a></div>');
+	var msg = gettext('Add more url');
+	var $addButton = $('<div class="manage_buttons"><a>' + msg + '</a></div>');
 	$addButton.click(function () {
 		addVideo();
 	});

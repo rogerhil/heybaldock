@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block open_grap_tags %}
-    <meta property="og:title" content="{% trans 'Hey Baldock Event' %} {{ event.name }}"/>
+    <meta property="og:title" content="{% blocktrans with name=event.name %}Hey Baldock Event {{ name }}{% endblocktrans %}"/>
     <meta property="og:description" content="{{ event.description }}"/>
     <meta property="og:image" content="http://{{ site_domain }}/{{ event.first_flyer.image_big_url }}"/>
     <meta property="og:url" content="http://{{ site_domain }}{{ event.url }}"/>

@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block open_grap_tags %}
-    <meta property="og:title" content="{% trans 'Hey Baldock Location' %} {{ location.name }}"/>
+    <meta property="og:title" content="{% blocktrans with name=location.name %}Hey Baldock Location {{ name }}{% endblocktrans %}"/>
     <meta property="og:description" content="{{ location.description }}"/>
     <meta property="og:image" content="http://{{ site_domain }}/"/>
     <meta property="og:url" content="http://{{ site_domain }}{{ location.url }}"/>

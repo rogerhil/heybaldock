@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block open_grap_tags %}
-    <meta property="og:title" content="{% trans 'Hey Baldock Photo Album' %} {{ album.name }}"/>
+    <meta property="og:title" content="{% blocktrans with name=album.name %}Hey Baldock Photo Album {{ name }}{% endblocktrans %}"/>
     <meta property="og:description" content="{{ album.description }}"/>
     <meta property="og:image" content="http://{{ site_domain }}/{{ album.cover_url }}"/>
     <meta property="og:url" content="http://{{ site_domain }}{{ album.url }}"/>

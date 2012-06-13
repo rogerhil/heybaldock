@@ -1,6 +1,7 @@
 $(window).load(function () {
 	var $ul = $("form[name=draft_form] ul.draft_fields");
-	var html = '<label>Photos:</label><input id="fileupload" type="file" name="image" data-url="/fotos/upload/ajax/" multiple>';
+	var photosTitle = gettext("Photos");
+	var html = '<label>' + photosTitle + ':</label><input id="fileupload" type="file" name="image" data-url="/fotos/upload/ajax/" multiple>';
 	var $photosBlock = $('<li>' + html + '<div class="clear"></div><div class="photos"><ul class="photosul"></ul></div><div class="clear"></div></li>');
 	$ul.append($photosBlock);
 	$('#fileupload').fileupload({
@@ -37,7 +38,7 @@ function loadPhotos(photos) {
 		photo = photos[k];
 		var $uploadBlock = photoBlock({name: photo.name.value});
 		fillPhotoBlock($uploadBlock, photo.url, photo.url_view, photo.description.value);
-		doUpdateProgressBar($uploadBlock, 100, 'Saved');
+		doUpdateProgressBar($uploadBlock, 100, gettext('Saved'));
 		if (photo.description.error) {
 			$description = $uploadBlock.find('div.description input[name=image_description]');
 			ajaxErrorMessage(photo.description.error).insertBefore($description);
@@ -55,7 +56,8 @@ function photoBlock(data) {
 	var $label = $('<label>' + name + '</label>');
 	var $pbar = $('<div class="progress_bar">0%</div>');
 	var $fsize = $('<div class="file_size">0kb</div>');
-	var $description = $('<div class="description"><input type="text" name="image_description" placeholder="Type the image description here..." /></div>');
+	var placeholderText = gettext("Type the image description here...");
+	var $description = $('<div class="description"><input type="text" name="image_description" placeholder="' + placeholderText + '" /></div>');
 	var $name = $('<input type="hidden" name="image_name" value="' + name + '" />');
 	var $preview = $('<div class="preview"></div>');
 	var $info = $('<div class="info"></div>');
@@ -79,7 +81,8 @@ function photoBlock(data) {
 		$pbar.remove();
 		$name.remove();
 		$description.remove();
-		$label.html($label.html() + '<br/><span class="red">This file is not an image.</span>');
+		var msg = gettext("This file is not an image.");
+		$label.html($label.html() + '<br/><span class="red">' + msg + '</span>');
 		$li.fadeOut(6000);
 		return false;
 	}
@@ -91,7 +94,8 @@ function fillPhotoBlock(upload_block, url, urlview, description) {
 	var $preview = upload_block.find('.preview');
 	var $remove = upload_block.find('.remove');
 	var $description = upload_block.find('div.description input[name=image_description]');
-	var $img = $('<img src="' + url + '" title="Click to see bigger" />');
+	var title = gettext("Click to see bigger");
+	var $img = $('<img src="' + url + '" title="' + title + '" />');
 	var mt;
 	$description.val(description);
 	$remove.removeClass('remove_disabled');

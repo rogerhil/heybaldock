@@ -3,7 +3,7 @@
 {% if drafts_related and user.is_authenticated %}
 <div class="portlet">
     <h2>
-        {% trans 'Drafts related to' %} {{ model_title }}
+        {% blocktrans with title=model_title %}Drafts related to {{ title }}{% endblocktrans %}
     </h2>
     <ul>
     {% for draft in drafts_related %}

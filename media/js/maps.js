@@ -28,7 +28,7 @@ function testFormAddress() {
 	for (var k = 0; k < address.length; k++) {
 		clearAjaxErrorMessage(address[k]);
 		if (!address[k].val()) {
-			$ul = ajaxErrorMessage("This field is required");
+			$ul = ajaxErrorMessage(gettext("This field is required"));
 			$ul.insertBefore(address[k]);
 			success = false;
 		} else {
@@ -100,9 +100,10 @@ function getZipcode() {
 	var $state = $('select[name=state]');
 	var addressList = [$street, $district, $city, $state];
 	var pos = {left: 20, top: 5};
+	var msg = gettext("Searching the address by zip code...");
 	for (var k = 0; k < addressList.length; k++) {
 		addressList[k].attr("disabled", "disabled");
-		addressList[k].val("         Searching the address by zip code...");
+		addressList[k].val("         " + msg);
 		showLoadingIconNearTo(addressList[k], pos);
 	}
 
@@ -130,7 +131,7 @@ function getZipcode() {
 					$state.val(data.state);
 				} else {
 					var color = $zip.css("color");
-					$zip.val(zip + " is an invalid zipcode, please check over again.");
+					$zip.val(zip + gettext(" is an invalid zipcode, please check over again."));
 					$zip.css("color", "red");
 					$zip.attr("disabled", "disabled");
 					window.setTimeout(function () {

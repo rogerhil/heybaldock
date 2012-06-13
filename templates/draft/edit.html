@@ -29,12 +29,12 @@
 <div id="draft">
     <h1 class="draft_head">
     {% if not object %}
-        {% trans "Draft - Add" %} {{ model }}
+        {% blocktrans with model=model %}Draft - Add {{ model }}{% endblocktrans %}
      {% else %}
         {% if form.draft.id %}
-            {% trans "Draft - Edit" %} {{ from.draft.content_type }}
+            {% blocktrans with ct=form.draft.content_type %}Draft - Edit {{ ct }}{% endblocktrans %}
         {% else %}
-            {% trans "Draft - Edit" %} {{ model }}
+            {% blocktrans with model=model %}Draft - Edit {{ model }}{% endblocktrans %}
         {% endif %}
     {% endif %}
     </h1>

@@ -38,7 +38,8 @@ $(window).load(function () {
 	$city.change(cleanMap);
 	$state.change(cleanMap);
 	if ($('input[name=latitude]').parent().find('ul.errorlist')) {
-		var $errmsg = $('<ul class="errorlist"><li>You must check over the address on map before submit the form.</li></ul>');
+		var msg = gettext("You must check over the address on map before submit the form.");
+		var $errmsg = $('<ul class="errorlist"><li>' + msg + '</li></ul>');
 		$errmsg.css("margin", "10px 0px -5px 0px");
 		$errmsg.insertBefore($("#view_address_map"));
 
