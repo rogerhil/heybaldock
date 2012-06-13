@@ -4,9 +4,15 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 admin.autodiscover()
 
+js_info_dict = {
+    'packages': ('your.app.package',),
+}
+
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^heybaldock/', include('heybaldock.foo.urls')),
+
+
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+
     url(r'auth/', include('heybaldock.auth.urls')),
     url(r'eventos/', include('heybaldock.event.urls')),
     url(r'videos/', include('heybaldock.video.urls')),
