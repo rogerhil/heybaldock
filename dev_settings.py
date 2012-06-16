@@ -11,5 +11,5 @@ DATABASES = {
     }
 }
 
-COMMING_SOON = False
+COMMING_SOON = True
 UNDER_MAINTENANCE = False

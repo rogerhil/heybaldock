@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-13 00:40-0300\n"
+"POT-Creation-Date: 2012-06-16 15:26-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,164 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:45
+#, c-format
+msgid "Available %s"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:46
+#, c-format
+msgid ""
+"This is the list of available %s. You may choose some by selecting them in "
+"the box below and then clicking the \"Choose\" arrow between the two boxes."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:53
+#, c-format
+msgid "Type into this box to filter down the list of available %s."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:57
+msgid "Filter"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:61
+msgid "Choose all"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:61
+#, c-format
+msgid "Click to choose all %s at once."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:67
+#, fuzzy
+msgid "Choose"
+msgstr "Fotos"
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:69
+msgid "Remove"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:75
+#, c-format
+msgid "Chosen %s"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:76
+#, c-format
+msgid ""
+"This is the list of chosen %s. You may remove some by selecting them in the "
+"box below and then clicking the \"Remove\" arrow between the two boxes."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:80
+msgid "Remove all"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:80
+#, c-format
+msgid "Click to remove all chosen %s at once."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.js:18
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.min.js:1
+msgid "%(sel)s of %(cnt)s selected"
+msgid_plural "%(sel)s of %(cnt)s selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.js:109
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.min.js:5
+msgid ""
+"You have unsaved changes on individual editable fields. If you run an "
+"action, your unsaved changes will be lost."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.js:121
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.min.js:6
+msgid ""
+"You have selected an action, but you haven't saved your changes to "
+"individual fields yet. Please click OK to save. You'll need to re-run the "
+"action."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.js:123
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.min.js:6
+msgid ""
+"You have selected an action, and you haven't made any changes on individual "
+"fields. You're probably looking for the Go button rather than the Save "
+"button."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/calendar.js:26
+msgid ""
+"January February March April May June July August September October November "
+"December"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/calendar.js:27
+msgid "S M T W T F S"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.js:8
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.js:19
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.min.js:1
+msgid "Show"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.js:15
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.min.js:1
+msgid "Hide"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:49
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:85
+msgid "Now"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:53
+msgid "Clock"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:81
+msgid "Choose a time"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:86
+msgid "Midnight"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:87
+msgid "6 a.m."
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:88
+msgid "Noon"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:92
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:204
+msgid "Cancel"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:144
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:197
+msgid "Today"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:148
+msgid "Calendar"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:195
+msgid "Yesterday"
+msgstr ""
+
+#: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:199
+msgid "Tomorrow"
+msgstr ""
 
 #: media/js/event.js:16
 msgid ""
