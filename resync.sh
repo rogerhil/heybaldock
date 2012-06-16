@@ -5,6 +5,8 @@ rm -rf media/upload/album
 mkdir media/upload/draft
 mkdir media/upload/draft/new
 mkdir media/upload/album
+dropdb -U postgres heybaldock
+createdb -U postgres heybaldock
 python manage.py syncdb
 DJANGO_SETTINGS_MODULE=settings
 PYTHONPATH=.

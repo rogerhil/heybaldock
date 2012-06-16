@@ -91,11 +91,12 @@ def populate_sections():
             'menu_title': section,
             'title': '%s title' % section,
             'description': '%s description' % section,
-            'content': content,
+            'content': content or ' ',
             'order': order
         }
         form = SectionForm(user=user, data=data)
         form.is_valid()
+        print form.errors
         form.save()
         form.instance.slug = section.replace(' ', '').lower()
         form.publish()
