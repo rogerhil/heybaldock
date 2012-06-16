@@ -1,3 +1,5 @@
+DEBUG = False
+
 COMMING_SOON = True
 UNDER_MAINTENANCE = False
 
