@@ -29,6 +29,7 @@ class Section(models.Model):
     content = models.TextField(_("Content"))
     updated = models.DateField(auto_now=True)
     user_updated = models.ForeignKey(User)
+    order = models.IntegerField()
 
     template_view = "section/section_content.html"
     template_varname = 'section'

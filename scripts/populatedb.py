@@ -10,11 +10,11 @@ from event.forms import EventForm, LocationForm
 user = User.objects.get(username='rogerhil')
 
 SECTIONS = [
-    'Home',
-    ('Eventos', '{% upcoming_events %}<br/>{% event_history_button %}'),
-    ('Fotos', '{% photo_albums %}'),
-    ('Videos', '{% video_albums %}'),
-    ('Contato', '{% contact_form %}'),
+    ('Home', '', 1),
+    ('Eventos', '{% upcoming_events %}<br/>{% event_history_button %}', 2),
+    ('Fotos', '{% photo_albums %}', 3),
+    ('Videos', '{% video_albums %}', 4),
+    ('Contato', '{% contact_form %}', 5),
 ]
 
 LOCATIONS = [
@@ -86,15 +86,13 @@ EVENTS = [
 
 def populate_sections():
     for section in SECTIONS:
-        if isinstance(section, tuple):
-            section, content = section
-        else:
-            section, content = section, 'Some content of %s' % section
+        section, content, order = section
         data = {
             'menu_title': section,
             'title': '%s title' % section,
             'description': '%s description' % section,
-            'content': content
+            'content': content,
+            'order': order
         }
         form = SectionForm(user=user, data=data)
         form.is_valid()
