@@ -10,19 +10,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        #'NAME': 'data.db',                      # Or path to database file if using sqlite3.
-        'USER': 'postgres',                      # Not used with sqlite3.
-        'NAME': 'heybaldock',
-        'PASSWORD': 'postgres',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
 SECTION_CT_ID = 9
 
 # Local time zone for this installation. Choices can be found here:
@@ -205,10 +192,6 @@ SITE_DOMAIN = "localhost:8000"
 COMMING_SOON = False
 UNDER_MAINTENANCE = False
 
-try:
-    from local_settings import *
-except:
-    pass
-
-import dj_database_url
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+import os
+ENVIRONMENT = os.environ.get('ENVIRONMENT', 'dev')  # dev, production, qa, etc
+exec('from settings_%s import *' % ENVIRONMENT)
