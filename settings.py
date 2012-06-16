@@ -118,7 +118,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'heybaldock.urls'
+#ROOT_URLCONF = 'heybaldock.urls'
 
 TEMPLATE_DIRS = (
     'templates',
