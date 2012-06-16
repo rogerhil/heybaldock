@@ -213,8 +213,8 @@ a.button:hover,
 
 input[type=submit].login_submit {
     width: 160px;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin: 30px auto 10px auto;
+    float: none;
 }
 
 .profile_area {
@@ -389,8 +389,7 @@ h1.draft_head label {
     text-shadow-color: #e9892c;
 }
 
-#logo .alternate,
-#logo .beatles_cover {
+#logo .alternate {
 
     text-shadow: 1px 1px 0 #e9892c,
     -1px 1px 0 #e9892c,
@@ -499,12 +498,31 @@ h1.draft_head label {
     background-image: none;
 }
 
-#content {
+#content,
+#login {
     background-color: #eae6cc;
     background-image: url(/media/img/content_bg.png);
     padding:  10px;
     border-radius: 7px;
     margin-bottom: 10px;
+}
+
+#login {
+    margin: 50px auto 10px auto;
+    width: 300px;
+
+}
+
+#login input {
+    width: 180px;
+}
+
+#login li {
+    margin-left: 0px;
+}
+
+#login label {
+    width: 50px;
 }
 
 .portlet {
