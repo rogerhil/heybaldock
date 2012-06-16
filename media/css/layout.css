@@ -333,7 +333,7 @@ h1.draft_head label {
 
 #yellow_submarine_bar {
     position: absolute;
-    top: 160px;
+    top: 165px;
     left: 0px;
     z-index: -1;
     background-image: url(/media/img/yellow_submarine_bar.png);
@@ -386,6 +386,37 @@ h1.draft_head label {
 #logo .beatles_cover {
     font-size: 30px;
     margin-left: 10px;
+    text-shadow-color: #e9892c;
+}
+
+#logo .alternate,
+#logo .beatles_cover {
+
+    text-shadow: 1px 1px 0 #e9892c,
+    -1px 1px 0 #e9892c,
+    1px -1px 0 #e9892c,
+    -1px -1px 0 #e9892c,
+    0px 1px 0 #e9892c,
+    0px -1px 0 #e9892c,
+    -1px 0px 0 #e9892c,
+    1px 0px 0 #e9892c,
+    1px 1px 0 #e9892c,
+    -1px 1px 0 #e9892c,
+    1px -1px 0 #e9892c,
+    -1px -1px 0 #e9892c,
+    0px 1px 0 #e9892c,
+    0px -1px 0 #e9892c,
+    -2px 0px 0 #e9892c,
+    1px 0px 0 #e9892c,
+    1px 1px 0 #e9892c,
+    -1px 1px 0 #e9892c,
+    1px -1px 0 #e9892c,
+    -1px -1px 0 #e9892c,
+    1px 1px 0 #e9892c,
+    -1px 1px 0 #e9892c,
+    1px -1px 0 #e9892c,
+    -1px -1px 0 #e9892c;
+    letter-spacing: 5px;
 }
 
 #logo .shadow {
