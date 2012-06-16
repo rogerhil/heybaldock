@@ -23,14 +23,14 @@ elif settings.UNDER_MAINTENANCE:
     )
 else:
     urlpatterns += patterns('',
-        url(r'auth/', include('heybaldock.auth.urls')),
-        url(r'eventos/', include('heybaldock.event.urls')),
-        url(r'videos/', include('heybaldock.video.urls')),
-        url(r'fotos/', include('heybaldock.photo.urls')),
-        url(r'contato/', include('heybaldock.contact.urls')),
-        url(r'draft/', include('heybaldock.draft.urls')),
-        url(r'busca/', include('heybaldock.search.urls')),
-        url(r'', include('heybaldock.section.urls')),
+        url(r'auth/', include('auth.urls')),
+        url(r'eventos/', include('event.urls')),
+        url(r'videos/', include('video.urls')),
+        url(r'fotos/', include('photo.urls')),
+        url(r'contato/', include('contact.urls')),
+        url(r'draft/', include('draft.urls')),
+        url(r'busca/', include('search.urls')),
+        url(r'', include('section.urls')),
         url(r'^admin/', include(admin.site.urls)),
     )
 
