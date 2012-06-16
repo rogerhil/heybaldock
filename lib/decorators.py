@@ -1,7 +1,7 @@
-import simplejson
 from functools import wraps
 
 from django.http import HttpResponse
+from django.utils import simplejson
 
 def ajax(view_func, *args, **kwargs):
     @wraps(view_func)

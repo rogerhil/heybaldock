@@ -1,7 +1,6 @@
-import simplejson
-
 from django.contrib.contenttypes.models import ContentType
 from django import forms
+from django.utils import simplejson
 
 from models import ContentDraft
 
