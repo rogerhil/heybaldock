@@ -1,4 +1,4 @@
-DEBUG = False
+DEBUG = True
 
 COMMING_SOON = True
 UNDER_MAINTENANCE = False
