@@ -1,3 +1,5 @@
+from south.modelsinspector import add_introspection_rules
+
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
@@ -10,6 +12,8 @@ from django.utils.translation import ugettext as ug
 
 from lib import fields
 from signals import content_draft_post_save
+
+add_introspection_rules([], ["^lib\.fields\.PickleField"])
 
 
 class FakeRelatedManager(object):
