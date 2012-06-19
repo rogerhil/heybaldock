@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.shortcuts import render_to_response
 
-IGPATHS = ['media', 'jsi18n', 'auth']
+IGPATHS = ['media', 'jsi18n', 'auth', 'admin']
 
 class ComingSoonMiddleware(object):
 
