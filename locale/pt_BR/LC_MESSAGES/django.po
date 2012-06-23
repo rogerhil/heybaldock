@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-16 15:26-0300\n"
+"POT-Creation-Date: 2012-06-23 14:54-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -281,9 +282,8 @@ msgid "Hindi"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:76
-#, fuzzy
 msgid "Croatian"
-msgstr "Local"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:77
 msgid "Hungarian"
@@ -306,9 +306,8 @@ msgid "Japanese"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:82
-#, fuzzy
 msgid "Georgian"
-msgstr "Login"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:83
 msgid "Kazakh"
@@ -331,9 +330,8 @@ msgid "Lithuanian"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:88
-#, fuzzy
 msgid "Latvian"
-msgstr "Local"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:89
 msgid "Macedonian"
@@ -368,9 +366,8 @@ msgid "Punjabi"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:97
-#, fuzzy
 msgid "Polish"
-msgstr "Publicar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:98
 msgid "Portuguese"
@@ -417,18 +414,16 @@ msgid "Swahili"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:109
-#, fuzzy
 msgid "Tamil"
-msgstr "Título"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:110
 msgid "Telugu"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:111
-#, fuzzy
 msgid "Thai"
-msgstr "Thumbnail"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:112
 msgid "Turkish"
@@ -538,18 +533,16 @@ msgid "Your e-mail address is not your username. Try '%s' instead."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/helpers.py:20
-#, fuzzy
 msgid "Action:"
-msgstr "Local"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/models.py:19
 msgid "action time"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/models.py:22
-#, fuzzy
 msgid "object id"
-msgstr "Objeto"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/models.py:23
 msgid "object repr"
@@ -564,9 +557,8 @@ msgid "change message"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/models.py:30
-#, fuzzy
 msgid "log entry"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/models.py:31
 msgid "log entries"
@@ -597,9 +589,8 @@ msgid "None"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:671
-#, fuzzy, python-format
 msgid "Changed %s."
-msgstr "Modificar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:671
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:681
@@ -630,9 +621,8 @@ msgid "No fields changed."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:772
-#, fuzzy, python-format
 msgid "The %(name)s \"%(obj)s\" was added successfully."
-msgstr "O evento \"%s\" foi removido com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:776
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:824
@@ -646,9 +636,8 @@ msgid "You may add another %s below."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:822
-#, fuzzy, python-format
 msgid "The %(name)s \"%(obj)s\" was changed successfully."
-msgstr "O evento \"%s\" foi removido com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:830
 #, python-format
@@ -668,9 +657,8 @@ msgid "No action selected."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:998
-#, fuzzy, python-format
 msgid "Add %s"
-msgstr "Adicionar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1023
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1267
@@ -679,9 +667,8 @@ msgid "%(name)s object with primary key %(key)r does not exist."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1089
-#, fuzzy, python-format
 msgid "Change %s"
-msgstr "Modificar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1138
 msgid "Database error"
@@ -707,23 +694,20 @@ msgid "0 of %(cnt)s selected"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1283
-#, fuzzy, python-format
 msgid "The %(name)s \"%(obj)s\" was deleted successfully."
-msgstr "O evento \"%s\" foi removido com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1330
-#, fuzzy, python-format
 msgid "Change history: %s"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/sites.py:315
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/tests.py:61
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/login.html:49
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_complete.html:20
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/views/decorators.py:23
-#, fuzzy
 msgid "Log in"
-msgstr "Login"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/sites.py:380
 msgid "Site administration"
@@ -735,14 +719,12 @@ msgid "%s administration"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/widgets.py:87
-#, fuzzy
 msgid "Date:"
-msgstr "Data"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/widgets.py:87
-#, fuzzy
 msgid "Time:"
-msgstr "Título"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/widgets.py:161
 msgid "Lookup"
@@ -827,9 +809,8 @@ msgid "Select all %(total_count)s %(module_name)s"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/actions.html:13
-#, fuzzy
 msgid "Clear selection"
-msgstr "Seção %s"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/app_index.html:11
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/index.html:19
@@ -854,9 +835,8 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/templates/admin_doc/template_tag_index.html:9
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/templates/admin_doc/view_detail.html:8
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/templates/admin_doc/view_index.html:9
-#, fuzzy
 msgid "Documentation"
-msgstr "Local"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/base.html:35
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/auth/user/change_password.html:19
@@ -895,25 +875,22 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_form.html:35
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/edit_inline/stacked.html:9
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/edit_inline/tabular.html:30
-#, fuzzy
 msgid "View on site"
-msgstr "Vídeo %s"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_form.html:46
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_list.html:69
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/login.html:18
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/auth/user/change_password.html:29
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_form.html:21
-#, fuzzy
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] "Por favor corrija os erros abaixo."
-msgstr[1] "Por favor corrija os erros abaixo."
+msgstr[0] ""
+msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_list.html:60
-#, fuzzy, python-format
 msgid "Add %(name)s"
-msgstr "Rascunho - Adicionar %(model)s"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_list.html:80
 msgid "Filter"
@@ -935,9 +912,8 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/delete_confirmation.html:12
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/submit_line.html:4
 #: hbenv/lib/python2.7/site-packages/django/forms/formsets.py:321
-#, fuzzy
 msgid "Delete"
-msgstr "Data"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/delete_confirmation.html:19
 #, python-format
@@ -967,9 +943,8 @@ msgid "Yes, I'm sure"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/delete_selected_confirmation.html:11
-#, fuzzy
 msgid "Delete multiple objects"
-msgstr "Remover este local"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/delete_selected_confirmation.html:18
 #, python-format
@@ -1018,9 +993,8 @@ msgid "Recent Actions"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/index.html:54
-#, fuzzy
 msgid "My Actions"
-msgstr "Mais locais"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/index.html:58
 msgid "None available"
@@ -1050,18 +1024,16 @@ msgid "Forgotten your password or username?"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/object_history.html:24
-#, fuzzy
 msgid "Date/time"
-msgstr "Data"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/object_history.html:25
 msgid "User"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/object_history.html:26
-#, fuzzy
 msgid "Action"
-msgstr "Local"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/object_history.html:40
 msgid ""
@@ -1070,7 +1042,6 @@ msgid ""
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/pagination.html:10
-#, fuzzy
 msgid "Show all"
 msgstr "Ver todos"
 
@@ -1081,9 +1052,8 @@ msgid "Save"
 msgstr "Salvar"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/search_form.html:7
-#, fuzzy
 msgid "Search"
-msgstr "Resultados da busca"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/search_form.html:9
 #, python-format
@@ -1129,9 +1099,8 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/forms.py:116
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/forms.py:140
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/forms.py:310
-#, fuzzy
 msgid "Password"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/auth/user/change_password.html:46
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_form.html:43
@@ -1177,12 +1146,10 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_done.html:12
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_done.html:16
-#, fuzzy
 msgid "Password change successful"
-msgstr "Suas mudanças foram salvas com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_done.html:18
-#, fuzzy
 msgid "Your password was changed."
 msgstr "Sua senha foi modificada com sucesso."
 
@@ -1194,21 +1161,18 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_form.html:33
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/forms.py:287
-#, fuzzy
 msgid "Old password"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_form.html:38
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/forms.py:253
-#, fuzzy
 msgid "New password"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_form.html:49
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:27
-#, fuzzy
 msgid "Change my password"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_complete.html:8
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:12
@@ -1233,9 +1197,8 @@ msgid "Password reset confirmation"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:18
-#, fuzzy
 msgid "Enter new password"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:20
 msgid ""
@@ -1244,19 +1207,16 @@ msgid ""
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:24
-#, fuzzy
 msgid "New password:"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:26
-#, fuzzy
 msgid "Confirm password:"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:32
-#, fuzzy
 msgid "Password reset unsuccessful"
-msgstr "Sua senha foi modificada com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_confirm.html:34
 msgid ""
@@ -1266,9 +1226,8 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_done.html:12
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_done.html:16
-#, fuzzy
 msgid "Password reset successful"
-msgstr "Sua senha foi modificada com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_done.html:18
 msgid ""
@@ -1311,9 +1270,8 @@ msgid "E-mail address:"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_reset_form.html:22
-#, fuzzy
 msgid "Reset my password"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templatetags/admin_list.py:336
 msgid "All dates"
@@ -1389,9 +1347,8 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/views.py:230
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/views.py:263
-#, fuzzy, python-format
 msgid "number of %s"
-msgstr "Número de fotos:"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/views.py:268
 #, python-format
@@ -1477,9 +1434,8 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/templates/admin_doc/view_detail.html:9
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/templates/admin_doc/view_index.html:10
-#, fuzzy
 msgid "Views"
-msgstr "Ver todos"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/admin.py:41
 msgid "Personal info"
@@ -1494,14 +1450,12 @@ msgid "Important dates"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/admin.py:125
-#, fuzzy
 msgid "Password changed successfully."
-msgstr "Suas mudanças foram salvas com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/admin.py:135
-#, fuzzy, python-format
 msgid "Change password: %s"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/forms.py:62
 msgid "A user with that username already exists."
@@ -1586,9 +1540,8 @@ msgid "algorithm"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/hashers.py:219
-#, fuzzy
 msgid "iterations"
-msgstr "Locais"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/hashers.py:220
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/hashers.py:271
@@ -1616,9 +1569,8 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:66
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:113
-#, fuzzy
 msgid "name"
-msgstr "Nome"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:68
 msgid "codename"
@@ -1664,9 +1616,8 @@ msgid "e-mail address"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:238
-#, fuzzy
 msgid "password"
-msgstr "Modificar senha"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:239
 msgid "staff status"
@@ -1677,9 +1628,8 @@ msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:242
-#, fuzzy
 msgid "active"
-msgstr "Data"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:243
 msgid ""
@@ -1718,9 +1668,8 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:260
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:50
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:168
-#, fuzzy
 msgid "user"
-msgstr "Número"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/models.py:261
 msgid "users"
@@ -1776,11 +1725,10 @@ msgid "Remove selected comments"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/admin.py:65
-#, fuzzy, python-format
 msgid "1 comment was successfully %(action)s."
 msgid_plural "%(count)s comments were successfully %(action)s."
-msgstr[0] "O evento \"%s\" foi removido com sucesso."
-msgstr[1] "O evento \"%s\" foi removido com sucesso."
+msgstr[0] ""
+msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/feeds.py:13
 #, python-format
@@ -1793,9 +1741,8 @@ msgid "Latest comments on %(site_name)s"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/forms.py:97
-#, fuzzy
 msgid "Email address"
-msgstr "Endereço"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/forms.py:98
 #: hbenv/lib/python2.7/site-packages/django/contrib/flatpages/forms.py:7
@@ -1805,9 +1752,8 @@ msgid "URL"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/forms.py:99
-#, fuzzy
 msgid "Comment"
-msgstr "Complemento"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/forms.py:177
 #, python-format
@@ -1823,14 +1769,12 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:22
 #: hbenv/lib/python2.7/site-packages/django/contrib/contenttypes/models.py:127
-#, fuzzy
 msgid "content type"
-msgstr "Conteúdo"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:24
-#, fuzzy
 msgid "object ID"
-msgstr "Objeto"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:52
 msgid "user's name"
@@ -1847,9 +1791,8 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:56
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:76
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:169
-#, fuzzy
 msgid "comment"
-msgstr "Complemento"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:59
 msgid "date/time submitted"
@@ -1857,9 +1800,8 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:60
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1023
-#, fuzzy
 msgid "IP address"
-msgstr "Endereço"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:61
 msgid "is public"
@@ -1881,9 +1823,8 @@ msgid ""
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:77
-#, fuzzy
 msgid "comments"
-msgstr "Complemento"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:119
 msgid ""
@@ -1912,9 +1853,8 @@ msgid "flag"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:171
-#, fuzzy
 msgid "date"
-msgstr "Data"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/models.py:181
 msgid "comment flag"
@@ -1999,11 +1939,10 @@ msgid "Preview your comment"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/templates/comments/preview.html:11
-#, fuzzy
 msgid "Please correct the error below"
 msgid_plural "Please correct the errors below"
-msgstr[0] "Por favor corrija os erros abaixo."
-msgstr[1] "Por favor corrija os erros abaixo."
+msgstr[0] ""
+msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/templates/comments/preview.html:16
 msgid "Post your comment"
@@ -2018,9 +1957,8 @@ msgid "python model class name"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/contenttypes/models.py:128
-#, fuzzy
 msgid "content types"
-msgstr "Conteúdo"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/contenttypes/views.py:15
 #, python-format
@@ -2066,14 +2004,12 @@ msgid "Flatpage with url %(url)s already exists for site %(site)s"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/flatpages/models.py:8
-#, fuzzy
 msgid "title"
-msgstr "Título"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/flatpages/models.py:9
-#, fuzzy
 msgid "content"
-msgstr "Conteúdo"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/flatpages/models.py:10
 msgid "enable comments"
@@ -2137,9 +2073,8 @@ msgid "The base GIS field -- maps to the OpenGIS Specification Geometry type."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/gis/db/models/fields.py:270
-#, fuzzy
 msgid "Point"
-msgstr "Login"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/gis/db/models/fields.py:274
 msgid "Line string"
@@ -2222,9 +2157,8 @@ msgid "st"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:24
-#, fuzzy
 msgid "nd"
-msgstr "Enviar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:24
 msgid "rd"
@@ -2308,11 +2242,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:74
-#, fuzzy, python-format
 msgid "%(value)s sextillion"
 msgid_plural "%(value)s sextillion"
-msgstr[0] "Seção %s"
-msgstr[1] "Seção %s"
+msgstr[0] ""
+msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:77
 #, python-format
@@ -2322,11 +2255,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:78
-#, fuzzy, python-format
 msgid "%(value)s septillion"
 msgid_plural "%(value)s septillion"
-msgstr[0] "Seção %s"
-msgstr[1] "Seção %s"
+msgstr[0] ""
+msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:81
 #, python-format
@@ -2385,18 +2317,16 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:143
-#, fuzzy
 msgid "one"
-msgstr "Telefone 1"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:143
 msgid "two"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:143
-#, fuzzy
 msgid "three"
-msgstr "Logradouro"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:143
 msgid "four"
@@ -2411,9 +2341,8 @@ msgid "six"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:143
-#, fuzzy
 msgid "seven"
-msgstr "Evento"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:143
 msgid "eight"
@@ -2602,9 +2531,8 @@ msgid "Luxembourg"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/be/be_provinces.py:13
-#, fuzzy
 msgid "Namur"
-msgstr "Nome"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/be/be_provinces.py:14
 msgid "Walloon Brabant"
@@ -2760,9 +2688,8 @@ msgid "Ticino"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ch/ch_states.py:26
-#, fuzzy
 msgid "Uri"
-msgstr "Url"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ch/ch_states.py:27
 msgid "Valais"
@@ -2928,9 +2855,8 @@ msgid "Hamburg"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/de/de_states.py:11
-#, fuzzy
 msgid "Hessen"
-msgstr "Mensagem"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/de/de_states.py:12
 msgid "Mecklenburg-Western Pomerania"
@@ -3017,9 +2943,8 @@ msgid "Burgos"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/es_provinces.py:14
-#, fuzzy
 msgid "Caceres"
-msgstr "Cancelar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/es_provinces.py:15
 msgid "Cadiz"
@@ -3074,9 +2999,8 @@ msgid "Jaen"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/es_provinces.py:28
-#, fuzzy
 msgid "Leon"
-msgstr "Login"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/es_provinces.py:29
 msgid "Lleida"
@@ -3210,9 +3134,8 @@ msgid "Balearic Islands"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/es_regions.py:9
-#, fuzzy
 msgid "Basque Country"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/es_regions.py:10
 msgid "Canary Islands"
@@ -3265,9 +3188,8 @@ msgid "Please enter a valid NIF, NIE, or CIF."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/forms.py:74
-#, fuzzy
 msgid "Please enter a valid NIF or NIE."
-msgstr "Favor fornecer uma url válida"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/es/forms.py:75
 msgid "Invalid checksum for NIF."
@@ -3319,9 +3241,8 @@ msgid "Cornwall and Isles of Scilly"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:16
-#, fuzzy
 msgid "Cumbria"
-msgstr "Número"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:17
 msgid "Derbyshire"
@@ -3368,9 +3289,8 @@ msgid "Hertfordshire"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:28
-#, fuzzy
 msgid "Kent"
-msgstr "Evento"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:29
 msgid "Lancashire"
@@ -3401,9 +3321,8 @@ msgid "Northamptonshire"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:36
-#, fuzzy
 msgid "Northumberland"
-msgstr "Número"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:37
 msgid "Nottinghamshire"
@@ -3466,19 +3385,16 @@ msgid "Worcestershire"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:55
-#, fuzzy
 msgid "County Antrim"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:56
-#, fuzzy
 msgid "County Armagh"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:57
-#, fuzzy
 msgid "County Down"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:58
 msgid "County Fermanagh"
@@ -3489,9 +3405,8 @@ msgid "County Londonderry"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:60
-#, fuzzy
 msgid "County Tyrone"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:64
 msgid "Clwyd"
@@ -3502,7 +3417,6 @@ msgid "Dyfed"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:66
-#, fuzzy
 msgid "Gwent"
 msgstr "Evento"
 
@@ -3551,9 +3465,8 @@ msgid "Highland"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:81
-#, fuzzy
 msgid "Lothian"
-msgstr "Local"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:82
 msgid "Orkney Islands"
@@ -3564,9 +3477,8 @@ msgid "Shetland Islands"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:84
-#, fuzzy
 msgid "Strathclyde"
-msgstr "Estado"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/gb/gb_regions.py:85
 msgid "Tayside"
@@ -3746,9 +3658,8 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/id/id_choices.py:17
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/id/id_choices.py:51
-#, fuzzy
 msgid "Banten"
-msgstr "Conteúdo"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/id/id_choices.py:18
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/id/id_choices.py:60
@@ -3996,9 +3907,8 @@ msgid "Malang"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/id/id_choices.py:100
-#, fuzzy
 msgid "Jember"
-msgstr "Número"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/id/id_choices.py:101
 msgid "Banyumas"
@@ -4061,9 +3971,8 @@ msgid "Down"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ie/ie_counties.py:17
-#, fuzzy
 msgid "Dublin"
-msgstr "Publicar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ie/ie_counties.py:18
 msgid "Fermanagh"
@@ -4086,9 +3995,8 @@ msgid "Kilkenny"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ie/ie_counties.py:23
-#, fuzzy
 msgid "Laois"
-msgstr "Login"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ie/ie_counties.py:24
 msgid "Leitrim"
@@ -4135,9 +4043,8 @@ msgid "Tipperary"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ie/ie_counties.py:35
-#, fuzzy
 msgid "Tyrone"
-msgstr "Tipo"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/ie/ie_counties.py:36
 msgid "Waterford"
@@ -4209,9 +4116,8 @@ msgid "Aomori"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/jp/jp_prefectures.py:6
-#, fuzzy
 msgid "Iwate"
-msgstr "Data"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/jp/jp_prefectures.py:7
 msgid "Miyagi"
@@ -4326,9 +4232,8 @@ msgid "Tottori"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/jp/jp_prefectures.py:35
-#, fuzzy
 msgid "Shimane"
-msgstr "Modificar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/jp/jp_prefectures.py:36
 msgid "Okayama"
@@ -4718,9 +4623,8 @@ msgid "Tetovo"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mk/mk_choices.py:84
-#, fuzzy
 msgid "Centar"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mk/mk_choices.py:85
 msgid "Centar-Župa"
@@ -4787,9 +4691,8 @@ msgid "Mexico state (three uppercase letters)"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mx/models.py:27
-#, fuzzy
 msgid "Mexico zip code"
-msgstr "CEP"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mx/models.py:44
 msgid "Mexican RFC"
@@ -4864,9 +4767,8 @@ msgid "Michoacán"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mx/mx_states.py:29
-#, fuzzy
 msgid "Morelos"
-msgstr "Mais locais"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mx/mx_states.py:30
 msgid "Nayarit"
@@ -4881,9 +4783,8 @@ msgid "Oaxaca"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mx/mx_states.py:33
-#, fuzzy
 msgid "Puebla"
-msgstr "Publicar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/mx/mx_states.py:34
 msgid "Querétaro"
@@ -4970,9 +4871,8 @@ msgid "Overijssel"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/nl/nl_provinces.py:13
-#, fuzzy
 msgid "Utrecht"
-msgstr "Logradouro"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/nl/nl_provinces.py:14
 msgid "Zeeland"
@@ -5041,9 +4941,8 @@ msgid "Kuyavia-Pomerania"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/pl/pl_voivodeships.py:10
-#, fuzzy
 msgid "Lublin"
-msgstr "Publicar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/pl/pl_voivodeships.py:11
 msgid "Lubusz"
@@ -5770,9 +5669,8 @@ msgid "Myjava"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/sk/sk_districts.py:46
-#, fuzzy
 msgid "Namestovo"
-msgstr "Nome"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/sk/sk_districts.py:47
 msgid "Nitra"
@@ -5835,23 +5733,20 @@ msgid "Roznava"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/sk/sk_districts.py:62
-#, fuzzy
 msgid "Ruzomberok"
-msgstr "Número"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/sk/sk_districts.py:63
 msgid "Sabinov"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/sk/sk_districts.py:64
-#, fuzzy
 msgid "Senec"
-msgstr "Enviar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/sk/sk_districts.py:65
-#, fuzzy
 msgid "Senica"
-msgstr "Enviar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/sk/sk_districts.py:66
 msgid "Skalica"
@@ -6010,9 +5905,8 @@ msgid "U.S. postal code (two uppercase letters)"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/us/models.py:26
-#, fuzzy
 msgid "Phone number"
-msgstr "Telefone 1"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/uy/forms.py:29
 msgid "Enter a valid CI number in X.XXX.XXX-X,XXXXXXX-X or XXXXXXXX format."
@@ -6035,9 +5929,8 @@ msgid "Eastern Cape"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/za/za_provinces.py:5
-#, fuzzy
 msgid "Free State"
-msgstr "Estado"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/localflavor/za/za_provinces.py:6
 msgid "Gauteng"
@@ -6068,9 +5961,8 @@ msgid "Western Cape"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/messages/tests/base.py:100
-#, fuzzy
 msgid "lazy message"
-msgstr "Mensagem"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/redirects/models.py:7
 msgid "redirect from"
@@ -6129,14 +6021,12 @@ msgid "display name"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/sites/models.py:43
-#, fuzzy
 msgid "site"
-msgstr "Título"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/sites/models.py:44
-#, fuzzy
 msgid "sites"
-msgstr "Título"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/core/validators.py:24
 #: hbenv/lib/python2.7/site-packages/django/forms/fields.py:51
@@ -6202,15 +6092,15 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/core/validators.py:244
 #, python-format
 msgid ""
-"Ensure this value has at least %(limit_value)d characters (it has %"
-"(show_value)d)."
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/core/validators.py:250
 #, python-format
 msgid ""
-"Ensure this value has at most %(limit_value)d characters (it has %"
-"(show_value)d)."
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/base.py:764
@@ -6315,9 +6205,8 @@ msgid "Decimal number"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:890
-#, fuzzy
 msgid "E-mail address"
-msgstr "E-mail"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:906
 msgid "File path"
@@ -6337,9 +6226,8 @@ msgid "Big (8 byte) integer"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1007
-#, fuzzy
 msgid "IPv4 address"
-msgstr "Endereço"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1065
 #, python-format
@@ -6385,14 +6273,12 @@ msgid ""
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1185
-#, fuzzy
 msgid "Time"
-msgstr "Título"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/files.py:214
-#, fuzzy
 msgid "File"
-msgstr "Título"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/db/models/fields/files.py:321
 #: photo/models.py:57
@@ -6526,9 +6412,8 @@ msgid ""
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/forms/models.py:589
-#, fuzzy
 msgid "Please correct the duplicate values below."
-msgstr "Por favor corrija os erros abaixo."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/forms/models.py:849
 msgid "The inline foreign key did not match the parent instance primary key."
@@ -6556,9 +6441,8 @@ msgid ""
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/forms/widgets.py:325
-#, fuzzy
 msgid "Currently"
-msgstr "País"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/forms/widgets.py:327
 msgid "Clear"
@@ -6650,9 +6534,8 @@ msgid "Saturday"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:7
-#, fuzzy
 msgid "Sunday"
-msgstr "Enviar"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:10
 msgid "Mon"
@@ -6675,9 +6558,8 @@ msgid "Fri"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:11
-#, fuzzy
 msgid "Sat"
-msgstr "Estado"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:11
 msgid "Sun"
@@ -6700,9 +6582,8 @@ msgid "April"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:18
-#, fuzzy
 msgid "May"
-msgstr "Feito por"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:18
 msgid "June"
@@ -6725,9 +6606,8 @@ msgid "October"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:19
-#, fuzzy
 msgid "November"
-msgstr "Número"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:20
 msgid "December"
@@ -6802,10 +6682,9 @@ msgid "April"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:35
-#, fuzzy
 msgctxt "abbrev. month"
 msgid "May"
-msgstr "Feito por"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:36
 msgctxt "abbrev. month"
@@ -6828,10 +6707,9 @@ msgid "Sept."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:40
-#, fuzzy
 msgctxt "abbrev. month"
 msgid "Oct."
-msgstr "Objeto"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:41
 msgctxt "abbrev. month"
@@ -6864,10 +6742,9 @@ msgid "April"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:49
-#, fuzzy
 msgctxt "alt. month"
 msgid "May"
-msgstr "Feito por"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:50
 msgctxt "alt. month"
@@ -6895,10 +6772,9 @@ msgid "October"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:55
-#, fuzzy
 msgctxt "alt. month"
 msgid "November"
-msgstr "Número"
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/utils/dates.py:56
 msgctxt "alt. month"
@@ -6985,14 +6861,12 @@ msgid "Index of %(directory)s"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/views/generic/create_update.py:121
-#, fuzzy, python-format
 msgid "The %(verbose_name)s was created successfully."
-msgstr "O ábum de vídeo \"%s\" foi removido com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/views/generic/create_update.py:164
-#, fuzzy, python-format
 msgid "The %(verbose_name)s was updated successfully."
-msgstr "O ábum de vídeo \"%s\" foi removido com sucesso."
+msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/views/generic/create_update.py:207
 #, python-format
@@ -7172,6 +7046,10 @@ msgstr "Botão Like do Facebook"
 msgid "EDIT MODE"
 msgstr "MODO DE EDIÇÃO"
 
+#: templates/base.html:131
+msgid "search..."
+msgstr "busca..."
+
 #: templates/coming_soon.html:5 templates/coming_soon.html.py:6
 msgid "Hey Baldock Page Comming Soon"
 msgstr ""
@@ -7180,11 +7058,11 @@ msgstr ""
 msgid "Comming Soon"
 msgstr "Em breve"
 
-#: templates/under_maintenance.html:9
+#: templates/under_maintenance.html:7
 msgid "Under Maintenance"
 msgstr "Em manutenção"
 
-#: templates/auth/login.html:11 templates/auth/login.html.py:18
+#: templates/auth/login.html:12 templates/auth/login.html.py:19
 msgid "Login"
 msgstr "Login"
 
