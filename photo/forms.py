@@ -1,6 +1,3 @@
-from copy import copy
-
-from django.core.validators import ValidationError
 from django.utils.translation import ugettext as _
 
 from draft import forms
@@ -78,7 +75,7 @@ class AlbumForm(forms.CmsForm):
         success = True
         if not 'image_name' in data:
             msg = _("A photo album must have at least one photo")
-            self._js_fields['__all__']['error'] = msg
+            self._js_fields['__all__'] = {'error': msg}
             return False
 
         photo_data = self._load_from_data(data)
@@ -133,6 +130,3 @@ class AlbumForm(forms.CmsForm):
         newhandler.load_by_filename_user('', self.user)
         newhandler.delete_path()
         ImageHandler.delete_junk(self.draft)
-
-
-

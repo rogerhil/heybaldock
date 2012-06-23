@@ -212,9 +212,19 @@ a.button:hover,
 }
 
 input[type=submit].login_submit {
-    width: 160px;
+    min-width: 160px;
     margin: 30px auto 10px auto;
     float: none;
+}
+
+input[type=submit].submit {
+    min-width: 160px;
+    margin: 10px 0 0 0;
+    float: right;
+}
+
+input[type=submit][disabled=disabled].submit {
+    opacity: .5;
 }
 
 .profile_area {

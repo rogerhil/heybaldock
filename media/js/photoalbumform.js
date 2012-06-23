@@ -1,33 +1,60 @@
+var uploadCount = 0;
+
 $(window).load(function () {
 	var $ul = $("form[name=draft_form] ul.draft_fields");
 	var photosTitle = gettext("Photos");
 	var html = '<label>' + photosTitle + ':</label><input id="fileupload" type="file" name="image" data-url="/fotos/upload/ajax/" multiple>';
 	var $photosBlock = $('<li>' + html + '<div class="clear"></div><div class="photos"><ul class="photosul"></ul></div><div class="clear"></div></li>');
 	$ul.append($photosBlock);
+	var $form = $('form[name=draft_form]');
+	var $submit = $form.find('input[type=submit]');
+	$submit.attr('disabled', 'disabled');
 	$('#fileupload').fileupload({
         dataType: 'json',
 		beforeSend: function (e, data) {
 			var $uploadBlock = photoBlock(data);
-			if (!$uploadBlock) {
+			if ($uploadBlock) {
+				uploadCount++;
+				$submit.attr('disabled', 'disabled');
+			} else {
 				return false;
 			}
 		},
 		progress: function (e, data) {
 			updateProgressBar(data);
 		},
+		fail: function (e, data) {
+			uploadCount--;
+			if (uploadCount == 0) {
+				$submit.removeAttr('disabled');
+			}
+		},
         done: function (e, data) {
 			var url = data.result.data.url;
 			var urlview = data.result.data.url_view;
 			var $uploadBlock = data.data.upload_block;
-			fillPhotoBlock($uploadBlock, url, urlview);
+			var description = $uploadBlock.find('input[name=image_description]').val();
+			fillPhotoBlock($uploadBlock, url, urlview, description);
 			updateProgressBar(data, 100);
+			uploadCount--;
+			if (uploadCount == 0) {
+				$submit.removeAttr('disabled');
+			}
         }
     });
 	fullHeight();
-	
+
+	if (window.JS_FIELDS && window.JS_FIELDS.__all__) {
+		var all = window.JS_FIELDS.__all__;
+		if (all.error) {
+			alert(all.error);
+		}
+	}
+
 	if (window.JS_FIELDS && window.JS_FIELDS.photo && window.JS_FIELDS.photo.length) {
 		var photos = window.JS_FIELDS.photo;
 		loadPhotos(photos);
+
 	}
 
 });
