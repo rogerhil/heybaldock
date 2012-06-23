@@ -45,7 +45,10 @@ class AlbumForm(forms.CmsForm):
         if self.draft and self.draft.id:
             handler.load_by_draft(name, self.draft)
         elif self.instance and self.instance.id:
-            handler.load_by_filename_album(name, self.instance)
+            if self.user:
+                handler.load_by_filename_album(name, self.instance, self.user)
+            else:
+                handler.load_by_filename_album(name, self.instance)
         else:
             handler.load_by_filename_user(name, self.user)
 

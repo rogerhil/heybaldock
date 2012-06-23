@@ -75,17 +75,17 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-UPLOAD_PATH = os.path.join(PROJECT_ROOT, 'media/upload/album')
+UPLOAD_PATH = os.path.join(PROJECT_ROOT, 'media/upload/')
+UPLOAD_URLPATH = '/media/upload/'
 
-UPLOAD_URLPATH = '/media/upload/album'
+ALBUM_UPLOAD_PATH = os.path.join(UPLOAD_PATH, 'album/')
+ALBUM_UPLOAD_URLPATH = os.path.join(UPLOAD_PATH, 'album/')
 
-DRAFT_UPLOAD_PATH = os.path.join(PROJECT_ROOT, 'media/upload/draft')
-
+DRAFT_UPLOAD_PATH = os.path.join(UPLOAD_PATH, 'draft/')
 DRAFT_UPLOAD_PATH_NEW = os.path.join(DRAFT_UPLOAD_PATH, 'new/')
+DRAFT_UPLOAD_URLPATH = "%s/draft" % UPLOAD_URLPATH
+DRAFT_UPLOAD_URLPATH_NEW = "%s/new" % DRAFT_UPLOAD_URLPATH
 
-DRAFT_UPLOAD_URLPATH = '/media/upload/draft'
-
-DRAFT_UPLOAD_URLPATH_NEW = "%s/%s" % (DRAFT_UPLOAD_URLPATH, 'new')
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '*b!$#a0-$ije!=yd!b3gat*ibxz6%x#w0j!cdnoi#qa1n*s2r^'
@@ -195,6 +195,9 @@ SITE_DOMAIN = "localhost:8000"
 
 COMMING_SOON = False
 UNDER_MAINTENANCE = False
+
+S3_STORAGE = False
+S3_BUCKET_NAME = 'heybaldock'
 
 import os
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'dev')  # dev, production, qa, etc

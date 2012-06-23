@@ -1,9 +1,13 @@
 import os
 import Image
-from shutil import copy, rmtree
+from StringIO import StringIO
 
 from django.conf import settings
 
+if settings.S3_STORAGE:
+    from storage import S3StorageBackend as StorageBackend
+else:
+    from storage import FileSystemStorageBackend as StorageBackend
 
 class ImageHandlerException(Exception):
     pass
@@ -13,62 +17,40 @@ class ImageHandler(object):
 
     def __init__(self):
         self._rimage = None
-        self._filename = None
         self.user = None
         self.draft = None
         self.album = None
-        self.path = None
-        self.urlpath = None
-        self.pathnew = None
-        self.urlpathnew = None
+        self.storage = None
+        self.storage_new = None
+        self._images = {}
 
     def load_by_image_user(self, image, user):
         self._rimage = image
-        self._filename = image.name
         self.user = user
-        self._set_path_by_user()
+        self.storage = StorageBackend('draft/new', user.username, image.name)
 
     def load_by_filename_user(self, filename, user):
-        self._filename = filename
         self.user = user
-        self._set_path_by_user()
+        self.storage = StorageBackend('draft/new', user.username, filename)
 
     def load_by_draft(self, filename, draft):
         self.draft = draft
         self.user = draft.user
-        self._filename = filename
-        self._set_path_by_draft()
+        self.storage = StorageBackend('draft', str(draft.id), filename)
+        self.storage_new = StorageBackend('draft/new', self.user.username,
+                                          filename)
 
-    def load_by_filename_album(self, filename, album):
-        self._filename = filename
+    def load_by_filename_album(self, filename, album, user=None):
         self.album = album
-        self._set_path_by_album()
+        self.storage = StorageBackend('album', str(self.album.id), filename)
+        if user:
+            self.user = user
+            self.storage_new = StorageBackend('draft/new', user.username,
+                                              filename)
 
     def load_by_album(self, album):
         self.album = album
-        self._set_path_by_album()
-
-    def _set_path_by_user(self):
-        self.path = os.path.join(settings.DRAFT_UPLOAD_PATH_NEW,
-                                 self.user.username)
-        self.urlpath = "%s/%s" % (settings.DRAFT_UPLOAD_URLPATH_NEW,
-                                  self.user.username)
-
-    def _set_path_by_draft(self):
-        self.path = os.path.join(settings.DRAFT_UPLOAD_PATH,
-                                 str(self.draft.id))
-        self.urlpath = "%s/%s" % (settings.DRAFT_UPLOAD_URLPATH,
-                                  str(self.draft.id))
-        self.pathnew = os.path.join(settings.DRAFT_UPLOAD_PATH_NEW,
-                                    self.user.username)
-        self.urlpathnew = "%s/%s" % (settings.DRAFT_UPLOAD_URLPATH_NEW,
-                                     self.user.username)
-
-    def _set_path_by_album(self):
-        self.path = os.path.join(settings.UPLOAD_PATH,
-                                 str(self.album.id))
-        self.urlpath = "%s/%s" % (settings.UPLOAD_URLPATH,
-                                  str(self.album.id))
+        self.storage = StorageBackend('album', str(self.album.id))
 
     @staticmethod
     def raw_name(name):
@@ -83,120 +65,117 @@ class ImageHandler(object):
         return self._rimage.name
 
     def images(self):
-        images = {}
-        filepath = os.path.join(self.path, self._filename)
-        if os.path.isfile(filepath):
-            images['original'] = {'filepath': filepath}
+
+        if self._images:
+            return self._images
+
+        images = {
+            'original': {
+                'filename': self.storage.filename,
+                'filepath': self.storage.get_filepath(),
+                'urlpath': self.storage.get_url(),
+            }
+        }
         for key, size in settings.IMAGE_SIZES.items():
-            name = ImageHandler.name(self._filename, key)
-            filepath = os.path.join(self.path, name)
-            urlpath = "%s/%s" % (self.urlpath, name)
-            if not os.path.isfile(filepath):
+            filename = ImageHandler.name(self.storage.filename, key)
+            filepath = self.storage.get_filepath(filename)
+            urlpath = self.storage.get_url(filename)
+            if not self.storage.is_file(filename):
                 # test in new path .../new/
-                if self.draft and self.pathnew:
-                    filepath = os.path.join(self.pathnew, name)
-                    urlpath = "%s/%s" % (self.urlpathnew, name)
-                    if not os.path.isfile(filepath):
+                if self.storage_new:
+                    urlpath = self.storage_new.get_url(filename)
+                    filepath = self.storage_new.get_filepath(filename)
+                    if not self.storage_new.is_file(filename):
                         continue
                 else:
                     continue
             images[key] = {
+                'filename': filename,
                 'filepath': filepath,
                 'urlpath': urlpath,
-                'name': name,
                 'size': size
             }
+        self._images = images
         return images
 
     def save_thumbnails(self):
-        if not self._rimage or not self._filename:
+        if not self._rimage or not (self.storage and self.storage.filename):
             msg = 'ImageHandler is not loaded by image buffer.'
             raise ImageHandlerException(msg)
-        try:
-            os.mkdir(self.path)
-        except:
-            pass
-        pathfile = os.path.join(self.path, self._filename)
-        img_file = open(pathfile, 'wb')
-        img_file.write(self._rimage.read())
-        img_file.close()
+        stream = self._rimage.read()
+        self.storage.save_file(stream, binary=True)
         self._rimage.close()
         for key, size in settings.IMAGE_SIZES.items():
-            img = Image.open(pathfile)
+            ffile = StringIO(stream)
+            ffile.seek(0)
+            img = Image.open(ffile)
             img.thumbnail(size, Image.ANTIALIAS)
-            name = ImageHandler.name(self._filename, key)
-            p = os.path.join(self.path, name)
-            img.save(p)
-
-    def _copy_images(self, newhandler):
-        paths = newhandler.paths()
-        try:
-            os.mkdir(self.path)
-        except:
-            pass
-        for path in paths:
-            dirname, filename = os.path.split(path)
-            filepath = os.path.join(self.path, filename)
-            copy(path, filepath)
+            filename = ImageHandler.name(self.storage.filename, key)
+            ffile = StringIO()
+            img.save(ffile, format='JPEG')
+            buffer = ffile.getvalue()
+            self.storage.save_file(buffer, filename, binary=False)
 
     def copy_new_images_to_draft(self, user):
         newhandler = ImageHandler()
-        newhandler.load_by_filename_user(self._filename, user)
-        self._copy_images(newhandler)
+        newhandler.load_by_filename_user(self.storage.filename, user)
+        self.storage.copy_files(newhandler.paths())
 
     def copy_album_images_to_draft(self, album):
         newhandler = ImageHandler()
-        newhandler.load_by_filename_album(self._filename, album)
-        self._copy_images(newhandler)
+        newhandler.load_by_filename_album(self.storage.filename, album)
+        self.storage.copy_files(newhandler.paths())
 
     def copy_images_to_album(self, draft):
         newhandler = ImageHandler()
-        newhandler.load_by_draft(self._filename, draft)
-        self._copy_images(newhandler)
+        newhandler.load_by_draft(self.storage.filename, draft)
+        self.storage.copy_files(newhandler.paths())
 
     def delete(self):
-        if not self._filename:
+        if not self.storage.filename:
             msg = 'ImageHandler is not loaded'
             raise ImageHandlerException(msg)
-        for image in self.images().values():
-            os.remove(image['filepath'])
+        filenames = [i['filename'] for i in self.images().values()]
+        self.storage.remove_files(filenames)
 
     def delete_path(self):
-        if not self.path:
-            msg = 'ImageHandler is not loaded'
-            raise ImageHandlerException(msg)
-        if os.path.isdir(self.path):
-            rmtree(self.path)
+        self.storage.remove_base_path()
 
     @staticmethod
     def delete_junk(draft):
-        path = os.path.join(settings.DRAFT_UPLOAD_PATH,
-                                 str(draft.id))
-        paths = []
+        files = []
         content = draft.get_content_object()
         rel_fields = content.get('__rel_fields__', {})
         photos = rel_fields.get('photos', [])
+
         if not photos:
             return
+
         for img in photos:
             image = img.get('image')
             if image:
                 handler = ImageHandler()
                 handler.load_by_draft(image, draft)
-                paths += handler.paths()
-        for f in os.listdir(path):
-            p = os.path.join(path, f)
-            if p not in paths:
-                os.remove(p)
+                files += handler.files()
+
+        storage = StorageBackend('draft', str(draft.id))
+        storage.remove_base_contents(except_files=files)
 
     def paths(self):
-        p = [n['filepath'] for n in self.images().values() if n.get('name')]
-        return p
+        values = self.images().values()
+        paths = [n['filepath'] for n in values if n.get('filename')]
+        return paths
+
+    def files(self):
+        values = self.images().values()
+        files = [n['filename'] for n in values if n.get('filename')]
+        return files
 
     def url(self, key):
         return self.urls()['image_%s_url' % key]
 
     def urls(self):
-        u = [('image_%s_url' % k, n['urlpath']) \
-                        for k, n in self.images().items() if n.get('name')]
+        items = self.images().items()
+        val = lambda k, n: ('image_%s_url' % k, n['urlpath'])
+        u = [val(k, n) for k, n in items if n.get('filename')]
         return dict(u)

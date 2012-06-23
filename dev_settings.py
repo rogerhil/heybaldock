@@ -11,6 +11,9 @@ DATABASES = {
     }
 }
 
+S3_STORAGE = True
+S3_BUCKET_NAME = 'heybaldock-dev'
+
 COMMING_SOON = False
 UNDER_MAINTENANCE = False
 
