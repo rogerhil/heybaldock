@@ -22,7 +22,9 @@
 {% block content %}
 {% object_manage_buttons user 'section' section.id %}
 <div class="clear"></div>
-{% include "section/section_content.html" %}
+<div class="section_content">
+    {% include "section/section_content.html" %}
+</div>
 <div class="clear"></div>
 <div class="last_updated">
     {% blocktrans with updated=section.updated user_updated=section.user_updated %}

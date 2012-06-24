@@ -430,7 +430,7 @@ h1.draft_head label {
 
 #logo .shadow {
     z-index: -1;
-    top: -7px;
+    top: -5px;
     position: absolute;
     color: #e9892c !important;
 }
@@ -627,6 +627,10 @@ h1.draft_head label {
 
 #search_results span.summary {
     font-size: 11px;
+}
+
+.section_content {
+    text-align: justify;
 }
 
 /* VIDEO ALBUM */
