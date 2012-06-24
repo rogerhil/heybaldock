@@ -152,7 +152,9 @@
                     {% block right_column %}
                     {% include "draft/portlet.html" %}
                     {% include "event/portlet.html" %}
-                    {% include "event/location_portlet.html" %}
+                    {% if user.is_authenticated %}
+                        {% include "event/location_portlet.html" %}
+                    {% endif %}
                     {% comment %}
                     <div class="portlet">
                         <h2>Enquete</h2>

@@ -72,13 +72,13 @@ function codeLatLng(lat, lng) {
 	$mapCanvas.slideDown(300, function () {
 		google.maps.event.trigger(map, 'resize'); // Important to fix the map of hidden element
 		fullHeight();
+		var latlng = new google.maps.LatLng(lat, lng);
+		map.setCenter(latlng);
+		var marker = new google.maps.Marker({
+			map: map,
+			position: latlng
+		});
 	});
-	var latlng = new google.maps.LatLng(lat, lng);
-    map.setCenter(latlng);
- 	var marker = new google.maps.Marker({
-		map: map,
-		position: latlng
-    });
 }
 
 function ajaxErrorMessage(msg) {
