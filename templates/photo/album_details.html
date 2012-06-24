@@ -4,22 +4,8 @@
 <div class="photo_album">
     <h1>{{ album.name }}</h1>
     <h3>{{ album.description }}</h3>
-    {% with album.event as event %}
-    {% if event %}
-        <br />
-        <p>
-            <a href="{% url event_details event.id %}">
-            {% blocktrans with name=event.name date=event.datetime %}
-                These photos are related to the "{{ name }}" event performed on {{ date }}.
-            {% endblocktrans %}
-            </a>
-        </p>
-    {% endif %}
-    {% endwith %}
-    <br />
-    <p><strong>{% trans 'Number of photos:' %}</strong> {{ album.count }}</p>
+    <br/>
     {% with request_get.list_type as list_type %}
-
     <div class="view_action">
         <a class="pair {% ifequal list_type 'list_pair' %}selected{% endifequal %}" href="?list_type=list_pair">
             <span></span><span></span>
@@ -36,10 +22,21 @@
             <span></span><span></span><span></span><span></span>
             <span></span><span></span>
         </a>
-        <div class="clear"></div>
     </div>
+    {% include "facebook_like.html" %}
     <div class="clear"></div>
-
+    {% with album.event as event %}
+    {% if event %}
+        <p>
+            <a href="{% url event_details event.id %}">
+            {% blocktrans with name=event.name date=event.datetime %}
+                These photos are related to the "{{ name }}" event performed on {{ date }}.
+            {% endblocktrans %}
+            </a>
+        </p>
+    {% endif %}
+    {% endwith %}
+    <p><strong>{% trans 'Number of photos:' %}</strong> {{ album.count }}</p>
     <ul class="photo_list {{ list_type }}">
     {% for photo in album.photos.all %}
         <li href="{% img_url photo 'huge' %}" title="{{ photo.description }}">
