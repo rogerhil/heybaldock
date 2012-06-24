@@ -107,6 +107,8 @@ MIDDLEWARE_CLASSES = (
     'auth.middleware.UnderMaintenanceMiddleware',
 )
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
@@ -143,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
     'context_processors.main'
 )
 
