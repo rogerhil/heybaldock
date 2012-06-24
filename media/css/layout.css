@@ -633,6 +633,10 @@ h1.draft_head label {
     text-align: justify;
 }
 
+.section_content img {
+    border-radius: 7px;
+}
+
 /* VIDEO ALBUM */
 
 .video_album {
