@@ -593,6 +593,10 @@ h1.draft_head label {
 
 }
 
+#search_results {
+    min-height: 200px;
+}
+
 #search_results ul {
     list-style: none;
 }

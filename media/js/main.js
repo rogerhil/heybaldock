@@ -20,6 +20,7 @@ function fullHeight() {
 	var ediff = $footer.position().top - $emptyPortlet.position().top - 30;
 	$content.css("height", cdiff + 'px');
 	$emptyPortlet.css("height", ediff + 'px');
+	contentHeightAuto();
 }
 
 function contentHeightAuto() {

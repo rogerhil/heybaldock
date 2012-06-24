@@ -39,4 +39,8 @@
     </table>
 </div>
 
+{% with '/eventos/locais/' as url %}
+    {% include "facebook_comments.html" %}
+{% endwith %}
+
 {% endblock %}

@@ -34,7 +34,9 @@
         {% endfor %}
         </ul>
     {% else %}
-        {% trans 'No results found' %}
+        {% blocktrans %}
+            No results found for the sentence "{{ query }}"
+        {% endblocktrans %}
     {% endif %}
     <div class="clear"></div>
 </div>

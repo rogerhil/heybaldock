@@ -29,6 +29,11 @@
 &nbsp;
 <div class="clear">&nbsp;</div>
 <a class="button" href="/eventos/locais/">{% trans 'More locations' %}</a>
+
+{% with location.url as url %}
+    {% include "facebook_comments.html" %}
+{% endwith %}
+
 <div class="clear"></div>
 
 {% endblock %}

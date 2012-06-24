@@ -29,5 +29,10 @@
         Last updated at {{ updated }} by {{ user_updated }}
     {% endblocktrans %}
 </div>
-<div class="clear"></div>
+
+{% with section.url as url %}
+    {% include "facebook_comments.html" %}
+{% endwith %}
+
+ <div class="clear"></div>
 {% endblock %}

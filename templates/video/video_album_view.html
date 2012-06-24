@@ -29,6 +29,11 @@
 {% endif %}
 {% include "facebook_like.html" %}
 {% include "video/album_details.html" %}
+
+{% with album.url as url %}
+    {% include "facebook_comments.html" %}
+{% endwith %}
+
 <div class="clear"></div>
 
 {% endblock %}

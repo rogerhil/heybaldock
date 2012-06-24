@@ -32,6 +32,11 @@
 <div class="clear"></div>
 <br />
 <a class="button" href="/eventos/">{% trans 'More events' %}</a>
+
+{% with event.url as url %}
+    {% include "facebook_comments.html" %}
+{% endwith %}
+
 <div class="clear"></div>
 
 {% endblock %}

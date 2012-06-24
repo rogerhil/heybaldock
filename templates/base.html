@@ -39,6 +39,11 @@
                     cookie: true, // enable cookies to allow the server to access the session
                     xfbml: true  // parse XFBML
                 });
+                FB.Event.subscribe("xfbml.render", function(response) {
+                    window.setInterval(function () {
+                        fullHeight();
+                    }, 100);
+                });
             };
 
             // Load the SDK Asynchronously
@@ -48,16 +53,12 @@
                 js = d.createElement('script'); js.id = id; js.async = true;
                 js.src = "//connect.facebook.net/en_US/all.js";
                 ref.parentNode.insertBefore(js, ref);
-                window.setTimeout(function () {
+                for (var k = 0; k < 10; k++) {
+                    window.setInterval(function () {
+                        fullHeight();
+                    }, 200 * k);
+                }
 
-                    fullHeight();
-                }, 2000);
-                window.setTimeout(function () {
-                    fullHeight();
-                }, 4000);
-                window.setTimeout(function () {
-                    fullHeight();
-                }, 6000);
             }(document));
         </script>
         <!-- End of Facebook API -->

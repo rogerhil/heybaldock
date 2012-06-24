@@ -17,5 +17,10 @@
 {% endwith %}
 <br />
 <a class="button" href="{% url section_view 'eventos' %}">{% trans 'Upcoming events' %}</a>
+
+{% with '/eventos/historico/' as url %}
+    {% include "facebook_comments.html" %}
+{% endwith %}
+
 <div class="clear"></div>
 {% endblock %}
