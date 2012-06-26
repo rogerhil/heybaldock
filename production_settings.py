@@ -19,5 +19,7 @@ UNDER_MAINTENANCE = False
 S3_STORAGE = False
 S3_BUCKET_NAME = 'heybaldock'
 
+SITE_DOMAIN = "heybaldock.com.br"
+
 #import dj_database_url
 #DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
