@@ -1,5 +1,10 @@
 # Django settings for heybaldock project.
 import os
+from ConfigParser import ConfigParser
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+cfg = ConfigParser()
+cfg.read(os.path.join(PROJECT_ROOT, 'settings.ini'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -35,7 +40,6 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
@@ -187,7 +191,7 @@ IMAGE_SIZES = {
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT =  587
 MAIL_USER = "heybaldock@gmail.com"
-MAIL_PASSWORD = "supertogether"
+MAIL_PASSWORD = cfg.get('gmail', 'specific_password')
 
 MAX_DRAFTS_PER_OBJECT = 20
 
