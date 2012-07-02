@@ -190,7 +190,7 @@ IMAGE_SIZES = {
 
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT =  587
-MAIL_USER = "heybaldock@gmail.com"
+MAIL_USER = "heybaldock@heybaldock.com.br"
 MAIL_PASSWORD = cfg.get('gmail', 'specific_password')
 
 MAX_DRAFTS_PER_OBJECT = 20
