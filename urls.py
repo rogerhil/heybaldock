@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 admin.autodiscover()
 
+from auth import views
+
 js_info_dict = {
     'packages': ('your.app.package',),
 }
@@ -20,5 +22,8 @@ urlpatterns = patterns('',
     url(r'^draft/', include('draft.urls')),
     url(r'^busca/', include('search.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^happy-birthday/', views.happy_birthday),
+
     url(r'', include('section.urls'))
 )

@@ -243,8 +243,6 @@ class S3StorageBackend(BaseStorageBackend):
                     if key:
                         key.copy(self.bucket.name, filepath, preserve_acl=True)
 
-
-
     def get_filepath(self, filename=None):
         if not filename:
             filename = self.filename

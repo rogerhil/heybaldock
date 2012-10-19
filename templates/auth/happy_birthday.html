@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <style type="text/css">
+            body {
+                font-family: Verdana;
+            }
+            h1, h2 {
+                text-transform: uppercase;
+                color: #ffcfe3;
+                text-align: center;
+            }
+            img {
+                width: 200px;
+                cursor: pointer;
+                border: 4px solid #ffffff;
+                padding: 10px;
+            }
+            img:hover {
+                border: 4px solid #ffcfe3;
+                border-radius: 20px;
+
+            }
+            div.gifts {
+                text-align: center;
+                margin-top: 100px;
+            }
+            #tip {
+                margin-top: 50px;
+                font-size: 40px;
+                text-align: center;
+                color: #ffcfe3;
+            }
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <title>Happy Birthday Flavia</title>
+    </head>
+    <body style="background: #ffcfe3;">
+        <div style="width: 960px; height: 600px; margin: 0 auto; background: #ffffff; border-radius: 20px; padding: 20px; margin-top: 30px;">
+            <h1>Happy Birthday</h1>
+            <h2>Choose a gift below</h2>
+            <div class="gifts">
+                <img src="/media/img/hb/gift1.jpg" alt="Gift 1" title="Gift 1" />&nbsp;&nbsp;&nbsp;
+                <img src="/media/img/hb/gift2.jpg" alt="Gift 2" title="Gift 2" />&nbsp;&nbsp;&nbsp;
+                <img src="/media/img/hb/gift3.jpg" alt="Gift 3" title="Gift 3" />
+            </div>
+            <div id="tip">
+
+            </div>
+        </div>
+        <script type="text/javascript">
+            var CURRENT = 0;
+            var TIPS = [
+                'Go get your gift on your desk!',
+                'Go get your gift behind the refrigerator!',
+                'Go get your gift below the bed!'
+            ];
+            $('div.gifts img').click(function () {
+                $('#tip').html(TIPS[CURRENT]);
+                CURRENT++;
+                $(this).fadeOut(2000);
+            });
+
+        </script>
+    </body>
+</html>
