@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript" src="/media/js/music.js"></script>
+{% endblock %}
+
+{% block large_content %}
+<div class="grid_3">
+    <div id="content">
+        <div class="clear"></div>
+        <div class="section_content">
+            <h1>{{ repertory }}</h1>
+            <div class="manage_buttons">
+                <a href="{% url repertories %}">{% trans 'Back to Repertories List' %}</a>
+                <a href="{% url add_repertory %}">{% trans "Add Repertory" %}</a>
+            </div>
+            <div class="clear"></div>
+            <br />
+            <a href="javascript:;" id="add_repertory_group">{% trans '+ add group of songs' %}</a>
+            <div id="new_repertory_group" style="display: none;">
+                <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
+                    <input name="new_repertory_group_name" type="text" style="width: 140px;" /> <a style="display: inline; float: none; width: 20px;" href="javascript:;">Add</a>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="clear"></div>
+            <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list">
+                {% include "music/repertory_content.html" %}
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+{% endblock %}

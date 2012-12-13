@@ -1,0 +1,97 @@
+{% if custom %}
+
+    <h2><span style="color: red">STEP 1</span> Select the album title</h2>
+    <ul class="photo_list photo_auto highlighted">
+        {% for title in custom.titles %}
+            <li title="{{ title }}">
+                {{ title }}
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="clear"></div>
+    <br />
+    <h2><span style="color: red">STEP 2</span> Select the album cover</h2>
+    <ul class="photo_list square">
+        {% for thumb in custom.thumbs %}
+            <li title="{{ thumb.title }}">
+                <img src="{{ thumb.url }}" />
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="clear"></div>
+    <br />
+    <h2><span style="color: red">STEP 3</span> Select songs info</h2>
+
+    <div class="table_list">
+        <table style="width: 100%;">
+            <thead>
+                <th width="100px">
+                    Position
+                </th>
+                <th>
+                    Title
+                </th>
+                <th width="100px">
+                    Duration
+                </th>
+                <th width="200px">
+                    Composers
+                </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            {% for position in custom.songs.positions %}
+                            <tr>
+                                {% for item in position %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            {% for titles in custom.songs.titles %}
+                            <tr>
+                                {% for item in titles %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            {% for durations in custom.songs.durations %}
+                            <tr>
+                                {% for item in durations %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            {% for composers in custom.songs.composers %}
+                            <tr>
+                                {% for item in composers %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+
+{% else %}
+
+    No custom information.
+
+{% endif %}

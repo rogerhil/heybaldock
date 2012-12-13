@@ -1,0 +1,73 @@
+
+<div style="padding: 5px;">
+    <div style="float: left; width: 170px; margin-right: 15px;">
+        <img src="{{ info.thumb }}" />
+        <ul>
+            <li>
+                <strong>Title: </strong>{{ info.title }}
+            </li>
+            <li>
+                <strong>Country: </strong>{{ info.country }}
+            </li>
+            <li>
+                <strong>Label: </strong>{{ info.label }}
+            </li>
+            <li>
+                <strong>Genre: </strong>{% for genre in info.genres %}{{ genre }}, {% endfor %}
+            </li>
+            <li>
+                <strong>Style: </strong>{% for style in info.styles %}{{ style }}, {% endfor %}
+            </li>
+            <li>
+                <strong>Notes: </strong>{{ info.notes }}
+            </li>
+        </ul>
+        <div class="album-actions" resourceurl="{{ resource_url }}">
+            {% if info.tracklist and info.tracklist.0.duration %}
+                {% if info.tracklist and info.tracklist.0.position %}
+                    <input type="button" value="Register this album" class="submit register_album" style="margin-left: 0px;" />
+                {% else %}
+                    This album cannot be registered because there are no track number position information.
+                {% endif %}
+            {% else %}
+                This album cannot be registered because there are no track duration information.
+            {% endif %}
+        </div>
+    </div>
+
+
+    {% if info.tracklist %}
+        <table style="width: 717px;">
+            <thead>
+                <th width="30px">
+                    Position
+                </th>
+                <th>
+                    Title
+                </th>
+                <th width="30px">
+                    Duration
+                </th>
+                <th width="200px">
+                    Composers
+                </th>
+            </thead>
+            <tbody>
+                {% for track in info.tracklist %}
+                <tr class="{% cycle odd,even %}">
+                    <td>{{ track.position }}</td>
+                    <td>{{ track.title }}</td>
+                    <td>{{ track.duration }}</td>
+                    <td>
+                        {% for composer in track.extraartists %}
+                            {{ composer.name }},
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <strong>There is no tracklist available for this album.</strong>
+    {% endif %}
+</div>
