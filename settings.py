@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'video',
     'event',
     'draft',
+    'music'
 
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -205,6 +206,8 @@ UNDER_MAINTENANCE = False
 
 S3_STORAGE = False
 S3_BUCKET_NAME = 'heybaldock'
+
+ENABLE_REPERTORY_FEATURES = False
 
 import os
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'dev')  # dev, production, qa, etc

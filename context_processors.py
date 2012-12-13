@@ -14,10 +14,13 @@ def main(request):
     now = datetime.now()
     events = Event.objects.filter(starts_at__gte=now).order_by('-starts_at')[:10]
     locations = Location.objects.all().order_by('name')[:10]
-    c = dict(sections=SECTIONS,
-             events=events,
-             locations=locations,
-             request_get=request.GET,
-             site_domain=settings.SITE_DOMAIN,
-             facebook_app_id=settings.FACEBOOK_APP_ID)
+    c = dict(
+        sections=SECTIONS,
+         events=events,
+         locations=locations,
+         request_get=request.GET,
+         site_domain=settings.SITE_DOMAIN,
+         facebook_app_id=settings.FACEBOOK_APP_ID,
+         enable_repertory_features=settings.ENABLE_REPERTORY_FEATURES
+    )
     return c

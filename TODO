@@ -17,3 +17,14 @@ Contact HTML
 Icons: success, warning, error, info, etc...
 Code Comments, Doc tests, License
 
+
+
+ * Repertory management
+
+  - Song
+    - name
+    - artist -> Artist
+    - composer <-> Composer
+    - time
+    - 
+

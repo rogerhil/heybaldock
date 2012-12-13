@@ -1,10 +1,11 @@
 from functools import wraps
 
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+from django.utils import simplejson
 
 from draft.models import ContentDraft
 
@@ -85,10 +86,15 @@ def _get_section_drafts_related(c, request):
         slug = request.get_full_path().split('/')[1]
         if slug == 'busca':
             section = SECTIONS_MAP['home']
-        else:
+        elif SECTIONS_MAP.has_key(slug):
             section = SECTIONS_MAP[slug]
             drafts = dfilter(CT_MAP['section'], SECTIONS_MAP_SLUG_ID[slug])
             model_title = trans(section.menu_title)
+        else:
+            section = 'home'
+            drafts = []
+            model_title = ''
+
     if not isinstance(drafts, list):
         drafts.order_by('-content_date')
     return dict(section=section,
@@ -106,3 +112,11 @@ def render_to(template, slug=None):
             return render_to_response(template, RequestContext(request, c))
         return _wrapped_view
     return _decorator
+
+def json(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        c = view_func(request, *args, **kwargs)
+        json = simplejson.dumps(c)
+        return HttpResponse(json)
+    return _wrapped_view

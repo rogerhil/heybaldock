@@ -816,6 +816,21 @@ ul.list_quadruplet img {
     height: 90px;
 }
 
+ul.square img {
+    width: 90px !important;
+    height: 90px  !important;
+}
+
+ul.photo_auto img {
+    width: auto !important;
+    height: auto  !important;
+}
+
+ul.highlighted li {
+    margin: 3px;
+    border: 1px dashed;
+}
+
 ul.photo_list p {
     border-radius: 7px;
     padding: 0px 7px 0px 7px;
@@ -944,4 +959,21 @@ div.loading_icon {
 .last_updated {
     float: right;
     font-size: 12px;
+}
+
+.ui-state-highlight {
+    height: 40px;
+}
+
+tr.album-resource:hover {
+    color: inherit;
+    cursor: auto;
+}
+
+tr.album-resource {
+    background-image: url(/media/img/content_bg_2.png);
+}
+
+tr.album-resource td {
+    padding: 2px;
 }

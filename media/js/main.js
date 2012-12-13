@@ -16,10 +16,14 @@ function fullHeight() {
 	var $content = $("#content");
 	var $emptyPortlet = $("#empty_portlet");
 	var $footer = $("#footer");
-	var cdiff = $footer.position().top - $content.position().top - 30;
-	var ediff = $footer.position().top - $emptyPortlet.position().top - 30;
-	$content.css("height", cdiff + 'px');
-	$emptyPortlet.css("height", ediff + 'px');
+	if ($emptyPortlet.length && $footer.length) {
+		var ediff = $footer.position().top - $emptyPortlet.position().top - 30;
+		$emptyPortlet.css("height", ediff + 'px');
+	}
+	if ($footer.length) {
+		var cdiff = $footer.position().top - $content.position().top - 30;
+		$content.css("height", cdiff + 'px');
+	}
 	contentHeightAuto();
 }
 

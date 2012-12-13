@@ -39,11 +39,11 @@
                     cookie: true, // enable cookies to allow the server to access the session
                     xfbml: true  // parse XFBML
                 });
-                FB.Event.subscribe("xfbml.render", function(response) {
-                    window.setInterval(function () {
-                        fullHeight();
-                    }, 100);
-                });
+                //FB.Event.subscribe("xfbml.render", function(response) {
+                    //window.setInterval(function () {
+                    //    fullHeight();
+                    //}, 100);
+                //});
             };
 
             // Load the SDK Asynchronously
@@ -93,6 +93,10 @@
                 <div class="grid_3">
                     {% if user.is_authenticated %}
                     <div class="profile_area">
+                        {% if enable_repertory_features %}
+                            <a href="{% url music_management %}">Músicas</a>
+                            <a href="{% url repertories %}">Repertórios</a>
+                        {% endif %}
                         <a href="{% url profile %}">{{ user }}</a>
                         <a href="{% url logout %}">Logout</a>
                         <div class="clear"></div>
@@ -104,15 +108,6 @@
                     </div>
                 </div>
                 <div class="clear"></div>
-
-                {% if user.is_authenticated %}
-                <div class="grid_3 edit_mode">
-                    <div>
-                        {% trans "EDIT MODE" %}
-                    </div>
-                </div>
-                <div class="clear"></div>
-                {% endif %}
 
                 <div class="grid_2">
                     <div id="menu">
@@ -134,41 +129,42 @@
                     </div>
                 </div>
                 <div class="clear"></div>
+                {% block large_content %}
+                    <div class="grid_2">
+                        <div id="content">
+                            {% if messages %}
+                                {% for message in messages %}
+                                <div class="message {{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="clear"></div>
+                            {% block content %}{% endblock %}
+                        </div>
+                    </div>
 
-                <div class="grid_2">
-                    <div id="content">
-                        {% if messages %}
-                            {% for message in messages %}
-                            <div class="message {{ message.tags }}">
-                                {{ message }}
-                            </div>
-                            {% endfor %}
+                    <div class="grid_1">
+                        {% block right_column %}
+                        {% include "draft/portlet.html" %}
+                        {% include "event/portlet.html" %}
+                        {% if user.is_authenticated %}
+                            {% include "event/location_portlet.html" %}
                         {% endif %}
-                        <div class="clear"></div>
-                        {% block content %}{% endblock %}
+                        {% comment %}
+                        <div class="portlet">
+                            <h2>Enquete</h2>
+                        </div>
+                        {% endcomment %}
+                        <div class="portlet" id="empty_portlet">
+                            <strong>{% trans 'Follow us:' %}</strong> &nbsp;
+                            <a href="http://www.facebook.com/HeyBaldockBeatlesCover/" target="_blank"><img src="/media/img/facebook.png" width="16" height="16" alt="Facebook" /></a>&nbsp;
+                            <a href="http://www.twitter.com/heybaldock/" target="_blank"><img src="/media/img/twitter.png" width="16" height="16" alt="Twitter"/></a>&nbsp;
+                            <a href="http://www.youtube.com/heybaldock/" target="_blank"><img src="/media/img/youtube.png" width="16" height="16" alt="Youtube"/></a>
+                        </div>
+                        {% endblock %}
                     </div>
-                </div>
-
-                <div class="grid_1">
-                    {% block right_column %}
-                    {% include "draft/portlet.html" %}
-                    {% include "event/portlet.html" %}
-                    {% if user.is_authenticated %}
-                        {% include "event/location_portlet.html" %}
-                    {% endif %}
-                    {% comment %}
-                    <div class="portlet">
-                        <h2>Enquete</h2>
-                    </div>
-                    {% endcomment %}
-                    <div class="portlet" id="empty_portlet">
-                        <strong>{% trans 'Follow us:' %}</strong> &nbsp;
-                        <a href="http://www.facebook.com/HeyBaldockBeatlesCover/" target="_blank"><img src="/media/img/facebook.png" width="16" height="16" alt="Facebook" /></a>&nbsp;
-                        <a href="http://www.twitter.com/heybaldock/" target="_blank"><img src="/media/img/twitter.png" width="16" height="16" alt="Twitter"/></a>&nbsp;
-                        <a href="http://www.youtube.com/heybaldock/" target="_blank"><img src="/media/img/youtube.png" width="16" height="16" alt="Youtube"/></a>
-                    </div>
-                    {% endblock %}
-                </div>
+                {% endblock %}
                 <div class="clear"></div>
 
                 <div id="footer">

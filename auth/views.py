@@ -10,11 +10,6 @@ from django.utils.translation import ugettext as _
 from decorators import login_required
 from forms import UserForm
 
-@login_required
-def happy_birthday(request):
-    c = RequestContext(request, {})
-    return render_to_response("auth/happy_birthday.html", c)
-
 def login_view(request):
     """Login view
     """
