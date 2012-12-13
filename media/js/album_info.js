@@ -50,6 +50,41 @@ function getAlbumsInfo(page) {
 	});
 }
 
+function hideShowItems(o, selectedPositions) {
+	var items = $.parseJSON($(o).val());
+	var $itemsTable = $(o).parent().parent().parent();
+	var pos = $(o).attr('pos');
+	if (items.length != selectedPositions.length) {
+		$(o).attr('disabled', 'disabled');
+		$itemsTable.find('td[pos=' + pos + ']').hide();
+	} else {
+		$(o).removeAttr('disabled');
+		$itemsTable.find('td[pos=' + pos + ']').show();
+	}
+}
+
+function showDifferences(o) {
+	var diff = $.parseJSON($(o).attr('diff'));
+	if (!diff) return;
+	if (diff.has_difference) {
+		var tds = $(o).find('td');
+		tds.css('color', 'inherit');
+		var baseTitle = '';
+		var ctitle = '';
+		for (var k = 0; k < tds.length; k++) {
+			if ($(tds[k]).is(':hidden')) continue;
+			ctitle = $(tds[k]).html().trim();
+			if (!baseTitle) {
+				baseTitle = ctitle;
+				continue;
+			}
+			if (ctitle != baseTitle) {
+				$(tds[k]).css('color', '#AB2727');
+			}
+		}
+	}
+}
+
 function getAlbumCustom(page) {
 	var $form = $('form[name=album_info]');
 	var artist = $form.find('input[type=text][name=artist]').val();
@@ -69,6 +104,55 @@ function getAlbumCustom(page) {
 		data: data,
 		success: function (data) {
 			$('#album_info_results').html(data);
+			$('#positions_choices input[type=radio]').click(function () {
+				$('#titles_choices').show();
+				$('#durations_choices').show();
+				$('#composers_choices').show();
+				var $table = $(this).parent().parent().parent();
+				$table.find('td').css('background', 'url(/media/img/content_bg.png)');
+				if ($(this).is(':checked')) {
+					var tdpos = $(this).attr('pos');
+					var selectedPositions = $.parseJSON($(this).val());
+					$('#titles_choices input[type=radio]').each(function () {
+						hideShowItems(this, selectedPositions);
+					});
+
+					$('#titles_choices tr').each(function () {
+						showDifferences(this);
+					});
+
+					$('#durations_choices input[type=radio]').each(function () {
+						hideShowItems(this, selectedPositions);
+					});
+
+					$('#durations_choices tr').each(function () {
+						showDifferences(this);
+					});
+
+					$('#composers_choices input[type=radio]').each(function () {
+						hideShowItems(this, selectedPositions);
+						var items = $.parseJSON($(this).val());
+						var $itemsTable = $(this).parent().parent().parent();
+						var pos = $(this).attr('pos');
+						$itemsTable.find('td[pos=' + pos + ']').unbind('mouseover').mouseover(function () {
+							var linepos = $(this).parent().prevAll().length - 1;
+							console.log(items[linepos]);
+						});
+					});
+
+					$('#composers_choices tr').each(function () {
+						showDifferences(this);
+					});
+
+					$table.find('td[pos=' + tdpos + ']').css('background', 'url(/media/img/content_bg_2.png)');
+				}
+			});
+			$('#titles_choices').hide();
+			$('#titles_choices input[type=radio]').attr("disabled", "disabled");
+			$('#durations_choices').hide();
+			$('#durations_choices input[type=radio]').attr("disabled", "disabled");
+			$('#composers_choices').hide();
+			$('#composers_choices input[type=radio]').attr("disabled", "disabled")
 		}
 	});
 }

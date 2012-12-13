@@ -22,63 +22,85 @@
     <br />
     <h2><span style="color: red">STEP 3</span> Select songs info</h2>
 
-    <div class="table_list">
-        <table style="width: 100%;">
+    <div class="table_list songs_info">
+        <table style="max-width: 920px">
             <thead>
-                <th width="100px">
-                    Position
-                </th>
-                <th>
-                    Title
-                </th>
-                <th width="100px">
-                    Duration
-                </th>
-                <th width="200px">
-                    Composers
-                </th>
+                <tr>
+                    <th style="width: 100px">
+                        Position
+                    </th>
+                    <th style="width: 520px">
+                        Title
+                    </th>
+                    <th style="width: 100px">
+                        Duration
+                    </th>
+                    <th style="width: 200px">
+                        Composers
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>
+                    <td id="positions_choices">
                         <table>
+                            <tr>
+                                {% for item in custom.songs.json_positions %}
+                                <td><input name="position" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                {% endfor %}
+                            </tr>
                             {% for position in custom.songs.positions %}
                             <tr>
-                                {% for item in position %}
-                                    <td>{{ item }}</td>
+                                {% for item in position.items %}
+                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
                                 {% endfor %}
                             </tr>
                             {% endfor %}
                         </table>
                     </td>
-                    <td>
-                        <table>
+                    <td id="titles_choices">
+                        <table width="520">
+                            <tr>
+                                {% for item in custom.songs.json_titles %}
+                                <td pos="{{ forloop.counter0 }}"><input name="title" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                {% endfor %}
+                            </tr>
                             {% for titles in custom.songs.titles %}
-                            <tr>
-                                {% for item in titles %}
-                                    <td>{{ item }}</td>
+                            <tr diff="{{ titles.json_diff }}" class="{% cycle odd,even %}">
+                                {% for item in titles.items %}
+                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
                                 {% endfor %}
                             </tr>
                             {% endfor %}
                         </table>
                     </td>
-                    <td>
+                    <td id="durations_choices">
                         <table>
+                            <tr>
+                                {% for item in custom.songs.json_durations %}
+                                <td pos="{{ forloop.counter0 }}"><input name="duration" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                {% endfor %}
+                            </tr>
                             {% for durations in custom.songs.durations %}
-                            <tr>
-                                {% for item in durations %}
-                                    <td>{{ item }}</td>
+                            <tr diff="{{ durations.json_diff }}" class="{% cycle odd,even %}">
+                                {% for item in durations.items %}
+                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
                                 {% endfor %}
                             </tr>
                             {% endfor %}
                         </table>
                     </td>
-                    <td>
+                    <td id="composers_choices">
                         <table>
-                            {% for composers in custom.songs.composers %}
                             <tr>
-                                {% for item in composers %}
-                                    <td>{{ item }}</td>
+                                {% for item in custom.songs.json_composers %}
+                                <td pos="{{ forloop.counter0 }}"><input name="composer" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                {% endfor %}
+                            </tr>
+                            {% for composers in custom.songs.composers %}
+                            <tr diff="{{ composers.json_diff }}" class="{% cycle odd,even %}">
+                                {% for item in composers.items %}
+                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
                                 {% endfor %}
                             </tr>
                             {% endfor %}

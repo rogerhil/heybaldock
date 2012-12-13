@@ -1,5 +1,7 @@
 # -*- coding: utf-8; Mode: Python -*-
 
+import pickle
+
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -7,6 +9,7 @@ from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
+from django.utils import simplejson
 
 from auth.decorators import login_required
 from section.decorators import render_to, json
@@ -248,9 +251,38 @@ def search_albums(request):
     c = dict(info=info, occurrences=len(results))
     return c
 
+def mzip(ll):
+    if not ll:
+        return ll
+    m = max([len(i) for i in ll])
+    newl = []
+    for i in ll:
+        l = i[:]
+        dif = (m - len(l))
+        if dif:
+            l += ['' for i in xrange(dif)]
+        newl.append(l)
+    newl = zip(*newl)
+    mlist = []
+    for tup in newl:
+        has_difference = len(set(tup)) != 1
+        dif = {'has_difference': has_difference}
+        mlist.append(dict(
+            json_diff=simplejson.dumps(dif), items=tup,
+        ))
+    return mlist
+
+def str_list_in_list(alist, list_of_lists):
+    for l in list_of_lists:
+        if map(lambda x: x.strip(), l) == map(lambda x: x.strip(), alist):
+            return True
+    return False
+
 @login_required
 @render_to("music/custom_results.html")
 def custom_album_creation(request):
+    custom = pickle.loads(open('songs.pickle').read())
+    return dict(custom=custom)
     data = request.GET
     info = Discogs.get_album_infos(data['artist'], data['album'],
                                    page=data.get('page', 1), per_page=500)
@@ -261,38 +293,69 @@ def custom_album_creation(request):
     elif data['country'].startswith('All countries'):
         all_countries = True
     results = [i for i in info['results'] if i.get('year') and (i['year'] < data['from_year'] or i['year'] > data['till_year'])]
-    print len(results), info['pagination']['pages']
     if not all_countries:
         results = [i for i in info['results'] if i['country'] in countries]
 
     thumbs = []
-    titles = []
+    album_titles = []
     songs = dict(
         positions=[],
         titles=[],
         durations=[],
-        composers=[]
+        composers=[],
+        hpositions=[],
+        htitles=[],
+        hdurations=[],
+        hcomposers=[]
     )
-    titles = []
+
+    data_composers = []
     for res in results:
         thumbs.append({'title': res['title'], 'url': res['thumb']})
-        titles.append(res['title'])
+        album_titles.append(res['title'])
         ainfo = Discogs.get_resource(res['resource_url'])
         tracklist = ainfo.get('tracklist')
-        if tracklist:
-            duration = [i['duration'] for i in tracklist]
+        if tracklist and all([i.get('extraartists') for i in tracklist]):
+            durations = [i['duration'] for i in tracklist]
             titles = [i['title'] for i in tracklist]
-            songs['positions'].append([i['position'] for i in tracklist])
-            songs['titles'].append()
-            if all(durations):
-                songs['durations'].append()
-            songs['composers'].append([i['extraartists'] for i in tracklist])
+            positions = [i['position'] for i in tracklist]
+            composers = [', '.join(set([j['name'] for j in i['extraartists']])) for i in tracklist]
+            if positions not in songs['hpositions']:
+                songs['hpositions'].append(positions)
+            if not str_list_in_list(titles, songs['htitles']):
+                songs['htitles'].append(titles)
+            if all(durations) and durations not in songs['hdurations']:
+                songs['hdurations'].append(durations)
+            if not str_list_in_list(composers, songs['hcomposers']):
+                songs['hcomposers'].append(composers)
+                data_composers.append([i['extraartists'] for i in tracklist])
+
+    positions_lengths = set([len(i) for i in songs['hpositions']])
+    titles_lengths = set([len(i) for i in songs['htitles']])
+    durations_lengths = set([len(i) for i in songs['hdurations']])
+    base_lengths = list(positions_lengths.intersection(titles_lengths).intersection(durations_lengths))
+
+    songs['hpositions'] = [i for i in songs['hpositions'] if len(i) in base_lengths]
+    songs['htitles'] = [i for i in songs['htitles'] if len(i) in base_lengths]
+    songs['hdurations'] = [i for i in songs['hdurations'] if len(i) in base_lengths]
+    songs['hcomposers'] = [i for i in songs['hcomposers'] if len(i) in base_lengths]
+
+
+    songs['json_positions'] = [simplejson.dumps(i) for i in songs['hpositions']]
+    songs['json_durations'] = [simplejson.dumps(i) for i in songs['hdurations']]
+    songs['json_titles'] = [simplejson.dumps(i) for i in songs['htitles']]
+    songs['json_composers'] = [simplejson.dumps(i) for i in data_composers]
+    songs['positions'] = mzip(songs['hpositions'])
+    songs['durations'] = mzip(songs['hdurations'])
+    songs['titles'] = mzip(songs['htitles'])
+    songs['composers'] = mzip(songs['hcomposers'])
 
     custom = dict(
         thumbs=thumbs,
-        titles=set(titles),
+        titles=set(album_titles),
         songs=songs
     )
+    open('songs.pickle', 'w').write(pickle.dumps(custom))
     c = dict(custom=custom)
     return c
 

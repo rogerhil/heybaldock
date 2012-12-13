@@ -190,6 +190,31 @@ ul {
     cursor: pointer;
 }
 
+.songs_info td {
+    white-space: nowrap;
+    vertical-align: top;
+    overflow-x: hidden !important;
+}
+
+.songs_info tr:hover {
+    color: inherit !important;
+    cursor: inherit !important;
+}
+
+div.songs_info {
+    overflow-x: scroll !important;
+    width: 920px !important;
+    max-width: 920px !important;
+}
+
+div.songs_info table {
+    max-width: 920px !important;
+}
+
+#positions_choices td {
+    text-align: center;
+}
+
 a.button,
 .pretty_form input[type=submit] {
     display: block !important;
