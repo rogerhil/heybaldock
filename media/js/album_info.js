@@ -99,7 +99,7 @@ function getAlbumCustom(page) {
 		from_year: from_year,
 		till_year: till_year
 	};
-	$.ajax({
+	ajax({
 		url: '/musica/management/album/custom/',
 		data: data,
 		success: function (data) {
@@ -153,6 +153,12 @@ function getAlbumCustom(page) {
 			$('#durations_choices input[type=radio]').attr("disabled", "disabled");
 			$('#composers_choices').hide();
 			$('#composers_choices input[type=radio]').attr("disabled", "disabled")
+
+			$("#albums_covers").smoothDivScroll({
+				mousewheelScrolling: "allDirections",
+				manualContinuousScrolling: true,
+				autoScrollingMode: "onStart"
+			});
 		}
 	});
 }

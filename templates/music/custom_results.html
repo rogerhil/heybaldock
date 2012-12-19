@@ -11,13 +11,12 @@
     <div class="clear"></div>
     <br />
     <h2><span style="color: red">STEP 2</span> Select the album cover</h2>
-    <ul class="photo_list square">
+    <div id="albums_covers">
         {% for thumb in custom.thumbs %}
-            <li title="{{ thumb.title }}">
-                <img src="{{ thumb.url }}" />
-            </li>
+            <img src="{{ thumb.url }}" alt="{{ thumb.title }}" />
         {% endfor %}
-    </ul>
+    </div>
+
     <div class="clear"></div>
     <br />
     <h2><span style="color: red">STEP 3</span> Select songs info</h2>

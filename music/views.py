@@ -282,7 +282,7 @@ def str_list_in_list(alist, list_of_lists):
 @render_to("music/custom_results.html")
 def custom_album_creation(request):
     custom = pickle.loads(open('songs.pickle').read())
-    return dict(custom=custom)
+    #return dict(custom=custom)
     data = request.GET
     info = Discogs.get_album_infos(data['artist'], data['album'],
                                    page=data.get('page', 1), per_page=500)

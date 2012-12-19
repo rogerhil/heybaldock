@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="/media/css/960grid.css" type="text/css" />
         <link rel="stylesheet" href="/media/css/layout.css" type="text/css" />
         <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="/media/css/prettyPhoto.css" type="text/css" />
 
         <script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -23,11 +24,13 @@
         {% block open_grap_tags %}
         {% endblock %}
         <meta property="og:type" content="band"/>
-        <meta property="og:site_name" content="Hey Baldock - Beatles Cover Band"/>
+        <meta property="og:site_name" content="Hey Baldock - Beatles Tribute"/>
         <meta property="fb:admins" content="1520271889"/>
 
     </head>
     <body>
+        <div class="pp_overlay" style="opacity: 0.8; height: 1088px; width: 1905px; display: none;"></div>
+
         <!-- Facebook API -->
         <div id="fb-root"></div>
         <script>
@@ -103,8 +106,8 @@
                     </div>
                     {% endif %}
                     <div id="logo">
-                        <div>Hey Baldock <span class="beatles_cover">Beatles Cover</span></div>
-                        <div class="shadow"><span class="shadow_big">Hey Baldock</span> <span class="beatles_cover shadow_small">Beatles Cover</span></div>
+                        <div>Hey Baldock</div>
+                        <div class="shadow"><span class="shadow_big">Hey Baldock</span></div>
                     </div>
                 </div>
                 <div class="clear"></div>
@@ -175,7 +178,7 @@
                     </div>
                     <div class="grid_1 textcenter">
                         <p>
-                            Hey Baldock - Beatles Cover &nbsp;
+                            Hey Baldock - Beatles Tribute &nbsp;
                             <a href="http://www.facebook.com/HeyBaldockBeatlesCover/" target="_blank"><img src="/media/img/facebook.png" width="16" height="16" alt="Facebook" /></a>&nbsp;
                             <a href="http://www.twitter.com/heybaldock/" target="_blank"><img src="/media/img/twitter.png" width="16" height="16" alt="Twitter"/></a>&nbsp;
                             <a href="http://www.youtube.com/heybaldock/" target="_blank"><img src="/media/img/youtube.png" width="16" height="16" alt="Youtube"/></a>
