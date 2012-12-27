@@ -13,7 +13,7 @@ class Discogs:
         params = [
             ('release_title', album),
             ('artist', artist),
-            ('type', 'master'),
+            ('type', 'release'),
             ('per_page', per_page),
             ('page', page)
         ]

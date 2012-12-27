@@ -2,9 +2,9 @@
 
 import pickle
 
+from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -13,11 +13,14 @@ from django.utils import simplejson
 
 from auth.decorators import login_required
 from section.decorators import render_to, json
-
 from discogs import Discogs
-from forms import RepertoryForm, AlbumInfoForm, AlbumForm, ArtistForm, SongForm
-from models import Repertory, Song
+from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm
+from models import Repertory, Song, Album, Artist, RepertoryGroup, \
+                   RepertoryGroupItem
+from utils import get_or_create_temporary, mzip, str_list_in_list
 
+DISCOGS_PAGES = 500
+MAX_YEARS = 10
 
 @login_required
 @render_to("music/repertories.html")
@@ -57,7 +60,7 @@ def add_repertory_group(request, id):
     count = repertory.groups.all().count()
     repertory.groups.create(name=request.POST['name'], order=count + 1)
     groups = repertory.groups.all().order_by('order')
-    tc = RequestContext(request, dict(groups=groups))
+    tc = RequestContext(request, dict(groups=groups, repertory=repertory))
     c = dict(
         success=True,
         content=loader.get_template("music/repertory_content.html").render(tc)
@@ -76,7 +79,7 @@ def remove_repertory_group(request, id, group_id):
         group.order -= 1
         group.save()
     groups = repertory.groups.all().order_by('order')
-    tc = RequestContext(request, dict(groups=groups))
+    tc = RequestContext(request, dict(groups=groups, repertory=repertory))
     c = dict(
         success=True,
         content=loader.get_template("music/repertory_content.html").render(tc)
@@ -94,7 +97,8 @@ def move_repertory_group(request, id, group_id):
         tc = RequestContext(request, dict(groups=groups))
         c = dict(
             success=True,
-            content=loader.get_template("music/repertory_content.html").render(tc)
+            content=loader.get_template("music/repertory_content.html")\
+                          .render(tc)
         )
         return c
     current_order = current_group.order
@@ -130,11 +134,30 @@ def move_repertory_group(request, id, group_id):
 @json
 def search_song_by_name(request):
     name = request.POST['name']
-    db_songs = Song.objects.filter(name__icontains=name)
-    discogs_songs = Discogs
+    is_main = int(request.POST['main'])
+    group_id = int(request.POST['group_id'])
+    def item(s):
+        return dict(
+            name=str(s.name),
+            url=str(s.album.icon_url),
+            id=s.id
+        )
+    main = Repertory.get_main_repertory()
+    main_group = main.groups.all()[0]
+    if is_main:
+        ids = main_group.items.all().values_list('song__id', flat=True)
+        songs = Song.objects.filter(name__icontains=name)\
+                            .exclude(id__in=ids)[:10]
+        songs = [item(s) for s in songs]
+    else:
+        group = RepertoryGroup.objects.get(id=group_id)
+        ids = group.items.all().values_list('song__id', flat=True)
+        items = main_group.items.filter(song__name__icontains=name)\
+                                .exclude(song__id__in=ids)[:10]
+        songs = [item(i.song) for i in items]
     c = dict(
         success=True,
-        db_songs=songs
+        songs=songs
     )
     return c
 
@@ -152,152 +175,30 @@ def add_album(request):
     c = dict(form=AlbumInfoForm())
     return c
 
-@login_required
-@json
-def register_album(request):
-    url = request.POST['resource_url']
-    info = Discogs.get_resource(url)
-    catno = info['labels'][0]['catno'] if info['labels'] else ''
-    description = info['notes']
-    artist_info = info['artists'][0]
-    artist_metadata = Discogs.get_resource(artist_info['resource_url'])
-    artist_data = dict(
-        discogsid=artist_info['id'],
-        name=artist_info['name'],
-    )
-    form = ArtistForm(metadata=artist_metadata, data=artist_data)
-    if not form.is_valid():
-        c = dict(
-            success=False,
-            errors=form.errors,
-        )
-        return c
-    #artist = form.save()
-    data = dict(
-        discogsid=info['id'],
-        catno=catno,
-        name=info['title'],
-        description=description,
-        #artist=artist.id,
-        artist=1,
-        thumb=info['thumb'],
-        uri=info['uri'],
-        year=info['year'],
-    )
-    form = AlbumForm(metadata=info, data=data)
-    if not form.is_valid():
-        c = dict(
-            success=False,
-            errors=form.errors,
-        )
-        return c
-    #album = form.save()
-
-    for track in info['tracklist']:
-        for k, v in track.items():
-            if isinstance(v, list):
-                print k
-                for d in v:
-                    print
-                    for k1, v1 in d.items():
-                        print "    %s: %s" % (k1, v1)
-            else:
-                print "%s: %s" % (k, v)
-        #form = SongForm(data=)
-
-    c = dict(success=True)
-    return c
-
-
-@login_required
-@render_to("music/albums_results.html")
-def search_albums(request):
-    data = request.GET
-    track_list_enumeration = int(data['track_list_enumeration'])
-    composers_info = int(data['composers_info'])
-    info = Discogs.get_album_infos(data['artist'], data['album'],
-                                   page=data.get('page', 1), per_page=500)
-    results = []
-    countries = [data['country']]
-    all_countries = False
-    if data['country'].startswith('All of:'):
-        countries = ['US', 'UK', 'Europe', 'UK & Europe']
-    elif data['country'].startswith('All countries'):
-        all_countries = True
-
-    for res in info['results']:
-        if not all_countries and res['country'].strip() not in countries:
-            continue
-        if not res.get('year'):
-            continue
-        if res['year'] < data['from_year'] or res['year'] > data['till_year']:
-            continue
-        ainfo = Discogs.get_resource(res['resource_url'])
-        tracklist = ainfo['tracklist']
-        if composers_info and not tracklist[0].get('extraartists'):
-            continue
-        if track_list_enumeration and not tracklist[0].get('duration'):
-            continue
-        results.append(res)
-    info['results'] = results
-    #urls = info['pagination']['urls'].has_key
-    #page = info['pagination']['page']
-    #pages = info['pagination']['pages']
-    #info['pagination']['next'] = urls('next') and page + 1 or None
-    #info['pagination']['prev'] = urls('prev') and page - 1 or None
-    #info['pagination']['first'] = urls('first') and 1 or None
-    #info['pagination']['last'] = urls('last') and pages or None
-    #info['pagination']['pages'] = range(1, info['pagination']['pages'] + 1)
-    c = dict(info=info, occurrences=len(results))
-    return c
-
-def mzip(ll):
-    if not ll:
-        return ll
-    m = max([len(i) for i in ll])
-    newl = []
-    for i in ll:
-        l = i[:]
-        dif = (m - len(l))
-        if dif:
-            l += ['' for i in xrange(dif)]
-        newl.append(l)
-    newl = zip(*newl)
-    mlist = []
-    for tup in newl:
-        has_difference = len(set(tup)) != 1
-        dif = {'has_difference': has_difference}
-        mlist.append(dict(
-            json_diff=simplejson.dumps(dif), items=tup,
-        ))
-    return mlist
-
-def str_list_in_list(alist, list_of_lists):
-    for l in list_of_lists:
-        if map(lambda x: x.strip(), l) == map(lambda x: x.strip(), alist):
-            return True
-    return False
-
-@login_required
-@render_to("music/custom_results.html")
-def custom_album_creation(request):
+def get_custom_results(request):
     custom = pickle.loads(open('songs.pickle').read())
-    #return dict(custom=custom)
+    #return custom
     data = request.GET
     info = Discogs.get_album_infos(data['artist'], data['album'],
-                                   page=data.get('page', 1), per_page=500)
+                                   page=data.get('page', 1),
+                                   per_page=DISCOGS_PAGES)
     countries = [data['country']]
     all_countries = False
     if data['country'].startswith('All of:'):
         countries = ['US', 'UK', 'Europe', 'UK & Europe']
     elif data['country'].startswith('All countries'):
         all_countries = True
-    results = [i for i in info['results'] if i.get('year') and (i['year'] < data['from_year'] or i['year'] > data['till_year'])]
+    results = [i for i in info['results'] if i.get('year') and
+                      (int(i['year']) >= int(data['from_year']) and
+                       int(i['year']) <= (int(data['from_year']) + MAX_YEARS))]
     if not all_countries:
-        results = [i for i in info['results'] if i['country'] in countries]
-
+        results = [i for i in results if i['country'] in countries]
     thumbs = []
     album_titles = []
+    years = []
+    styles = []
+    genres = []
+    artists = []
     songs = dict(
         positions=[],
         titles=[],
@@ -311,15 +212,24 @@ def custom_album_creation(request):
 
     data_composers = []
     for res in results:
-        thumbs.append({'title': res['title'], 'url': res['thumb']})
+        if res['thumb'].find('s.discogs.com') == -1:
+            url = get_or_create_temporary(res['thumb'])
+            thumbs.append({'title': res['title'], 'url': url})
         album_titles.append(res['title'])
         ainfo = Discogs.get_resource(res['resource_url'])
+        years.append(res['year'])
+        artists += [i['name'] for i in ainfo['artists']]
+        if ainfo.get('styles'):
+            styles += ainfo['styles']
+        if ainfo.get('genres'):
+            genres += ainfo['genres']
         tracklist = ainfo.get('tracklist')
-        if tracklist and all([i.get('extraartists') for i in tracklist]):
+        if tracklist:
             durations = [i['duration'] for i in tracklist]
             titles = [i['title'] for i in tracklist]
             positions = [i['position'] for i in tracklist]
-            composers = [', '.join(set([j['name'] for j in i['extraartists']])) for i in tracklist]
+            composers = [', '.join(set([j['name'] for j in i['extraartists']]))
+                                   for i in tracklist if i.get('extraartists')]
             if positions not in songs['hpositions']:
                 songs['hpositions'].append(positions)
             if not str_list_in_list(titles, songs['htitles']):
@@ -328,21 +238,28 @@ def custom_album_creation(request):
                 songs['hdurations'].append(durations)
             if not str_list_in_list(composers, songs['hcomposers']):
                 songs['hcomposers'].append(composers)
-                data_composers.append([i['extraartists'] for i in tracklist])
+                data_composers.append([i['extraartists'] for i in tracklist
+                                                     if i.get('extraartists')])
 
     positions_lengths = set([len(i) for i in songs['hpositions']])
     titles_lengths = set([len(i) for i in songs['htitles']])
     durations_lengths = set([len(i) for i in songs['hdurations']])
-    base_lengths = list(positions_lengths.intersection(titles_lengths).intersection(durations_lengths))
+    base_lengths = list(positions_lengths.intersection(titles_lengths)
+                                         .intersection(durations_lengths))
 
-    songs['hpositions'] = [i for i in songs['hpositions'] if len(i) in base_lengths]
+    songs['hpositions'] = [i for i in songs['hpositions']
+                                                    if len(i) in base_lengths]
     songs['htitles'] = [i for i in songs['htitles'] if len(i) in base_lengths]
-    songs['hdurations'] = [i for i in songs['hdurations'] if len(i) in base_lengths]
-    songs['hcomposers'] = [i for i in songs['hcomposers'] if len(i) in base_lengths]
+    songs['hdurations'] = [i for i in songs['hdurations']
+                                                    if len(i) in base_lengths]
+    songs['hcomposers'] = [i for i in songs['hcomposers']
+                                                    if len(i) in base_lengths]
+    data_composers = [i for i in data_composers if len(i) in base_lengths]
 
-
-    songs['json_positions'] = [simplejson.dumps(i) for i in songs['hpositions']]
-    songs['json_durations'] = [simplejson.dumps(i) for i in songs['hdurations']]
+    songs['json_positions'] = [simplejson.dumps(i)
+                                                for i in songs['hpositions']]
+    songs['json_durations'] = [simplejson.dumps(i)
+                                                for i in songs['hdurations']]
     songs['json_titles'] = [simplejson.dumps(i) for i in songs['htitles']]
     songs['json_composers'] = [simplejson.dumps(i) for i in data_composers]
     songs['positions'] = mzip(songs['hpositions'])
@@ -350,28 +267,180 @@ def custom_album_creation(request):
     songs['titles'] = mzip(songs['htitles'])
     songs['composers'] = mzip(songs['hcomposers'])
 
+    years = list(set(map(int, years)))[:5]
+    years.sort()
+
+    artists = list(set(artists))
+    artists.sort()
+
     custom = dict(
         thumbs=thumbs,
         titles=set(album_titles),
+        years=years,
+        artists=artists,
+        styles=set(styles),
+        genres=set(genres),
         songs=songs
     )
+
     open('songs.pickle', 'w').write(pickle.dumps(custom))
+    return custom
+
+@login_required
+@render_to("music/custom_results.html")
+def custom_album_creation(request):
+    custom = get_custom_results(request)
     c = dict(custom=custom)
     return c
 
-def get_album_resource(request):
-    url = request.GET['resource_url']
-    info = Discogs.get_resource(url)
-    c = dict(info=info, resource_url=url)
-    c = RequestContext(request, c)
-    return render_to_response("music/album_info_results.html", c)
+@login_required
+@json
+def register_album(request):
+    data = request.POST
+    album_form = AlbumForm(metadata={}, data=data)
+    success = album_form.is_valid()
+    redirect_url = None
+    if success:
+        positions = simplejson.loads(data['position'])
+        titles = simplejson.loads(data['title'])
+        durations = simplejson.loads(data['duration'])
+        composers = data.get('composer')
+        if composers:
+            composers = simplejson.loads(composers)
+        forms = []
+        for i, position in enumerate(positions):
+            d = {
+                'position': position,
+                'name': titles[i],
+                'duration': durations[i],
+                'composer': simplejson.dumps(composers[i]) if composers else ''
+            }
+            song_form = SongForm(data=d)
+            if not song_form.is_valid():
+                success = False
+                break
+            forms.append(song_form)
+        album = album_form.save()
+        for form in forms:
+            form.save(album)
+        redirect_url = reverse("album", args=(album.id,))
+        msg = _('The album was successfully registered.')
+        messages.add_message(request, messages.SUCCESS, msg)
 
-def repertoire_include(request):
-    data = request.GET
-    if data.get('repertoire_id'):
-        repertoire = Repertoire.objects.get(id=data['repertoire_id'])
-    elif data.get('repertoire_name'):
-        repertoire = Repertoire.objects.create(name=data['repertoire_name'])
-    tracklist = Discogs.get_tracklist(data['resource_url'])
-    for item in tracklist:
-         RepertoireItem.objects.create()
+    c = dict(success=success, redirect_url=redirect_url)
+    return c
+
+@render_to("music/album.html")
+def album(request, id):
+    album = get_object_or_404(Album, id=id)
+    return dict(album=album)
+
+def remove_album(request, id):
+    album = get_object_or_404(Album, id=id)
+    album.delete()
+    msg = _('The album was successfully removed.')
+    messages.add_message(request, messages.SUCCESS, msg)
+    return HttpResponseRedirect(reverse('albums'))
+
+@render_to("music/albums.html")
+def albums(request):
+    artists = Artist.objects.all().order_by('name')
+    return dict(artists=artists)
+
+@json
+def add_song_to_main_repertory(request):
+    song = get_object_or_404(Song, id=request.POST['id'])
+    main = Repertory.get_main_repertory()
+    group = main.groups.all()[0]
+    if group.items.filter(song__id=song.id).count():
+        msg = _("Song already exist in repertory!")
+        return dict(success=False, message=msg)
+    count = group.items.all().count()
+    item = RepertoryGroupItem.objects.create(group=group, song=song,
+                                             number=count + 1)
+    group.items.add(item)
+    group.save()
+    return dict(success=True)
+
+@json
+def add_song_to_repertory(request, id, group_id, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    repertory = get_object_or_404(Repertory, id=id)
+    group = repertory.groups.get(id=group_id)
+    if group.items.filter(song__id=song.id).count():
+        msg = _("Song already exist in repertory!")
+        return dict(success=False, message=msg)
+    count = group.items.all().count()
+    item = RepertoryGroupItem.objects.create(group=group, song=song,
+                                             number=count + 1)
+    group.items.add(item)
+    group.save()
+    template = loader.get_template("music/song_line_repertory_content.html")
+    c = {
+        'item': item,
+        'group': group,
+        'repertory': repertory
+    }
+    song_line = template.render(RequestContext(request, c))
+    return dict(success=True, song_line=song_line)
+
+@json
+def remove_song_from_repertory(request, id, group_id, item_id):
+    item = get_object_or_404(RepertoryGroupItem, id=item_id,
+                             group__id=group_id, group__repertory__id=id)
+    n = item.number
+    group = item.group
+    item.delete()
+    items = group.items.filter(number__gt=n).order_by('number')
+    for item in items:
+        item.number -= 1
+        item.save()
+    return dict(success=True)
+
+@login_required
+@json
+def move_song(request, id, group_id, item_id):
+    number = int(request.POST['number'])
+    current_item = RepertoryGroupItem.objects.get(id=item_id,
+                                                  group__id=group_id,
+                                                  group__repertory__id=id)
+    group = current_item.group
+    repertory = group.repertory
+    if current_item.number == number:
+        tc = RequestContext(request, dict(group=group, repertory=repertory))
+        c = dict(
+            success=True,
+            content=loader.get_template("music/repertory_group_content.html")\
+                          .render(tc)
+        )
+        return c
+    current_number = current_item.number
+    current_item.number = -1 # aux
+    current_item.save()
+    if current_number < number:
+        items = group.items.filter(number__lte=number,
+                                   number__gt=current_number)\
+                           .order_by('number')
+        # update number
+        for item in items:
+            item.number -= 1
+            item.save()
+    else:
+        items = group.items.filter(number__gte=number,
+                                   number__lt=current_number)\
+                           .order_by('-number')
+        # update numbers
+        for item in items:
+            item.number += 1
+            item.save()
+
+    current_item.number = number
+    current_item.save()
+
+    tc = RequestContext(request, dict(group=group, repertory=repertory))
+    c = dict(
+        success=True,
+        content=loader.get_template("music/repertory_group_content.html")\
+                      .render(tc)
+    )
+    return c

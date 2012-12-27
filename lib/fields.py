@@ -1,7 +1,9 @@
 import pickle
+from south.modelsinspector import add_introspection_rules
 
 from django.utils import simplejson as json
 from django.db.models import TextField
+
 from lib.serializer import JSONEncoder
 
 
@@ -81,3 +83,7 @@ class JSONField(TextField):
         def set_object(model_instance, obj):
             return setattr(model_instance, self.attname, JSONField._dumps(obj))
         setattr(cls, 'set_%s_object' % self.name, set_object)
+
+
+add_introspection_rules([], ["^lib.fields.PickleField"])
+add_introspection_rules([], ["^lib.fields.JSONField"])

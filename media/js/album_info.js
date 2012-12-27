@@ -1,54 +1,72 @@
 
 $(window).load(function () {
 	var $form = $('form[name=album_info]');
-	var $getInfo = $form.find('input[type=button][name=get_info]');
 	var $customInfo = $form.find('input[type=button][name=custom_info]');
-	$getInfo.click(getAlbumsInfo);
 	$customInfo.click(getAlbumCustom);
+	var $fromYear = $("#id_from_year");
+	$fromYear.css('display', 'inline');
+	$fromYear.css('margin-right', '10px');
+	$fromYear.change(function () {
+		$(this).parent().find('strong').remove();
+		$("<strong>till " + (Number($(this).val()) + 10) + "</strong>").insertAfter($(this));
+	});
+	$("<strong>till " + (Number($fromYear.val()) + 10) + "</strong>").insertAfter($fromYear);
 });
 
 function registerAlbum() {
-	var resourceUrl = $(this).parents().find('div.album-actions').attr('resourceurl');
+	var data = {};
+	var validTypes = {text: 1, hidden: 1, radio: 1};
+	var isValid = true;
+	var v, name, type, par, tab;
+	var $form = $("#id_custom_form");
+	var errors = [];
+	$form.find("input").each(function () {
+		name = $(this).attr('name');
+		type = $(this).attr('type');
+		if (validTypes[type] && name) {
+			par = $form.find("input[name=" + name + "]").parent();
+			tab = par.parents('table.table_choices');
+			tab.parent().find("ul.errorlist").remove();
+			if (type == 'radio' && !$("input[name=" + name + "][type=radio]").is(":checked")) {
+				isValid = false;
+				$('<ul class="errorlist"><li>Required</li></ul>').insertBefore(tab);
+				errors.push(name);
+				return;
+			}
+			if (type == 'radio' && !$(this).is(":checked")) {
+				return;
+			}
+			v = $(this).val().trim();
+			par = $form.find("input[name=" + name + "]").parent();
+			par.parent().find("ul.errorlist").remove();
+			if (!v) {
+				isValid = false;
+				$('<ul class="errorlist"><li>Required</li></ul>').insertBefore(par);
+				errors.push(name);
+				return;
+			}
+			data[$(this).attr('name')] = v;
+		}
+	});
+	if (!isValid) {
+		alert("Please complete all options above!");
+		return;
+	}
 	$.ajax({
 		url: '/musica/management/album/add/register/',
 		type: 'post',
 		dataType: 'json',
-		data: {resource_url: resourceUrl},
+		data: data,
 		success: function (data) {
-			console.log(data);
+			if (data.success) {
+				window.location = data.redirect_url;
+			} else {
+				alert("An error occurred.");
+			}
 		}
 	});
 }
 
-function getAlbumsInfo(page) {
-	var $form = $('form[name=album_info]');
-	var artist = $form.find('input[type=text][name=artist]').val();
-	var album = $form.find('input[type=text][name=album]').val();
-	var country = $form.find('select[name=country]').val();
-	var from_year = $form.find('select[name=from_year]').val();
-	var till_year = $form.find('select[name=till_year]').val();
-	var track_list_enumeration = $form.find('input[name=track_list_enumeration]').is(":checked");
-	var composers_info = $form.find('input[name=composers_info]').is(":checked");
-	page = typeof(page) == 'number' ? page : 1;
-	var data = {
-		artist: artist,
-		album: album,
-		page: page,
-		country: country,
-		from_year: from_year,
-		till_year: till_year,
-		track_list_enumeration: Number(track_list_enumeration),
-		composers_info: Number(composers_info)
-	};
-	$.ajax({
-		url: '/musica/management/album/search/',
-		data: data,
-		success: function (data) {
-			$('#album_info_results').html(data);
-			$("#albums").find('tr').click(getAlbumResource);
-		}
-	});
-}
 
 function hideShowItems(o, selectedPositions) {
 	var items = $.parseJSON($(o).val());
@@ -85,22 +103,42 @@ function showDifferences(o) {
 	}
 }
 
-function getAlbumCustom(page) {
+function composerTooltip(els) {
+	var html = "";
+	var name, role, el;
+	for (var k=0; k < els.length; k++) {
+		el = els[k];
+		role = "";
+		if (el.anv) {
+			name = el.anv;
+		} else {
+			name = el.name
+		}
+		if (el.role) {
+			role = el.role + " ";
+		}
+		html += "<p>" + role + name + "</p>"
+		if (el.join) {
+			html += "<p>Join: " + el.join + "</p>"
+		}
+	}
+	return html;
+}
+
+function getAlbumCustom() {
 	var $form = $('form[name=album_info]');
 	var artist = $form.find('input[type=text][name=artist]').val();
 	var album = $form.find('input[type=text][name=album]').val();
 	var country = $form.find('select[name=country]').val();
 	var from_year = $form.find('select[name=from_year]').val();
-	var till_year = $form.find('select[name=till_year]').val();
 	var data = {
 		artist: artist,
 		album: album,
 		country: country,
-		from_year: from_year,
-		till_year: till_year
+		from_year: from_year
 	};
 	ajax({
-		url: '/musica/management/album/custom/',
+		url: '/musica/management/album/add/custom_form/',
 		data: data,
 		success: function (data) {
 			$('#album_info_results').html(data);
@@ -134,9 +172,11 @@ function getAlbumCustom(page) {
 						var items = $.parseJSON($(this).val());
 						var $itemsTable = $(this).parent().parent().parent();
 						var pos = $(this).attr('pos');
-						$itemsTable.find('td[pos=' + pos + ']').unbind('mouseover').mouseover(function () {
-							var linepos = $(this).parent().prevAll().length - 1;
-							console.log(items[linepos]);
+						$itemsTable.find('td[pos=' + pos + ']').tooltip({
+							content: function () {
+								var linepos = $(this).parent().prevAll().length - 1;
+								return composerTooltip(items[linepos]);
+							}
 						});
 					});
 
@@ -159,28 +199,75 @@ function getAlbumCustom(page) {
 				manualContinuousScrolling: true,
 				autoScrollingMode: "onStart"
 			});
-		}
-	});
-}
+			$("#albums_covers .scrollableArea").css("width", "20000px");
+			$("#albums_covers img").click(function () {
+				$("#albums_covers img").removeClass("selected");
+				$(this).addClass("selected");
+				$(this).parent().find("input#cover").val($(this).attr("id"));
+			});
 
-function getAlbumResource() {
-	var $self = $(this);
-	var url = $self.attr('resource');
-	var data = {resource_url: url};
-	if ($self.next().is('tr.album-resource')) {
-		$self.next().find('.album-resource-data').slideToggle('slow');
-		return;
-	}
-	$.ajax({
-		url: '/musica/management/album/search/resource/',
-		data: data,
-		success: function (data) {
-			var $content = $('<tr class="album-resource"><td colspan="4"><div class="album-resource-data">' + data + '</div></td></tr>');
-			$content.find('.album-resource-data').hide();
-			$self.after($content);
-			$content.find('.album-resource-data').slideToggle('slow');
-			console.log($content.find('input[type=button].register_album'));
-			$content.find('input[type=button].register_album').click(registerAlbum);
+			$("#artists li").click(function () {
+				$("#artists li").removeClass("selected");
+				$(this).addClass("selected");
+				$(this).parent().find("input#artist_name").val($(this).attr("title"));
+			});
+
+			$("#album_titles li").click(function () {
+				$("#album_titles li").removeClass("selected");
+				$(this).addClass("selected");
+				$(this).parent().find("input#album_title").val($(this).attr("title"));
+			});
+
+			$("#album_years li").click(function () {
+				$("#album_years li").removeClass("selected");
+				$(this).addClass("selected");
+				$(this).parent().find("input#year").val($(this).attr("title"));
+			});
+
+			$("#album_styles li").click(function () {
+				var valueList = [];
+				if ($(this).hasClass('selected')) {
+					$(this).removeClass("selected");
+				} else {
+					$(this).addClass("selected");
+				}
+				$("#album_styles li.selected").each(function () {
+					valueList.push($(this).attr("title"));
+				});
+				$(this).parent().find("input#style").val(JSON.stringify(valueList));
+			});
+
+			$("#album_genres li").click(function () {
+				var valueList = [];
+				if ($(this).hasClass('selected')) {
+					$(this).removeClass("selected");
+				} else {
+					$(this).addClass("selected");
+				}
+				$("#album_genres li.selected").each(function () {
+					valueList.push($(this).attr("title"));
+				});
+				$(this).parent().find("input#genre").val(JSON.stringify(valueList));
+			});
+
+			var blocks = ['artists', 'album_titles', 'album_years', 'album_styles', 'album_genres'];
+			var b;
+			for (var k = 0; k < blocks.length; k++) {
+				b = $("#" + blocks[k]  + " li");
+				if (b.length == 1) {
+					b.trigger('click');
+				}
+			}
+			blocks = ['positions_choices', 'titles_choices', 'durations_choices', 'composers_choices'];
+			for (var k = 0; k < blocks.length; k++) {
+				b = $("#" + blocks[k]  + " input[type=radio]");
+				if (b.length == 1) {
+					b.trigger('click');
+					b.trigger('click');
+				}
+			}
+
+			$("#id_register_album").click(registerAlbum);
 		}
 	});
 }

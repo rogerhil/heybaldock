@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 {% for repertory in repertories %}
-                <tr class="{% cycle odd,even %}" onclick="window.location = ''">
+                <tr class="{% cycle odd,even %}" onclick="window.location = '{% url repertory_details repertory.id %}'">
                     <td>{{ repertory.name }}</td>
                     <td>{{ repertory.description }}</td>
                     <td>{{ repertory.event }}</td>

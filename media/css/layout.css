@@ -216,7 +216,8 @@ div.songs_info table {
 }
 
 a.button,
-.pretty_form input[type=submit] {
+.pretty_form input[type=submit],
+.pretty_form input[type=button].submit {
     display: block !important;
     padding: 5px 20px 5px 20px;
     background-color: #f7d453;
@@ -232,7 +233,8 @@ a.button,
 }
 
 a.button:hover,
-.pretty_form input[type=submit]:hover {
+.pretty_form input[type=submit]:hover,
+.pretty_form input[type=button].submit:hover {
     color: #e9892c;
 }
 
@@ -762,6 +764,8 @@ ul.photo_album_list li {
     margin: 0px 0px 0px 0px;
     padding: 10px 10px 7px 10px;
     border-radius: 7px;
+    height: 95px;
+    overflow-y: hidden;
 }
 
 ul.photo_album_list img {
@@ -801,6 +805,10 @@ ul.photo_list li {
 ul.photo_list li:hover {
     background: url(/media/img/content_bg_2.png) repeat;
     cursor: pointer;
+}
+
+ul.photo_list li.selected {
+    border: 5px solid #e9892c;
 }
 
 ul.photo_list img {
@@ -1001,4 +1009,60 @@ tr.album-resource {
 
 tr.album-resource td {
     padding: 2px;
+}
+
+div.songs_content {
+    display: none;
+    padding: 5px;
+    width: 300px;
+    background-image: url(/media/img/content_bg_2.png);
+    border-radius: 10px;
+    margin: 5px 0 10px 0;
+}
+
+div.songs_content div.icon_image {
+    float: left;
+    margin-right: 10px;
+    height: 25px;
+    clear: left;
+}
+
+div.songs_content div.icon_image img {
+    height: 25px;
+    border-radius: 5px;
+}
+
+div.songs_content div.song_name {
+    padding-top: 7px;
+    padding-bottom: 5px;
+}
+
+div.songs_content div.song_block {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 2px;
+}
+
+div.songs_content div.song_block:hover,
+div.songs_content div.selected {
+    background-color: #afbfcf;
+}
+
+.nopadding {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.nopadding img {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.center {
+    text-align: center !important;
+}
+
+.repertory_group_block td {
+    cursor: default !important;
 }

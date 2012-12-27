@@ -1,118 +1,193 @@
-{% if custom %}
+{% load i18n %}
 
-    <h2><span style="color: red">STEP 1</span> Select the album title</h2>
-    <ul class="photo_list photo_auto highlighted">
-        {% for title in custom.titles %}
-            <li title="{{ title }}">
-                {{ title }}
-            </li>
-        {% endfor %}
-    </ul>
-    <div class="clear"></div>
-    <br />
-    <h2><span style="color: red">STEP 2</span> Select the album cover</h2>
-    <div id="albums_covers">
-        {% for thumb in custom.thumbs %}
-            <img src="{{ thumb.url }}" alt="{{ thumb.title }}" />
-        {% endfor %}
+{% if custom and custom.artists %}
+    <div class="pretty_form">
+        <form name="custom_form" id="id_custom_form">
+
+            <div id="select_artist">
+                <h2><span style="color: red">STEP 1</span> Select the Artist Name</h2>
+                <ul id="artists" class="photo_list photo_auto highlighted">
+                    {% for artist in custom.artists %}
+                        <li title="{{ artist }}">
+                            {{ artist }}
+                        </li>
+                    {% endfor %}
+                    <input name="artist_name" id="artist_name" type="hidden" value="" />
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <br />
+
+            <div id="select_album_title">
+                <h2><span style="color: red">STEP 2</span> Select the album title</h2>
+                <ul id="album_titles" class="photo_list photo_auto highlighted">
+                    {% for title in custom.titles %}
+                        <li title="{{ title }}">
+                            {{ title }}
+                        </li>
+                    {% endfor %}
+                    <input name="name" id="album_title" type="hidden" value="" />
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <br />
+
+            <div id="select_album_year">
+                <h2><span style="color: red">STEP 3</span> Select the album year</h2>
+                <ul id="album_years" class="photo_list photo_auto highlighted">
+                    {% for year in custom.years %}
+                        <li title="{{ year }}">
+                            {{ year }}
+                        </li>
+                    {% endfor %}
+                    <input name="year" id="year" type="hidden" value="" />
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <br />
+
+            <div id="select_album_style">
+                <h2><span style="color: red">STEP 4</span> Select the album style (select 1 or more)</h2>
+                <ul id="album_styles" class="photo_list photo_auto highlighted">
+                    {% for style in custom.styles %}
+                        <li title="{{ style }}">
+                            {{ style }}
+                        </li>
+                    {% endfor %}
+                    <input name="style" id="style" type="hidden" value="" />
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <br />
+
+            <div id="select_album_genre">
+                <h2><span style="color: red">STEP 5</span> Select the album genre (select 1 or more)</h2>
+                <ul id="album_genres" class="photo_list photo_auto highlighted">
+                    {% for genre in custom.genres %}
+                        <li title="{{ genre }}">
+                            {{ genre }}
+                        </li>
+                    {% endfor %}
+                    <input name="genre" id="genre" type="hidden" value="" />
+                </ul>
+            </div>
+            <div class="clear"></div>
+            <br />
+
+            <div id="select_album_cover">
+                <h2><span style="color: red">STEP 6</span> Select the album cover</h2>
+                <div id="albums_covers">
+                    {% for thumb in custom.thumbs %}
+                        <img src="{{ thumb.url }}" alt="{{ thumb.title }}" id="{{ thumb.url }}" />
+                    {% endfor %}
+                    <img src="/media/img/vertical_marker.png" alt="End Marker" id="end_marker" style="margin: 0 30px 0 30px;" />
+                    <input name="thumb" id="cover" type="hidden" value="" />
+                </div>
+            </div>
+
+            <div class="clear"></div>
+            <br />
+
+            <div id="select_songs_info">
+                <h2><span style="color: red">STEP 7</span> Select songs info</h2>
+
+                <div class="table_list songs_info">
+                    <table style="max-width: 920px">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px">
+                                    Position
+                                </th>
+                                <th style="width: 520px">
+                                    Title
+                                </th>
+                                <th style="width: 100px">
+                                    Duration
+                                </th>
+                                <th style="width: 200px">
+                                    Composers
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="positions_choices">
+                                    <table class="table_choices">
+                                        <tr>
+                                            {% for item in custom.songs.json_positions %}
+                                            <td><input name="position" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% for position in custom.songs.positions %}
+                                        <tr>
+                                            {% for item in position.items %}
+                                                <td pos="{{ forloop.counter0 }}">{{ item }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            <td id="titles_choices">
+                                <table width="520" class="table_choices">
+                                    <tr>
+                                        {% for item in custom.songs.json_titles %}
+                                        <td pos="{{ forloop.counter0 }}"><input name="title" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% for titles in custom.songs.titles %}
+                                    <tr diff="{{ titles.json_diff }}" class="{% cycle odd,even %}">
+                                        {% for item in titles.items %}
+                                            <td pos="{{ forloop.counter0 }}">{{ item }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                            <td id="durations_choices">
+                                <table class="table_choices">
+                                    <tr>
+                                        {% for item in custom.songs.json_durations %}
+                                        <td pos="{{ forloop.counter0 }}"><input name="duration" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% for durations in custom.songs.durations %}
+                                    <tr diff="{{ durations.json_diff }}" class="{% cycle odd,even %}">
+                                        {% for item in durations.items %}
+                                            <td pos="{{ forloop.counter0 }}">{{ item }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                            <td id="composers_choices">
+                                <table class="table_choices">
+                                    <tr>
+                                        {% for item in custom.songs.json_composers %}
+                                        <td pos="{{ forloop.counter0 }}"><input name="composer" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% for composers in custom.songs.composers %}
+                                    <tr diff="{{ composers.json_diff }}" class="{% cycle odd,even %}">
+                                        {% for item in composers.items %}
+                                            <td pos="{{ forloop.counter0 }}" title="">{{ item }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <br />
+            <input type="button" class="submit" value="{% trans "Register Album" %}" id="id_register_album" name="register_album" style="float: none; margin: 0 auto 0 auto;" />
+        </form>
     </div>
 
-    <div class="clear"></div>
-    <br />
-    <h2><span style="color: red">STEP 3</span> Select songs info</h2>
-
-    <div class="table_list songs_info">
-        <table style="max-width: 920px">
-            <thead>
-                <tr>
-                    <th style="width: 100px">
-                        Position
-                    </th>
-                    <th style="width: 520px">
-                        Title
-                    </th>
-                    <th style="width: 100px">
-                        Duration
-                    </th>
-                    <th style="width: 200px">
-                        Composers
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id="positions_choices">
-                        <table>
-                            <tr>
-                                {% for item in custom.songs.json_positions %}
-                                <td><input name="position" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
-                                {% endfor %}
-                            </tr>
-                            {% for position in custom.songs.positions %}
-                            <tr>
-                                {% for item in position.items %}
-                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </td>
-                    <td id="titles_choices">
-                        <table width="520">
-                            <tr>
-                                {% for item in custom.songs.json_titles %}
-                                <td pos="{{ forloop.counter0 }}"><input name="title" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
-                                {% endfor %}
-                            </tr>
-                            {% for titles in custom.songs.titles %}
-                            <tr diff="{{ titles.json_diff }}" class="{% cycle odd,even %}">
-                                {% for item in titles.items %}
-                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </td>
-                    <td id="durations_choices">
-                        <table>
-                            <tr>
-                                {% for item in custom.songs.json_durations %}
-                                <td pos="{{ forloop.counter0 }}"><input name="duration" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
-                                {% endfor %}
-                            </tr>
-                            {% for durations in custom.songs.durations %}
-                            <tr diff="{{ durations.json_diff }}" class="{% cycle odd,even %}">
-                                {% for item in durations.items %}
-                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </td>
-                    <td id="composers_choices">
-                        <table>
-                            <tr>
-                                {% for item in custom.songs.json_composers %}
-                                <td pos="{{ forloop.counter0 }}"><input name="composer" value="{{ item }}" type="radio" pos="{{ forloop.counter0 }}" /></td>
-                                {% endfor %}
-                            </tr>
-                            {% for composers in custom.songs.composers %}
-                            <tr diff="{{ composers.json_diff }}" class="{% cycle odd,even %}">
-                                {% for item in composers.items %}
-                                    <td pos="{{ forloop.counter0 }}">{{ item }}</td>
-                                {% endfor %}
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <br />
 
 {% else %}
 
-    No custom information.
+    No such results.
 
 {% endif %}

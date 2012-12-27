@@ -12,43 +12,108 @@ class Migration(SchemaMigration):
         db.create_table('music_composer', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=128)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=256, null=True, blank=True)),
             ('about', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('discogs_resource_url', self.gf('django.db.models.fields.CharField')(max_length=256, null=True, blank=True)),
+            ('metadata', self.gf('lib.fields.JSONField')(null=True, blank=True)),
         ))
         db.send_create_signal('music', ['Composer'])
+
+        # Adding model 'ComposerRole'
+        db.create_table('music_composerrole', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('role', self.gf('django.db.models.fields.CharField')(max_length=128)),
+            ('composer', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['music.Composer'])),
+        ))
+        db.send_create_signal('music', ['ComposerRole'])
+
+        # Adding unique constraint on 'ComposerRole', fields ['role', 'composer']
+        db.create_unique('music_composerrole', ['role', 'composer_id'])
 
         # Adding model 'Artist'
         db.create_table('music_artist', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=128)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=256, null=True, blank=True)),
             ('about', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('metadata', self.gf('lib.fields.JSONField')(null=True, blank=True)),
         ))
         db.send_create_signal('music', ['Artist'])
+
+        # Adding model 'AlbumStyle'
+        db.create_table('music_albumstyle', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=128)),
+        ))
+        db.send_create_signal('music', ['AlbumStyle'])
+
+        # Adding model 'AlbumGenre'
+        db.create_table('music_albumgenre', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=128)),
+        ))
+        db.send_create_signal('music', ['AlbumGenre'])
 
         # Adding model 'Album'
         db.create_table('music_album', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('discogsid', self.gf('django.db.models.fields.IntegerField')(unique=True)),
-            ('catno', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('about', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('artist', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['music.Artist'])),
             ('thumb', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('uri', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('year', self.gf('django.db.models.fields.IntegerField')()),
+            ('metadata', self.gf('lib.fields.JSONField')(null=True, blank=True)),
         ))
         db.send_create_signal('music', ['Album'])
 
-        # Adding model 'SongStyle'
-        db.create_table('music_songstyle', (
+        # Adding unique constraint on 'Album', fields ['name', 'artist']
+        db.create_unique('music_album', ['name', 'artist_id'])
+
+        # Adding M2M table for field style on 'Album'
+        db.create_table('music_album_style', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('album', models.ForeignKey(orm['music.album'], null=False)),
+            ('albumstyle', models.ForeignKey(orm['music.albumstyle'], null=False))
+        ))
+        db.create_unique('music_album_style', ['album_id', 'albumstyle_id'])
+
+        # Adding M2M table for field genre on 'Album'
+        db.create_table('music_album_genre', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('album', models.ForeignKey(orm['music.album'], null=False)),
+            ('albumgenre', models.ForeignKey(orm['music.albumgenre'], null=False))
+        ))
+        db.create_unique('music_album_genre', ['album_id', 'albumgenre_id'])
+
+        # Adding model 'AlbumCoverType'
+        db.create_table('music_albumcovertype', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=128)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('value', self.gf('django.db.models.fields.IntegerField')()),
         ))
-        db.send_create_signal('music', ['SongStyle'])
+        db.send_create_signal('music', ['AlbumCoverType'])
+
+        # Adding model 'Size'
+        db.create_table('music_size', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('width', self.gf('django.db.models.fields.IntegerField')()),
+            ('height', self.gf('django.db.models.fields.IntegerField')()),
+        ))
+        db.send_create_signal('music', ['Size'])
+
+        # Adding unique constraint on 'Size', fields ['width', 'height']
+        db.create_unique('music_size', ['width', 'height'])
+
+        # Adding model 'AlbumCover'
+        db.create_table('music_albumcover', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('album', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['music.Album'])),
+            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['music.AlbumCoverType'], null=True, blank=True)),
+            ('size', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['music.Size'], null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('filename', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+        ))
+        db.send_create_signal('music', ['AlbumCover'])
 
         # Adding model 'Song'
         db.create_table('music_song', (
@@ -60,7 +125,7 @@ class Migration(SchemaMigration):
             ('lyrics', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('duration', self.gf('django.db.models.fields.IntegerField')()),
             ('position', self.gf('django.db.models.fields.CharField')(max_length=5, null=True, blank=True)),
-            ('style', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['music.SongStyle'])),
+            ('tempo', self.gf('django.db.models.fields.IntegerField')()),
         ))
         db.send_create_signal('music', ['Song'])
 
@@ -71,9 +136,9 @@ class Migration(SchemaMigration):
         db.create_table('music_song_composer', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('song', models.ForeignKey(orm['music.song'], null=False)),
-            ('composer', models.ForeignKey(orm['music.composer'], null=False))
+            ('composerrole', models.ForeignKey(orm['music.composerrole'], null=False))
         ))
-        db.create_unique('music_song_composer', ['song_id', 'composer_id'])
+        db.create_unique('music_song_composer', ['song_id', 'composerrole_id'])
 
         # Adding model 'Repertory'
         db.create_table('music_repertory', (
@@ -184,17 +249,47 @@ class Migration(SchemaMigration):
         # Removing unique constraint on 'Song', fields ['name', 'album']
         db.delete_unique('music_song', ['name', 'album_id'])
 
+        # Removing unique constraint on 'Size', fields ['width', 'height']
+        db.delete_unique('music_size', ['width', 'height'])
+
+        # Removing unique constraint on 'Album', fields ['name', 'artist']
+        db.delete_unique('music_album', ['name', 'artist_id'])
+
+        # Removing unique constraint on 'ComposerRole', fields ['role', 'composer']
+        db.delete_unique('music_composerrole', ['role', 'composer_id'])
+
         # Deleting model 'Composer'
         db.delete_table('music_composer')
+
+        # Deleting model 'ComposerRole'
+        db.delete_table('music_composerrole')
 
         # Deleting model 'Artist'
         db.delete_table('music_artist')
 
+        # Deleting model 'AlbumStyle'
+        db.delete_table('music_albumstyle')
+
+        # Deleting model 'AlbumGenre'
+        db.delete_table('music_albumgenre')
+
         # Deleting model 'Album'
         db.delete_table('music_album')
 
-        # Deleting model 'SongStyle'
-        db.delete_table('music_songstyle')
+        # Removing M2M table for field style on 'Album'
+        db.delete_table('music_album_style')
+
+        # Removing M2M table for field genre on 'Album'
+        db.delete_table('music_album_genre')
+
+        # Deleting model 'AlbumCoverType'
+        db.delete_table('music_albumcovertype')
+
+        # Deleting model 'Size'
+        db.delete_table('music_size')
+
+        # Deleting model 'AlbumCover'
+        db.delete_table('music_albumcover')
 
         # Deleting model 'Song'
         db.delete_table('music_song')
@@ -292,31 +387,64 @@ class Migration(SchemaMigration):
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '8'})
         },
         'music.album': {
-            'Meta': {'object_name': 'Album'},
+            'Meta': {'unique_together': "(('name', 'artist'),)", 'object_name': 'Album'},
             'about': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.Artist']"}),
-            'catno': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'discogsid': ('django.db.models.fields.IntegerField', [], {'unique': 'True'}),
+            'genre': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['music.AlbumGenre']", 'symmetrical': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'metadata': ('lib.fields.JSONField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'style': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['music.AlbumStyle']", 'symmetrical': 'False'}),
             'thumb': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'uri': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'year': ('django.db.models.fields.IntegerField', [], {})
+        },
+        'music.albumcover': {
+            'Meta': {'object_name': 'AlbumCover'},
+            'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.Album']"}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'filename': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'size': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.Size']", 'null': 'True', 'blank': 'True'}),
+            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.AlbumCoverType']", 'null': 'True', 'blank': 'True'})
+        },
+        'music.albumcovertype': {
+            'Meta': {'object_name': 'AlbumCoverType'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128'})
+        },
+        'music.albumgenre': {
+            'Meta': {'object_name': 'AlbumGenre'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128'})
+        },
+        'music.albumstyle': {
+            'Meta': {'object_name': 'AlbumStyle'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128'})
         },
         'music.artist': {
             'Meta': {'object_name': 'Artist'},
             'about': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'metadata': ('lib.fields.JSONField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128'})
         },
         'music.composer': {
             'Meta': {'object_name': 'Composer'},
             'about': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'discogs_resource_url': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'metadata': ('lib.fields.JSONField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128'})
+        },
+        'music.composerrole': {
+            'Meta': {'unique_together': "(('role', 'composer'),)", 'object_name': 'ComposerRole'},
+            'composer': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.Composer']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'role': ('django.db.models.fields.CharField', [], {'max_length': '128'})
         },
         'music.instrument': {
             'Meta': {'object_name': 'Instrument'},
@@ -346,25 +474,24 @@ class Migration(SchemaMigration):
             'number': ('django.db.models.fields.IntegerField', [], {}),
             'song': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.Song']"})
         },
+        'music.size': {
+            'Meta': {'unique_together': "(('width', 'height'),)", 'object_name': 'Size'},
+            'height': ('django.db.models.fields.IntegerField', [], {}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'width': ('django.db.models.fields.IntegerField', [], {})
+        },
         'music.song': {
             'Meta': {'unique_together': "(('name', 'album'),)", 'object_name': 'Song'},
             'about': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.Album']"}),
-            'composer': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['music.Composer']", 'symmetrical': 'False'}),
+            'composer': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['music.ComposerRole']", 'symmetrical': 'False'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'duration': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'lyrics': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'position': ('django.db.models.fields.CharField', [], {'max_length': '5', 'null': 'True', 'blank': 'True'}),
-            'style': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.SongStyle']"})
-        },
-        'music.songstyle': {
-            'Meta': {'object_name': 'SongStyle'},
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128'}),
-            'value': ('django.db.models.fields.IntegerField', [], {})
+            'tempo': ('django.db.models.fields.IntegerField', [], {})
         },
         'music.userinstrumentsong': {
             'Meta': {'unique_together': "(('instrument', 'song', 'user'),)", 'object_name': 'UserInstrumentSong'},

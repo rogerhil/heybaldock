@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" type="text/css" href="/media/css/smoothDivScroll.css" />
+    <script src="/media/js/jquery/jquery.mousewheel.min.js" type="text/javascript"></script>
+    <script src="/media/js/jquery/jquery.kinetic.js" type="text/javascript"></script>
+    <script src="/media/js/jquery/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/media/js/music.js"></script>
+{% endblock %}
+
+{% block large_content %}
+<div class="grid_3">
+    <div id="content">
+        <div class="clear"></div>
+        <div class="section_content">
+            <div class="manage_buttons">
+                <a href="{% url albums %}">{% trans 'View all albums' %}</a>
+                <a href="{% url add_album %}">{% trans 'Add album' %}</a>
+                <a href="#" class="red" id="remove_album">{% trans 'Remove this album' %}</a>
+            </div>
+            <form id="remove_album_form" action="{% url remove_album album.id %}"></form>
+            <h1>{{ album }}</h1>
+            {% if album.description %}
+                <h3>{{ album.description }}</h3>
+            {% endif %}
+            <br />
+            <div style="float: left; width: 90px; margin-right: 10px;">
+                <img src="{{ album.thumb_url }}" />
+                <p>
+                    <strong>Year</strong><br />{{ album.year }}
+                </p>
+                <p>
+                    <strong>Genre</strong><br />{{ album.genre_display }}
+                </p>
+                <p>
+                    <strong>Style</strong><br />{{ album.style_display }}
+                </p>
+            </div>
+            <div class="table_list">
+                <table style="width: 820px;">
+                    <thead>
+                        <th width="30px">
+                            Position
+                        </th>
+                        <th>
+                            Title
+                        </th>
+                        <th width="30px">
+                            Duration
+                        </th>
+                        <th width="250px">
+                            Composers
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for song in album.songs.all %}
+                        <tr class="{% cycle odd,even %}">
+                            <td style="text-align: center;">{{ song.position }}</td>
+                            <td>{{ song.name }}</td>
+                            <td style="text-align: center;">{{ song.duration_display }}</td>
+                            <td>{{ song.composer_display }}</td>
+                            <td>
+                                <img class="add_to_main_repertory" songid="{{ song.id }}" src="/media/img/plus_16.png" alt="{% trans "Add to Main Repertory"  %}" title="{% trans "Add to Main Repertory"  %}" />
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="clear"></div>
+            {% if album.about %}
+                <h2>About</h2>
+                <p>{{ album.about }}</p>
+            {% endif %}
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+{% endblock %}

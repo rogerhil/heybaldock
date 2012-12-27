@@ -90,6 +90,10 @@ DRAFT_UPLOAD_PATH_NEW = os.path.join(DRAFT_UPLOAD_PATH, 'new/')
 DRAFT_UPLOAD_URLPATH = "%s/draft" % UPLOAD_URLPATH
 DRAFT_UPLOAD_URLPATH_NEW = "%s/new" % DRAFT_UPLOAD_URLPATH
 
+TEMP_UPLOAD_PATH = os.path.join(UPLOAD_PATH, 'tmp/')
+DISCOGS_TEMP_UPLOAD_PATH = os.path.join(TEMP_UPLOAD_PATH, 'discogs/')
+TEMP_UPLOAD_URLPATH = "%s/tmp" % UPLOAD_URLPATH
+DISCOGS_TEMP_UPLOAD_URLPATH = "%s/discogs" % TEMP_UPLOAD_URLPATH
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '*b!$#a0-$ije!=yd!b3gat*ibxz6%x#w0j!cdnoi#qa1n*s2r^'
@@ -187,6 +191,12 @@ IMAGE_SIZES = {
     'medium': (240, 180),
     'big': (480, 360),
     'huge': (960, 720)
+}
+
+ALBUM_COVER_SIZES = {
+    'icon': (30, 30),
+    'thumb': (90, 90),
+    'huge': (1920, 1920)
 }
 
 SMTP_HOST = "smtp.gmail.com"

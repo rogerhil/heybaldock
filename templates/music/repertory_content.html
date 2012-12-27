@@ -3,37 +3,7 @@
 <div id="repertory_groups">
     {% for group in groups %}
         <div class="repertory_group_block">
-            <h2><span style="float: left;" class="handle ui-icon ui-icon-arrowthick-2-n-s"></span>{{ group.name }} - {{ group.order }}</h2>
-            <table group_id="{{ group.id }}" order="{{  group.order }}">
-                <thead>
-                    <th width="200px">
-                        {% trans "Name" %}
-                    </th>
-                    <th>
-                        {% trans "Description" %}
-                    </th>
-                    <th width="140px">
-                        {% trans "Duration" %}
-                        <a class="remove_group" style="color: red; font-weight: bold; float: right; background: white;">&nbsp;-&nbsp;</a>
-                    </th>
-                </thead>
-                <tbody>
-                    {% for song in group.songs.all %}
-                        <tr class="{% cycle odd,even %}" onclick="window.location = ''">
-                            <td>{{ song.name }}</td>
-                            <td>{{ song.description }}</td>
-                            <td>{{ song.duration }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div class="add_song_form" style="display: none;">
-                <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
-                    <input name="song_name" type="text" style="width: 200px;" /> <a style="display: inline; float: none; width: 20px;" href="javascript:;">Add</a>
-                </div>
-            </div>
-            <a href="javascript:;" class="add_song">{% trans '+ add a song to this group' %}</a>
-            <hr>
+            {% include "music/repertory_group_content.html" %}
         </div>
     {% endfor %}
 </div>

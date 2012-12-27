@@ -72,7 +72,7 @@ def _get_section_drafts_related(c, request):
         section = SECTIONS_MAP['eventos']
         drafts = dfilter(CT_MAP['event'], c['event'].id)
         model_title = trans('event')
-    elif c.get('album'):
+    elif c.get('album') and c['album']._meta.module_name != 'album':
         model = c['album']._meta.module_name
         section = SECTIONS_MAP[SLUG_MAP[model]]
         drafts = dfilter(CT_MAP[model], c['album'].id)
