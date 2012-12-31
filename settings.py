@@ -193,7 +193,7 @@ IMAGE_SIZES = {
     'huge': (960, 720)
 }
 
-ALBUM_COVER_SIZES = {
+SIMPLE_IMAGE_SIZES = {
     'icon': (30, 30),
     'thumb': (90, 90),
     'huge': (1920, 1920)

@@ -52,7 +52,7 @@ function registerAlbum() {
 		alert("Please complete all options above!");
 		return;
 	}
-	$.ajax({
+	ajax({
 		url: '/musica/management/album/add/register/',
 		type: 'post',
 		dataType: 'json',
@@ -61,7 +61,7 @@ function registerAlbum() {
 			if (data.success) {
 				window.location = data.redirect_url;
 			} else {
-				alert("An error occurred.");
+				alert(data.message);
 			}
 		}
 	});
@@ -209,7 +209,7 @@ function getAlbumCustom() {
 			$("#artists li").click(function () {
 				$("#artists li").removeClass("selected");
 				$(this).addClass("selected");
-				$(this).parent().find("input#artist_name").val($(this).attr("title"));
+				$(this).parent().find("input#artist_resource_url").val($(this).attr("title"));
 			});
 
 			$("#album_titles li").click(function () {

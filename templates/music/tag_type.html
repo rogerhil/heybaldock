@@ -1,0 +1,8 @@
+<div class="tag level{{ tag_type.level }} {% if tag_type.selected %}tag_selected{% endif %}" tagtypeid="{{ tag_type.id }}">
+    <div class="tag_icon">
+        <img src="{{ tag_type.instrument.icon_url }}" alt="{{ tag_type.instrument }}">
+    </div>
+    <div class="tag_title">
+        {{ tag_type.name_display }}
+    </div>
+</div>

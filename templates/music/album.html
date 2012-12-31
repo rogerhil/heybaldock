@@ -17,6 +17,7 @@
         <div class="clear"></div>
         <div class="section_content">
             <div class="manage_buttons">
+                <a href="{% url artists %}">{% trans 'View all artists' %}</a>
                 <a href="{% url albums %}">{% trans 'View all albums' %}</a>
                 <a href="{% url add_album %}">{% trans 'Add album' %}</a>
                 <a href="#" class="red" id="remove_album">{% trans 'Remove this album' %}</a>
@@ -29,6 +30,9 @@
             <br />
             <div style="float: left; width: 90px; margin-right: 10px;">
                 <img src="{{ album.thumb_url }}" />
+                <p>
+                    <strong>Artist</strong><br /><a href="{% url artist_details album.artist.id %}">{{ album.artist }}</a>
+                </p>
                 <p>
                     <strong>Year</strong><br />{{ album.year }}
                 </p>

@@ -23,21 +23,7 @@
             <h1>Albums</h1>
             {% for artist in artists %}
                 <h2>{{ artist }}</h2>
-                <ul id="albums" class="photo_album_list">
-                    {% for album in artist.albums.all %}
-                        <li class="photo_album_item" url="{% url album album.id %}">
-                            <div class="photo_album_cover">
-                                <img src="{{ album.thumb_url }}" />
-                            </div>
-                            <div class="photo_album_info">
-                                <p><strong>{{ album }}</strong><p>
-                                <p><strong>Year: </strong>{{ album.year }}<p>
-                                <p><strong>Genre: </strong>{{ album.genre_display }}</p>
-                                <p><strong>Style: </strong>{{ album.style_display }}</p>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
+                {% include "music/albums_list.html" %}
                 <div class="clear"></div>
                 <br />
             {% endfor %}

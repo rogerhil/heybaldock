@@ -3,7 +3,7 @@
 {% if not repertory.is_main %}
     <h2><span style="float: left;" class="handle ui-icon ui-icon-arrowthick-2-n-s"></span>{{ group.name }}</h2>
 {% endif %}
-<table group_id="{{ group.id }}" order="{{  group.order }}">
+<table group_id="{{ group.id }}" order="{{  group.order }}" class="repertory">
     <thead>
         <th  class="center" width="8px">
         </th>
@@ -22,8 +22,11 @@
         <th  class="center" width="60px">
             {% trans "Tempo" %}
         </th>
+        <th  class="center" width="200px">
+            {% trans "Players" %}
+        </th>
         <th  class="center" width="70px">
-            {% trans "Remove" %}
+            {% trans "Actions" %}
             {% if not group.is_main %}
                 <a class="remove_group" style="color: red; font-weight: bold; float: right; background: white;">&nbsp;-&nbsp;</a>
             {% endif %}

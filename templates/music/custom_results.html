@@ -8,11 +8,11 @@
                 <h2><span style="color: red">STEP 1</span> Select the Artist Name</h2>
                 <ul id="artists" class="photo_list photo_auto highlighted">
                     {% for artist in custom.artists %}
-                        <li title="{{ artist }}">
-                            {{ artist }}
+                        <li title="{{ artist.resource_url }}">
+                            {{ artist.name }}
                         </li>
                     {% endfor %}
-                    <input name="artist_name" id="artist_name" type="hidden" value="" />
+                    <input name="artist_resource_url" id="artist_resource_url" type="hidden" value="" />
                 </ul>
             </div>
             <div class="clear"></div>

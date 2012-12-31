@@ -26,9 +26,6 @@ class Discogs:
     @staticmethod
     def get_resource(resource_url):
         resource = loads(urlopen(resource_url).read())
-        #if resource['tracklist'] and \
-        #   resource['tracklist'][0]['duration']:
-        #    return resource
         return resource
 
     @staticmethod

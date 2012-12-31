@@ -1,0 +1,6 @@
+{% for player in user.instruments.all %}
+    <li href="{{ player.instrument.huge_url }}">
+        <img class="remove_instrument" url="{% url remove_player player.id user.id %}" style="display: none; width: auto; height: auto; position: absolute; right: 3px; top: 3px; z-index: 9999" src="/media/img/cross_16.png" />
+        <img src="{{ player.instrument.thumb_url }}" alt="{{ player.instrument }} ({{ player.instrument.description }})" title="{{ player.instrument }} ({{ player.instrument.description }})" />
+    </li>
+{% endfor %}

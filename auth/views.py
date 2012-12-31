@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 
 from decorators import login_required
 from forms import UserForm
+from music.models import Instrument
 
 def login_view(request):
     """Login view
@@ -67,10 +68,12 @@ def profile(request):
     else:
         user_form = UserForm(instance=user)
         password_form = PasswordChangeForm(user)
+    ids = user.instruments.all().values_list('instrument__id', flat=True)
     c = {
         'user': user,
         'user_form': user_form,
-        'password_form': password_form
+        'password_form': password_form,
+        'instruments': Instrument.objects.all().exclude(id__in=ids)
     }
     c = RequestContext(request, c)
     return render_to_response("auth/profile.html", c)

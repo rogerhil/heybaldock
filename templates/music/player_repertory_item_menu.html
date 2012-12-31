@@ -1,0 +1,115 @@
+{% load i18n %}
+<div class="pretty_select"
+     toogletagtypeurl="{% url toogle_tag_type player_repertory_item.id %}"
+     changeasmemberoptionsurl="{% url change_as_member_options player_repertory_item.id %}"
+     changeplayeruseroptionsurl="{% url change_player_user_options player_repertory_item.id %}">
+    <h3>
+        <div class="action_button"><img class="change_player_user" src="/media/img/exchange_icon_16.gif" alt="{% trans "Exchange player user" %}" title="{% trans "Exchange player user" %}"></div>
+        <div class="icon">
+            <img src="{{ player_repertory_item.player.instrument.icon_url }}" />
+        </div>
+        <div class="title">
+            {{ player_repertory_item.player.user.first_name }}
+        </div>
+    </h3>
+    <div class="change_player_user_options" style="display: none;">
+    </div>
+    <div class="clear"></div>
+    {% if player_repertory_item.as_member %}
+        <h4 style="padding: 5px 3px 3px 8px; margin: 0px; text-align: center;">
+            {% if player_repertory_item.player.instrument.is_vocal %}
+                {% trans "Sing as" %}
+            {% else %}
+                {% trans "Play as" %}
+            {% endif %}
+        </h4>
+        <h4 class="as_member secondary_option">
+            <div class="action_button"><img class="change_as_member" src="/media/img/exchange_icon_16.gif" alt="{% trans "Exchange member" %}" title="{% trans "Exchange member" %}"></div>
+            <div class="icon">
+                <img src="{{ player_repertory_item.as_member.icon_url }}" />
+            </div>
+            <div class="title">
+                {{ player_repertory_item.as_member.name }}
+            </div>
+        </h4>
+        <div class="change_as_member_options" style="display: none;">
+        </div>
+    {% endif %}
+
+    <div class="tag_types">
+        {% for tag_type in tag_types %}
+            {{ tag_type.html_display }}
+        {% endfor %}
+    </div>
+    <div class="clear"></div>
+
+    <div class="option" action="set_as_lead">
+        <div class="icon">
+            <img src="/media/img/leader_icon_2.png" />
+        </div>
+        <div class="title">
+            {% if player_repertory_item.is_lead %}
+                {% trans "Unset as lead" %}
+            {% else %}
+                {% trans "Set as lead" %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="option" action="remove">
+        <div class="icon" style="padding-top: 5px; padding-left: 4px">
+            <img src="/media/img/cross_16.png" />
+        </div>
+        <div class="title">
+            {% trans "Remove this player" %}
+        </div>
+    </div>
+    <hr />
+    <div class="option" action="notes">
+        <div class="icon" style="padding-top: 5px; padding-left: 4px">
+            <img src="/media/img/notes_icon_16.png" />
+        </div>
+        <div class="title">
+            {% trans "Notes" %}
+        </div>
+        <div class="notes_area" style="display: none;" saveurl="{% url change_notes player_repertory_item.id %}">
+            <textarea class="original_notes" style="display: none;">{{ player_repertory_item.notes }}</textarea>
+            <textarea class="notes">{{ player_repertory_item.notes }}</textarea>
+            <div class="notes_save">
+                <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" />
+                <input type="button" class="small_button save" value="{% trans "Save" %}" />
+            </div>
+        </div>
+    </div>
+    <div class="option" action="documents">
+        <div class="icon" style="padding-top: 5px; padding-left: 4px">
+            <img src="/media/img/document_icon_16.png" />
+        </div>
+        <div class="title">
+            {% trans "Documents" %}
+        </div>
+    </div>
+    <div class="option" action="videos">
+        <div class="icon" style="padding-top: 5px; padding-left: 4px">
+            <img src="/media/img/video_icon_16.png" />
+        </div>
+        <div class="title">
+            {% trans "Videos" %}
+        </div>
+    </div>
+    <div class="option" action="audio_segments">
+        <div class="icon" style="padding-top: 5px; padding-left: 4px">
+            <img src="/media/img/audio_track_icon_16.png" />
+        </div>
+        <div class="title">
+            {% trans "Audios Segments" %}
+        </div>
+    </div>
+    <div class="option" action="music_scores">
+        <div class="icon" style="padding-top: 5px; padding-left: 4px">
+            <img src="/media/img/music_icon_16.png" />
+        </div>
+        <div class="title">
+            {% trans "Music score" %}
+        </div>
+    </div>
+</div>

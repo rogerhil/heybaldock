@@ -2,7 +2,10 @@
 {% load i18n %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/prettyPhoto.css" type="text/css" />
+    <script type="text/javascript" src="/media/js/jquery/jquery.prettyPhoto.js"></script>
+    <script type="text/javascript" src="/media/js/profile.js"></script>
 {% endblock %}
 
 
@@ -35,6 +38,20 @@
             <div class="clear"></div>
         </form>
     </div>
+    <h1>{% trans "Instruments you play" %}</h1>
+    <ul id="players" class="photo_list instrument_image">
+        {% include "auth/profile_instruments.html" %}
+    </ul>
+    <div class="clear"></div>
+    <div class="pretty_form">
+        <div style="text-align: center;">
+            <input id="add_player" url="{% url players_to_add %}" class="button" type="button" value="{% trans "Add instrument" %}" />
+        </div>
+        <div id="all_instruments" style="padding: 10px; border-radius: 10px; width: 440px; margin: 10px auto 0 auto; background: url(/media/img/content_bg_2.png); display: none;">
+            {% include "auth/profile_add_instruments.html" %}
+        </div>
+    </div>
+    <div class="clear"></div>
 </div>
 
 {% endblock %}

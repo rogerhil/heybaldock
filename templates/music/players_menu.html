@@ -1,0 +1,52 @@
+{% load i18n %}
+<div class="pretty_select choose_player">
+    <h3>{% trans "Choose player" %}</h3>
+    {% for player in players %}
+        <div class="option" itemid="{{ item.id }}"  playerid="{{ player.id }}" instrumentid="{{ player.instrument.id }}" instrumentname="{{ player.instrument.name }}">
+            <div class="icon">
+                <img src="{{ player.instrument.icon_url }}" />
+            </div>
+            <div class="title">
+                {{ player.user.get_full_name }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="pretty_select play_as" style="display: none;">
+    <h3 class="play">{% trans "Play as" %}</h3>
+    <h3 class="sing">{% trans "Sing as" %}</h3>
+    {% for member in members %}
+        <div class="option" memberid="{{ member.id }}">
+            <div class="icon">
+                <img src="{{ member.icon_url }}" />
+            </div>
+            <div class="title">
+                {{ member }}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="option" memberid="">
+        <div class="icon">
+            <img src="/media/img/cross_16_d.png" />
+        </div>
+        <div class="title">
+            {% trans "No matter" %}
+        </div>
+    </div>
+</div>
+
+{% for instrument_id, tag_types in tags_tuples %}
+    <div class="pretty_select tags_for_instrument_{{ instrument_id }}" style="display: none;">
+        <div>
+            <h3>{% trans "Select tag types" %}</h3>
+            {% for tag_type in tag_types %}
+                {{ tag_type.html_display }}
+            {% endfor %}
+        </div>
+        <div class="clear"></div>
+        <div style="margin: 10px auto 5px auto; text-align: center;">
+            <input type="button" class="small_button add_player" value="Submit" style="float: none;" />
+        </div>
+
+    </div>
+{% endfor %}

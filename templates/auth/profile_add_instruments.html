@@ -1,0 +1,8 @@
+<ul class="photo_list instrument_image" style="padding: 0px; margin: 0px;">
+    {% for instrument in instruments %}
+        <li url="{% url add_player instrument.id user.id %}">
+            <img src="{{ instrument.thumb_url }}" alt="{{ instrument }} ({{ instrument.description }})" tile="{{ instrument }} ({{ instrument.description }})" />
+        </li>
+    {% endfor %}
+</ul>
+<div class="clear"></div>

@@ -1,3 +1,4 @@
+{% load i18n %}
 <tr itemid="{{ item.id }}" songid="{{ item.song.id }}" number="{{ item.number }}" class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
     <td class="nopadding center"><span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span></td>
     <td>{{ item.number_display }}</td>
@@ -5,5 +6,28 @@
     <td>{{ item.song.name }}</td>
     <td class="center">{{ item.song.duration_display }}</td>
     <td class="center">{{ item.song.tempo_display }}</td>
-    <td class="center"><img src="/media/img/cross_16.png" class="remove_song" removeurl="{% url remove_song_from_repertory repertory.id group.id item.id %}" /></td>
+    <td>
+        <div style="position: relative;">
+            <img src="/media/img/plus_16.png" class="add_player" url="{% url players_menu item.id %}" alt="Add a player for this song" style="float: right;" />
+            <div class="players_menu">
+                {% include "music/players_menu.html" %}
+            </div>
+            <div class="change_player_menu" itemid="{{ item.id }}">
+
+            </div>
+        </div>
+        <div>
+            {% for player in item.players.all %}
+                <img class="player {% if player.is_lead %}player_is_lead{% endif %}"
+                     style="height: 20px;"
+                     src="{{ player.player.instrument.icon_url }}"
+                     alt="{{ player }}"
+                     title="{{ player }}"
+                     changeplayermenuurl="{% url player_repertory_item_menu player.id %}" />
+            {% endfor %}
+        </div>
+    </td>
+    <td class="center">
+        <img src="/media/img/cross_16.png" class="remove_song" alt="Remove this song" title="Remove this song" removeurl="{% url remove_song_from_repertory repertory.id group.id item.id %}" />
+    </td>
 </tr>

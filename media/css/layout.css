@@ -190,6 +190,10 @@ ul {
     cursor: pointer;
 }
 
+.table_list table.repertory tr:hover {
+    color: inherit;
+}
+
 .songs_info td {
     white-space: nowrap;
     vertical-align: top;
@@ -296,7 +300,8 @@ input[type=submit][disabled=disabled].submit {
 }
 
 .manage_buttons a,
-.manage_buttons input[type=submit] {
+.manage_buttons input[type=submit],
+input[type=button].small_button {
     display: block;
     border-radius: 7px;
     border: none;
@@ -311,14 +316,21 @@ input[type=submit][disabled=disabled].submit {
 }
 
 .manage_buttons a.red,
-.manage_buttons input[type=submit].red {
+.manage_buttons input[type=submit].red,
+input[type=button].small_button.red {
     color: #eae6cc;
     background-color: #e44b49;
 }
 
 .manage_buttons a:hover,
-.manage_buttons input[type=submit]:hover {
+.manage_buttons input[type=submit]:hover,
+input[type=button].small_button:hover {
     color: #4b5c6c;
+}
+
+input[type=button].small_button {
+    display: inline;
+    float: none;
 }
 
 .margin10 {
@@ -797,9 +809,11 @@ ul.photo_list li {
     display: block;
     float: left;
     padding: 10px 10px 7px 10px;
-    border-radius: 7px;
+    border-radius: 7px !important;
     position: relative;
     margin: 0px -1px 0px 0px;
+    overflow-y: hidden;
+    max-height: 122px;
 }
 
 ul.photo_list li:hover {
@@ -816,7 +830,11 @@ ul.photo_list img {
     margin: 0;
     padding: 0;
     width: 184px;
-    height: 122px;
+}
+
+div#all_instruments ul.photo_list li:hover {
+    background: url(/media/img/content_bg.png) repeat;
+    cursor: pointer;
 }
 
 ul.list_pair li {
@@ -847,6 +865,17 @@ ul.list_triplet img {
 ul.list_quadruplet img {
     width: 136px;
     height: 90px;
+}
+
+ul.instrument_image img {
+    width: auto;
+    height: 90px;
+}
+
+ul.instrument_image li {
+    height: 90px;
+    width: 90px;
+    text-align: center;
 }
 
 ul.square img {
@@ -1049,6 +1078,118 @@ div.songs_content div.selected {
     background-color: #afbfcf;
 }
 
+div.pretty_select div.icon {
+    float: left;
+    margin-right: 10px;
+    max-height: 25px;
+    clear: left;
+}
+
+div.pretty_select div.icon img {
+    max-height: 25px;
+    border-radius: 5px;
+}
+
+div.pretty_select div.title {
+    padding-top: 7px;
+    padding-bottom: 5px;
+}
+
+div.pretty_select h3 div.title {
+    text-align: left !important;
+}
+
+div.pretty_select div.option {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 2px;
+}
+
+div.pretty_select div.option:hover,
+div.pretty_select div.selected {
+    background-color: #afbfcf;
+}
+
+div.pretty_select h3 {
+    text-align: center;
+    padding: 5px;
+    background-color: #4b5c6c;
+    color: #eae6cc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+div.pretty_select h3.play,
+div.pretty_select h3.sing {
+    display: none;
+}
+
+div.pretty_select h4.secondary_option {
+    padding: 5px 3px 3px 8px;
+    margin: 0px 0px 5px 0px;
+    background-image: url(/media/img/content_bg.png);
+    border-radius: 10px;
+}
+div.pretty_select h4.secondary_option div.action_button,
+div.pretty_select h3 div.action_button {
+    float: right;
+    padding: 3px 5px 0px 0px;
+    cursor: pointer;
+}
+
+div.notes_area {
+    position: absolute;
+    width: 400px;
+    height: 210px;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    background-image: url(/media/img/content_bg.png);
+    margin-bottom: 50px !important;
+}
+
+div.notes_area textarea {
+    width: 380px;
+    height: 160px;
+    border-radius: 10px;
+    padding: 5px;
+    resize: none;
+}
+
+div.notes_area .notes_save {
+    text-align: center;
+    margin-top: 5px;
+}
+
+div.change_player_menu,
+div.players_menu {
+    position: absolute;
+    top: 20px;
+    right: -10px;
+    width: 200px;
+    background-image: url(/media/img/content_bg_2.png);
+    z-index: 999;
+    border-radius: 10px;
+    padding: 5px;
+    display: none;
+    border: 2px solid #4b5c6c;
+}
+
+img.add_player,
+img.player {
+    border: 1px solid transparent;
+}
+
+img.add_player:hover,
+img.player:hover {
+    cursor: pointer;
+}
+
+img.player_is_lead {
+    border-bottom: 1px solid red;
+}
+
 .nopadding {
     padding: 0px !important;
     margin: 0px !important;
@@ -1065,4 +1206,106 @@ div.songs_content div.selected {
 
 .repertory_group_block td {
     cursor: default !important;
+}
+
+img.remove_song {
+    cursor: pointer;
+}
+
+div.metadata {
+    margin-left: 100px;
+}
+
+div.metadata ul {
+    list-style: none;
+    margin-left: 10px;
+}
+
+div.metadata ul li {
+    margin: 10px 0px 0px 0px;
+}
+
+div.metadata ul li.list_value {
+    width: auto;
+    display: inline;
+    margin-right: 5px;
+    border-right: 1px solid;
+    padding-right: 10px;
+}
+
+div.metadata ul li a {
+    text-decoration: underline;
+}
+
+.centralize {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+
+.tag {
+    float: left;
+    padding: 2px;
+    font-weight: bold;
+    background-color: #4b5c6c;
+    color: #f7d453;
+    margin: 3px;
+    border-radius: 5px;
+    border: 2px solid #4b5c6c;
+    font-size: 13px;
+    min-width: 70px;
+    text-align: center !important;
+    height: 50px !important;
+    width: 84px;
+}
+
+.tag:hover {
+    cursor: pointer;
+    border: 3px solid #4b5c6c;
+    opacity: 1 !important;
+}
+
+.tag.tag_selected {
+    color: #eae6cc;
+    border: 3px solid black !important;
+    opacity: 1 !important;
+}
+
+.tag.level1 {
+    background-color: #afbfcf;
+    color: #4b5c6c;
+    border: 3px solid #afbfcf;
+    opacity: 0.8;
+}
+
+.tag.level2 {
+    background-color: #a1cb5e;
+    color: #4b5c6c;
+    border: 3px solid #a1cb5e;
+    opacity: 0.8;
+}
+
+.tag.level3 {
+    background-color: #e24a4d;
+    color: #eae6cc;
+    border: 3px solid #e24a4d;
+    opacity: 0.8;
+}
+
+.tag.level4 {
+    background-color: #db5d96;
+    color: #eae6cc;
+    border: 3px solid #db5d96;
+    opacity: 0.8;
+}
+
+.tag.level5 {
+    background-color: #8b3b5f;
+    color: #eae6cc;
+    border: 3px solid #8b3b5f;
+    opacity: 0.8;
+}
+
+.loading_cursor {
+    cursor: url(/media/img/loading.gif), auto !important;
 }

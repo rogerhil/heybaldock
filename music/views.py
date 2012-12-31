@@ -14,9 +14,12 @@ from django.utils import simplejson
 from auth.decorators import login_required
 from section.decorators import render_to, json
 from discogs import Discogs
-from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm
+from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
+                  InstrumentForm, PlayerForm, ArtistForm, \
+                  PlayerRepertoryItemForm, InstrumentTagTypeForm
 from models import Repertory, Song, Album, Artist, RepertoryGroup, \
-                   RepertoryGroupItem
+                   RepertoryGroupItem, Instrument, Player, \
+                   InstrumentTagType, PlayerRepertoryItem
 from utils import get_or_create_temporary, mzip, str_list_in_list
 
 DISCOGS_PAGES = 500
@@ -37,7 +40,8 @@ def add_repertory(request):
             form.save()
             msg = _('The repertory was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
-            return HttpResponseRedirect(reverse('repertories'))
+            url = reverse('repertory_details', args=(form.instance.id,))
+            return HttpResponseRedirect(url)
     else:
         form = RepertoryForm()
     return dict(form=form)
@@ -45,11 +49,21 @@ def add_repertory(request):
 @login_required
 @render_to("music/repertory_details.html")
 def repertory_details(request, id):
-    repertory = get_object_or_404(Repertory, id=id)
+    if int(id) == 1:
+        try:
+            repertory = Repertory.get_main_repertory()
+        except Repertory.DoesNotExist:
+            repertory = Repertory.objects.create(name='Main')
+            RepertoryGroup.objects.create(name='Main', repertory=repertory,
+                                          order=1)
+    else:
+        repertory = get_object_or_404(Repertory, id=id)
+
     groups = repertory.groups.all().order_by('order')
     c = dict(
         repertory=repertory,
-        groups=groups
+        groups=groups,
+        players=Player.objects.all()
     )
     return c
 
@@ -199,6 +213,7 @@ def get_custom_results(request):
     styles = []
     genres = []
     artists = []
+    artists_dict = {}
     songs = dict(
         positions=[],
         titles=[],
@@ -215,10 +230,12 @@ def get_custom_results(request):
         if res['thumb'].find('s.discogs.com') == -1:
             url = get_or_create_temporary(res['thumb'])
             thumbs.append({'title': res['title'], 'url': url})
-        album_titles.append(res['title'])
+        album_titles.append(' - '.join(res['title'].split(' - ')[1:]))
         ainfo = Discogs.get_resource(res['resource_url'])
         years.append(res['year'])
         artists += [i['name'] for i in ainfo['artists']]
+        for a in ainfo['artists']:
+            artists_dict[i['name']] = a
         if ainfo.get('styles'):
             styles += ainfo['styles']
         if ainfo.get('genres'):
@@ -272,6 +289,7 @@ def get_custom_results(request):
 
     artists = list(set(artists))
     artists.sort()
+    artists = [artists_dict[i] for i in artists]
 
     custom = dict(
         thumbs=thumbs,
@@ -296,38 +314,48 @@ def custom_album_creation(request):
 @login_required
 @json
 def register_album(request):
-    data = request.POST
-    album_form = AlbumForm(metadata={}, data=data)
-    success = album_form.is_valid()
     redirect_url = None
-    if success:
-        positions = simplejson.loads(data['position'])
-        titles = simplejson.loads(data['title'])
-        durations = simplejson.loads(data['duration'])
-        composers = data.get('composer')
-        if composers:
-            composers = simplejson.loads(composers)
-        forms = []
-        for i, position in enumerate(positions):
-            d = {
-                'position': position,
-                'name': titles[i],
-                'duration': durations[i],
-                'composer': simplejson.dumps(composers[i]) if composers else ''
-            }
-            song_form = SongForm(data=d)
-            if not song_form.is_valid():
-                success = False
-                break
-            forms.append(song_form)
-        album = album_form.save()
-        for form in forms:
-            form.save(album)
-        redirect_url = reverse("album", args=(album.id,))
-        msg = _('The album was successfully registered.')
-        messages.add_message(request, messages.SUCCESS, msg)
+    message = ''
+    data = request.POST
+    adata = {'resource_url': data['artist_resource_url']}
+    artist_form = ArtistForm(adata)
+    success = artist_form.is_valid()
+    artist = artist_form.save()
 
-    c = dict(success=success, redirect_url=redirect_url)
+    if success:
+        album_form = AlbumForm(metadata={}, artist=artist, data=data)
+        success = album_form.is_valid()
+        if success:
+            positions = simplejson.loads(data['position'])
+            titles = simplejson.loads(data['title'])
+            durations = simplejson.loads(data['duration'])
+            composers = data.get('composer')
+            if composers:
+                composers = simplejson.loads(composers)
+            forms = []
+            for i, position in enumerate(positions):
+                d = {
+                    'position': position,
+                    'name': titles[i],
+                    'duration': durations[i],
+                    'composer': simplejson.dumps(composers[i]) if composers else ''
+                }
+                song_form = SongForm(data=d)
+                if not song_form.is_valid():
+                    success = False
+                    break
+                forms.append(song_form)
+            album = album_form.save()
+            for form in forms:
+                form.save(album)
+            redirect_url = reverse("album", args=(album.id,))
+            msg = _('The album was successfully registered.')
+            messages.add_message(request, messages.SUCCESS, msg)
+        else:
+            message = str(album_form.errors)
+    else:
+        message = str(artist_form.errors)
+    c = dict(success=success, redirect_url=redirect_url, message=message)
     return c
 
 @render_to("music/album.html")
@@ -346,6 +374,16 @@ def remove_album(request, id):
 def albums(request):
     artists = Artist.objects.all().order_by('name')
     return dict(artists=artists)
+
+@render_to("music/artists.html")
+def artists(request):
+    artists = Artist.objects.all().order_by('name')
+    return dict(artists=artists)
+
+@render_to("music/artist_details.html")
+def artist_details(request, id):
+    artist = get_object_or_404(Artist, id=id)
+    return dict(artist=artist)
 
 @json
 def add_song_to_main_repertory(request):
@@ -444,3 +482,275 @@ def move_song(request, id, group_id, item_id):
                       .render(tc)
     )
     return c
+
+@login_required
+@render_to("music/add_instrument.html")
+def add_instrument(request):
+    if request.POST:
+        form = InstrumentForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            msg = _('The instrument was successfully added.')
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('instruments')
+            return HttpResponseRedirect(url)
+    else:
+        form = InstrumentForm
+    return dict(form=form)
+
+@json
+@login_required
+def remove_instrument(request, id):
+    instrument = get_object_or_404(Instrument, id=id)
+    instrument.delete()
+    return dict(success=True)
+
+@render_to("music/instruments.html")
+def instruments(request):
+    instruments = Instrument.objects.all().order_by('name')
+    return dict(instruments=instruments)
+
+@json
+@login_required
+def add_player(request, id, user_id):
+    data = dict(instrument=id, user=user_id)
+    form = PlayerForm(data=data)
+    user = request.user
+    if form.is_valid():
+        form.save()
+        template = loader.get_template("auth/profile_instruments.html")
+        context = RequestContext(request, dict(user=user))
+        return dict(success=True, content=template.render(context))
+    return dict(success=False)
+
+@json
+@login_required
+def remove_player(request, id, user_id):
+    player = get_object_or_404(Player, id=id, user__id=user_id)
+    player.delete()
+    return dict(success=True)
+
+@json
+@login_required
+def players_to_add(request):
+    user = request.user
+    ids = user.instruments.all().values_list('instrument__id', flat=True)
+    instruments = Instrument.objects.all().exclude(id__in=ids)
+    template = loader.get_template("auth/profile_add_instruments.html")
+    context = RequestContext(request, dict(instruments=instruments))
+    return dict(success=True, content=template.render(context))
+
+@json
+@login_required
+def players_menu(request, id):
+    item = get_object_or_404(RepertoryGroupItem, id=id)
+    ids = item.players.all().values_list('player__id', flat=True)
+    players = Player.objects.all().exclude(id__in=ids)
+    if not players.count():
+        return dict(success=True, no_players=True)
+
+    members = item.song.album.artist.active_members
+    tags = InstrumentTagType.objects.all().order_by('instrument')
+    tags_dict = {}
+    for tag in tags:
+        if not tags_dict.has_key(tag.instrument.id):
+            tags_dict[tag.instrument.id] = []
+        tags_dict[tag.instrument.id].append(tag)
+    for tags in tags_dict.values():
+        tags.sort(lambda a, b: 1 if a.level > b.level else -1)
+
+    template = loader.get_template("music/players_menu.html")
+    c = dict(
+        players=players,
+        item=item,
+        members=members,
+        tags_tuples=tags_dict.items()
+    )
+    context = RequestContext(request, c)
+    return dict(success=True, content=template.render(context))
+
+def player_repertory_item_menu_content(request, player_repertory_item):
+    ids = player_repertory_item.tag_types.all().values_list('id', flat=True)
+    all_tag_types = InstrumentTagType.objects.filter(
+                            instrument=player_repertory_item.player.instrument)
+    tag_types = []
+    for tag_type in all_tag_types:
+        if tag_type.id in ids:
+            tag_type.selected = True
+        tag_types.append(tag_type)
+    template = loader.get_template("music/player_repertory_item_menu.html")
+    c = dict(
+        player_repertory_item=player_repertory_item,
+        tag_types=tag_types
+    )
+    context = RequestContext(request, c)
+    player = dict(
+        id=player_repertory_item.id,
+        is_lead=player_repertory_item.is_lead
+    )
+    return dict(content=template.render(context), player=player)
+
+@json
+@login_required
+def player_repertory_item_menu(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    c = player_repertory_item_menu_content(request, player_repertory_item)
+    c['success'] = True
+    return c
+
+@json
+@login_required
+def toogle_tag_type(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    tag_type_id = int(request.POST.get('tag_type_id'))
+    tag_type = get_object_or_404(InstrumentTagType, id=tag_type_id)
+    ids = player_repertory_item.tag_types.all().values_list('id', flat=True)
+    if tag_type_id in ids:
+        player_repertory_item.tag_types.remove(tag_type)
+    else:
+        player_repertory_item.tag_types.add(tag_type)
+    player_repertory_item.save()
+    c = player_repertory_item_menu_content(request, player_repertory_item)
+    c['success'] = True
+    return c
+
+@json
+@login_required
+def change_as_member_options(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    artist = player_repertory_item.repertory_item.song.album.artist
+    as_member = player_repertory_item.as_member
+    members = [i for i in artist.active_members if i.id != as_member.id]
+    template = loader.get_template("music/change_as_member_options.html")
+    c = dict(members=members, player_repertory_item=player_repertory_item)
+    context = RequestContext(request, c)
+    return dict(success=True, content=template.render(context))
+
+@json
+@login_required
+def change_as_member(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    artist = get_object_or_404(Artist, id=request.POST['member_id'])
+    player_repertory_item.as_member = artist
+    player_repertory_item.save()
+    c = player_repertory_item_menu_content(request, player_repertory_item)
+    c['success'] = True
+    return c
+
+@json
+@login_required
+def change_player_user(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    item = player_repertory_item.repertory_item
+    player = get_object_or_404(Player, id=request.POST['player_id'])
+    current_player = player_repertory_item.player
+    # exchange
+    other_player_repertory_item = None
+    try:
+        other_player_repertory_item = item.players.get(player__id=player.id)
+    except PlayerRepertoryItem.DoesNotExist:
+        pass
+    if other_player_repertory_item:
+        other_player_repertory_item.player = None
+        other_player_repertory_item.save()
+    player_repertory_item.player = player
+    player_repertory_item.save()
+    if other_player_repertory_item:
+        other_player_repertory_item.player = current_player
+        other_player_repertory_item.save()
+    c = player_repertory_item_menu_content(request, player_repertory_item)
+    c['success'] = True
+    return c
+
+@json
+@login_required
+def change_player_user_options(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    player = player_repertory_item.player
+    players = Player.objects.filter(instrument=player.instrument)\
+    .exclude(id=player.id)
+    template = loader.get_template("music/change_player_user_options.html")
+    c = dict(players=players, player_repertory_item=player_repertory_item)
+    context = RequestContext(request, c)
+    no_players = not bool(players.count())
+    return dict(success=True, content=template.render(context),
+                no_players=no_players)
+
+@json
+@login_required
+def change_notes(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    player_repertory_item.notes = request.POST['notes']
+    player_repertory_item.save()
+    return dict(success=True)
+
+
+@json
+@login_required
+def add_player_repertory_item(request, id, player_id):
+    data = request.POST
+    data = dict(
+        repertory_item=id,
+        player=player_id,
+        as_member=data.get('member_id') or None,
+        tag_types=data.getlist('tag_types[]', [])
+    )
+    form = PlayerRepertoryItemForm(data=data)
+    if form.is_valid():
+        form.save()
+        item = form.instance.repertory_item
+        group = item.group
+        repertory = group.repertory
+        temp = loader.get_template("music/song_line_repertory_content.html")
+        c = {'item': item, 'group': group, 'repertory': repertory}
+        content = temp.render(RequestContext(request, c))
+        return dict(success=True, content=content)
+    return dict(success=False)
+
+@json
+@login_required
+def remove_player_repertory_item(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    item = player_repertory_item.repertory_item
+    group = item.group
+    repertory = group.repertory
+    player_repertory_item.delete()
+    temp = loader.get_template("music/song_line_repertory_content.html")
+    c = {'item': item, 'group': group, 'repertory': repertory}
+    content = temp.render(RequestContext(request, c))
+    return dict(success=True, content=content, item_id=item.id)
+
+@json
+@login_required
+def player_set_as_lead(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    player_repertory_item.is_lead = bool(int(request.POST.get('is_lead')))
+    player_repertory_item.save()
+    item = player_repertory_item.repertory_item
+    group = item.group
+    repertory = group.repertory
+    temp = loader.get_template("music/song_line_repertory_content.html")
+    c = {'item': item, 'group': group, 'repertory': repertory}
+    content = temp.render(RequestContext(request, c))
+    return dict(success=True, content=content, item_id=item.id)
+
+@login_required
+@render_to("music/add_instrument_tag_type.html")
+def add_instrument_tag_type(request):
+    if request.POST:
+        form = InstrumentTagTypeForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            msg = _('The instrument tag type was successfully added.')
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('instrument_tag_types')
+            return HttpResponseRedirect(url)
+    else:
+        form = InstrumentTagTypeForm
+    return dict(form=form)
+
+@login_required
+@render_to("music/instrument_tag_types.html")
+def instrument_tag_types(request):
+    tag_types = InstrumentTagType.objects.all()
+    return dict(tag_types=tag_types)

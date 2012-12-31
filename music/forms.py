@@ -7,8 +7,13 @@ from django import forms
 from django.utils import simplejson
 
 from models import Repertory, Album, Artist, Song, AlbumStyle, AlbumGenre, \
-                   Composer, ComposerRole
-from photo.image import ImageHandlerAlbumCoverTemp
+                   Composer, ComposerRole, Instrument, Player, \
+                   PlayerRepertoryItem, ArtistImage, Size, ImageType, \
+                   ArtistMembership, InstrumentTagType
+from photo.image import ImageHandlerAlbumCoverTemp, ImageHandlerInstrument, \
+                        ImageHandlerArtist
+from utils import generate_filename
+from discogs import Discogs
 
 COUNTRIES = [
     'All of: US, UK, Europe',
@@ -110,27 +115,120 @@ class RepertoryForm(forms.ModelForm):
         model = Repertory
 
 
+class InstrumentForm(forms.ModelForm):
+
+    image = forms.ImageField(required=True)
+
+    class Meta:
+        model = Instrument
+
+    def save(self):
+        data = self.cleaned_data
+        filename = generate_filename(data['image'].name)
+        handler = ImageHandlerInstrument()
+        handler.load(filename, data['image'])
+        handler.save_thumbnails('PNG')
+        instrument = Instrument.objects.create(
+            name=data['name'],
+            description=data.get('description'),
+            image=filename
+        )
+        self.instance = instrument
+
+class InstrumentTagTypeForm(forms.ModelForm):
+
+    level = forms.ChoiceField()
+
+    class Meta:
+        model = InstrumentTagType
+
+    def __init__(self, *args, **kwargs):
+        super(InstrumentTagTypeForm, self).__init__(*args, **kwargs)
+        self.fields['level'].choices = [(i, i) for i in range(1, 9)]
+
+
+class PlayerForm(forms.ModelForm):
+
+    class Meta:
+        model = Player
+
+
+class PlayerRepertoryItemForm(forms.ModelForm):
+
+    class Meta:
+        model = PlayerRepertoryItem
+
+
 class ArtistForm(forms.Form):
-    name = forms.CharField(max_length=128)
+    resource_url = forms.CharField(max_length=128)
     description = forms.CharField(max_length=256, required=False)
     about = forms.CharField(required=False)
 
-    def __init__(self, metadata, *args, **kwargs):
-        super(ArtistForm, self).__init__(*args, **kwargs)
-        self.metadata = metadata
+    def _remove_metadata_keys(self, metadata):
+        if metadata.has_key('members'):
+            del metadata['members']
+        if metadata.has_key('name'):
+            del metadata['name']
+        if metadata.has_key('data_quality'):
+            del metadata['data_quality']
+        if metadata.has_key('profile'):
+            del metadata['profile']
+        return metadata
+
+    def _save_images(self, artist, metadata):
+        for i in metadata.get('images', []):
+            itype = ImageType.objects.get_or_create(name=i['type'])[0]
+            size = Size.objects.get_or_create(width=i['width'],
+                                              height=i['height'])[0]
+            handler = ImageHandlerArtist()
+            handler.load_by_url(i['uri'])
+            handler.save_thumbnails('PNG')
+            filename = handler.storage.filename
+            ArtistImage.objects.create(type=itype, size=size,
+                                       filename=filename, artist=artist)
+            if i['type'] == 'primary':
+                artist.image = filename
+                artist.save()
+
+        if metadata.has_key('images'):
+            del metadata['images']
+        return metadata
+
+    def _save_members(self, artist, metadata):
+        for d in metadata.get('members', []):
+            member_metadata = Discogs.get_resource(d['resource_url'])
+            try:
+                member = Artist.objects.get(discogs_id=int(d['id']))
+            except Artist.DoesNotExist:
+                member = Artist.objects.create(discogs_id=int(d['id']),
+                                        name=d['name'])
+            member_metadata = self._save_images(member, member_metadata)
+            member.about = member_metadata.get('profile')
+            member_metadata = self._remove_metadata_keys(member_metadata)
+            member.set_metadata_object(member_metadata)
+            member.save()
+            ArtistMembership.objects.create(artist=artist, member=member,
+                                            active=d['active'])
+        artist.save()
+        metadata = self._remove_metadata_keys(metadata)
+        return metadata
 
     def save(self):
         data = self.cleaned_data
         new = True
-        name = data['name']
+        metadata = Discogs.get_resource(data['resource_url'])
         try:
-            artist = Artist.objects.get(name=name)
+            artist = Artist.objects.get(discogs_id=metadata['id'])
             new = False
         except Artist.DoesNotExist:
-            artist = Artist.objects.create(**data)
+            artist = Artist.objects.create(discogs_id=metadata['id'],
+                                           name=metadata['name'],
+                                           about=metadata.get('profile'))
         if not new:
             return artist
-        artist.set_metadata_object(self.metadata)
+        metadata = self._save_images(artist, metadata)
+        metadata = self._save_members(artist, metadata)
+        artist.set_metadata_object(metadata)
         artist.save()
         return artist
 
@@ -138,24 +236,16 @@ class ArtistForm(forms.Form):
 class AlbumForm(forms.Form):
     name = forms.CharField(max_length=128)
     description = forms.CharField(max_length=255, required=False)
-    artist_name = forms.CharField(max_length=255)
     about = forms.CharField(required=False)
     thumb = forms.CharField(max_length=255)
     year = forms.IntegerField()
     style = forms.CharField(max_length=1024, required=False)
     genre = forms.CharField(max_length=1024, required=False)
 
-    def __init__(self, metadata, *args, **kwargs):
+    def __init__(self, metadata, artist, *args, **kwargs):
         super(AlbumForm, self).__init__(*args, **kwargs)
         self.metadata = metadata
-        self.artist_form = None
-
-    def is_valid(self):
-        is_valid = super(AlbumForm, self).is_valid()
-        data = self.data
-        self.artist_form = ArtistForm({}, {'name': data['artist_name']})
-        is_valid = is_valid and self.artist_form.is_valid()
-        return is_valid
+        self.artist = artist
 
     def save(self):
         data = self.cleaned_data
@@ -164,7 +254,7 @@ class AlbumForm(forms.Form):
         handler.load_by_url(data['thumb'])
         new_handler = handler.store()
         new_handler.save_thumbnails()
-        artist = self.artist_form.save()
+        artist = self.artist
         new = True
         try:
             album = Album.objects.get(name=name, artist=artist)

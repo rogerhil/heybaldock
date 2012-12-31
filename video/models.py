@@ -39,16 +39,36 @@ class VideoAlbum(models.Model):
             video = videos[0]
             self.cover_url = video.thumbnail_small
 
-class Video(models.Model):
+
+class VideoBase(models.Model):
+    """
+    """
+    recorded = models.DateField(_("Date"), null=True)
+    thumbnail = models.URLField(_("Thumbnail"))
+    thumbnail_small = models.URLField(_("Small thumbnail"))
+    url = models.URLField(_("Url"))
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        return ugettext("Video %s" % self.title)
+
+    def embed_code(self):
+        id = youtube_id_by_url(self.url)
+        code = '<iframe class="youtube-player" type="text/html" ' \
+               'width="586" height="360" ' \
+               'src="http://www.youtube.com/embed/%s" ' \
+               'frameborder="0"></iframe>' % id
+        return code
+
+
+class Video(VideoBase):
     """
     """
     title = models.CharField(_("Name"), max_length=64)
     description = models.CharField(_("Description"), max_length=255, null=True)
     album = models.ForeignKey(VideoAlbum, verbose_name=_("Album"), related_name='videos')
-    recorded = models.DateField(_("Date"), null=True)
-    thumbnail = models.URLField(_("Thumbnail"))
-    thumbnail_small = models.URLField(_("Small thumbnail"))
-    url = models.URLField(_("Url"))
 
     def __unicode__(self):
         return ugettext("Video %s" % self.title)

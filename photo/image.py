@@ -67,7 +67,7 @@ class ImageHandlerBase(object):
         self._images = images
         return images
 
-    def save_thumbnails(self):
+    def save_thumbnails(self, format='JPEG'):
         if not (self.storage and self.storage.filename):
             msg = 'ImageHandler is not loaded properly.'
             raise ImageHandlerException(msg)
@@ -88,7 +88,7 @@ class ImageHandlerBase(object):
             img.thumbnail(size, Image.ANTIALIAS)
             filename = ImageHandler.name(self.storage.filename, key)
             ffile = StringIO()
-            img.save(ffile, format='JPEG')
+            img.save(ffile, format=format)
             buffer = ffile.getvalue()
             self.storage.save_file(buffer, filename, binary=False)
 
@@ -195,35 +195,20 @@ class ImageHandler(ImageHandlerBase):
         storage.remove_base_contents(except_files=files)
 
 
-class ImageHandlerAlbumCover(ImageHandlerBase):
+class ImageHandlerSimple(ImageHandlerBase):
 
     FILENAME_SUFIX_SIZE = 3
+    BASE_DIR = ''
 
     def __init__(self):
-        super(ImageHandlerAlbumCover, self).__init__()
-        self.user = None
-        self.draft = None
-        self.album = None
-        self.image_sizes = settings.ALBUM_COVER_SIZES
+        super(ImageHandlerSimple, self).__init__()
+        self.image_sizes = settings.SIMPLE_IMAGE_SIZES
 
     def load(self, filename, image=None):
         self._rimage = image
         name, ext = os.path.splitext(filename)
         sufix = name[-self.FILENAME_SUFIX_SIZE:]
-        self.storage = StorageBackend('cover', sufix, filename)
-
-
-class ImageHandlerAlbumCoverTemp(ImageHandlerBase):
-
-    def __init__(self):
-        super(ImageHandlerAlbumCoverTemp, self).__init__()
-        self.user = None
-        self.draft = None
-        self.album = None
-
-    def load(self, filename, image=None):
-        self._rimage = image
-        self.storage = StorageBackend('tmp', 'cover', filename)
+        self.storage = StorageBackend(self.BASE_DIR, sufix, filename)
 
     def load_by_url(self, url):
         parsed = urlparse.urlparse(url)
@@ -232,23 +217,43 @@ class ImageHandlerAlbumCoverTemp(ImageHandlerBase):
             return
         self.load(filename)
         if self.is_file():
-            return self.url()
+            return self.single_url()
         content = urlopen(url, timeout=3)
-        self.load(filename, content.read())
-        content.close()
-        self.save()
+        self.load(filename, content)
 
     def is_file(self):
         return self.storage.is_file(self.storage.filename)
 
     def save(self):
-        self.storage.save_file(self._rimage, self.storage.filename)
+        if not self._rimage:
+            return
+        self.storage.save_file(self._rimage.read(), self.storage.filename)
+        self._rimage.close()
 
-    def url(self):
+    def single_url(self):
         return self.storage.get_url(self.storage.filename)
+
+
+class ImageHandlerAlbumCoverTemp(ImageHandlerSimple):
+
+    def load(self, filename, image=None):
+        self._rimage = image
+        self.storage = StorageBackend('tmp', 'cover', filename)
 
     def store(self):
         handler = ImageHandlerAlbumCover()
         handler.load(self.storage.filename)
         handler.storage.copy_files([self.storage._p(self.storage.filename)])
         return handler
+
+
+class ImageHandlerAlbumCover(ImageHandlerSimple):
+    BASE_DIR = 'cover'
+
+
+class ImageHandlerInstrument(ImageHandlerSimple):
+    BASE_DIR = 'instrument'
+
+
+class ImageHandlerArtist(ImageHandlerSimple):
+    BASE_DIR = 'artist'

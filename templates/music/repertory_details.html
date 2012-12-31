@@ -13,13 +13,12 @@
     <div id="content">
         <div class="clear"></div>
         <div class="section_content">
-            <h1>{{ repertory }}</h1>
             <div class="manage_buttons">
                 <a href="{% url repertories %}">{% trans 'Back to Repertories List' %}</a>
                 <a href="{% url add_repertory %}">{% trans "Add Repertory" %}</a>
             </div>
+            <h1>{{ repertory }}</h1>
             <div class="clear"></div>
-            <br />
             {% if not repertory.is_main %}
                 <a href="javascript:;" id="add_repertory_group">
                     <img src="/media/img/plus_16.png" alt="Add group of songs" title="Add group of songs">

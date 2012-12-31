@@ -151,15 +151,348 @@ function loadRepertory() {
 	$('#repertory_groups .repertory_group_block').each(function () {
 		loadRepertoryGroup(this);
 	});
+}
 
-	$('input[name=song_name]').each(newSong);
-	$('img.remove_song').click(removeSongFromRepertory);
+function addPlayerButton() {
+	var $menu = $(this).parent().find('div.players_menu');
+	var $el = $(this);
+	if ($menu.is(':hidden')) {
+		$('div.player_menu').hide();
+		$.ajax({
+			url: $el.attr('url'),
+			type: 'get',
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					if (data.no_players) {
+						$menu.html("<p>No more available players!</p>");
+						$menu.show();
+						$menu.effect('highlight', {mode: 'hide'}, 2000);
+					} else {
+						$menu.html(data.content);
+						$menu.slideDown();
+						loadPlayersMenu($menu);
+					}
+				} else {
+					alert("Could not load the players menu.");
+				}
+			}
+		});
+	} else {
+		$menu.slideUp();
+	}
+}
 
+function changePlayerButton() {
+	var $menu = $(this).parent().parent().find('div.change_player_menu');
+	var $el = $(this);
+	if ($menu.is(':hidden')) {
+		$('div.change_player_menu').hide();
+		$.ajax({
+			url: $el.attr('changeplayermenuurl'),
+			type: 'get',
+			dataType: 'json',
+			success: function (data) {
+				loadChangePlayerMenu($menu, data);
+			}
+		});
+	} else {
+		$menu.slideUp();
+	}
+}
+
+function loadChangePlayerMenu($menu, data) {
+	$menu.slideDown();
+	$menu.html(data.content);
+	var $ps = $menu.find('div.pretty_select');
+	var $options = $menu.find('div.option');
+	$options.unbind('click').click(function () {
+		switch ($(this).attr('action')) {
+			case 'remove':
+				removePlayerItem(data.player.id);
+				$menu.slideUp();
+				break;
+			case 'set_as_lead':
+				setAsLead(data.player.id, data.player.is_lead);
+				$menu.slideUp();
+				break;
+			case 'notes':
+				loadNotes(data.player.id, this);
+				break;
+			case 'documents':
+				console.log('documents');
+				break;
+			case 'videos':
+				console.log('videos');
+				break;
+			case 'audio_segments':
+				console.log('audio_segments');
+				break;
+			case 'music_scores':
+				console.log('music_scores');
+				break;
+		}
+	});
+	$menu.find('div.tag_types div.tag').click(function () {
+		toogleTagType($menu, this);
+	});
+	$menu.find('img.change_as_member').click(function () {
+		var $changeOptions = $ps.find('div.change_as_member_options');
+		if ($changeOptions.is(':hidden')) {
+			$.ajax({
+				url: $ps.attr('changeasmemberoptionsurl'),
+				type: 'get',
+				dataType: 'json',
+				success: function (data) {
+					loadChangeMemberOptions(data, $menu, $changeOptions);
+				}
+			});
+		} else {
+			$changeOptions.slideUp();
+		}
+
+	});
+	$menu.find('img.change_player_user').click(function () {
+		var $changeOptions = $ps.find('div.change_player_user_options');
+		if ($changeOptions.is(':hidden')) {
+			$.ajax({
+				url: $ps.attr('changeplayeruseroptionsurl'),
+				type: 'get',
+				dataType: 'json',
+				success: function (data) {
+					loadChangePlayerUserOptions(data, $menu, $changeOptions);
+				}
+			});
+		} else {
+			$changeOptions.slideUp();
+		}
+
+	});
+}
+
+function loadNotes(playerId, o) {
+	var notesArea = $(o).find('div.notes_area');
+	notesArea.slideDown();
+	$('div.notes_save input.cancel').click(function (e) {
+		e.stopPropagation();
+		notesArea.slideUp();
+		notesArea.find('textarea.notes').val(notesArea.find('textarea.original_notes').val());
+	});
+	$('div.notes_save input.save').unbind('click').click(function (e) {
+		e.stopPropagation();
+		notesArea.slideUp();
+		var url = notesArea.attr('saveurl');
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {notes: notesArea.find('textarea.notes').val()},
+			dataType: 'json',
+			success: function (data) {
+				console.log(notesArea.find('textarea.notes').val());
+				notesArea.find('textarea.original_notes').val(notesArea.find('textarea.notes').val());
+			}
+		});
+	});
+}
+
+function loadChangePlayerUserOptions(data, $menu, $changeOptions) {
+	if (data.no_players) {
+		$changeOptions.html('<p style="padding: 5px 10px 5px 10px;">No more available players for this instrument!</p>');
+		$changeOptions.css('border-radius', '5px');
+		$changeOptions.show();
+		$changeOptions.effect('highlight', {mode: 'hide'}, 4000);
+	} else {
+		$changeOptions.html(data.content);
+		$changeOptions.slideDown();
+		$changeOptions.find('div.option').click(function () {
+			var url = $(this).attr('changeplayeruserurl');
+			$changeOptions.slideUp();
+			$.ajax({
+				url: url,
+				type: 'post',
+				data: {player_id: $(this).attr('playerid')},
+				dataType: 'json',
+				success: function (data) {
+					loadChangePlayerMenu($menu, data);
+				}
+			});
+		});
+	}
+}
+
+function loadChangeMemberOptions(data, $menu, $changeOptions) {
+	$changeOptions.html(data.content);
+	$changeOptions.slideDown();
+	$changeOptions.find('div.option').click(function () {
+		var url = $(this).attr('changememberurl');
+		$changeOptions.slideUp();
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {member_id: $(this).attr('memberid')},
+			dataType: 'json',
+			success: function (data) {
+				loadChangePlayerMenu($menu, data);
+			}
+		});
+	});
+}
+
+function toogleTagType($menu, o) {
+	var $ps = $menu.find('div.pretty_select');
+	$.ajax({
+		url: $ps.attr('toogletagtypeurl'),
+		type: 'post',
+		data: {tag_type_id: $(o).attr('tagtypeid')},
+		dataType: 'json',
+		success: function (data) {
+			loadChangePlayerMenu($menu, data);
+			if ($(o).hasClass('tag_selected')) {
+				$(o).removeClass('tag_selected');
+			} else {
+				$(o).addClass('tag_selected');
+			}
+		}
+	});
+}
+
+function setAsLead(playerItemId, playerisLead) {
+	var url = '/musica/repertorios/player_repertory_item/' + playerItemId + '/set_as_lead/';
+	$.ajax({
+		url: url,
+		type: 'post',
+		data: {is_lead: Number(!playerisLead)},
+		dataType: 'json',
+		success: function (data) {
+			if (data.success) {
+				var $tr = $("#repertory_content tr[itemid=" + data.item_id + "]");
+				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+				var $newTr = $(data.content);
+				$newTr.addClass(cssClass);
+				$newTr.insertBefore($tr);
+				$tr.remove();
+				$newTr.find('img.remove_song').click(removeSongFromRepertory);
+				$newTr.find('img.add_player').click(addPlayerButton);
+				$newTr.find('img.player').click(changePlayerButton);
+			} else {
+				alert('Could not remove player to this song.');
+			}
+		}
+	});
+}
+
+function removePlayerItem(playerItemId) {
+	var url = '/musica/repertorios/player_repertory_item/' + playerItemId + '/remove/';
+	$.ajax({
+		url: url,
+		type: 'post',
+		dataType: 'json',
+		success: function (data) {
+			if (data.success) {
+				var $tr = $("#repertory_content tr[itemid=" + data.item_id + "]");
+				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+				var $newTr = $(data.content);
+				$newTr.addClass(cssClass);
+				$newTr.insertBefore($tr);
+				$tr.remove();
+				$newTr.find('img.remove_song').click(removeSongFromRepertory);
+				$newTr.find('img.add_player').click(addPlayerButton);
+				$newTr.find('img.player').click(changePlayerButton);
+			} else {
+				alert('Could not remove player to this song.');
+			}
+		}
+	});
+}
+
+function loadPlayersMenu($menu) {
+	$menu.find('div.choose_player div.option').click(function () {
+		var itemid = $(this).attr('itemid');
+		var playerid = $(this).attr('playerid');
+		var instrumentid = $(this).attr('instrumentid');
+		var isVocal = $(this).attr('instrumentname').toLowerCase() == 'vocal';
+		loadPlayAsMenu($menu, itemid, playerid, instrumentid, isVocal);
+	});
+}
+
+function loadPlayAsMenu($menu, itemid, playerid, instrumentid, isVocal) {
+	if (isVocal) {
+		$menu.find('h3.sing').show();
+		$menu.find('h3.play').hide();
+	} else {
+		$menu.find('h3.play').show();
+		$menu.find('h3.sing').hide();
+	}
+	$menu.find('div.choose_player').hide();
+	$menu.find('div.play_as').slideDown();
+	$menu.find('div.play_as div.option').click(function () {
+		var memberid = $(this).attr('memberid');
+		loadTagTypeMenu($menu, itemid, playerid, instrumentid, memberid);
+	});
+}
+
+function loadTagTypeMenu($menu, itemid, playerid, instrumentid, memberid) {
+	$menu.find('div.play_as').hide();
+	var $tags = $menu.find('div.tags_for_instrument_' + instrumentid);
+	if (!$tags.length) {
+		addPlayer($menu, itemid, playerid, instrumentid, memberid, []);
+		return;
+	}
+	$tags.slideDown();
+	$tags.find('div.tag').click(function () {
+		if ($(this).hasClass('tag_selected')) {
+			$(this).removeClass('tag_selected');
+		} else {
+			$(this).addClass('tag_selected');
+		}
+	});
+	$tags.find('input[type=button].add_player').click(function () {
+		var tagTypes = [];
+		$tags.find('div.tag').each(function () {
+			if ($(this).hasClass('tag_selected')) {
+				tagTypes.push($(this).attr('tagtypeid'));
+			}
+		});
+		addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes);
+	});
+
+}
+
+function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
+	$menu.slideUp(1000, function () {
+		$menu.remove();
+	});
+	var url = "/musica/repertorios/repertory_item/" + itemid + "/player/" + playerid + "/add/";
+	$.ajax({
+		url: url,
+		type: 'post',
+		data: {member_id: memberid, tag_types: tagTypes},
+		dataType: 'json',
+		success: function (data) {
+			if (data.success) {
+				var $tr = $("#repertory_content tr[itemid=" + itemid + "]");
+				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+				var $newTr = $(data.content);
+				$newTr.addClass(cssClass);
+				$newTr.insertBefore($tr);
+				$tr.remove();
+				$newTr.find('img.remove_song').click(removeSongFromRepertory);
+				$newTr.find('img.add_player').click(addPlayerButton);
+				$newTr.find('img.player').click(changePlayerButton);
+			} else {
+				alert('Could not include player to this song.');
+			}
+		}
+	});
 }
 
 function loadRepertoryGroup(o) {
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
+	$(o).find('input[name=song_name]').each(newSong);
+	$(o).find('img.remove_song').click(removeSongFromRepertory);
+	$(o).find('img.add_player').click(addPlayerButton);
+	$(o).find('img.player').click(changePlayerButton);
 	$($(o).find('tbody')).sortable({
 		placeholder: "ui-state-highlight",
 		handle: ".song_handle",
@@ -192,8 +525,6 @@ function loadRepertoryGroup(o) {
 					if (data.success) {
 						$group_content.html(data.content);
 						loadRepertoryGroup(o);
-						$(o).find('img.remove_song').click(removeSongFromRepertory);
-						$(o).find('input[name=song_name]').each(newSong);
 					}
 				}
 			});
@@ -278,6 +609,7 @@ function addNewSong(group_id, sid, $el) {
 				$tr = $(data.song_line);
 				$tr.addClass(cycleClass);
 				$tr.find('img.remove_song').click(removeSongFromRepertory);
+				$tr.find('img.add_player').click(addPlayerButton);
 				$body.append($tr);
 			} else {
 				var $msg = $el.parent().find('span.message');

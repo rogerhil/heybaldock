@@ -1,0 +1,5 @@
+{% for image in artist.images.all %}
+    <li href="{{ image.huge_url }}">
+        <img src="{{ image.thumb_url }}" alt="{{ image }}" title="{{ image }}" />
+    </li>
+{% endfor %}

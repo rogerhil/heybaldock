@@ -1,0 +1,12 @@
+{% for member in members %}
+<h4 class="secondary_option">
+    <div class="option" memberid="{{ member.id }}" changememberurl="{% url change_as_member player_repertory_item.id %}">
+        <div class="icon">
+            <img src="{{ member.icon_url }}" />
+        </div>
+        <div class="title">
+            {{ member.name }}
+        </div>
+    </div>
+</h4>
+{% endfor %}
