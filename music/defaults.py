@@ -24,6 +24,11 @@ class Tempo(ChoicesBase):
     presto = 5
 
 
+class DocumentType(ChoicesBase):
+    image = 1
+    other = 2
+
+
 class Rating(ChoicesBase):
     bad = 1
     regular = 2

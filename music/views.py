@@ -16,7 +16,8 @@ from section.decorators import render_to, json
 from discogs import Discogs
 from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   InstrumentForm, PlayerForm, ArtistForm, \
-                  PlayerRepertoryItemForm, InstrumentTagTypeForm
+                  PlayerRepertoryItemForm, InstrumentTagTypeForm, \
+                  DocumentPlayerRepertoryItemForm
 from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    RepertoryGroupItem, Instrument, Player, \
                    InstrumentTagType, PlayerRepertoryItem
@@ -684,6 +685,29 @@ def change_notes(request, id):
     player_repertory_item.save()
     return dict(success=True)
 
+@json
+@login_required
+def add_document_for_player_repertory_item(request, id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    data = dict(player_repertory_item=player_repertory_item.id)
+    form = DocumentPlayerRepertoryItemForm(data=data, files=request.FILES)
+    if form.is_valid():
+        form.save()
+        c = player_repertory_item_menu_content(request, player_repertory_item)
+        c['success'] = True
+        return c
+    else:
+        return dict(success=False)
+
+@json
+@login_required
+def remove_document_for_player_repertory_item(request, id, document_id):
+    player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
+    document = player_repertory_item.documents.get(id=document_id)
+    document.delete()
+    c = player_repertory_item_menu_content(request, player_repertory_item)
+    c['success'] = True
+    return c
 
 @json
 @login_required
@@ -704,7 +728,7 @@ def add_player_repertory_item(request, id, player_id):
         temp = loader.get_template("music/song_line_repertory_content.html")
         c = {'item': item, 'group': group, 'repertory': repertory}
         content = temp.render(RequestContext(request, c))
-        return dict(success=True, content=content)
+        return dict(success=True, content=content, item_id=item.id)
     return dict(success=False)
 
 @json

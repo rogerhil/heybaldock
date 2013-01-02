@@ -194,7 +194,7 @@ IMAGE_SIZES = {
 }
 
 SIMPLE_IMAGE_SIZES = {
-    'icon': (30, 30),
+    'icon': (25, 25),
     'thumb': (90, 90),
     'huge': (1920, 1920)
 }

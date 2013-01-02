@@ -33,6 +33,16 @@ $(window).load(function () {
 
 	$("img.add_to_main_repertory").click(addToMainRepertory);
 
+	// CLICK OUTSIDE
+	$('html').click(function (e) {
+		if (!($(e.target).hasClass('pretty_select') || $(e.target).parents().hasClass('pretty_select'))) {
+			if ($(this).find('div.notes_area').is(':visible')) {
+				return;
+			}
+			$('.pretty_select').parent().slideUp();
+		}
+	});
+
 });
 
 function removeSongFromRepertory() {
@@ -201,7 +211,7 @@ function changePlayerButton() {
 	}
 }
 
-function loadChangePlayerMenu($menu, data) {
+function loadChangePlayerMenu($menu, data, callback) {
 	$menu.slideDown();
 	$menu.html(data.content);
 	var $ps = $menu.find('div.pretty_select');
@@ -220,7 +230,7 @@ function loadChangePlayerMenu($menu, data) {
 				loadNotes(data.player.id, this);
 				break;
 			case 'documents':
-				console.log('documents');
+				loadDocuments($menu, this);
 				break;
 			case 'videos':
 				console.log('videos');
@@ -268,11 +278,74 @@ function loadChangePlayerMenu($menu, data) {
 		}
 
 	});
+	var $documentsArea = $menu.find('div.documents_area');
+	$menu.find('div.option[action=documents]').mouseover(function () {
+		$(this).find('.add_document').show();
+	});
+	$menu.find('div.option[action=documents]').mouseleave(function () {
+		$(this).find('.add_document').hide();
+	});
+	$menu.find('img.add_document').unbind('click').click(function (e) {
+		e.stopPropagation();
+		var $file = $menu.find('div.new_document_form input[type=file]');
+		$file.fileupload({
+			dataType: 'json',
+			beforeSend: function (e, data) {
+				$documentsArea.show();
+			},
+			progress: function (e, data) {
+				//console.log(data);
+			},
+			fail: function (e, data) {
+				//console.log(data);
+			},
+			done: function (e, data) {
+				loadChangePlayerMenu($menu, data.result, function ($m) {
+					loadDocuments($m);
+				});
+			}
+		});
+		$file.trigger('click');
+	});
+	if (callback) {
+		callback($menu);
+	}
+}
+
+function loadDocuments($menu) {
+	var $documentsArea = $menu.find('div.documents_area');
+	if ($documentsArea.is(':hidden')) {
+		$documentsArea.slideDown();
+	} else {
+		$documentsArea.slideUp();
+		return
+	}
+	$documentsArea.find('h4.secondary_option').unbind('mouseover').mouseover(function () {
+		$(this).find('div.remove_document').show();
+	});
+	$documentsArea.find('h4.secondary_option').unbind('mouseleave').mouseleave(function () {
+		$(this).find('div.remove_document').hide();
+	});
+	$documentsArea.find('div.remove_document').unbind('click').click(function (e) {
+		e.stopPropagation();
+		var url = $(this).parent().attr('removeurl');
+		$.ajax({
+			url: url,
+			type: 'post',
+			dataType: 'json',
+			success: function (data) {
+				loadChangePlayerMenu($menu, data, function ($m) {
+					loadDocuments($m);
+				});
+			}
+		});
+	});
 }
 
 function loadNotes(playerId, o) {
 	var notesArea = $(o).find('div.notes_area');
 	notesArea.slideDown();
+	loadCLEditor($('textarea.notes'));
 	$('div.notes_save input.cancel').click(function (e) {
 		e.stopPropagation();
 		notesArea.slideUp();
@@ -288,7 +361,6 @@ function loadNotes(playerId, o) {
 			data: {notes: notesArea.find('textarea.notes').val()},
 			dataType: 'json',
 			success: function (data) {
-				console.log(notesArea.find('textarea.notes').val());
 				notesArea.find('textarea.original_notes').val(notesArea.find('textarea.notes').val());
 			}
 		});
@@ -356,6 +428,11 @@ function toogleTagType($menu, o) {
 	});
 }
 
+function getTrLineByRepertoryItemId(itemId) {
+	var $tr = $("#repertory_content tr[itemid=" + itemId + "]");
+	return $tr;
+}
+
 function setAsLead(playerItemId, playerisLead) {
 	var url = '/musica/repertorios/player_repertory_item/' + playerItemId + '/set_as_lead/';
 	$.ajax({
@@ -365,7 +442,7 @@ function setAsLead(playerItemId, playerisLead) {
 		dataType: 'json',
 		success: function (data) {
 			if (data.success) {
-				var $tr = $("#repertory_content tr[itemid=" + data.item_id + "]");
+				var $tr = getTrLineByRepertoryItemId(data.item_id);
 				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
 				var $newTr = $(data.content);
 				$newTr.addClass(cssClass);
@@ -389,7 +466,7 @@ function removePlayerItem(playerItemId) {
 		dataType: 'json',
 		success: function (data) {
 			if (data.success) {
-				var $tr = $("#repertory_content tr[itemid=" + data.item_id + "]");
+				var $tr = getTrLineByRepertoryItemId(data.item_id);
 				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
 				var $newTr = $(data.content);
 				$newTr.addClass(cssClass);
@@ -470,7 +547,7 @@ function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
 		dataType: 'json',
 		success: function (data) {
 			if (data.success) {
-				var $tr = $("#repertory_content tr[itemid=" + itemid + "]");
+				var $tr = getTrLineByRepertoryItemId(data.item_id);
 				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
 				var $newTr = $(data.content);
 				$newTr.addClass(cssClass);
@@ -610,6 +687,7 @@ function addNewSong(group_id, sid, $el) {
 				$tr.addClass(cycleClass);
 				$tr.find('img.remove_song').click(removeSongFromRepertory);
 				$tr.find('img.add_player').click(addPlayerButton);
+				$tr.find('img.player').click(changePlayerButton);
 				$body.append($tr);
 			} else {
 				var $msg = $el.parent().find('span.message');

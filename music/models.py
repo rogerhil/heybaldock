@@ -3,15 +3,16 @@
 import yaml
 
 from django.db import models
-from django.db.models.signals import pre_delete, pre_save
+from django.db.models.signals import pre_delete, pre_save, post_save,\
+                                     post_delete
 from django.contrib.auth.models import User
 from django.template import loader, Context
 
 from lib.fields import JSONField
-from defaults import Tonality, Rating, Tempo
+from defaults import Tonality, Rating, Tempo, DocumentType
 from event.models import Event
 from photo.image import ImageHandlerAlbumCover, ImageHandlerInstrument, \
-                        ImageHandlerArtist
+                        ImageHandlerArtist, FileHandlerDocument
 from video.models import VideoBase
 from utils import metadata_display
 
@@ -344,6 +345,15 @@ class Repertory(models.Model):
     def is_main(self):
         return self.name == self.MAIN_NAME
 
+    @classmethod
+    def get_last_new_repertory(cls):
+        event = Event.get_last_new_event()
+        if event:
+            try:
+                return cls.objects.filter(event=event).order_by('-id')[0]
+            except IndexError:
+                return
+
 
 class RepertoryGroup(models.Model):
     name = models.CharField(max_length=128)
@@ -356,6 +366,11 @@ class RepertoryGroup(models.Model):
     @property
     def is_main(self):
         return self.repertory.name == self.repertory.MAIN_NAME
+
+    @classmethod
+    def get_main_group(cls):
+        main = Repertory.get_main_repertory()
+        return main.groups.all()[0]
 
     @property
     def ordered_items(self):
@@ -379,6 +394,45 @@ class RepertoryGroupItem(models.Model):
     @property
     def number_display(self):
         return str(self.number).zfill(2)
+
+    def get_correspond_main_item(self):
+        main_group = RepertoryGroup.get_main_group()
+        return main_group.items.get(song=self.song)
+
+    def get_last_new_correspond_items(self):
+        last_new_repertory = Repertory.get_last_new_repertory()
+        if not last_new_repertory:
+            return []
+        items = []
+        for group in last_new_repertory.groups.all():
+            try:
+                item = group.items.get(song=self.song)
+            except RepertoryGroupItem.DoesNotExist:
+                continue
+            items.append(item)
+        return items
+
+    @classmethod
+    def post_save(cls, instance, created, **kwargs):
+        """ All new RepertoryGroupItems will inherit all properties from
+        main repertory.
+        """
+        if created or instance.group.is_main:
+            return
+        main_item = instance.get_correspond_main_item()
+        for player_rep_item in main_item.players.all():
+            new_player_rep_item, rels = player_rep_item.clone_object()
+            new_player_rep_item.repertory_item = instance
+            new_player_rep_item.save()
+            for attr, values in rels.items():
+                many = getattr(new_player_rep_item, attr)
+                many.clear()
+                for value in values:
+                    many.add(value)
+            new_player_rep_item.save()
+
+
+post_save.connect(RepertoryGroupItem.post_save, RepertoryGroupItem)
 
 
 class Instrument(models.Model):
@@ -414,6 +468,14 @@ class Instrument(models.Model):
     @property
     def verb(self):
         return "sings" if self.is_vocal else "plays"
+
+    @property
+    def verb_past(self):
+        return "sang" if self.is_vocal else "played"
+
+    @property
+    def verb_past_participle(self):
+        return "sung" if self.is_vocal else "played"
 
 
 class Player(models.Model):
@@ -475,6 +537,85 @@ class PlayerRepertoryItem(models.Model):
     def has_tag_types(self):
         return bool(self.tag_types.all().count())
 
+    def clone_object(self, through=None):
+        if through is None:
+            through = PlayerRepertoryItem()
+        player_repertory_item = through
+        player_repertory_item.player = self.player
+        player_repertory_item.as_member = self.as_member
+        player_repertory_item.notes = self.notes
+        player_repertory_item.is_lead = self.is_lead
+        tag_types = self.tag_types.all() if self.id else []
+        return player_repertory_item, dict(tag_types=tag_types)
+
+    def get_correspond_main_player(self):
+        main_item = self.repertory_item.get_correspond_main_item()
+        try:
+            main_player_ri = main_item.players.get(player=self.player)
+        except PlayerRepertoryItem.DoesNotExist:
+            return
+        return main_player_ri
+
+    def get_last_new_correspond_players(self):
+        items = self.repertory_item.get_last_new_correspond_items()
+        players = []
+        for item in items:
+            try:
+                player = item.players.get(player=self.player)
+            except PlayerRepertoryItem.DoesNotExist:
+                continue
+            players.append(player)
+        return players
+
+    @classmethod
+    def pre_save(cls, instance, **kwargs):
+        """ If the current PlayerRepertoryItem belongs to a repertory of an
+        Event (not the main one), so replicate all information to the main
+        repertory.
+        """
+        if instance.id:
+            current = PlayerRepertoryItem.objects.get(id=instance.id)
+        else:
+            current = instance
+        if instance.repertory_item.group.is_main:
+            players = current.get_last_new_correspond_players()
+            for player in players:
+                pl, rels = instance.clone_object(player)
+                pl.save()
+                for attr, values in rels.items():
+                    many = getattr(pl, attr)
+                    many.clear()
+                    for value in values:
+                        many.add(value)
+            return
+        main_player_ri = current.get_correspond_main_player()
+        main_player_ri, rels = instance.clone_object(main_player_ri)
+        main_player_ri.save()
+        for attr, values in rels.items():
+            many = getattr(main_player_ri, attr)
+            for value in values:
+                many.add(value)
+        main_player_ri.save()
+
+    @classmethod
+    def post_delete(cls, instance, **kwargs):
+        """ If the current PlayerRepertoryItem belongs to a repertory of an
+        Event (not the main one), so replicate all information to the main
+        repertory.
+        """
+        try:
+            instance.repertory_item
+        except RepertoryGroupItem.DoesNotExist:
+            return
+        if instance.repertory_item.group.is_main:
+            return
+        main_player_rep_item = instance.get_correspond_main_player()
+        main_player_rep_item.delete()
+
+
+pre_save.connect(PlayerRepertoryItem.pre_save, PlayerRepertoryItem)
+post_delete.connect(PlayerRepertoryItem.post_delete, PlayerRepertoryItem)
+
 
 class MusicScoreSegment(models.Model):
     name = models.CharField(max_length=64)
@@ -504,15 +645,46 @@ class MusicAudioSegment(models.Model):
 
 class DocumentPlayerRepertoryItem(models.Model):
     name = models.CharField(max_length=64)
-    player_repertory_item = models.ForeignKey(PlayerRepertoryItem)
+    player_repertory_item = models.ForeignKey(PlayerRepertoryItem,
+                                              related_name='documents')
     document = models.CharField(max_length=255)
     notes = models.TextField(null=True, blank=True)
+    type = models.SmallIntegerField(default=DocumentType.other)
 
     class Meta:
         unique_together = ('name', 'player_repertory_item')
 
     def __unicode__(self):
-        return "%s - %s" % (self.name, self.player_repertory_item)
+        return self.name
+
+    def __init__(self, *args, **kwargs):
+        super(DocumentPlayerRepertoryItem, self).__init__(*args, **kwargs)
+        self.file_handler = FileHandlerDocument()
+        if self.document:
+            self.file_handler.load(self.document)
+
+    @property
+    def is_image(self):
+        return self.type == DocumentType.image
+
+    @property
+    def url(self):
+        return self.file_handler.single_url()
+
+    @property
+    def icon_url(self):
+        if self.is_image:
+            return self.file_handler.url('icon')
+        else:
+            return "/media/img/document_icon_16.png"
+
+    @classmethod
+    def pre_delete(cls, instance, **kwargs):
+        instance.file_handler.delete()
+
+
+pre_delete.connect(DocumentPlayerRepertoryItem.pre_delete,
+                   DocumentPlayerRepertoryItem)
 
 
 class DocumentRepertoryItem(models.Model):
@@ -525,7 +697,7 @@ class DocumentRepertoryItem(models.Model):
         unique_together = ('name', 'repertory_item')
 
     def __unicode__(self):
-        return "%s - %s" % (self.name, self.repertory_item)
+        return self.name
 
 
 class VideoPlayerRepertoryItem(VideoBase):

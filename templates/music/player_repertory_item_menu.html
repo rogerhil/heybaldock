@@ -72,20 +72,50 @@
             {% trans "Notes" %}
         </div>
         <div class="notes_area" style="display: none;" saveurl="{% url change_notes player_repertory_item.id %}">
+            <h3>
+                Notes about {{ player_repertory_item.player.instrument }}
+                in {{ player_repertory_item.repertory_item }}
+                song {{ player_repertory_item.player.instrument.verb_past_participle }}
+                by {{ player_repertory_item.player.user.first_name }}
+            </h3>
             <textarea class="original_notes" style="display: none;">{{ player_repertory_item.notes }}</textarea>
             <textarea class="notes">{{ player_repertory_item.notes }}</textarea>
+            <div class="clear"></div>
             <div class="notes_save">
                 <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" />
                 <input type="button" class="small_button save" value="{% trans "Save" %}" />
             </div>
+            <div class="clear"></div>
         </div>
     </div>
     <div class="option" action="documents">
+        <div class="icon" style="float: right; padding-top: 6px;">
+            <img src="/media/img/plus_16.png" class="add_document" alt="{% trans "Add document" %}" title="{% trans "Add document" %}" style="display: none;" />
+        </div>
         <div class="icon" style="padding-top: 5px; padding-left: 4px">
             <img src="/media/img/document_icon_16.png" />
         </div>
         <div class="title">
             {% trans "Documents" %}
+        </div>
+        <div class="documents_area" style="display: none;">
+            <div class="new_document_form" style="display: none;">
+                <input type="file" name="file" data-url="{% url add_document_for_player_repertory_item player_repertory_item.id %}" multiple />
+            </div>
+            <div class="clear"></div>
+            {% for document in player_repertory_item.documents.all %}
+                <h4 class="secondary_option" removeurl="{% url remove_document_for_player_repertory_item player_repertory_item.id document.id %}">
+                    <div class="icon remove_document" style="float: right; padding: 5px 0px 0px 0px; display: none;">
+                        <img src="/media/img/cross_16.png" alt="{% trans "Remove this document" %}" title="{% trans "Remove this document" %}" />
+                    </div>
+                    <div class="icon" {% if not document.is_image %}style="padding: 5px 0px 0px 5px;"{% endif %}>
+                        <img src="{{ document.icon_url }}" alt="{{ document.name }}" />
+                    </div>
+                    <div class="title highlight">
+                        <a href="{{ document.url }}" target="_blank">{{ document }}</a>
+                    </div>
+                </h4>
+            {% endfor %}
         </div>
     </div>
     <div class="option" action="videos">

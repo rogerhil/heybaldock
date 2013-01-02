@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^repertorios/player_repertory_item/(?P<id>\d+)/change_player_user_options/$', views.change_player_user_options, name='change_player_user_options'),
     url(r'^repertorios/player_repertory_item/(?P<id>\d+)/change_player_user/$', views.change_player_user, name='change_player_user'),
     url(r'^repertorios/player_repertory_item/(?P<id>\d+)/change_notes/$', views.change_notes, name='change_notes'),
+    url(r'^repertorios/player_repertory_item/(?P<id>\d+)/document/add/$', views.add_document_for_player_repertory_item, name='add_document_for_player_repertory_item'),
+    url(r'^repertorios/player_repertory_item/(?P<id>\d+)/document/(?P<document_id>\d+)/remove/$', views.remove_document_for_player_repertory_item, name='remove_document_for_player_repertory_item'),
 
     url(r'^repertorios/add/$', views.add_repertory, name='add_repertory'),
     url(r'^repertorios/(?P<id>\d+)/$', views.repertory_details, name='repertory_details'),

@@ -299,9 +299,10 @@ class Migration(SchemaMigration):
         db.create_table('music_documentplayerrepertoryitem', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('player_repertory_item', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['music.PlayerRepertoryItem'])),
+            ('player_repertory_item', self.gf('django.db.models.fields.related.ForeignKey')(related_name='documents', to=orm['music.PlayerRepertoryItem'])),
             ('document', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('notes', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('type', self.gf('django.db.models.fields.SmallIntegerField')(default=2)),
         ))
         db.send_create_signal('music', ['DocumentPlayerRepertoryItem'])
 
@@ -670,7 +671,8 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
             'notes': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'player_repertory_item': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['music.PlayerRepertoryItem']"})
+            'player_repertory_item': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'documents'", 'to': "orm['music.PlayerRepertoryItem']"}),
+            'type': ('django.db.models.fields.SmallIntegerField', [], {'default': '2'})
         },
         'music.documentrepertoryitem': {
             'Meta': {'unique_together': "(('name', 'repertory_item'),)", 'object_name': 'DocumentRepertoryItem'},

@@ -9,10 +9,12 @@ from django.utils import simplejson
 from models import Repertory, Album, Artist, Song, AlbumStyle, AlbumGenre, \
                    Composer, ComposerRole, Instrument, Player, \
                    PlayerRepertoryItem, ArtistImage, Size, ImageType, \
-                   ArtistMembership, InstrumentTagType
+                   ArtistMembership, InstrumentTagType,\
+                   DocumentPlayerRepertoryItem
 from photo.image import ImageHandlerAlbumCoverTemp, ImageHandlerInstrument, \
-                        ImageHandlerArtist
+                        ImageHandlerArtist, FileHandlerDocument
 from utils import generate_filename
+from defaults import DocumentType
 from discogs import Discogs
 
 COUNTRIES = [
@@ -135,6 +137,7 @@ class InstrumentForm(forms.ModelForm):
         )
         self.instance = instrument
 
+
 class InstrumentTagTypeForm(forms.ModelForm):
 
     level = forms.ChoiceField()
@@ -157,6 +160,24 @@ class PlayerRepertoryItemForm(forms.ModelForm):
 
     class Meta:
         model = PlayerRepertoryItem
+
+
+class DocumentPlayerRepertoryItemForm(forms.Form):
+    file = forms.FileField(required=True)
+    player_repertory_item = forms.IntegerField(required=True)
+
+    def save(self):
+        data = self.cleaned_data
+        filename = generate_filename(data['file'].name)
+        handler = FileHandlerDocument()
+        handler.load(filename, data['file'])
+        document = DocumentPlayerRepertoryItem(name=data['file'].name,
+                        document=filename,
+                        player_repertory_item_id=data['player_repertory_item'])
+        if handler.is_image():
+            handler.save_thumbnails('PNG')
+            document.type = DocumentType.image
+        document.save()
 
 
 class ArtistForm(forms.Form):

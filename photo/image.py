@@ -224,6 +224,15 @@ class ImageHandlerSimple(ImageHandlerBase):
     def is_file(self):
         return self.storage.is_file(self.storage.filename)
 
+    def is_image(self):
+        opened = True
+        try:
+            Image.open(self._rimage)
+        except:
+            opened = False
+        self._rimage.seek(0)
+        return opened
+
     def save(self):
         if not self._rimage:
             return
@@ -257,3 +266,7 @@ class ImageHandlerInstrument(ImageHandlerSimple):
 
 class ImageHandlerArtist(ImageHandlerSimple):
     BASE_DIR = 'artist'
+
+
+class FileHandlerDocument(ImageHandlerSimple):
+    BASE_DIR = 'document'

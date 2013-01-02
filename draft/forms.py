@@ -13,6 +13,7 @@ class CmsForm(forms.ModelForm):
         }
         js = ('/media/js/jquery/cleditor/jquery.cleditor.js',
               '/media/js/jquery/cleditor/jquery.cleditor.cmsplugin.js',
+              '/media/js/hbeditor.js',
               '/media/js/draftform.js')
 
 

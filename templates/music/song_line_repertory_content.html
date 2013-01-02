@@ -6,7 +6,7 @@
     <td>{{ item.song.name }}</td>
     <td class="center">{{ item.song.duration_display }}</td>
     <td class="center">{{ item.song.tempo_display }}</td>
-    <td>
+    <td class="td_players">
         <div style="position: relative;">
             <img src="/media/img/plus_16.png" class="add_player" url="{% url players_menu item.id %}" alt="Add a player for this song" style="float: right;" />
             <div class="players_menu">

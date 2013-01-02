@@ -1,5 +1,7 @@
 # -*- coding: utf-8; Mode: Python -*-
 
+from datetime import datetime
+
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext, ugettext_lazy as _
@@ -129,3 +131,27 @@ class Event(models.Model):
             photos = [i for i in flyers[0].photos.all()]
             if photos:
                 return photos[0]
+
+    def is_last_event(self):
+        last_event = self.get_last_event()
+        return self.id == last_event.id
+
+    def is_last_new_event(self):
+        last_new_event = self.get_last_new_event()
+        return self.id == last_new_event.id
+
+    @classmethod
+    def get_last_event(cls):
+        try:
+            return cls.objects.all().order_by('-starts_at')[0]
+        except IndexError:
+            return
+
+    @classmethod
+    def get_last_new_event(cls):
+        now = datetime.now()
+        try:
+            return cls.objects.filter(starts_at__gt=now)\
+                              .order_by('-starts_at')[0]
+        except IndexError:
+            return
