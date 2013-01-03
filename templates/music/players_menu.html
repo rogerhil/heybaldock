@@ -1,14 +1,31 @@
 {% load i18n %}
-<div class="pretty_select choose_player">
-    <h3>{% trans "Choose player" %}</h3>
-    {% for player in players %}
-        <div class="option" itemid="{{ item.id }}"  playerid="{{ player.id }}" instrumentid="{{ player.instrument.id }}" instrumentname="{{ player.instrument.name }}">
+<div class="pretty_select choose_instrument">
+    <h3>{% trans "Choose instrument" %}</h3>
+    {% for i in instruments %}
+        <div class="option" itemid="{{ item.id }}" instrumentid="{{ i.instrument.id }}" instrumentname="{{ i.instrument.name }}">
             <div class="icon">
-                <img src="{{ player.instrument.icon_url }}" />
+                <img src="{{ i.instrument.icon_url }}" />
             </div>
             <div class="title">
-                {{ player.user.get_full_name }}
+                {{ i.instrument }}
             </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="pretty_select choose_player" style="display: none;">
+    <h3>{% trans "Choose player" %}</h3>
+    {% for i in instruments %}
+        <div class="players_by_instrument_{{ i.instrument.id }}" style="display: none;">
+            {% for player in i.players %}
+                <div class="option" playerid="{{ player.id }}">
+                    <div class="icon">
+                        <img src="{{ player.instrument.icon_url }}" />
+                    </div>
+                    <div class="title">
+                        {{ player.user.get_full_name }}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     {% endfor %}
 </div>

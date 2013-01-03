@@ -622,9 +622,17 @@ def players_menu(request, id):
     for tags in tags_dict.values():
         tags.sort(lambda a, b: 1 if a.level > b.level else -1)
 
+    instruments_dict = {}
+    for player in players:
+        instrument = player.instrument
+        if not instruments_dict.has_key(instrument.id):
+            instruments_dict[player.instrument.id] = {'players': []}
+        instruments_dict[player.instrument.id]['instrument'] = instrument
+        instruments_dict[player.instrument.id]['players'].append(player)
+
     template = loader.get_template("music/players_menu.html")
     c = dict(
-        players=players,
+        instruments=instruments_dict.values(),
         item=item,
         members=members,
         tags_tuples=tags_dict.items()

@@ -181,7 +181,7 @@ function addPlayerButton() {
 					} else {
 						$menu.html(data.content);
 						$menu.slideDown();
-						loadPlayersMenu($menu);
+						loadInstrumentsMenu($menu);
 					}
 				} else {
 					alert("Could not load the players menu.");
@@ -484,12 +484,21 @@ function removePlayerItem(playerItemId) {
 	});
 }
 
-function loadPlayersMenu($menu) {
-	$menu.find('div.choose_player div.option').click(function () {
+function loadInstrumentsMenu($menu) {
+	$menu.find('div.choose_instrument div.option').click(function () {
 		var itemid = $(this).attr('itemid');
-		var playerid = $(this).attr('playerid');
 		var instrumentid = $(this).attr('instrumentid');
 		var isVocal = $(this).attr('instrumentname').toLowerCase() == 'vocal';
+		loadPlayersMenu($menu, itemid, instrumentid, isVocal);
+	});
+}
+
+function loadPlayersMenu($menu, itemid, instrumentid, isVocal) {
+	$menu.find('div.choose_instrument').hide();
+	$menu.find('div.choose_player div.players_by_instrument_' + instrumentid).show();
+	$menu.find('div.choose_player').slideDown();
+	$menu.find('div.choose_player div.option').click(function () {
+		var playerid = $(this).attr('playerid');
 		loadPlayAsMenu($menu, itemid, playerid, instrumentid, isVocal);
 	});
 }
