@@ -194,7 +194,7 @@ def add_album(request):
     return c
 
 def get_custom_results(request):
-    custom = pickle.loads(open('songs.pickle').read())
+    #custom = pickle.loads(open('songs.pickle').read())
     #return custom
     data = request.GET
     info = Discogs.get_album_infos(data['artist'], data['album'],
