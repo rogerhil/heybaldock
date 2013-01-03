@@ -103,7 +103,7 @@ class Tonality(ChoicesBase):
     def html_display(cls, note, original=True):
         if not note:
             return ('<span class="tonality_undefined tonality_block">'
-                    'Undefined</span>')
+                    'N/A</span>')
         t = note
         ttype = cls.tonality_type(note)
         changed = "tonality_changed" if not original else ""
