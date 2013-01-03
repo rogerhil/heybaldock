@@ -60,8 +60,8 @@ class AlbumInfoForm(forms.Form):
     album = forms.CharField(max_length=128, required=True)
     country = forms.ChoiceField(choices=COUNTRY_CHOICES)
     from_year = forms.ChoiceField(choices=YEAR_CHOICES, initial=1960)
-    composers_info = forms.BooleanField(initial=True)
-    track_list_enumeration = forms.BooleanField(initial=True)
+    #composers_info = forms.BooleanField(initial=True)
+    #track_list_enumeration = forms.BooleanField(initial=True)
 
 
 class SongForm(forms.Form):

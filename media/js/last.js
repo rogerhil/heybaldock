@@ -3,7 +3,7 @@ function startCursor() {
 	var element = $('body');
 	element.css('cursor','none');
 	$(element).mousemove(function(e){
-		$('#mycursor').css('left', e.clientX - 10).css('top', e.clientY + 250);
+		$('#mycursor').css('left', e.clientX + window.scrollX - 5).css('top', e.clientY + window.scrollY - 5);
 	});
 }
 
@@ -21,14 +21,32 @@ $(window).load(function () {
 	}).ajaxStop(function() {
 		stopCursor();
 	});
+	$(window).scroll(function (e) {
+		var $overlay = $("div.pp_overlay");
+		if ($overlay.is(":hidden")) return;
+		var $image = $overlay.find("div.loading_image");
+		$image.css('top', ($(window).height() / 2) + window.scrollY - 100 + "px");
+	});
 });
 
 ajax = function (options) {
-	$("div.pp_overlay").show();
+	var $overlay = $("div.pp_overlay");
+	var $image = $overlay.find("div.loading_image");
+	var $footer = $("#footer");
 	var suc = options.success;
+	$overlay.show();
+	$overlay.css('height', $footer.position().top + 180 + "px");
+	$overlay.css('width', $("html").width() + "px");
+	$image.css('left', ($(window).width() / 2) - 100 + "px");
+	$image.css('top', ($(window).height() / 2) + window.scrollY - 100 + "px");
+
 	options.success = function (data) {
 		$("div.pp_overlay").hide();
 		suc(data);
+	}
+	options.error = function (jqXHR, textStatus, errorThrown) {
+		$("div.pp_overlay").hide();
+		alert(errorThrown + ": Please try again!");
 	}
 	$.ajax(options);
 }
