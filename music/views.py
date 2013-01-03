@@ -434,13 +434,7 @@ def change_repertory_item_tonality(request, id):
         tonality = None
     item.tonality = tonality
     item.save()
-    group = item.group
-    repertory = group.repertory
-    temp = loader.get_template("music/song_line_repertory_content.html")
-    tonality_choices = get_tonality_choices()
-    c = {'item': item, 'group': group, 'repertory': repertory,
-         'tonality_choices': tonality_choices}
-    content = temp.render(RequestContext(request, c))
+    content = get_song_line_repertory_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 
@@ -474,13 +468,7 @@ def add_song_to_repertory(request, id, group_id, song_id):
                                              number=count + 1)
     group.items.add(item)
     group.save()
-    template = loader.get_template("music/song_line_repertory_content.html")
-    c = {
-        'item': item,
-        'group': group,
-        'repertory': repertory
-    }
-    song_line = template.render(RequestContext(request, c))
+    song_line = get_song_line_repertory_content(request, item)
     return dict(success=True, song_line=song_line)
 
 @json
@@ -659,7 +647,9 @@ def player_repertory_item_menu_content(request, player_repertory_item):
         id=player_repertory_item.id,
         is_lead=player_repertory_item.is_lead
     )
-    return dict(content=template.render(context), player=player)
+    item = player_repertory_item.repertory_item
+    return dict(content=template.render(context), player=player,
+                item_id=item.id)
 
 @json
 @login_required
@@ -779,6 +769,22 @@ def remove_document_for_player_repertory_item(request, id, document_id):
     c['success'] = True
     return c
 
+def get_song_line_repertory_content(request, item):
+    group = item.group
+    repertory = group.repertory
+    temp = loader.get_template("music/song_line_repertory_content.html")
+    tonality_choices = get_tonality_choices()
+    c = {'item': item, 'group': group, 'repertory': repertory,
+         'tonality_choices': tonality_choices}
+    return temp.render(RequestContext(request, c))
+
+@json
+@login_required
+def update_song_line_repertory_content(request, id):
+    item = get_object_or_404(RepertoryGroupItem, id=id)
+    content = get_song_line_repertory_content(request, item)
+    return dict(success=True, content=content, item_id=item.id)
+
 @json
 @login_required
 def add_player_repertory_item(request, id, player_id):
@@ -793,13 +799,7 @@ def add_player_repertory_item(request, id, player_id):
     if form.is_valid():
         form.save()
         item = form.instance.repertory_item
-        group = item.group
-        repertory = group.repertory
-        temp = loader.get_template("music/song_line_repertory_content.html")
-        tonality_choices = get_tonality_choices()
-        c = {'item': item, 'group': group, 'repertory': repertory,
-             'tonality_choices': tonality_choices}
-        content = temp.render(RequestContext(request, c))
+        content = get_song_line_repertory_content(request, item)
         return dict(success=True, content=content, item_id=item.id)
     return dict(success=False)
 
@@ -808,14 +808,7 @@ def add_player_repertory_item(request, id, player_id):
 def remove_player_repertory_item(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     item = player_repertory_item.repertory_item
-    group = item.group
-    repertory = group.repertory
-    player_repertory_item.delete()
-    temp = loader.get_template("music/song_line_repertory_content.html")
-    tonality_choices = get_tonality_choices()
-    c = {'item': item, 'group': group, 'repertory': repertory,
-         'tonality_choices': tonality_choices}
-    content = temp.render(RequestContext(request, c))
+    content = get_song_line_repertory_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @json
@@ -825,13 +818,7 @@ def player_set_as_lead(request, id):
     player_repertory_item.is_lead = bool(int(request.POST.get('is_lead')))
     player_repertory_item.save()
     item = player_repertory_item.repertory_item
-    group = item.group
-    repertory = group.repertory
-    temp = loader.get_template("music/song_line_repertory_content.html")
-    tonality_choices = get_tonality_choices()
-    c = {'item': item, 'group': group, 'repertory': repertory,
-         'tonality_choices': tonality_choices}
-    content = temp.render(RequestContext(request, c))
+    content = get_song_line_repertory_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @login_required

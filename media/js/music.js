@@ -385,7 +385,7 @@ function loadChangePlayerUserOptions(data, $menu, $changeOptions) {
 				data: {player_id: $(this).attr('playerid')},
 				dataType: 'json',
 				success: function (data) {
-					loadChangePlayerMenu($menu, data);
+					ajaxUpdateSongLine(data.item_id);
 				}
 			});
 		});
@@ -405,6 +405,7 @@ function loadChangeMemberOptions(data, $menu, $changeOptions) {
 			dataType: 'json',
 			success: function (data) {
 				loadChangePlayerMenu($menu, data);
+				ajaxUpdateSongLine(data.item_id);
 			}
 		});
 	});
@@ -442,21 +443,43 @@ function setAsLead(playerItemId, playerisLead) {
 		dataType: 'json',
 		success: function (data) {
 			if (data.success) {
-				var $tr = getTrLineByRepertoryItemId(data.item_id);
-				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
-				var $newTr = $(data.content);
-				$newTr.addClass(cssClass);
-				$newTr.insertBefore($tr);
-				$tr.remove();
-				$newTr.find('img.remove_song').click(removeSongFromRepertory);
-				$newTr.find('img.add_player').click(addPlayerButton);
-				$newTr.find('img.player').click(changePlayerButton);
-				tonalityClick($newTr.find("td.tonality_cel"));
+				updateSongLine(data);
 			} else {
 				alert('Could not remove player to this song.');
 			}
 		}
 	});
+}
+
+function ajaxUpdateSongLine(itemId, callback) {
+	var $tr = getTrLineByRepertoryItemId(itemId);
+	var url = $tr.attr('updatesonglineurl');
+	$.ajax({
+		url: url,
+		type: 'get',
+		dataType: 'json',
+		success: function (data) {
+			if (data.success) {
+				updateSongLine(data, callback);
+			}
+		}
+	});
+}
+
+function updateSongLine(data, callback) {
+	var $tr = getTrLineByRepertoryItemId(data.item_id);
+	var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+	var $newTr = $(data.content);
+	$newTr.addClass(cssClass);
+	$newTr.insertBefore($tr);
+	$tr.remove();
+	$newTr.find('img.remove_song').click(removeSongFromRepertory);
+	$newTr.find('img.add_player').click(addPlayerButton);
+	$newTr.find('img.player').click(changePlayerButton);
+	tonalityClick($newTr.find("td.tonality_cel"));
+	if (callback) {
+		callback();
+	}
 }
 
 function removePlayerItem(playerItemId) {
@@ -467,16 +490,7 @@ function removePlayerItem(playerItemId) {
 		dataType: 'json',
 		success: function (data) {
 			if (data.success) {
-				var $tr = getTrLineByRepertoryItemId(data.item_id);
-				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
-				var $newTr = $(data.content);
-				$newTr.addClass(cssClass);
-				$newTr.insertBefore($tr);
-				$tr.remove();
-				$newTr.find('img.remove_song').click(removeSongFromRepertory);
-				$newTr.find('img.add_player').click(addPlayerButton);
-				$newTr.find('img.player').click(changePlayerButton);
-				tonalityClick($newTr.find("td.tonality_cel"));
+				updateSongLine(data);
 			} else {
 				alert('Could not remove player to this song.');
 			}
@@ -558,16 +572,7 @@ function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
 		dataType: 'json',
 		success: function (data) {
 			if (data.success) {
-				var $tr = getTrLineByRepertoryItemId(data.item_id);
-				var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
-				var $newTr = $(data.content);
-				$newTr.addClass(cssClass);
-				$newTr.insertBefore($tr);
-				$tr.remove();
-				$newTr.find('img.remove_song').click(removeSongFromRepertory);
-				$newTr.find('img.add_player').click(addPlayerButton);
-				$newTr.find('img.player').click(changePlayerButton);
-				tonalityClick($newTr.find("td.tonality_cel"));
+				updateSongLine(data);
 			} else {
 				alert('Could not include player to this song.');
 			}
@@ -598,15 +603,7 @@ function loadTonalityMenu($menu) {
 			dataType: 'json',
 			success: function (data) {
 				if (data.success) {
-					var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
-					var $newTr = $(data.content);
-					$newTr.insertBefore($tr);
-					$tr.remove();
-					$newTr.addClass(cssClass);
-					$newTr.find('img.remove_song').click(removeSongFromRepertory);
-					$newTr.find('img.add_player').click(addPlayerButton);
-					$newTr.find('img.player').click(changePlayerButton);
-					tonalityClick($newTr.find("td.tonality_cel"));
+					updateSongLine(data);
 				} else {
 					alert('An error occurred.');
 				}
