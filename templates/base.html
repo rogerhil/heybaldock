@@ -97,8 +97,7 @@
                     {% if user.is_authenticated %}
                     <div class="profile_area">
                         {% if enable_repertory_features %}
-                            <a href="{% url music_management %}">Músicas</a>
-                            <a href="{% url repertories %}">Repertórios</a>
+                            <a href="{% url music_management %}">{% trans "Music Management" %}</a>
                         {% endif %}
                         <a href="{% url profile %}">{{ user }}</a>
                         <a href="{% url logout %}">Logout</a>

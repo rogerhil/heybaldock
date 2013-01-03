@@ -1,11 +1,31 @@
 {% load i18n %}
-<tr itemid="{{ item.id }}" songid="{{ item.song.id }}" number="{{ item.number }}" class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
+<tr itemid="{{ item.id }}"
+    songid="{{ item.song.id }}"
+    number="{{ item.number }}"
+    changetonalityurl="{% url change_repertory_item_tonality item.id %}"
+    class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
     <td class="nopadding center"><span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span></td>
     <td>{{ item.number_display }}</td>
     <td class="nopadding center"><img src="{{ item.song.album.icon_url }}" /></td>
     <td>{{ item.song.name }}</td>
     <td class="center">{{ item.song.duration_display }}</td>
-    <td class="center">{{ item.song.tempo_display }}</td>
+    <td class="center">{% autoescape off %}{{ item.song.tempo_html_display }}{% endautoescape %}</td>
+    <td class="center tonality_cel">
+        {% autoescape off %}{{ item.tonality_html_display }}{% endautoescape %}
+        <div class="tonality_menu" style="display: none;">
+            <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999;">
+                <h3>{% trans "Change tonality" %}</h3>
+                <div>
+                    <span class="option tonality_original" tonalityid="ORIGINAL" style="width: 190px;">{% trans "Original" %}</span>
+                </div>
+                <div class="clear"></div>
+                {% for key, title, ttype in tonality_choices %}
+                    <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
+                {% endfor %}
+                <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+            </div>
+        </div>
+    </td>
     <td class="td_players">
         <div style="position: relative;">
             <img src="/media/img/plus_16.png" class="add_player" url="{% url players_menu item.id %}" alt="Add a player for this song" style="float: right;" />

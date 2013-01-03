@@ -246,6 +246,10 @@ class Album(models.Model):
             return self.name
 
     @property
+    def ordered_songs(self):
+        return self.songs.all().order_by('position')
+
+    @property
     def thumb_url(self):
         return self.image_handler.url('thumb')
 
@@ -310,6 +314,15 @@ class Song(models.Model):
     @property
     def tempo_display(self):
         return Tempo.display(self.tempo)
+
+    @property
+    def tempo_html_display(self):
+        t = Tempo.display(self.tempo)
+        return '<span class="tempo%s">%s</span>' % (self.tempo, t)
+
+    @property
+    def tonality_html_display(self):
+        return Tonality.html_display(self.tonality)
 
     @property
     def duration_display(self):
@@ -390,6 +403,16 @@ class RepertoryGroupItem(models.Model):
 
     def __unicode__(self):
         return self.song.name
+
+    @property
+    def tonality_html_display(self):
+        tonality = self.tonality or self.song.tonality
+        original = self.tonality_is_original
+        return Tonality.html_display(tonality, original=original)
+
+    @property
+    def tonality_is_original(self):
+        return self.tonality is None or self.tonality == self.song.tonality
 
     @property
     def number_display(self):
@@ -573,11 +596,20 @@ class PlayerRepertoryItem(models.Model):
         Event (not the main one), so replicate all information to the main
         repertory.
         """
+        return
+        try:
+            instance
+            instance.repertory_item
+            instance.repertory_item.group
+            instance.repertory_item.group.is_main
+        except:
+            return
         if instance.id:
             current = PlayerRepertoryItem.objects.get(id=instance.id)
         else:
             current = instance
         if instance.repertory_item.group.is_main:
+
             players = current.get_last_new_correspond_players()
             for player in players:
                 pl, rels = instance.clone_object(player)
@@ -587,8 +619,25 @@ class PlayerRepertoryItem(models.Model):
                     many.clear()
                     for value in values:
                         many.add(value)
+            if not instance.id:
+                items = current.repertory_item.get_last_new_correspond_items()
+                for item in items:
+                    pls = [i.player for i in item.players.all()]
+                    if instance.player in pls:
+                        continue
+                    pl, rels = instance.clone_object()
+                    pl.repertory_item = item
+                    pl.save()
+                    for attr, values in rels.items():
+                        many = getattr(pl, attr)
+                        many.clear()
+                        for value in values:
+                            many.add(value)
+                    item.players.add(pl)
             return
         main_player_ri = current.get_correspond_main_player()
+        if not main_player_ri:
+            return
         main_player_ri, rels = instance.clone_object(main_player_ri)
         main_player_ri.save()
         for attr, values in rels.items():
@@ -603,6 +652,7 @@ class PlayerRepertoryItem(models.Model):
         Event (not the main one), so replicate all information to the main
         repertory.
         """
+        return
         try:
             instance.repertory_item
         except RepertoryGroupItem.DoesNotExist:

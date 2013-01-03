@@ -1,20 +1,17 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
 {% endblock %}
 
-{% block content %}
-<div class="clear"></div>
-<div class="section_content">
+{% block music_content %}
     <div class="pretty_form">
         <form action="" method="post" name="repertory_form">
             {% csrf_token %}
             {{ form.as_ul }}
-            <input class="submit" type="submit" value="{%  trans "Save" %}"  />
+            <input class="submit" type="submit" value="{% trans "Save" %}" style="margin-left: 10px;"  />
+            <input class="submit" type="button" value="{% trans "Cancel" %}" onclick="window.location = '{% url repertories %}'" />
         </form>
     </div>
-</div>
-<div class="clear"></div>
 {% endblock %}

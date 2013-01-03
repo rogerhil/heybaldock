@@ -91,7 +91,7 @@ function addNewRepertoryGroup() {
 	}
 	$newRepertoryForm.hide();
 	$.ajax({
-		url: '/musica/repertorios/' + repertory_id + '/group/add/',
+		url: '/music/repertory/' + repertory_id + '/group/add/',
 		type: 'post',
 		dataType: 'json',
 		data: {name: $name.val()},
@@ -112,7 +112,7 @@ function loadRepertory() {
 	$(".remove_group").click(function () {
 		var group_id = $(this).parents().find('table').attr('group_id');
 		$.ajax({
-			url: '/musica/repertorios/' + repertory_id + '/group/' + group_id + '/remove/',
+			url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/remove/',
 			type: 'post',
 			dataType: 'json',
 			success: function (data) {
@@ -144,7 +144,7 @@ function loadRepertory() {
 				}
 			}
 			$.ajax({
-				url: '/musica/repertorios/' + repertory_id + '/group/' + group_id + '/move/',
+				url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/move/',
 				type: 'post',
 				dataType: 'json',
 				data: {order: Number(order)},
@@ -434,7 +434,7 @@ function getTrLineByRepertoryItemId(itemId) {
 }
 
 function setAsLead(playerItemId, playerisLead) {
-	var url = '/musica/repertorios/player_repertory_item/' + playerItemId + '/set_as_lead/';
+	var url = '/music/repertory/player_repertory_item/' + playerItemId + '/set_as_lead/';
 	$.ajax({
 		url: url,
 		type: 'post',
@@ -451,6 +451,7 @@ function setAsLead(playerItemId, playerisLead) {
 				$newTr.find('img.remove_song').click(removeSongFromRepertory);
 				$newTr.find('img.add_player').click(addPlayerButton);
 				$newTr.find('img.player').click(changePlayerButton);
+				tonalityClick($newTr.find("td.tonality_cel"));
 			} else {
 				alert('Could not remove player to this song.');
 			}
@@ -459,7 +460,7 @@ function setAsLead(playerItemId, playerisLead) {
 }
 
 function removePlayerItem(playerItemId) {
-	var url = '/musica/repertorios/player_repertory_item/' + playerItemId + '/remove/';
+	var url = '/music/repertory/player_repertory_item/' + playerItemId + '/remove/';
 	$.ajax({
 		url: url,
 		type: 'post',
@@ -475,6 +476,7 @@ function removePlayerItem(playerItemId) {
 				$newTr.find('img.remove_song').click(removeSongFromRepertory);
 				$newTr.find('img.add_player').click(addPlayerButton);
 				$newTr.find('img.player').click(changePlayerButton);
+				tonalityClick($newTr.find("td.tonality_cel"));
 			} else {
 				alert('Could not remove player to this song.');
 			}
@@ -539,7 +541,7 @@ function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
 	$menu.slideUp(1000, function () {
 		$menu.remove();
 	});
-	var url = "/musica/repertorios/repertory_item/" + itemid + "/player/" + playerid + "/add/";
+	var url = "/music/repertory/repertory_item/" + itemid + "/player/" + playerid + "/add/";
 	$.ajax({
 		url: url,
 		type: 'post',
@@ -556,10 +558,51 @@ function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
 				$newTr.find('img.remove_song').click(removeSongFromRepertory);
 				$newTr.find('img.add_player').click(addPlayerButton);
 				$newTr.find('img.player').click(changePlayerButton);
+				tonalityClick($newTr.find("td.tonality_cel"));
 			} else {
 				alert('Could not include player to this song.');
 			}
 		}
+	});
+}
+
+function tonalityClick($el) {
+	$el.click(function (e) {
+		e.stopPropagation();
+		$("div.tonality_menu").hide();
+		var $menu = $(this).find("div.tonality_menu");
+		$menu.slideDown();
+		loadTonalityMenu($menu);
+	});
+}
+
+function loadTonalityMenu($menu) {
+	var $tr = $menu.parent().parent();
+	var url = $tr.attr('changetonalityurl');
+	$menu.find('span.option').unbind('click').click('click', function (e) {
+		e.stopPropagation();
+		var tonality = $(this).attr('tonalityid');
+		$.ajax({
+			url: url,
+			type: "post",
+			data: {tonality: tonality},
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+					var $newTr = $(data.content);
+					$newTr.insertBefore($tr);
+					$tr.remove();
+					$newTr.addClass(cssClass);
+					$newTr.find('img.remove_song').click(removeSongFromRepertory);
+					$newTr.find('img.add_player').click(addPlayerButton);
+					$newTr.find('img.player').click(changePlayerButton);
+					tonalityClick($newTr.find("td.tonality_cel"));
+				} else {
+					alert('An error occurred.');
+				}
+			}
+		});
 	});
 }
 
@@ -570,6 +613,8 @@ function loadRepertoryGroup(o) {
 	$(o).find('img.remove_song').click(removeSongFromRepertory);
 	$(o).find('img.add_player').click(addPlayerButton);
 	$(o).find('img.player').click(changePlayerButton);
+	tonalityClick($("td.tonality_cel"));
+	
 	$($(o).find('tbody')).sortable({
 		placeholder: "ui-state-highlight",
 		handle: ".song_handle",
@@ -594,7 +639,7 @@ function loadRepertoryGroup(o) {
 				}
 			}
 			$.ajax({
-				url: '/musica/repertorios/' + repertory_id + '/group/' + group_id + '/item/' + item_id + '/move/',
+				url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/item/' + item_id + '/move/',
 				type: 'post',
 				dataType: 'json',
 				data: {number: Number(order)},
@@ -676,7 +721,7 @@ function addNewSong(group_id, sid, $el) {
 	var cycleClass = $body.find('tr').length % 2 != 0? 'even' : 'odd';
 	var $tr;
 	$.ajax({
-		url: '/musica/repertorios/' + rid + '/group/' + group_id + '/song/' + sid + '/add/',
+		url: '/music/repertory/' + rid + '/group/' + group_id + '/song/' + sid + '/add/',
 		type: 'post',
 		dataType: 'json',
 		data: {},
@@ -715,7 +760,7 @@ function matchSong(name, o) {
 	var $songsContent = $form.find("div.songs_content");
 	var img, name, block, selected, $songBlock;
 	$.ajax({
-		url: '/musica/busca/',
+		url: '/music/busca/',
 		type: 'post',
 		dataType: 'json',
 		data: {name: name, group_id: group_id, main: Number($repCont.attr('main'))},
@@ -756,7 +801,7 @@ function removeAlbum() {
 function addToMainRepertory() {
 	var songId = $(this).attr('songid');
 	$.ajax({
-		url: '/musica/management/album/song/add_to_main_pertory/',
+		url: '/music/album/song/add_to_main_pertory/',
 		type: 'post',
 		dataType: 'json',
 		data: {id: songId},

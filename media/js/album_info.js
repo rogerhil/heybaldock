@@ -53,7 +53,7 @@ function registerAlbum() {
 		return;
 	}
 	ajax({
-		url: '/musica/management/album/add/register/',
+		url: '/music/album/add/register/',
 		type: 'post',
 		dataType: 'json',
 		data: data,
@@ -138,7 +138,7 @@ function getAlbumCustom() {
 		from_year: from_year
 	};
 	ajax({
-		url: '/musica/management/album/add/custom_form/',
+		url: '/music/album/add/custom_form/',
 		data: data,
 		success: function (data) {
 			$('#album_info_results').html(data);

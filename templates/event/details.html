@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load photoutils %}
+<div class="clear"></div>
 <div class="event_flyer">
     {% with event.flyers as albums %}
         {% for album in albums %}
@@ -17,7 +18,6 @@
     <p>{% autoescape off %}{{ event.content }}{% endautoescape %}</p>
     <p>Data: {{ event.starts_at }}</p>
 </div>
-
 {% with event.location as location %}
     {% include "event/location.html" %}
 {% endwith %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n %}
 
 {% block stylesheet %}
@@ -16,36 +16,28 @@
 
 {% endblock %}
 
-{% block large_content %}
-<div class="grid_3">
-    <div id="content">
-        <div class="clear"></div>
-        <div class="section_content">
-            <div class="manage_buttons">
-                <a href="{% url repertories %}">{% trans 'Back to Repertories List' %}</a>
-                <a href="{% url add_repertory %}">{% trans "Add Repertory" %}</a>
-            </div>
-            <h1>{{ repertory }}</h1>
-            <div class="clear"></div>
-            {% if not repertory.is_main %}
-                <a href="javascript:;" id="add_repertory_group">
-                    <img src="/media/img/plus_16.png" alt="Add group of songs" title="Add group of songs">
-                    {% trans 'Add group of songs' %}
-                </a>
-            {% endif %}
-            <div id="new_repertory_group" style="display: none;">
-                <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
-                    <input name="new_repertory_group_name" placeholder="{% trans "Group name"  %}" type="text" style="width: 140px;" /> <a style="display: inline; float: none; width: 20px;" href="javascript:;">Add</a>
-                </div>
-            </div>
-            <br />
-            <br />
-            <div class="clear"></div>
-            <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list" main="{% if repertory.is_main %}1{% else %}0{% endif %}">
-                {% include "music/repertory_content.html" %}
-            </div>
+{% block actions %}
+    <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+    <a href="{% url add_repertory %}">{% trans "Add Repertory" %}</a>
+{% endblock %}
+
+{% block music_content %}
+    <h1>{% trans "Repertory:" %} {{ repertory }}</h1>
+    <div class="clear"></div>
+    {% if not repertory.is_main %}
+        <a href="javascript:;" id="add_repertory_group">
+            <img src="/media/img/plus_16.png" alt="Add group of songs" title="Add group of songs">
+            {% trans 'Add group of songs' %}
+        </a>
+    {% endif %}
+    <div class="clear"></div>
+    <div id="new_repertory_group" style="display: none;">
+        <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
+            <input name="new_repertory_group_name" placeholder="{% trans "Group name"  %}" type="text" style="width: 140px;" /> <a style="display: inline; float: none; width: 20px;" href="javascript:;">Add</a>
         </div>
-        <div class="clear"></div>
     </div>
-</div>
+    <div class="clear"></div>
+    <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list" main="{% if repertory.is_main %}1{% else %}0{% endif %}">
+        {% include "music/repertory_content.html" %}
+    </div>
 {% endblock %}

@@ -1,26 +1,37 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
-    <script type="text/javascript" src="/media/js/music.js"></script>
+    <script type="text/javascript" src="/media/js/musicdashboard.js"></script>
 {% endblock %}
 
-{% block large_content %}
-<div class="grid_3">
-    <div id="content">
-        <div class="clear"></div>
-        <div class="section_content">
-            <div class="manage_buttons">
-                <a href="{% url instruments %}">{% trans 'View instruments' %}</a>
-                <a href="{% url artists %}">{% trans 'View all artists' %}</a>
-                <a href="{% url albums %}">{% trans 'View all albums' %}</a>
-                <a href="{% url add_album %}">{% trans 'Add album' %}</a>
+{% block music_content %}
+    <div id="dashboard">
+        <div class="dashboard_item" url="{% url artists %}">
+            <div class="dashboard_image">
+                <img src="/media/img/band_260x200.jpg" alt="">
             </div>
-            <h1>Music Management</h1>
+            <div class="dashboard_title">
+                {% trans "Artists" %}
+            </div>
         </div>
-        <div class="clear"></div>
+        <div class="dashboard_item" url="{% url instruments %}">
+            <div class="dashboard_image">
+                <img src="/media/img/instruments_260x200.png" alt="">
+            </div>
+            <div class="dashboard_title">
+                {% trans "Instruments" %}
+            </div>
+        </div>
+        <div class="dashboard_item" url="{% url repertories %}">
+            <div class="dashboard_image">
+                <img src="/media/img/music_260x200.jpg" alt="">
+            </div>
+            <div class="dashboard_title">
+                {% trans "Repertories" %}
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}

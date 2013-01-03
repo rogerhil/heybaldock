@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^fotos/', include('photo.urls')),
     url(r'^contato/', include('contact.urls')),
     url(r'^rascunho/', include('draft.urls')),
-    url(r'^musica/', include('music.urls')),
+    url(r'^music/', include('music.urls')),
     url(r'^busca/', include('search.urls')),
     url(r'^admin/', include(admin.site.urls)),
 

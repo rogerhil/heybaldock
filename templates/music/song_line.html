@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<tr class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}" songid="{{ song.id }}" changetempourl="{% url change_tempo song.id %}" changetonalityurl="{% url change_tonality song.id %}">
+    <td style="text-align: center;">{{ song.position }}</td>
+    <td>{{ song.name }}</td>
+    <td style="text-align: center;">{{ song.duration_display }}</td>
+    <td>{{ song.composer_display }}</td>
+    <td class="center tempo_cel">
+        {% autoescape off %}{{ song.tempo_html_display }}{% endautoescape %}
+        <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999;">
+            <h3>{% trans "Change tempo" %}</h3>
+            {% for key, title in tempo_choices %}
+                <div class="option center" tempoid="{{ key }}">
+                    <span class="tempo{{ key }}" style="margin: 0px auto 0px auto">{{ title }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </td>
+    <td class="center tonality_cel">
+        {% autoescape off %}{{ song.tonality_html_display }}{% endautoescape %}
+        <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999;">
+            <h3>{% trans "Change tonality" %}</h3>
+            {% for key, title, ttype in tonality_choices %}
+                <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
+            {% endfor %}
+            <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+        </div>
+    </td>
+    <td class="center" style="position: relative;">
+        <img class="add_to_main_repertory" songid="{{ song.id }}" src="/media/img/plus_16.png" alt="{% trans "Add to Main Repertory"  %}" title="{% trans "Add to Main Repertory"  %}" />
+    </td>
+</tr>

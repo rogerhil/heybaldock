@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n %}
 
 {% block stylesheet %}
@@ -16,55 +16,49 @@
     </script>
 {% endblock %}
 
-{% block large_content %}
-<div class="grid_3">
-    <div id="content">
-        <div class="clear"></div>
-        <div class="section_content">
-            <div class="manage_buttons">
-                <a href="{% url music_management %}">{% trans 'Back to music management' %}</a>
-                <a href="{% url add_album %}">{% trans 'Add album' %}</a>
-                <a href="{% url add_instrument %}">{% trans 'Add instrument' %}</a>
-                <a href="{% url add_instrument_tag_type %}">{% trans 'Add instrument tag type' %}</a>
+{% block actions %}
+    <a href="{% url instruments %}">{% trans 'View all instruments' %}</a>
+    <a href="{% url add_instrument %}">{% trans 'Add instrument' %}</a>
+    <a href="{% url add_instrument_tag_type %}">{% trans 'Add instrument tag type' %}</a>
+{% endblock %}
+
+{% block music_content %}
+
+    <h1>{% trans "Instrument tag types" %}</h1>
+    {% for tag_type in tag_types %}
+        {% include "music/tag_type.html" %}
+    {% endfor %}
+
+    {% comment %}
+    <canvas id="example" width="700" height="400">
+        <div data-measure="1">
+            <div data-chord>
+                <div data-note="half" data-pitch="0" data-octave="3"></div>
+                <div data-note="quarter" data-pitch="4" data-octave="4" data-lastnote="true"></div>
             </div>
-            <h1>Instrument tag types</h1>
-            {% for tag_type in tag_types %}
-                {% include "music/tag_type.html" %}
-            {% endfor %}
+            <div data-note="quarter" data-pitch="3" data-octave="4"></div>
+            <div data-chord>
+                <div data-note="half" data-pitch="7" data-octave="3"></div>
+                <div data-note="quarter" data-pitch="4" data-octave="4" data-lastnote="true"></div>
+            </div>
+            <div data-note="quarter" data-pitch="5" data-octave="4" data-lastnote="true"></div>
         </div>
-        <div class="clear"></div>
-        {% comment %}
-        <canvas id="example" width="700" height="400">
-            <div data-measure="1">
-                <div data-chord>
-                    <div data-note="half" data-pitch="0" data-octave="3"></div>
-                    <div data-note="quarter" data-pitch="4" data-octave="4" data-lastnote="true"></div>
-                </div>
-                <div data-note="quarter" data-pitch="3" data-octave="4"></div>
-                <div data-chord>
-                    <div data-note="half" data-pitch="7" data-octave="3"></div>
-                    <div data-note="quarter" data-pitch="4" data-octave="4" data-lastnote="true"></div>
-                </div>
-                <div data-note="quarter" data-pitch="5" data-octave="4" data-lastnote="true"></div>
+        <div data-measure="2">
+            <div data-chord>
+                <div data-note="half" data-pitch="0" data-octave="3"></div>
+                <div data-note="quarter" data-pitch="0" data-octave="5" data-lastnote="true"></div>
             </div>
-            <div data-measure="2">
-                <div data-chord>
-                    <div data-note="half" data-pitch="0" data-octave="3"></div>
-                    <div data-note="quarter" data-pitch="0" data-octave="5" data-lastnote="true"></div>
-                </div>
-                <div data-note="quarter" data-pitch="11" data-octave="4"></div>
-                <div data-chord>
-                    <div class="freebird" data-note="half" data-pitch="0" data-octave="3"></div>
-                    <div class="freebird" data-note="quarter" data-pitch="0" data-octave="4" data-lastnote="true"></div>
-                </div>
-                <div data-note="quarter" data-pitch="9" data-octave="4"></div>
+            <div data-note="quarter" data-pitch="11" data-octave="4"></div>
+            <div data-chord>
+                <div class="freebird" data-note="half" data-pitch="0" data-octave="3"></div>
+                <div class="freebird" data-note="quarter" data-pitch="0" data-octave="4" data-lastnote="true"></div>
             </div>
-        </canvas>
-        <div class="clear"></div>
-        {% endcomment %}
-    </div>
-</div>
-<script type="text/javascript">
-    $('.tag').click(function () {$(this).addClass('tag_selected')});
-</script>
+            <div data-note="quarter" data-pitch="9" data-octave="4"></div>
+        </div>
+    </canvas>
+    <div class="clear"></div>
+    <script type="text/javascript">
+        $('.tag').click(function () {$(this).addClass('tag_selected')});
+    </script>
+    {% endcomment %}
 {% endblock %}

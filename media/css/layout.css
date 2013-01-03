@@ -398,7 +398,10 @@ h1.draft_head label {
 #logo,
 #logo .beatles_cover,
 #logo .shadow_big,
-#logo .shadow_small {
+#logo .shadow_small,
+div.yellow_submarine_title,
+div.yellow_submarine_title .shadow_big,
+div.yellow_submarine_title .shadow_small {
     height: 60px;
     font-family: yellow_submarine;
     font-size: 50px;
@@ -430,6 +433,16 @@ h1.draft_head label {
     -1px -1px 0 #000;
     position: relative;
     z-index: 2;
+}
+
+div.yellow_submarine_title {
+    margin-left: 5px;
+}
+
+div.yellow_submarine_title,
+div.yellow_submarine_title .shadow_big,
+div.yellow_submarine_title .shadow_small {
+    font-size: 40px;
 }
 
 #logo .beatles_cover {
@@ -467,18 +480,21 @@ h1.draft_head label {
     letter-spacing: 5px;
 }
 
-#logo .shadow {
+#logo .shadow,
+div.yellow_submarine_title .shadow {
     z-index: -1;
     top: -5px;
     position: absolute;
     color: #e9892c !important;
 }
 
-#logo .shadow_big {
+#logo .shadow_big,
+div.yellow_submarine_title .shadow_big {
     color: #e9892c !important;
 }
 
-#logo .shadow_small {
+#logo .shadow_small,
+div.yellow_submarine_title .shadow_small {
     top: 2px;
     color: #e9892c !important;
 }
@@ -1078,6 +1094,10 @@ div.songs_content div.selected {
     background-color: #afbfcf;
 }
 
+.pretty_select {
+    max-width: 200px;
+}
+
 div.pretty_select div.icon {
     float: left;
     margin-right: 10px;
@@ -1325,4 +1345,181 @@ div.metadata ul li a {
 
 .loading_cursor {
     cursor: url(/media/img/loading.gif), auto !important;
+}
+
+#dashboard {
+    width: 900px;
+    margin: 0px auto 0px auto;
+}
+
+#dashboard .dashboard_item {
+    float: left;
+    padding: 10px;
+    margin:  0px 10px 0px 10px;
+    width: 260px;
+    border-radius: 10px;
+}
+
+#dashboard .dashboard_item:hover {
+    background-image: url(/media/img/content_bg_2.png);
+}
+
+#dashboard .dashboard_item .dashboard_image {
+    width: 260px;
+    height: 200px;
+    margin: 0px auto 10px auto;
+}
+
+#dashboard .dashboard_item .dashboard_image img {
+    width: 260px;
+    height: 200px;
+
+}
+
+#dashboard .dashboard_item .dashboard_title {
+    margin: 0px auto 0px auto;
+    width: 260px;
+    height: 40px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#music_management_title {
+    width: 290px;
+}
+
+#music_management_title:hover {
+    cursor: pointer;
+    color: #f7c413;
+}
+
+.tempo1,
+.tempo2,
+.tempo3,
+.tempo4,
+.tempo5 {
+    color: #000000;
+    padding: 2px 8px 2px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: block;
+    width: 70px;
+}
+
+.tempo1:hover ,
+.tempo2:hover ,
+.tempo3:hover ,
+.tempo4:hover ,
+.tempo5:hover  {
+    border: 2px solid #4b5c6c;
+    cursor: pointer;
+}
+
+.tempo1,
+.repertory .tempo1 {
+    background-color: #7CA0C7;
+    border: 2px solid #7CA0C7;
+}
+
+.tempo2,
+.repertory .tempo2 {
+    background-color: #a1cb5e;
+    border: 2px solid #a1cb5e;
+}
+
+.tempo3,
+.repertory .tempo3 {
+    background-color: #f7c413;
+    border: 2px solid #f7c413;
+}
+
+.tempo4,
+.repertory .tempo4 {
+    background-color: #ff8c00;
+    border: 2px solid #ff8c00;
+}
+
+.tempo5,
+.repertory .tempo5 {
+    background-color: red;
+    border: 2px solid red;
+    color: #ffffff;
+}
+
+.repertory .tempo1:hover ,
+.repertory .tempo2:hover ,
+.repertory .tempo3:hover ,
+.repertory .tempo4:hover ,
+.repertory .tempo5:hover  {
+    cursor: default !important;
+}
+
+.tonality_atonal,
+.tonality_minor,
+.tonality_major,
+.tonality_undefined,
+.tonality_original {
+    color: #000000;
+    padding: 2px 0px 2px 0px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 3px;
+    display: block;
+    float: left;
+    width: 40px;
+}
+
+.tonality_block {
+    display: block;
+    margin: 0px;
+    float: none;
+    margin: 0px auto 0px auto;
+}
+
+.tonality_atonal:hover ,
+.tonality_minor:hover ,
+.tonality_major:hover ,
+.tonality_undefined:hover,
+.tonality_original:hover {
+    border: 2px solid #4b5c6c;
+    cursor: pointer;
+}
+
+.tonality_original:hover {
+    border: 2px solid #f7c413;
+}
+
+.tonality_changed {
+    color: red;
+}
+
+.tonality_atonal {
+    background-color: gray;
+    border: 2px solid gray;
+    color: #ffffff;
+}
+
+.tonality_minor {
+    background-color: #5f9ea0;
+    border: 2px solid #5f9ea0;
+}
+
+.tonality_major {
+    background-color: #daa520;
+    border: 2px solid #daa520;
+}
+
+.tonality_undefined {
+    background-color: #efefef;
+    border: 2px solid #efefef;
+}
+
+.tonality_original {
+    background-color: #000000;
+    border: 2px solid #000000;
+    color: white;
 }

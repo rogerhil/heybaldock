@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n %}
 
 {% block stylesheet %}
@@ -12,42 +12,34 @@
     <script type="text/javascript" src="/media/js/music.js"></script>
 {% endblock %}
 
-{% block large_content %}
-<div class="grid_3">
-    <div id="content">
-        <div class="clear"></div>
-        <div class="section_content">
-            <div class="manage_buttons">
-                <a href="{% url music_management %}">{% trans 'Back to music management' %}</a>
-                <a href="{% url albums %}">{% trans 'View all albums' %}</a>
-            </div>
-            <h1>Adicionar album</h1>
-            <h3>Favor fazer uma busca antes</h3>
+{% block actions %}
+    <a href="{% url artists %}">{% trans 'View all artists' %}</a>
+{% endblock %}
+
+{% block music_content %}
+    <h1>{% trans "Add album" %}</h1>
+    <h3>{% trans "Please, fill the fields below to make a search first" %}</h3>
+    <div class="clear"></div>
+    <br />
+    <div class="pretty_form">
+        <form action="" method="post" name="album_info">
+            {% csrf_token %}
+            {{ form.as_ul }}
             <div class="clear"></div>
-            <br />
-            <div class="pretty_form">
-                <form action="" method="post" name="album_info">
-                    {% csrf_token %}
-                    {{ form.as_ul }}
-                    <div class="clear"></div>
-                    <input type="button" class="submit" value="{% trans "Custom info" %}" name="custom_info" style="float: none; margin-left: 140px;" />
-                </form>
-            </div>
-
-            <div>
-                <h2>Album information results</h2>
-                <div id="album_info_results">
-                    Nothing yet.
-                </div>
-            </div>
-            <br />
-
-            <br />
-            <br />
-
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
+            <input type="button" class="submit" value="{% trans "Custom info" %}" name="custom_info" style="float: none; margin-left: 140px;" />
+        </form>
     </div>
-</div>
+
+    <div>
+        <h2>Album information results</h2>
+        <div id="album_info_results">
+            Nothing yet.
+        </div>
+    </div>
+    <br />
+
+    <br />
+    <br />
+
+    <div class="clear"></div>
 {% endblock %}

@@ -22,6 +22,7 @@ from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    RepertoryGroupItem, Instrument, Player, \
                    InstrumentTagType, PlayerRepertoryItem
 from utils import get_or_create_temporary, mzip, str_list_in_list
+from defaults import Tempo, Tonality
 
 DISCOGS_PAGES = 500
 MAX_YEARS = 10
@@ -61,10 +62,12 @@ def repertory_details(request, id):
         repertory = get_object_or_404(Repertory, id=id)
 
     groups = repertory.groups.all().order_by('order')
+
     c = dict(
         repertory=repertory,
         groups=groups,
-        players=Player.objects.all()
+        players=Player.objects.all(),
+        tonality_choices=get_tonality_choices()
     )
     return c
 
@@ -359,10 +362,18 @@ def register_album(request):
     c = dict(success=success, redirect_url=redirect_url, message=message)
     return c
 
+def get_tonality_choices():
+    tonality_choices = [(k, v, Tonality.tonality_type(k)) for k, v in
+                                                      Tonality.minor_choices()]
+    tonality_choices += [(k, v, Tonality.tonality_type(k)) for k, v in
+                                                      Tonality.major_choices()]
+    return tonality_choices
+
 @render_to("music/album.html")
 def album(request, id):
     album = get_object_or_404(Album, id=id)
-    return dict(album=album)
+    return dict(album=album, tempo_choices=Tempo.choices(),
+                tonality_choices=get_tonality_choices())
 
 def remove_album(request, id):
     album = get_object_or_404(Album, id=id)
@@ -386,7 +397,55 @@ def artist_details(request, id):
     artist = get_object_or_404(Artist, id=id)
     return dict(artist=artist)
 
+def get_song_line_content(request, song):
+    template = loader.get_template("music/song_line.html")
+    tonality_choices = [(k, v, Tonality.tonality_type(k)) for k, v in
+                                                      Tonality.minor_choices()]
+    tonality_choices += [(k, v, Tonality.tonality_type(k)) for k, v in
+                                                      Tonality.major_choices()]
+    c = dict(song=song, tonality_choices=tonality_choices,
+             tempo_choices=Tempo.choices())
+    return template.render(RequestContext(request, c))
+
 @json
+@login_required
+def change_tempo(request, id):
+    song = get_object_or_404(Song, id=id)
+    song.tempo = int(request.POST['tempo'])
+    song.save()
+    content = get_song_line_content(request, song)
+    return dict(success=True, content=content)
+
+@json
+@login_required
+def change_tonality(request, id):
+    song = get_object_or_404(Song, id=id)
+    song.tonality = request.POST['tonality']
+    song.save()
+    content = get_song_line_content(request, song)
+    return dict(success=True, content=content)
+
+@json
+@login_required
+def change_repertory_item_tonality(request, id):
+    item = get_object_or_404(RepertoryGroupItem, id=id)
+    tonality = request.POST['tonality']
+    if tonality == 'ORIGINAL':
+        tonality = None
+    item.tonality = tonality
+    item.save()
+    group = item.group
+    repertory = group.repertory
+    temp = loader.get_template("music/song_line_repertory_content.html")
+    tonality_choices = get_tonality_choices()
+    c = {'item': item, 'group': group, 'repertory': repertory,
+         'tonality_choices': tonality_choices}
+    content = temp.render(RequestContext(request, c))
+    return dict(success=True, content=content, item_id=item.id)
+
+
+@json
+@login_required
 def add_song_to_main_repertory(request):
     song = get_object_or_404(Song, id=request.POST['id'])
     main = Repertory.get_main_repertory()
@@ -402,6 +461,7 @@ def add_song_to_main_repertory(request):
     return dict(success=True)
 
 @json
+@login_required
 def add_song_to_repertory(request, id, group_id, song_id):
     song = get_object_or_404(Song, id=song_id)
     repertory = get_object_or_404(Repertory, id=id)
@@ -424,6 +484,7 @@ def add_song_to_repertory(request, id, group_id, song_id):
     return dict(success=True, song_line=song_line)
 
 @json
+@login_required
 def remove_song_from_repertory(request, id, group_id, item_id):
     item = get_object_or_404(RepertoryGroupItem, id=item_id,
                              group__id=group_id, group__repertory__id=id)
@@ -509,7 +570,8 @@ def remove_instrument(request, id):
 @render_to("music/instruments.html")
 def instruments(request):
     instruments = Instrument.objects.all().order_by('name')
-    return dict(instruments=instruments)
+    tag_types = InstrumentTagType.objects.all()
+    return dict(instruments=instruments, tag_types=tag_types)
 
 @json
 @login_required
@@ -726,7 +788,9 @@ def add_player_repertory_item(request, id, player_id):
         group = item.group
         repertory = group.repertory
         temp = loader.get_template("music/song_line_repertory_content.html")
-        c = {'item': item, 'group': group, 'repertory': repertory}
+        tonality_choices = get_tonality_choices()
+        c = {'item': item, 'group': group, 'repertory': repertory,
+             'tonality_choices': tonality_choices}
         content = temp.render(RequestContext(request, c))
         return dict(success=True, content=content, item_id=item.id)
     return dict(success=False)
@@ -740,7 +804,9 @@ def remove_player_repertory_item(request, id):
     repertory = group.repertory
     player_repertory_item.delete()
     temp = loader.get_template("music/song_line_repertory_content.html")
-    c = {'item': item, 'group': group, 'repertory': repertory}
+    tonality_choices = get_tonality_choices()
+    c = {'item': item, 'group': group, 'repertory': repertory,
+         'tonality_choices': tonality_choices}
     content = temp.render(RequestContext(request, c))
     return dict(success=True, content=content, item_id=item.id)
 
@@ -754,7 +820,9 @@ def player_set_as_lead(request, id):
     group = item.group
     repertory = group.repertory
     temp = loader.get_template("music/song_line_repertory_content.html")
-    c = {'item': item, 'group': group, 'repertory': repertory}
+    tonality_choices = get_tonality_choices()
+    c = {'item': item, 'group': group, 'repertory': repertory,
+         'tonality_choices': tonality_choices}
     content = temp.render(RequestContext(request, c))
     return dict(success=True, content=content, item_id=item.id)
 
