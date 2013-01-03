@@ -217,7 +217,7 @@ UNDER_MAINTENANCE = False
 S3_STORAGE = False
 S3_BUCKET_NAME = 'heybaldock'
 
-ENABLE_REPERTORY_FEATURES = False
+ENABLE_REPERTORY_FEATURES = True
 
 import os
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'dev')  # dev, production, qa, etc
