@@ -23,7 +23,27 @@
 
 {% block music_content %}
     <h1>{% trans "Repertory:" %} {{ repertory }}</h1>
+    <h3 id="time_total">
+        {% trans "Time total:" %}
+        <span></span>
+        considering
+        <select name="time_between_songs">
+            <option value="0">no pause</option>
+            <option value="10">10 seconds</option>
+            <option value="20">20 seconds</option>
+            <option value="30" selected="selected">30 seconds</option>
+            <option value="40">40 seconds</option>
+            <option value="50">50 seconds</option>
+            <option value="60">1 minute</option>
+            <option value="120">2 minutes</option>
+            <option value="180">3 minutes</option>
+            <option value="240">4 minutes</option>
+            <option value="300">5 minutes</option>
+        </select>
+        between songs
+    </h3>
     <div class="clear"></div>
+    <br/>
     {% if not repertory.is_main %}
         <a href="javascript:;" id="add_repertory_group">
             <img src="/media/img/plus_16.png" alt="Add group of songs" title="Add group of songs">

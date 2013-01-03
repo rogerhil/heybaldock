@@ -45,6 +45,34 @@ $(window).load(function () {
 
 });
 
+function calculateTimeTotal() {
+	var totalSeconds = 0;
+	var splited, minutes, seconds;
+	var $timeTotal = $("#time_total");
+	var $between = $timeTotal.find("select[name=time_between_songs]");
+	var secondsBetween = $between.val();
+	$between.unbind('change').change(function () {
+		calculateTimeTotal();
+	});
+	$("#repertory_content td.duration").each(function () {
+		var value = $(this).html().trim();
+		if (!value) return;
+		splited = value.split(":");
+		minutes = Number(splited[0]);
+		seconds = Number(splited[1]);
+		totalSeconds += minutes * 60;
+		totalSeconds += seconds + Number(secondsBetween);
+	});
+	splited = String(totalSeconds / 60).split('.');
+	minutes = zfill(Number(splited[0]), 2);
+	seconds = "00";
+	if (splited.length > 1) {
+		seconds = zfill(Math.ceil((Number(splited[1].slice(0, 2)) / 100) * 60), 2);
+	}
+	var total = minutes + ":" + seconds;
+	$timeTotal.find("span").html(total);
+}
+
 function removeSongFromRepertory() {
 	var url = $(this).attr('removeurl');
 	var $par;
@@ -73,7 +101,7 @@ function removeSongFromRepertory() {
 							td.html(zfill(count, 2));
 						}
 					});
-
+					calculateTimeTotal();
 				});
 			}
 		}
@@ -119,6 +147,7 @@ function loadRepertory() {
 				if (data.success) {
 					$repertory_content.html(data.content);
 					loadRepertory();
+					calculateTimeTotal();
 				}
 			}
 		});
@@ -161,6 +190,7 @@ function loadRepertory() {
 	$('#repertory_groups .repertory_group_block').each(function () {
 		loadRepertoryGroup(this);
 	});
+	calculateTimeTotal();
 }
 
 function addPlayerButton() {
@@ -754,6 +784,7 @@ function addNewSong(group_id, sid, $el) {
 					}
 				});
 			}
+			calculateTimeTotal();
 		}
 	});
 
