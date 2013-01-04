@@ -1,20 +1,24 @@
 # -*- coding: utf-8; Mode: Python -*-
 
-import yaml
+from south.modelsinspector import add_introspection_rules
 
 from django.db import models
 from django.db.models.signals import pre_delete, pre_save, post_save,\
                                      post_delete
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 from django.template import loader, Context
 
-from lib.fields import JSONField
+from lib.fields import JSONField, PickleField
 from defaults import Tonality, Rating, Tempo, DocumentType
 from event.models import Event
 from photo.image import ImageHandlerAlbumCover, ImageHandlerInstrument, \
                         ImageHandlerArtist, FileHandlerDocument
 from video.models import VideoBase
 from utils import metadata_display
+
+add_introspection_rules([], ["^lib\.fields\.PickleField"])
 
 
 class Composer(models.Model):
@@ -440,7 +444,7 @@ class RepertoryGroupItem(models.Model):
         """ All new RepertoryGroupItems will inherit all properties from
         main repertory.
         """
-        if created or instance.group.is_main:
+        if not created or instance.group.is_main:
             return
         main_item = instance.get_correspond_main_item()
         for player_rep_item in main_item.players.all():
@@ -785,3 +789,17 @@ class PlayerRepertoryItemRating(models.Model, Rating):
 
     class Meta:
         unique_together = ('player_repertory_item', 'rate')
+
+
+class MusicHistoryChanges(models.Model):
+    user = models.ForeignKey(User, related_name="music_history")
+    summary = models.CharField(max_length=255)
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.IntegerField(null=True)
+    content_date = models.DateTimeField(auto_now=True)
+    content = PickleField(default='')
+    object = generic.GenericForeignKey('content_type', 'object_id')
+
+    def __unicode__(self):
+        return "%s by %s in %s" % (self.summary, self.user.first_name,
+                                   self.content_date.strftime("%d/%m/%Y %H:%M"))

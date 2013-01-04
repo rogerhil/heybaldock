@@ -4,6 +4,8 @@ import pickle
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
@@ -20,12 +22,24 @@ from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   DocumentPlayerRepertoryItemForm
 from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    RepertoryGroupItem, Instrument, Player, \
-                   InstrumentTagType, PlayerRepertoryItem
+                   InstrumentTagType, PlayerRepertoryItem, MusicHistoryChanges
 from utils import get_or_create_temporary, mzip, str_list_in_list
 from defaults import Tempo, Tonality
 
 DISCOGS_PAGES = 500
 MAX_YEARS = 10
+
+def new_history_entry(user, instance, action, summary=''):
+    content_type = ContentType.objects.get_for_model(type(instance))
+    summary = '%s "%s (%s)" %s. %s' % (content_type, instance,
+                                       instance.id, action, summary)
+    history = MusicHistoryChanges.objects.create(
+        content_type=content_type,
+        object_id=instance.id,
+        user=user,
+        summary=summary
+    )
+    return history
 
 @login_required
 @render_to("music/repertories.html")
@@ -40,6 +54,7 @@ def add_repertory(request):
         form = RepertoryForm(request.POST)
         if form.is_valid():
             form.save()
+            new_history_entry(request.user, form.instance, 'created')
             msg = _('The repertory was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('repertory_details', args=(form.instance.id,))
@@ -76,7 +91,8 @@ def repertory_details(request, id):
 def add_repertory_group(request, id):
     repertory = Repertory.objects.get(id=id)
     count = repertory.groups.all().count()
-    repertory.groups.create(name=request.POST['name'], order=count + 1)
+    group = repertory.groups.create(name=request.POST['name'], order=count + 1)
+    new_history_entry(request.user, group, 'created')
     groups = repertory.groups.all().order_by('order')
     tc = RequestContext(request, dict(groups=groups, repertory=repertory))
     c = dict(
@@ -90,7 +106,9 @@ def add_repertory_group(request, id):
 def remove_repertory_group(request, id, group_id):
     repertory = Repertory.objects.get(id=id)
     group = repertory.groups.get(id=group_id)
+    action = 'group "%s (%s)" has been deleted.' % (group.name, group.id)
     group.delete()
+    new_history_entry(request.user, repertory, action)
     groups = repertory.groups.filter(order__gt=group.order).order_by('order')
     # update orders
     for group in groups:
@@ -139,6 +157,8 @@ def move_repertory_group(request, id, group_id):
 
     current_group.order = order
     current_group.save()
+
+    new_history_entry(request.user, current_group, 'has been moved.')
 
     groups = repertory.groups.all().order_by('order')
     tc = RequestContext(request, dict(groups=groups))
@@ -325,6 +345,7 @@ def register_album(request):
     artist_form = ArtistForm(adata)
     success = artist_form.is_valid()
     artist = artist_form.save()
+    new_history_entry(request.user, artist, "created")
 
     if success:
         album_form = AlbumForm(metadata={}, artist=artist, data=data)
@@ -350,6 +371,7 @@ def register_album(request):
                     break
                 forms.append(song_form)
             album = album_form.save()
+            new_history_entry(request.user, album, "created")
             for form in forms:
                 form.save(album)
             redirect_url = reverse("album", args=(album.id,))
@@ -377,7 +399,10 @@ def album(request, id):
 
 def remove_album(request, id):
     album = get_object_or_404(Album, id=id)
+    artist = album.artist
+    action = 'album "%s (%s)" has been order changed.' % (album.name, album.id)
     album.delete()
+    new_history_entry(request.user, artist, action)
     msg = _('The album was successfully removed.')
     messages.add_message(request, messages.SUCCESS, msg)
     return HttpResponseRedirect(reverse('albums'))
@@ -413,6 +438,7 @@ def change_tempo(request, id):
     song = get_object_or_404(Song, id=id)
     song.tempo = int(request.POST['tempo'])
     song.save()
+    new_history_entry(request.user, song, "tempo has been changed.")
     content = get_song_line_content(request, song)
     return dict(success=True, content=content)
 
@@ -422,6 +448,7 @@ def change_tonality(request, id):
     song = get_object_or_404(Song, id=id)
     song.tonality = request.POST['tonality']
     song.save()
+    new_history_entry(request.user, song, "tonality has been changed.")
     content = get_song_line_content(request, song)
     return dict(success=True, content=content)
 
@@ -434,6 +461,7 @@ def change_repertory_item_tonality(request, id):
         tonality = None
     item.tonality = tonality
     item.save()
+    new_history_entry(request.user, item, "tonality has been changed.")
     content = get_song_line_repertory_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
@@ -452,6 +480,8 @@ def add_song_to_main_repertory(request):
                                              number=count + 1)
     group.items.add(item)
     group.save()
+    summary = ', new item "%s (%s)" was added.' % (item, item.id)
+    new_history_entry(request.user, main, summary)
     return dict(success=True)
 
 @json
@@ -468,6 +498,8 @@ def add_song_to_repertory(request, id, group_id, song_id):
                                              number=count + 1)
     group.items.add(item)
     group.save()
+    summary = ', new item "%s (%s)" was added.' % (item, item.id)
+    new_history_entry(request.user, group, summary)
     song_line = get_song_line_repertory_content(request, item)
     return dict(success=True, song_line=song_line)
 
@@ -478,7 +510,9 @@ def remove_song_from_repertory(request, id, group_id, item_id):
                              group__id=group_id, group__repertory__id=id)
     n = item.number
     group = item.group
+    summary = 'item "%s (%s)" has been deleted.' % (item, item.id)
     item.delete()
+    new_history_entry(request.user, group, summary)
     items = group.items.filter(number__gt=n).order_by('number')
     for item in items:
         item.number -= 1
@@ -524,6 +558,7 @@ def move_song(request, id, group_id, item_id):
 
     current_item.number = number
     current_item.save()
+    new_history_entry(request.user, current_item, "has been moved.")
 
     tc = RequestContext(request, dict(group=group, repertory=repertory))
     c = dict(
@@ -540,6 +575,7 @@ def add_instrument(request):
         form = InstrumentForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
+            new_history_entry(request.user, form.instance, 'created')
             msg = _('The instrument was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('instruments')
@@ -552,6 +588,7 @@ def add_instrument(request):
 @login_required
 def remove_instrument(request, id):
     instrument = get_object_or_404(Instrument, id=id)
+    new_history_entry(request.user, instrument, "has been removed.")
     instrument.delete()
     return dict(success=True)
 
@@ -569,6 +606,7 @@ def add_player(request, id, user_id):
     user = request.user
     if form.is_valid():
         form.save()
+        new_history_entry(request.user, form.instance, 'created')
         template = loader.get_template("auth/profile_instruments.html")
         context = RequestContext(request, dict(user=user))
         return dict(success=True, content=template.render(context))
@@ -578,6 +616,7 @@ def add_player(request, id, user_id):
 @login_required
 def remove_player(request, id, user_id):
     player = get_object_or_404(Player, id=id, user__id=user_id)
+    new_history_entry(request.user, player, "has been removed.")
     player.delete()
     return dict(success=True)
 
@@ -668,8 +707,12 @@ def toogle_tag_type(request, id):
     ids = player_repertory_item.tag_types.all().values_list('id', flat=True)
     if tag_type_id in ids:
         player_repertory_item.tag_types.remove(tag_type)
+        summary = 'tag type "%s (%s) has been added"' % (tag_type, tag_type.id)
     else:
         player_repertory_item.tag_types.add(tag_type)
+        summary = 'tag type "%s (%s) has been removed"' % (tag_type,
+                                                           tag_type.id)
+    new_history_entry(request.user, player_repertory_item, summary)
     player_repertory_item.save()
     c = player_repertory_item_menu_content(request, player_repertory_item)
     c['success'] = True
@@ -694,6 +737,8 @@ def change_as_member(request, id):
     artist = get_object_or_404(Artist, id=request.POST['member_id'])
     player_repertory_item.as_member = artist
     player_repertory_item.save()
+    new_history_entry(request.user, player_repertory_item,
+                      "as member changed.")
     c = player_repertory_item_menu_content(request, player_repertory_item)
     c['success'] = True
     return c
@@ -716,9 +761,12 @@ def change_player_user(request, id):
         other_player_repertory_item.save()
     player_repertory_item.player = player
     player_repertory_item.save()
+    new_history_entry(request.user, player_repertory_item, "player changed.")
     if other_player_repertory_item:
         other_player_repertory_item.player = current_player
         other_player_repertory_item.save()
+        new_history_entry(request.user, other_player_repertory_item,
+                          "player changed.")
     c = player_repertory_item_menu_content(request, player_repertory_item)
     c['success'] = True
     return c
@@ -743,6 +791,7 @@ def change_notes(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     player_repertory_item.notes = request.POST['notes']
     player_repertory_item.save()
+    new_history_entry(request.user, player_repertory_item, "notes changed.")
     return dict(success=True)
 
 @json
@@ -753,6 +802,9 @@ def add_document_for_player_repertory_item(request, id):
     form = DocumentPlayerRepertoryItemForm(data=data, files=request.FILES)
     if form.is_valid():
         form.save()
+        summary = 'created for "%s (%s)"' % (player_repertory_item,
+                                             player_repertory_item.id)
+        new_history_entry(request.user, form.instance, summary)
         c = player_repertory_item_menu_content(request, player_repertory_item)
         c['success'] = True
         return c
@@ -765,6 +817,8 @@ def remove_document_for_player_repertory_item(request, id, document_id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     document = player_repertory_item.documents.get(id=document_id)
     document.delete()
+    summary = 'document "%s (%s)" has been removed.' % (document, document.id)
+    new_history_entry(request.user, player_repertory_item, summary)
     c = player_repertory_item_menu_content(request, player_repertory_item)
     c['success'] = True
     return c
@@ -798,6 +852,7 @@ def add_player_repertory_item(request, id, player_id):
     form = PlayerRepertoryItemForm(data=data)
     if form.is_valid():
         form.save()
+        new_history_entry(request.user, form.instance, "created")
         item = form.instance.repertory_item
         content = get_song_line_repertory_content(request, item)
         return dict(success=True, content=content, item_id=item.id)
@@ -817,6 +872,8 @@ def player_set_as_lead(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     player_repertory_item.is_lead = bool(int(request.POST.get('is_lead')))
     player_repertory_item.save()
+    summary = "change is lead as %" % player_repertory_item.is_lead
+    new_history_entry(request.user, player_repertory_item, summary)
     item = player_repertory_item.repertory_item
     content = get_song_line_repertory_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
@@ -828,6 +885,7 @@ def add_instrument_tag_type(request):
         form = InstrumentTagTypeForm(data=request.POST)
         if form.is_valid():
             form.save()
+            new_history_entry(request.user, form.instance, "created")
             msg = _('The instrument tag type was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('instrument_tag_types')
@@ -841,3 +899,11 @@ def add_instrument_tag_type(request):
 def instrument_tag_types(request):
     tag_types = InstrumentTagType.objects.all()
     return dict(tag_types=tag_types)
+
+@login_required
+@render_to("music/history.html")
+def music_history(request):
+    users = User.objects.all()
+    selected_user = int(request.GET.get('u') or users[0].id)
+    history = MusicHistoryChanges.objects.filter(user__id=selected_user)
+    return dict(history=history, users=users, selected_user=selected_user)

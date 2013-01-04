@@ -1,0 +1,65 @@
+{% extends "music/base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.cmsplugin.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript" src="/media/js/utils.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/cleditor/jquery.cleditor.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/cleditor/jquery.cleditor.cmsplugin.js"></script>
+    <script type="text/javascript" src="/media/js/hbeditor.js"></script>
+    <script type="text/javascript" src="/media/js/music.js"></script>
+
+{% endblock %}
+
+{% block actions %}
+    <a href="{% url repertory_details 1 %}">{% trans 'Show main repertory' %}</a>
+    <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+    <a href="{% url add_repertory %}">{% trans "Add Repertory" %}</a>
+{% endblock %}
+
+{% block music_content %}
+    <h1>{% trans "Music History Changes" %}</h1>
+    <form method="get" name="history">
+        <label>{% trans "By user:" %}</label>
+        <select name="u">
+            {% for user in users %}
+                <option value="{{ user.id }}" {% ifequal user.id selected_user %}selected="selected"{% endifequal %}>{{ user.get_full_name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <br />
+    <script type="text/javascript">
+        $("form select[name=u]").change(function () {
+            document.forms['history'].submit();
+        });
+    </script>
+    <div class="table_list">
+        <table>
+            <thead>
+                <th  class="center">
+                    {% trans "Summary" %}
+                </th>
+                <th  class="center" width="180px">
+                    {% trans "User" %}
+                </th>
+                <th  class="center" width="180px">
+                    {% trans "Date" %}
+                </th>
+            </thead>
+            <tbody>
+                {% for h in history %}
+                    <tr>
+                        <td>{{ h.summary }}</td>
+                        <td class="center">{{ h.user.get_full_name }}</td>
+                        <td class="center">{{ h.content_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

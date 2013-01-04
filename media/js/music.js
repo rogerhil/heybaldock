@@ -613,10 +613,14 @@ function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
 function tonalityClick($el) {
 	$el.click(function (e) {
 		e.stopPropagation();
-		$("div.tonality_menu").hide();
 		var $menu = $(this).find("div.tonality_menu");
-		$menu.slideDown();
-		loadTonalityMenu($menu);
+		if ($menu.is(":hidden")) {
+			$("div.tonality_menu").hide();
+			$menu.slideDown();
+			loadTonalityMenu($menu);
+		} else {
+			$menu.slideUp();
+		}
 	});
 }
 
@@ -769,6 +773,7 @@ function addNewSong(group_id, sid, $el) {
 				$tr.find('img.remove_song').click(removeSongFromRepertory);
 				$tr.find('img.add_player').click(addPlayerButton);
 				$tr.find('img.player').click(changePlayerButton);
+				tonalityClick($tr.find("td.tonality_cel"));
 				$body.append($tr);
 			} else {
 				var $msg = $el.parent().find('span.message');

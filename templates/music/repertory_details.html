@@ -17,6 +17,9 @@
 {% endblock %}
 
 {% block actions %}
+    {% if not repertory.is_main %}
+        <a href="{% url repertory_details 1 %}">{% trans 'Show main repertory' %}</a>
+    {% endif %}
     <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
     <a href="{% url add_repertory %}">{% trans "Add Repertory" %}</a>
 {% endblock %}

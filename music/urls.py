@@ -52,4 +52,6 @@ urlpatterns = patterns('',
     url(r'^instrument/tag_type/add/$', views.add_instrument_tag_type, name='add_instrument_tag_type'),
 
     url(r'^busca/$', views.search_song_by_name, name='search_song_by_name'),
+
+    url(r'^history/$', views.music_history, name='music_history'),
 )
