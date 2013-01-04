@@ -872,7 +872,7 @@ def player_set_as_lead(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     player_repertory_item.is_lead = bool(int(request.POST.get('is_lead')))
     player_repertory_item.save()
-    summary = "change is lead as %" % player_repertory_item.is_lead
+    summary = "change is lead as %s" % player_repertory_item.is_lead
     new_history_entry(request.user, player_repertory_item, summary)
     item = player_repertory_item.repertory_item
     content = get_song_line_repertory_content(request, item)
