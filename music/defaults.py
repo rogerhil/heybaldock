@@ -19,12 +19,20 @@ class ChoicesBase:
         return dict(cls.choices()).get(t)
 
 
-class Tempo(ChoicesBase):
-    adagio = 1
-    andante = 2
-    moderato = 3
-    allegro = 4
-    presto = 5
+class Tempo:
+    @classmethod
+    def choices(cls):
+        return [(i, i) for i in range(10, 241)]
+
+    @classmethod
+    def display(cls, t):
+        return dict(cls.choices()).get(t)
+
+
+class SongMode(ChoicesBase):
+    slow = 1
+    medium = 2
+    fast = 3
 
 
 class DocumentType(ChoicesBase):

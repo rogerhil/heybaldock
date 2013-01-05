@@ -11,7 +11,7 @@ from django.contrib.contenttypes import generic
 from django.template import loader, Context
 
 from lib.fields import JSONField, PickleField
-from defaults import Tonality, Rating, Tempo, DocumentType
+from defaults import Tonality, Rating, Tempo, DocumentType, SongMode
 from event.models import Event
 from photo.image import ImageHandlerAlbumCover, ImageHandlerInstrument, \
                         ImageHandlerArtist, FileHandlerDocument
@@ -303,8 +303,7 @@ class Song(models.Model):
     duration = models.IntegerField()
     position = models.CharField(max_length=5, null=True, blank=True)
     composer = models.ManyToManyField(ComposerRole)
-    tempo = models.IntegerField(choices=Tempo.choices(),
-                                default=Tempo.moderato)
+    tempo = models.IntegerField(choices=Tempo.choices(), default=120)
     tonality = models.CharField(max_length=10, null=True, blank=True,
                                 choices=Tonality.choices())
 
@@ -317,12 +316,15 @@ class Song(models.Model):
 
     @property
     def tempo_display(self):
-        return Tempo.display(self.tempo)
+        if self.tempo and self.tempo >= 10:
+            return "%s bpm" % Tempo.display(self.tempo)
+        else:
+            return "N/A"
 
     @property
     def tempo_html_display(self):
-        t = Tempo.display(self.tempo)
-        return '<span class="tempo%s">%s</span>' % (self.tempo, t)
+        d = self.tempo_display
+        return '<span class="tempo%s">%s</span>' % (self.tempo, d)
 
     @property
     def tonality_html_display(self):
@@ -399,6 +401,10 @@ class RepertoryGroupItem(models.Model):
     group = models.ForeignKey(RepertoryGroup, related_name='items')
     number = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True, null=True)
+    tempo = models.IntegerField(choices=Tempo.choices(), null=True,
+                                blank=True)
+    mode = models.IntegerField(choices=SongMode.choices(), null=True,
+                               blank=True)
     tonality = models.CharField(max_length=10, null=True, blank=True,
                                 choices=Tonality.choices())
 
@@ -417,6 +423,11 @@ class RepertoryGroupItem(models.Model):
     @property
     def tonality_is_original(self):
         return self.tonality is None or self.tonality == self.song.tonality
+
+    @property
+    def mode_html_display(self):
+        mode = SongMode.display(self.mode)
+        return '<span class="mode%s">%s</span>' % (self.mode, mode)
 
     @property
     def number_display(self):

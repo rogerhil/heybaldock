@@ -1,6 +1,10 @@
 {% load i18n %}
 
-<tr class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}" songid="{{ song.id }}" changetempourl="{% url change_tempo song.id %}" changetonalityurl="{% url change_tonality song.id %}">
+<tr class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}"
+    songid="{{ song.id }}"
+    changetempourl="{% url change_tempo song.id %}"
+    changetonalityurl="{% url change_tonality song.id %}"
+    songtempo="{{ song.tempo }}">
     <td style="text-align: center;">{{ song.position }}</td>
     <td>{{ song.name }}</td>
     <td style="text-align: center;">{{ song.duration_display }}</td>
@@ -9,11 +13,13 @@
         {% autoescape off %}{{ song.tempo_html_display }}{% endautoescape %}
         <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999;">
             <h3>{% trans "Change tempo" %}</h3>
+            <div class="tempo_body">
             {% for key, title in tempo_choices %}
-                <div class="option center" tempoid="{{ key }}">
-                    <span class="tempo{{ key }}" style="margin: 0px auto 0px auto">{{ title }}</span>
+                <div class="option center {% ifequal key song.tempo %}selected{% endifequal %}" tempoid="{{ key }}">
+                    <span class="tempo" style="margin: 0px auto 0px auto">{{ title }} bpm</span>
                 </div>
             {% endfor %}
+            </div>
         </div>
     </td>
     <td class="center tonality_cel">

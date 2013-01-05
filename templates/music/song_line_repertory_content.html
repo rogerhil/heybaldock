@@ -10,9 +10,12 @@
     <td class="nopadding center"><img src="{{ item.song.album.icon_url }}" /></td>
     <td>{{ item.song.name }}</td>
     <td class="center duration">{{ item.song.duration_display }}</td>
-    <td class="center"><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""></td>
     <td class="center">
         {% autoescape off %}{{ item.song.tempo_html_display }}{% endautoescape %}
+    </td>
+    <td class="center"><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""></td>
+    <td class="center">
+        {% autoescape off %}{{ item.song.mode_html_display }}{% endautoescape %}
     </td>
     <td class="center tonality_cel">
         {% autoescape off %}{{ item.tonality_html_display }}{% endautoescape %}

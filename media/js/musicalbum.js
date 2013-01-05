@@ -16,7 +16,6 @@ function tempoClick($el) {
 		$("div.pretty_select").hide();
 		var $menu = $(this).find("div.pretty_select");
 		loadTempoMenu($menu);
-		$menu.slideDown();
 	});
 }
 
@@ -33,6 +32,14 @@ function tonalityClick($el) {
 function loadTempoMenu($menu) {
 	var $tr = $menu.parent().parent();
 	var url = $tr.attr('changetempourl');
+	var songTempo = Number($tr.attr('songtempo') || 120);
+	var $tempoBody = $menu.find('.tempo_body');
+	if (songTempo < 10) {
+		songTempo = 120;
+	}
+	$menu.slideDown(500, function () {
+		$tempoBody.scrollTop((Number(songTempo) - 11) * 30);
+	});
 	$menu.find('div.option').unbind('click').click('click', function (e) {
 		e.stopPropagation();
 		var tempo = $(this).attr('tempoid');
@@ -45,6 +52,8 @@ function loadTempoMenu($menu) {
 				if (data.success) {
 					var $newtr = $(data.content);
 					$newtr.insertAfter($tr);
+					var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+					$newtr.addClass(cssClass);
 					$tr.remove();
 					tempoClick($newtr.find("td.tempo_cel"));
 					tonalityClick($newtr.find("td.tonality_cel"));
@@ -71,6 +80,8 @@ function loadTonalityMenu($menu) {
 				if (data.success) {
 					var $newtr = $(data.content);
 					$newtr.insertAfter($tr);
+					var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+					$newtr.addClass(cssClass);
 					$tr.remove();
 					tempoClick($newtr.find("td.tempo_cel"));
 					tonalityClick($newtr.find("td.tonality_cel"));

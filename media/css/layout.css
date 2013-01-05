@@ -1394,11 +1394,9 @@ div.metadata ul li a {
     color: #f7c413;
 }
 
-.tempo1,
-.tempo2,
-.tempo3,
-.tempo4,
-.tempo5 {
+.mode1,
+.mode2,
+.mode3, {
     color: #000000;
     padding: 2px 8px 2px 8px;
     border-radius: 5px;
@@ -1409,51 +1407,53 @@ div.metadata ul li a {
     width: 70px;
 }
 
-.tempo1:hover ,
-.tempo2:hover ,
-.tempo3:hover ,
-.tempo4:hover ,
-.tempo5:hover  {
+.mode1:hover ,
+.mode2:hover ,
+.mode3:hover  {
     border: 2px solid #4b5c6c;
     cursor: pointer;
 }
 
-.tempo1,
-.repertory .tempo1 {
+.mode1,
+.repertory .mode1 {
     background-color: #7CA0C7;
     border: 2px solid #7CA0C7;
 }
 
-.tempo2,
-.repertory .tempo2 {
+.mode2,
+.repertory .mode2 {
     background-color: #a1cb5e;
     border: 2px solid #a1cb5e;
 }
 
-.tempo3,
-.repertory .tempo3 {
+.mode3,
+.repertory .mode3 {
     background-color: #f7c413;
     border: 2px solid #f7c413;
 }
 
-.tempo4,
-.repertory .tempo4 {
-    background-color: #ff8c00;
-    border: 2px solid #ff8c00;
+.tempo_body {
+    max-height: 180px;
+    overflow-y: scroll;
 }
 
-.tempo5,
-.repertory .tempo5 {
-    background-color: red;
-    border: 2px solid red;
-    color: #ffffff;
+.tempo_body .tempo {
+    font-size: 15px;
+    font-weight: bold;
+    color: #4b5c6c;
 }
 
-.repertory .tempo1:hover ,
-.repertory .tempo2:hover ,
-.repertory .tempo3:hover ,
-.repertory .tempo4:hover ,
-.repertory .tempo5:hover  {
+.tempo_body .tempo:hover {
+    color: #4b5c6c;
+}
+
+.tempo_body .selected {
+    background-color: #a1cb5e !important;
+}
+
+.repertory .mode1:hover ,
+.repertory .mode2:hover ,
+.repertory .mode3:hover  {
     cursor: default !important;
 }
 
