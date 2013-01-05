@@ -28,8 +28,9 @@ $(window).load(function () {
 var intervalMetronome;
 var metronomeCount = 0;
 var signatureBeats = 4;
+var $mg;
 
-function metronomeTickTack($mg) {
+function metronomeTickTack() {
 	loadMetronomeAudio();
 	$mg.find('div.led').removeClass('tick');
 	$mg.find('div.led').removeClass('tack');
@@ -48,16 +49,33 @@ function metronomeTickTack($mg) {
 
 function loadMetronome($el) {
 	$el.mouseover(function () {
-		var t = Number($(this).attr("tempo"));
-		signatureBeats = $(this).attr("signaturebeats");
-		if (!t || !signatureBeats || t < 10) return;
-		var $mg = $(this).parent().find('div.metronome_graphic');
-		intervalMetronome = setInterval(function () {metronomeTickTack($mg)}, (1000 * 60) / t);
-		$mg.show();
+		startMetronome(Number($(this).attr("tempo")), $(this).attr("signaturebeats"), $(this).parent().find('div.metronome_graphic'));
 	});
 	$el.mouseleave(function () {
-		clearInterval(intervalMetronome);
-		metronomeCount = 0;
-		$(this).parent().find('div.metronome_graphic').hide();
+		stopMetronome();
 	});
+}
+
+function startMetronome(tempo, beats, $el) {
+	signatureBeats = beats;
+	tempo = Number(tempo);
+	if (!tempo || !beats || tempo < 10) return;
+	$mg = $el;
+	intervalMetronome = setInterval(function () {metronomeTickTack()}, (1000 * 60) / tempo);
+	$mg.fadeIn(300);
+}
+
+function stopMetronome() {
+	clearInterval(intervalMetronome);
+	metronomeCount = 0;
+	$('div.metronome_graphic').fadeOut(300);
+}
+
+function slideMetronome(tempo, beats) {
+	if (beats) {
+		signatureBeats = beats;
+	}
+	clearInterval(intervalMetronome);
+	metronomeCount = 0;
+	intervalMetronome = setInterval(function () {metronomeTickTack()}, (1000 * 60) / tempo);
 }

@@ -1432,23 +1432,18 @@ div.metadata ul li a {
     border: 2px solid #f7c413;
 }
 
+.tempo_slider {
+    width: 180px;
+    margin: 0px auto 10px auto;
+}
+
 .tempo_body {
-    max-height: 180px;
-    overflow-y: scroll;
+    color: #4b5c6c;
 }
 
-.tempo_body .tempo {
+.tempo_display {
+    margin-bottom: 5px;
     font-size: 15px;
-    font-weight: bold;
-    color: #4b5c6c;
-}
-
-.tempo_body .tempo:hover {
-    color: #4b5c6c;
-}
-
-.tempo_body .selected {
-    background-color: #a1cb5e !important;
 }
 
 .tempo_metronome:hover {

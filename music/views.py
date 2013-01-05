@@ -434,23 +434,15 @@ def get_song_line_content(request, song):
 
 @json
 @login_required
-def change_tempo(request, id):
-    song = get_object_or_404(Song, id=id)
-    song.tempo = int(request.POST['tempo'])
-    song.save()
-    new_history_entry(request.user, song, "tempo has been changed.")
-    content = get_song_line_content(request, song)
-    return dict(success=True, content=content)
-
-@json
-@login_required
-def change_signature(request, id):
+def change_tempo_signature(request, id):
     song = get_object_or_404(Song, id=id)
     beats = int(request.POST['beats'])
     value = int(request.POST['value'])
+    tempo = int(request.POST['tempo'])
+    song.tempo = tempo
     song.signature = "%s/%s" % (beats, value)
     song.save()
-    new_history_entry(request.user, song, "signature has been changed.")
+    new_history_entry(request.user, song, "tempo has been changed.")
     content = get_song_line_content(request, song)
     return dict(success=True, content=content)
 

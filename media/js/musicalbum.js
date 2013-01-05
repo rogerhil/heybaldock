@@ -9,6 +9,7 @@ $(window).load(function () {
 	$('html').click(function (e) {
 		if (!($(e.target).hasClass('pretty_select') || $(e.target).parents().hasClass('pretty_select'))) {
 			$('.pretty_select').slideUp();
+			stopMetronome();
 		}
 	});
 
@@ -18,7 +19,7 @@ $(window).load(function () {
 
 function tempoClick($el) {
 
-	loadMetronome($el.find('span.tempo_metronome'));
+	//loadMetronome($el.find('span.tempo_metronome'));
 
 	$el.click(function (e) {
 		e.stopPropagation();
@@ -41,49 +42,48 @@ function tonalityClick($el) {
 }
 
 function loadTempoMenu($menu) {
-	var $tr = $menu.parent().parent();
-	var url = $tr.attr('changetempourl');
-	var urlsignature = $tr.attr('changesignatureurl');
+	var $td = $menu.parent();
+	var $tr = $td.parent();
+	var url = $tr.attr('changetemposignatureurl');
 	var songTempo = Number($tr.attr('songtempo') || 120);
 	var $tempoBody = $menu.find('.tempo_body');
 	if (songTempo < 10) {
 		songTempo = 120;
 	}
-	$menu.slideDown(500, function () {
-		$tempoBody.scrollTop((Number(songTempo) - 11) * 30);
-	});
-	$menu.find('div.option').unbind('click').click('click', function (e) {
-		e.stopPropagation();
-		var tempo = $(this).attr('tempoid');
-		$.ajax({
-			url: url,
-			type: "post",
-			data: {tempo: tempo},
-			dataType: 'json',
-			success: function (data) {
-				if (data.success) {
-					var $newtr = $(data.content);
-					$newtr.insertAfter($tr);
-					var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
-					$newtr.addClass(cssClass);
-					$tr.remove();
-					tempoClick($newtr.find("td.tempo_cel"));
-					tonalityClick($newtr.find("td.tonality_cel"));
-				} else {
-					alert('An error occurred.');
-				}
-			}
+	$menu.slideDown(500);
+	var $t = $td.find('.tempo_metronome');
+	startMetronome(Number($t.attr("tempo")), $t.attr("signaturebeats"), $t.parent().find('div.metronome_graphic'));
+	$menu.find(".tempo_slider").each(function () {
+		var $par = $(this).parent();
+		$(this).slider({
+			stop: function(event, ui) {
+				$par.find('input[name=tempo]').val(ui.value);
+				$par.find('div.tempo_display').html(ui.value + ' bpm');
+				slideMetronome(ui.value);
+			},
+			slide: function(event, ui) {
+				$par.find('input[name=tempo]').val(ui.value);
+				$par.find('div.tempo_display').html(ui.value + ' bpm');
+			},
+			value: $par.parent().find('input[name=original_tempo]').val(),
+			max: 240,
+			min: 10
 		});
 	});
-	$menu.find('input.change_signature').unbind('click').click('click', function (e) {
+	$menu.find('input.cancel').unbind('click').click('click', function (e) {
+		$menu.slideUp();
+		stopMetronome();
+	});
+	$menu.find('input.change_tempo_signature').unbind('click').click('click', function (e) {
 		e.stopPropagation();
 		var beats = Number($menu.find('input[name=beats]').val());
 		var value = Number($menu.find('input[name=value]').val());
+		var tempo = Number($menu.find('input[name=tempo]').val());
 		if (!value || !beats) return;
 		$.ajax({
-			url: urlsignature,
+			url: url,
 			type: "post",
-			data: {beats: beats, value: value},
+			data: {beats: beats, value: value, tempo: tempo},
 			dataType: 'json',
 			success: function (data) {
 				if (data.success) {
@@ -94,6 +94,7 @@ function loadTempoMenu($menu) {
 					$tr.remove();
 					tempoClick($newtr.find("td.tempo_cel"));
 					tonalityClick($newtr.find("td.tonality_cel"));
+					stopMetronome();
 				} else {
 					alert('An error occurred.');
 				}
