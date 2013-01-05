@@ -6,8 +6,11 @@
     updatesonglineurl="{% url update_song_line_repertory_content item.id %}"
     class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
     <td class="nopadding center"><span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span></td>
-    <td>{{ item.number_display }}</td>
-    <td class="nopadding center"><img src="{{ item.song.album.icon_url }}" /></td>
+    <td class="nopadding center">
+        <a href="{% url album item.song.album.id %}">
+            <img src="{{ item.song.album.icon_url }}" alt="{{ item.number_display }} - {{ item.song.album }}" title="{{ item.number_display }} - {{ item.song.album }}" style="border-radius: 3px;" />
+        </a>
+    </td>
     <td>{{ item.song.name }}</td>
     <td class="center duration">{{ item.song.duration_display }}</td>
     <td class="center tempo_cel">

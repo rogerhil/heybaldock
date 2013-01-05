@@ -48,10 +48,10 @@ function metronomeTickTack() {
 }
 
 function loadMetronome($el) {
-	$el.mouseover(function () {
+	$el.unbind('mouseover').mouseover(function () {
 		startMetronome(Number($(this).attr("tempo")), $(this).attr("signaturebeats"), $(this).parent().find('div.metronome_graphic'));
 	});
-	$el.mouseleave(function () {
+	$el.unbind('mouseleave').mouseleave(function () {
 		stopMetronome();
 	});
 }

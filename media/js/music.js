@@ -42,7 +42,6 @@ $(window).load(function () {
 			$('.pretty_select').parent().slideUp();
 		}
 	});
-	loadMetronome($("td.tempo_cel span.tempo_metronome"));
 });
 
 function calculateTimeTotal() {
@@ -191,6 +190,7 @@ function loadRepertory() {
 		loadRepertoryGroup(this);
 	});
 	calculateTimeTotal();
+	loadMetronome($("td.tempo_cel span.tempo_metronome"));
 }
 
 function addPlayerButton() {
@@ -508,6 +508,7 @@ function updateSongLine(data, callback) {
 	$newTr.find('img.player').click(changePlayerButton);
 	tonalityClick($newTr.find("td.tonality_cel"));
 	modeClick($newTr.find("td.mode_cel"));
+	loadMetronome($("td.tempo_cel span.tempo_metronome"));
 	if (callback) {
 		callback();
 	}

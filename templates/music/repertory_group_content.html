@@ -7,17 +7,14 @@
     <thead>
         <th  class="center" width="8px">
         </th>
-        <th  class="center" width="8px">
-            #
-        </th>
-        <th  class="center" width="40px">
-            {% trans "Cover" %}
+        <th  class="center" width="20px">
+            {% trans "Cov" %}
         </th>
         <th>
             {% trans "Name" %}
         </th>
-        <th  class="center" width="50px">
-            {% trans "Duration" %}
+        <th  class="center" width="30px">
+            {% trans "Durat" %}
         </th>
         <th  class="center" width="50px">
             {% trans "Tempo" %}
@@ -25,19 +22,22 @@
         <th  class="center" width="100px">
             {% trans "Ratings" %}
         </th>
-        <th  class="center" width="60px">
+        <th  class="center" width="30px">
             {% trans "Mode" %}
         </th>
-        <th  class="center" width="50px">
+        <th  class="center" width="40px">
             {% trans "Tonality" %}
         </th>
         <th  class="center" width="200px">
             {% trans "Players" %}
         </th>
-        <th  class="center" width="50px">
-            {% trans "Actions" %}
+        <th  class="center" width="20px">
             {% if not group.is_main %}
-                <a class="remove_group" style="color: red; font-weight: bold; float: right; background: white;">&nbsp;-&nbsp;</a>
+                <a class="remove_group">
+                    <img src="/media/img/cross_16.png" class="remove_song" alt="{% trans "Remove this group" %}" title="{% trans "Remove this group" %}"/>
+                </a>
+            {% else %}
+                <img src="/media/img/cross_16.png" class="remove_song" />
             {% endif %}
         </th>
     </thead>
