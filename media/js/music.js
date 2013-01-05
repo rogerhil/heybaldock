@@ -507,6 +507,7 @@ function updateSongLine(data, callback) {
 	$newTr.find('img.add_player').click(addPlayerButton);
 	$newTr.find('img.player').click(changePlayerButton);
 	tonalityClick($newTr.find("td.tonality_cel"));
+	modeClick($newTr.find("td.mode_cel"));
 	if (callback) {
 		callback();
 	}
@@ -624,6 +625,40 @@ function tonalityClick($el) {
 	});
 }
 
+function modeClick($el) {
+	$el.click(function (e) {
+		e.stopPropagation();
+		var $menu = $(this).find("div.mode_menu");
+		if ($menu.is(":hidden")) {
+			$("div.mode_menu").hide();
+			$menu.slideDown();
+			loadModeMenu($menu);
+		} else {
+			$menu.slideUp();
+		}
+	});
+}
+
+function loadModeMenu ($menu) {
+	var url = $menu.attr("changemodeurl");
+	$menu.find('div.option').unbind('click').click(function () {
+		var mode = $(this).attr("modeid");
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {mode_id: mode},
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					updateSongLine(data);
+				} else {
+					alert('An error occurred.');
+				}
+			}
+		});
+	});
+}
+
 function loadTonalityMenu($menu) {
 	var $tr = $menu.parent().parent();
 	var url = $tr.attr('changetonalityurl');
@@ -654,6 +689,7 @@ function loadRepertoryGroup(o) {
 	$(o).find('img.add_player').click(addPlayerButton);
 	$(o).find('img.player').click(changePlayerButton);
 	tonalityClick($("td.tonality_cel"));
+	modeClick($("td.mode_cel"));
 	
 	$($(o).find('tbody')).sortable({
 		placeholder: "ui-state-highlight",

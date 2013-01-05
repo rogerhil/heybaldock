@@ -325,7 +325,8 @@ class Song(models.Model):
     @property
     def tempo_html_display(self):
         d = self.tempo_display
-        return '<span class="tempo%s">%s</span>' % (self.tempo, d)
+        tempo = self.tempo or 0
+        return '<span class="tempo%s">%s</span>' % (tempo, d)
 
     @property
     def signature_html_display(self):
@@ -450,7 +451,11 @@ class RepertoryGroupItem(models.Model):
     @property
     def mode_html_display(self):
         mode = SongMode.display(self.mode)
-        return '<span class="mode%s">%s</span>' % (self.mode, mode)
+        if mode:
+            mode = mode[0]
+        else:
+            mode =  'N/A'
+        return '<span class="song_mode mode%s">%s</span>' % (self.mode, mode)
 
     @property
     def number_display(self):

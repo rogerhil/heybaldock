@@ -186,7 +186,7 @@ ul {
 }
 
 .table_list tr:hover {
-    color: #e9892c;
+    color: #993300;
     cursor: pointer;
 }
 
@@ -1394,9 +1394,7 @@ div.metadata ul li a {
     color: #f7c413;
 }
 
-.mode1,
-.mode2,
-.mode3, {
+.song_mode {
     color: #000000;
     padding: 2px 8px 2px 8px;
     border-radius: 5px;
@@ -1404,12 +1402,14 @@ div.metadata ul li a {
     text-transform: uppercase;
     font-weight: bold;
     display: block;
-    width: 70px;
+    width: 20px;
+    background-color: #FDFCEE;
+    color: #333333;
+    border: 2px solid #FDFCEE;
+    margin: 0 auto 0 auto;
 }
 
-.mode1:hover ,
-.mode2:hover ,
-.mode3:hover  {
+.song_mode:hover {
     border: 2px solid #4b5c6c;
     cursor: pointer;
 }
@@ -1422,14 +1422,15 @@ div.metadata ul li a {
 
 .mode2,
 .repertory .mode2 {
-    background-color: #a1cb5e;
-    border: 2px solid #a1cb5e;
+    background-color: #f7c413;
+    border: 2px solid #f7c413;
 }
 
 .mode3,
 .repertory .mode3 {
-    background-color: #f7c413;
-    border: 2px solid #f7c413;
+    background-color: #993300;
+    border: 2px solid #993300;
+    color: white;
 }
 
 .tempo_slider {
@@ -1448,6 +1449,7 @@ div.metadata ul li a {
 
 .tempo_metronome:hover {
     color: red;
+    font-weight: bold;
 }
 
 .metronome_graphic {
@@ -1471,12 +1473,6 @@ div.metadata ul li a {
 
 .metronome_graphic .tack {
     background-image: url(/media/img/ledorange.png);
-}
-
-.repertory .mode1:hover ,
-.repertory .mode2:hover ,
-.repertory .mode3:hover  {
-    cursor: default !important;
 }
 
 .tonality_atonal,

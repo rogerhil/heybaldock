@@ -65,7 +65,7 @@ function loadTempoMenu($menu) {
 				$par.find('input[name=tempo]').val(ui.value);
 				$par.find('div.tempo_display').html(ui.value + ' bpm');
 			},
-			value: $par.parent().find('input[name=original_tempo]').val(),
+			value: $par.parent().find('input[name=original_tempo]').val() || 120,
 			max: 240,
 			min: 10
 		});

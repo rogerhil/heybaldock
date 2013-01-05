@@ -24,7 +24,7 @@ from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    RepertoryGroupItem, Instrument, Player, \
                    InstrumentTagType, PlayerRepertoryItem, MusicHistoryChanges
 from utils import get_or_create_temporary, mzip, str_list_in_list
-from defaults import Tempo, Tonality
+from defaults import Tempo, Tonality, SongMode
 
 DISCOGS_PAGES = 500
 MAX_YEARS = 10
@@ -82,7 +82,8 @@ def repertory_details(request, id):
         repertory=repertory,
         groups=groups,
         players=Player.objects.all(),
-        tonality_choices=get_tonality_choices()
+        tonality_choices=get_tonality_choices(),
+        mode_choices=SongMode.choices()
     )
     return c
 
@@ -469,6 +470,15 @@ def change_repertory_item_tonality(request, id):
     content = get_song_line_repertory_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
+@json
+@login_required
+def change_repertory_item_song_mode(request, id):
+    item = get_object_or_404(RepertoryGroupItem, id=id)
+    item.mode = int(request.POST['mode_id'])
+    item.save()
+    new_history_entry(request.user, item, "song mode has been changed.")
+    content = get_song_line_repertory_content(request, item)
+    return dict(success=True, content=content, item_id=item.id)
 
 @json
 @login_required
@@ -833,7 +843,8 @@ def get_song_line_repertory_content(request, item):
     temp = loader.get_template("music/song_line_repertory_content.html")
     tonality_choices = get_tonality_choices()
     c = {'item': item, 'group': group, 'repertory': repertory,
-         'tonality_choices': tonality_choices}
+         'tonality_choices': tonality_choices,
+         'mode_choices': SongMode.choices()}
     return temp.render(RequestContext(request, c))
 
 @json

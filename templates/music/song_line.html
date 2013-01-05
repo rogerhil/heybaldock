@@ -10,8 +10,8 @@
     <td style="text-align: center;">{{ song.duration_display }}</td>
     <td>{{ song.composer_display }}</td>
     <td class="center tempo_cel">
-        <input type="hidden" name="original_tempo" value="{{ song.tempo }}" />
-        <span class="tempo_metronome" tempo="{{ song.tempo }}" signaturebeats="{{ song.signature_beats }}">
+        <input type="hidden" name="original_tempo" value="{% if song.tempo %}{{ song.tempo }}{% else %}120{% endif %}" />
+        <span class="tempo_metronome" tempo="{% if song.tempo %}{{ song.tempo }}{% else %}120{% endif %}" signaturebeats="{{ song.signature_beats }}">
             {% autoescape off %}{{ song.tempo_html_display }}{% endautoescape %}
         </span>
         <div class="metronome_graphic" style="position: absolute; display: none; margin-top: -80px;">
@@ -21,9 +21,9 @@
         </div>
         <div class="pretty_select tempo_body" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999; width: 200px;">
             <h3>{% trans "Tempo and signature" %}</h3>
-            <div class="tempo_display">{{ song.tempo }} bpm</div>
+            <div class="tempo_display">{% if song.tempo %}{{ song.tempo }}{% else %}120{% endif %} bpm</div>
             <div class="tempo_slider"></div>
-            <input type="hidden" name="tempo" value="{{ song.tempo }}" />
+            <input type="hidden" name="tempo" value="{% if song.tempo %}{{ song.tempo }}{% else %}120{% endif %}" />
             <div class="clear"></div>
             <div style="width: 70px; margin: 0px auto 0px auto;">
                 <div style="float: left; padding-top: 6px; margin-right: 5px;">
