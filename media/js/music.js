@@ -42,7 +42,7 @@ $(window).load(function () {
 			$('.pretty_select').parent().slideUp();
 		}
 	});
-
+	loadMetronome($("td.tempo_cel span.tempo_metronome"));
 });
 
 function calculateTimeTotal() {

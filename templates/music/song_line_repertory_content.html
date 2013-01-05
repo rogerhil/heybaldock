@@ -10,8 +10,15 @@
     <td class="nopadding center"><img src="{{ item.song.album.icon_url }}" /></td>
     <td>{{ item.song.name }}</td>
     <td class="center duration">{{ item.song.duration_display }}</td>
-    <td class="center">
-        {% autoescape off %}{{ item.song.tempo_html_display }}{% endautoescape %}
+    <td class="center tempo_cel">
+        <span class="tempo_metronome" tempo="{{ item.song.tempo }}" signaturebeats="{{ item.song.signature_beats }}">
+            {% autoescape off %}{{ item.song.tempo_html_display }}{% endautoescape %}
+        </span>
+        <div class="metronome_graphic" style="position: absolute; display: none;">
+            {% for i in item.song.signature_beats_range %}
+                <div class="led led_{{ i }}"></div>
+            {% endfor %}
+        </div>
     </td>
     <td class="center"><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""></td>
     <td class="center">
