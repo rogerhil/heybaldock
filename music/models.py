@@ -303,7 +303,8 @@ class Song(models.Model):
     duration = models.IntegerField()
     position = models.CharField(max_length=5, null=True, blank=True)
     composer = models.ManyToManyField(ComposerRole)
-    tempo = models.IntegerField(choices=Tempo.choices(), default=120)
+    signature = models.CharField(max_length=10, null=True, blank=True)
+    tempo = models.IntegerField(choices=Tempo.choices(), null=True, blank=True)
     tonality = models.CharField(max_length=10, null=True, blank=True,
                                 choices=Tonality.choices())
 
@@ -317,7 +318,7 @@ class Song(models.Model):
     @property
     def tempo_display(self):
         if self.tempo and self.tempo >= 10:
-            return "%s bpm" % Tempo.display(self.tempo)
+            return "%s bpm"% Tempo.display(self.tempo)
         else:
             return "N/A"
 
@@ -325,6 +326,28 @@ class Song(models.Model):
     def tempo_html_display(self):
         d = self.tempo_display
         return '<span class="tempo%s">%s</span>' % (self.tempo, d)
+
+    @property
+    def signature_html_display(self):
+        return self.signature
+
+    @property
+    def signature_tuple(self):
+        if not self.signature:
+            return (4, 4)
+        return tuple(map(int, self.signature.split('/')))
+
+    @property
+    def signature_beats(self):
+        return self.signature_tuple[0]
+
+    @property
+    def signature_value(self):
+        return self.signature_tuple[1]
+
+    @property
+    def signature_beats_range(self):
+        return range(self.signature_tuple[0])
 
     @property
     def tonality_html_display(self):

@@ -40,6 +40,7 @@ urlpatterns = patterns('',
     url(r'^artist/$', views.artists, name='artists'),
     url(r'^artist/(?P<id>\d+)/$', views.artist_details, name='artist_details'),
     url(r'^song/(?P<id>\d+)/change_tempo/$', views.change_tempo, name='change_tempo'),
+    url(r'^song/(?P<id>\d+)/change_signature/$', views.change_signature, name='change_signature'),
     url(r'^song/(?P<id>\d+)/change_tonality/$', views.change_tonality, name='change_tonality'),
 
     url(r'^instrument/$', views.instruments, name='instruments'),

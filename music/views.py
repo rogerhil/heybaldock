@@ -444,6 +444,18 @@ def change_tempo(request, id):
 
 @json
 @login_required
+def change_signature(request, id):
+    song = get_object_or_404(Song, id=id)
+    beats = int(request.POST['beats'])
+    value = int(request.POST['value'])
+    song.signature = "%s/%s" % (beats, value)
+    song.save()
+    new_history_entry(request.user, song, "signature has been changed.")
+    content = get_song_line_content(request, song)
+    return dict(success=True, content=content)
+
+@json
+@login_required
 def change_tonality(request, id):
     song = get_object_or_404(Song, id=id)
     song.tonality = request.POST['tonality']

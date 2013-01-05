@@ -1451,6 +1451,33 @@ div.metadata ul li a {
     background-color: #a1cb5e !important;
 }
 
+.tempo_metronome:hover {
+    color: red;
+}
+
+.metronome_graphic {
+    padding: 5px;
+    border: 2px solid #4b5c6c;
+    border-radius: 5px;
+    background-image: url(/media/img/content_bg_2.png);
+    z-index: 99999;
+}
+
+.metronome_graphic .led {
+    float: left;
+    background-image: url(/media/img/ledlightblue.png);
+    width: 50px;
+    height: 50px;
+}
+
+.metronome_graphic .tick {
+    background-image: url(/media/img/ledred.png);
+}
+
+.metronome_graphic .tack {
+    background-image: url(/media/img/ledorange.png);
+}
+
 .repertory .mode1:hover ,
 .repertory .mode2:hover ,
 .repertory .mode3:hover  {
