@@ -810,10 +810,10 @@ function addNewSong(group_id, sid, $el) {
 				$tr.find('img.remove_song').click(removeSongFromRepertory);
 				$tr.find('img.add_player').click(addPlayerButton);
 				$tr.find('img.player').click(changePlayerButton);
+				$body.append($tr);
 				tonalityClick($tr.find("td.tonality_cel"));
 				modeClick($tr.find("td.mode_cel"));
 				loadMetronome($("td.tempo_cel span.tempo_metronome"));
-				$body.append($tr);
 			} else {
 				var $msg = $el.parent().find('span.message');
 				$msg.html(data.message);
