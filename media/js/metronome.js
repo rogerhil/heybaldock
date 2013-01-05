@@ -16,6 +16,14 @@ function loadMetronomeAudio() {
 
 loadMetronomeAudio();
 
+var miditick, miditack, mtick, mtack;
+
+$(window).load(function () {
+	MIDI.loadPlugin(function() {
+		miditick = function () {MIDI.noteOn(0, 105, 200, 0);};
+		miditack = function () {MIDI.noteOn(0, 100, 200, 0);};
+	});
+});
 
 var intervalMetronome;
 var metronomeCount = 0;
@@ -28,10 +36,12 @@ function metronomeTickTack($mg) {
 	if (metronomeCount % signatureBeats == 0) {
 		metronomeCount = 0;
 		$mg.find('div.led_' + metronomeCount).addClass('tick');
-		tick.play();
+		//tick.play();
+		miditick();
 	} else {
 		$mg.find('div.led_' + metronomeCount).addClass('tack');
-		tack.play();
+		//tack.play();
+		miditack();
 	}
 	metronomeCount++;
 }

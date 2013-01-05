@@ -1,3 +1,5 @@
+var song;
+DEFAULT_VOLUME = 200;
 
 $(window).load(function () {
 	tempoClick($("div.table_list td.tempo_cel"));
@@ -12,6 +14,7 @@ $(window).load(function () {
 
 	$("#remove_album").click(removeAlbum);
 });
+
 
 function tempoClick($el) {
 
