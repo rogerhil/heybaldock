@@ -326,6 +326,10 @@ class Song(models.Model):
 
     @property
     def audio_url(self):
+        if not self.audio:
+            return
+        if not self.audio_handler:
+            self.audio_handler = FileHandlerSongAudio()
         return self.audio_handler.single_url()
 
     @property
