@@ -43,7 +43,7 @@ function showOverlay(text) {
 	$image.css('top', ($(window).height() / 2) + window.scrollY - 100 + "px");
 }
 
-function hideOverlay(text) {
+function hideOverlay() {
 	$("div.pp_overlay").hide();
 }
 
