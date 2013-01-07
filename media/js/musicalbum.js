@@ -51,11 +51,14 @@ function loadUploadAudio() {
 	var $file = $("div.table_list form input[type=file]");
 	$file.fileupload({
 		dataType: 'json',
-		beforeSend: function (e, data) {
-			showOverlay();
+		start: function (e, data) {
+			showOverlay("U P L O A D I N G");
 		},
 		progress: function (e, data) {
-			//console.log(data);
+			var value = Math.floor((data.loaded / data.total) * 100);
+			var kbytes = (data.loaded / (1024 * 1024)).toFixed(1);
+			var text = kbytes + " mb of " + (data.total / (1024 * 1024)).toFixed(1) + " mb";
+			updateOverlayProgressBar(value, text);
 		},
 		fail: function (e, data) {
 			hideOverlay();

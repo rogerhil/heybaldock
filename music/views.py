@@ -443,6 +443,7 @@ def upload_song_audio(request, id):
     song = get_object_or_404(Song, id=id)
     audio_file = request.FILES['audio_file']
     filename = generate_filename(audio_file.name)
+    return
     handler = FileHandlerSongAudio()
     handler.load(filename, audio_file)
     handler.save()

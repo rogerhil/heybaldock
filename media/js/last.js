@@ -29,10 +29,13 @@ $(window).load(function () {
 	});
 });
 
-function showOverlay() {
+function showOverlay(text) {
 	var $overlay = $("div.pp_overlay");
 	var $image = $overlay.find("div.loading_image");
 	var $footer = $("#footer");
+	if (text) {
+		$overlay.find('span.loading_text').html(text);
+	}
 	$overlay.show();
 	$overlay.css('height', $footer.position().top + 180 + "px");
 	$overlay.css('width', $("html").width() + "px");
@@ -40,8 +43,19 @@ function showOverlay() {
 	$image.css('top', ($(window).height() / 2) + window.scrollY - 100 + "px");
 }
 
-function hideOverlay() {
+function hideOverlay(text) {
 	$("div.pp_overlay").hide();
+}
+
+function updateOverlayProgressBar(value, text) {
+	var $overlay = $("div.pp_overlay");
+	if (text) {
+		$overlay.find('span.loading_text').html(text);
+	}
+	var $pbar = $overlay.find('div.progress_bar');
+	var pos = Math.floor(($pbar.width() * value) / 100);
+	$pbar.html(value + '%');
+	$pbar.css('background-position', pos);
 }
 
 ajax = function (options) {

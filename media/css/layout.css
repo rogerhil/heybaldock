@@ -1648,3 +1648,17 @@ td.ratings_cel img {
     margin-right: 10px;
 }
 
+.pp_overlay div.progress_bar {
+    border-radius: 5px;
+    width: 250px;
+    height: 20px;
+    margin-top: 10px;
+    border: 1px solid #eae6cc;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 15px;
+    background-color: #91af62;
+    background-image: url(/media/img/content_bg_2.png);
+    background-repeat: no-repeat;
+    background-position: 0;
+}
