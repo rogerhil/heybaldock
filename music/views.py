@@ -448,6 +448,7 @@ def upload_song_audio(request, id):
     handler.save()
     song.audio = filename
     song.save()
+    song = Song.objects.get(id=id)
     new_history_entry(request.user, song, "new audio song has been upload.")
     content = get_song_line_content(request, song)
     return dict(success=True, content=content)
