@@ -44,6 +44,7 @@ urlpatterns = patterns('',
     url(r'^artist/(?P<id>\d+)/$', views.artist_details, name='artist_details'),
     url(r'^song/(?P<id>\d+)/change_tempo/$', views.change_tempo_signature, name='change_tempo_signature'),
     url(r'^song/(?P<id>\d+)/change_tonality/$', views.change_tonality, name='change_tonality'),
+    url(r'^song/(?P<id>\d+)/audio/upload/$', views.upload_song_audio, name='upload_song_audio'),
 
     url(r'^instrument/$', views.instruments, name='instruments'),
     url(r'^instrument/add/$', views.add_instrument, name='add_instrument'),

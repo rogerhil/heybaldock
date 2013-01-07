@@ -132,6 +132,14 @@ function addNewRepertoryGroup() {
 	});
 }
 
+function loadAudio() {
+	$("div.table_list img.play_audio").unbind('click').click(function () {
+		var url = $(this).attr('audiourl');
+		var name = $(this).attr('name');
+		playAudio(name, url, $(this));
+	});
+}
+
 function loadRepertory() {
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
@@ -511,6 +519,7 @@ function updateSongLine(data, callback) {
 	modeClick($newTr.find("td.mode_cel"));
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
 	loadRatings($newTr.find("td.ratings_cel"));
+	loadAudio();
 	if (callback) {
 		callback();
 	}
@@ -733,6 +742,7 @@ function loadRepertoryGroup(o) {
 	tonalityClick($("td.tonality_cel"));
 	modeClick($("td.mode_cel"));
 	loadRatings($("td.ratings_cel"));
+	loadAudio();
 
 	
 	$($(o).find('tbody')).sortable({

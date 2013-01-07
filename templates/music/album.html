@@ -4,10 +4,12 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.fileupload.js"></script>
     <script type="text/javascript" src="/media/js/buzz.js"></script>
     <script type="text/javascript" src="/media/js/metronome.js"></script>
     <script type="text/javascript" src="/media/js/base64binary.js"></script>
     <script type="text/javascript" src="/media/js/MIDI.js"></script>
+    <script type="text/javascript" src="/media/js/audioplayer.js"></script>
     <script type="text/javascript" src="/media/js/musicalbum.js"></script>
 {% endblock %}
 
@@ -18,6 +20,7 @@
 {% endblock %}
 
 {% block music_content %}
+    {% include "music/audio_player.html" %}
     <form id="remove_album_form" action="{% url remove_album album.id %}"></form>
     <h1><a href="{% url artist_details album.artist.id %}">{{ album.artist }}</a> - {{ album }}</h1>
     {% if album.description %}

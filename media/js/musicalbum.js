@@ -14,8 +14,69 @@ $(window).load(function () {
 	});
 
 	$("#remove_album").click(removeAlbum);
+	loadUploadAudio();
 });
 
+
+function loadUploadAudio() {
+
+	$(document).keydown(function (e) {
+		if (e.shiftKey) {
+			$(this).find('td[hasaudio=1] .play_audio_area').hide();
+			$(this).find('td[hasaudio=1] .upload_audio_area').show();
+		} else {
+			$(this).find('td[hasaudio=1] .play_audio_area').show();
+			$(this).find('td[hasaudio=1] .upload_audio_area').hide();
+		}
+	});
+
+	$(document).keyup(function (e) {
+		if (e.shiftKey) {
+			$('td[hasaudio=1] .play_audio_area').hide();
+			$('td[hasaudio=1] .upload_audio_area').show();
+		} else {
+			$('td[hasaudio=1] .play_audio_area').show();
+			$('td[hasaudio=1] .upload_audio_area').hide();
+		}
+	});
+
+	$("div.table_list img.upload_audio").unbind('click').click(function (e) {
+		$(this).parent().find('form input[type=file]').trigger('click');
+	});
+	$("div.table_list img.play_audio").unbind('click').click(function () {
+		var url = $(this).attr('audiourl');
+		var name = $(this).attr('name');
+		playAudio(name, url, $(this));
+	});
+	var $file = $("div.table_list form input[type=file]");
+	$file.fileupload({
+		dataType: 'json',
+		beforeSend: function (e, data) {
+			showOverlay();
+		},
+		progress: function (e, data) {
+			//console.log(data);
+		},
+		fail: function (e, data) {
+			hideOverlay();
+		},
+		done: function (e, data) {
+			$('td[hasaudio=1] .play_audio_area').show();
+			$('td[hasaudio=1] .upload_audio_area').hide();
+			var $tr = data.form.parent().parent().parent();
+			var $newtr = $(data.result.content);
+			$newtr.insertAfter($tr);
+			var cssClass = $tr.hasClass('odd') ? 'odd' : 'even';
+			$newtr.addClass(cssClass);
+			$tr.remove();
+			tempoClick($newtr.find("td.tempo_cel"));
+			tonalityClick($newtr.find("td.tonality_cel"));
+			stopMetronome();
+			loadUploadAudio();
+			hideOverlay();
+		}
+	});
+}
 
 function tempoClick($el) {
 
@@ -130,6 +191,8 @@ function loadTonalityMenu($menu) {
 		});
 	});
 }
+
+
 
 function removeAlbum() {
 	var msg = "Are you sure you want to remove this album? WARNING: This action will also remove all songs from repertories related to this album.";

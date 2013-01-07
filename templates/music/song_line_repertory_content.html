@@ -11,7 +11,12 @@
             <img src="{{ item.song.album.icon_url }}" alt="{{ item.number_display }} - {{ item.song.album }}" title="{{ item.number_display }} - {{ item.song.album }}" style="border-radius: 3px;" />
         </a>
     </td>
-    <td>{{ item.song.name }}</td>
+    <td>
+        {% if item.song.audio %}
+            <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ item.song.name }}" audiourl="{{ item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
+        {% endif %}
+        {{ item.song.name }}
+    </td>
     <td class="center duration">{{ item.song.duration_display }}</td>
     <td class="center tempo_cel">
         <span class="tempo_metronome" tempo="{{ item.song.tempo }}" signaturebeats="{{ item.song.signature_beats }}">

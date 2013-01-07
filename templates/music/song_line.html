@@ -5,8 +5,21 @@
     changetemposignatureurl="{% url change_tempo_signature song.id %}"
     changetonalityurl="{% url change_tonality song.id %}"
     songtempo="{{ song.tempo }}">
-    <td style="text-align: center;">{{ song.position }}</td>
-    <td>{{ song.name }}</td>
+    <td style="text-align: center;">
+        {{ song.position }}
+    </td>
+    <td hasaudio="{% if song.audio %}1{% else %}0{% endif %}">
+        <div class="play_audio_area" style="float: left; margin-right: 5px; {% if not song.audio %}display: none;{% endif %}">
+            <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ song.name }}" audiourl="{{ song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
+        </div>
+        <div class="upload_audio_area" style="float: left; margin-right: 5px; {% if song.audio %}display: none;{% endif %}">
+            <form action="{% url upload_song_audio song.id %}" style="display: none;" enctype="multipart/form-data" method="post">
+                <input type="file" name="audio_file" />
+            </form>
+            <img src="/media/img/music_icon_16.png" class="upload_audio" alt="{% trans "Upload audio song" %}" title="{% trans "Upload audio song" %}" />
+        </div>
+        {{ song.name }}
+    </td>
     <td style="text-align: center;">{{ song.duration_display }}</td>
     <td>{{ song.composer_display }}</td>
     <td class="center tempo_cel">
@@ -14,7 +27,7 @@
         <span class="tempo_metronome" tempo="{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %}" signaturebeats="{{ song.signature_beats }}">
             {% autoescape off %}{{ song.tempo_html_display }}{% endautoescape %}
         </span>
-        <div class="metronome_graphic" style="position: absolute; display: none; margin-top: -80px;">
+        <div class="metronome_graphic" style="position: absolute; display: none; margin-top: -80px; white-space: nowrap;">
             {% for i in song.signature_beats_range %}
                 <div class="led led_{{ i }}"></div>
             {% endfor %}
@@ -46,7 +59,7 @@
     </td>
     <td class="center tonality_cel">
         {% autoescape off %}{{ song.tonality_html_display }}{% endautoescape %}
-        <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999;">
+        <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999; width: 200px;">
             <h3>{% trans "Change tonality" %}</h3>
             {% for key, title, ttype in tonality_choices %}
                 <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>

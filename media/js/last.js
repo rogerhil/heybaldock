@@ -29,6 +29,21 @@ $(window).load(function () {
 	});
 });
 
+function showOverlay() {
+	var $overlay = $("div.pp_overlay");
+	var $image = $overlay.find("div.loading_image");
+	var $footer = $("#footer");
+	$overlay.show();
+	$overlay.css('height', $footer.position().top + 180 + "px");
+	$overlay.css('width', $("html").width() + "px");
+	$image.css('left', ($(window).width() / 2) - 100 + "px");
+	$image.css('top', ($(window).height() / 2) + window.scrollY - 100 + "px");
+}
+
+function hideOverlay() {
+	$("div.pp_overlay").hide();
+}
+
 ajax = function (options) {
 	var $overlay = $("div.pp_overlay");
 	var $image = $overlay.find("div.loading_image");

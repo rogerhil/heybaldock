@@ -15,7 +15,8 @@ from lib.fields import JSONField, PickleField
 from defaults import Tonality, Rating, Tempo, DocumentType, SongMode
 from event.models import Event
 from photo.image import ImageHandlerAlbumCover, ImageHandlerInstrument, \
-                        ImageHandlerArtist, FileHandlerDocument
+                        ImageHandlerArtist, FileHandlerDocument, \
+                        FileHandlerSongAudio
 from video.models import VideoBase
 from utils import metadata_display
 
@@ -308,6 +309,7 @@ class Song(models.Model):
     tempo = models.IntegerField(choices=Tempo.choices(), null=True, blank=True)
     tonality = models.CharField(max_length=10, null=True, blank=True,
                                 choices=Tonality.choices())
+    audio = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         unique_together = ('name', 'album')
@@ -315,6 +317,16 @@ class Song(models.Model):
     def __unicode__(self):
         duration = " (%s)" % self.duration_display if self.duration else ""
         return "%s - %s%s" % (self.position, self.name, duration)
+
+    def __init__(self, *args, **kwargs):
+        super(Song, self).__init__(*args, **kwargs)
+        self.audio_handler = FileHandlerSongAudio()
+        if self.audio:
+            self.audio_handler.load(self.audio)
+
+    @property
+    def audio_url(self):
+        return self.audio_handler.single_url()
 
     @property
     def tempo_display(self):

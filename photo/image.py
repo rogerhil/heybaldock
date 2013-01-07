@@ -270,3 +270,13 @@ class ImageHandlerArtist(ImageHandlerSimple):
 
 class FileHandlerDocument(ImageHandlerSimple):
     BASE_DIR = 'document'
+
+
+class FileHandlerSongAudio(ImageHandlerSimple):
+    BASE_DIR = 'audio/song'
+
+    def save(self):
+        if not self._rimage:
+            return
+        self.storage.save_file(self._rimage.read(), self.storage.filename)
+        self._rimage.close()

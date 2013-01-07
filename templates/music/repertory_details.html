@@ -15,7 +15,9 @@
     <script type="text/javascript" src="/media/js/buzz.js"></script>
     <script type="text/javascript" src="/media/js/metronome.js"></script>
     <script type="text/javascript" src="/media/js/MIDI.js"></script>
+    <script type="text/javascript" src="/media/js/audioplayer.js"></script>
     <script type="text/javascript" src="/media/js/music.js"></script>
+
 
 {% endblock %}
 
@@ -28,6 +30,7 @@
 {% endblock %}
 
 {% block music_content %}
+    {% include "music/audio_player.html" %}
     <h1>{% trans "Repertory:" %} {{ repertory }}</h1>
     <h3 id="time_total">
         {% trans "Time total:" %}

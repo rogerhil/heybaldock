@@ -178,6 +178,7 @@ class DocumentPlayerRepertoryItemForm(forms.Form):
             handler.save_thumbnails('PNG')
             document.type = DocumentType.image
         document.save()
+        return document
 
 
 class ArtistForm(forms.Form):

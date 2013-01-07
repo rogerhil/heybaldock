@@ -16,6 +16,7 @@ from django.utils import simplejson
 from auth.decorators import login_required
 from section.decorators import render_to, json
 from discogs import Discogs
+from photo.image import FileHandlerSongAudio
 from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   InstrumentForm, PlayerForm, ArtistForm, \
                   PlayerRepertoryItemForm, InstrumentTagTypeForm, \
@@ -25,7 +26,8 @@ from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    InstrumentTagType, PlayerRepertoryItem, \
                    MusicHistoryChanges, UserRepertoryItemRating, \
                    PlayerRepertoryItemRating
-from utils import get_or_create_temporary, mzip, str_list_in_list
+from utils import get_or_create_temporary, mzip, str_list_in_list, \
+                  generate_filename
 from defaults import Tempo, Tonality, SongMode
 
 DISCOGS_PAGES = 500
@@ -437,6 +439,21 @@ def get_song_line_content(request, song):
 
 @json
 @login_required
+def upload_song_audio(request, id):
+    song = get_object_or_404(Song, id=id)
+    audio_file = request.FILES['audio_file']
+    filename = generate_filename(audio_file.name)
+    handler = FileHandlerSongAudio()
+    handler.load(filename, audio_file)
+    handler.save()
+    song.audio = filename
+    song.save()
+    new_history_entry(request.user, song, "new audio song has been upload.")
+    content = get_song_line_content(request, song)
+    return dict(success=True, content=content)
+
+@json
+@login_required
 def change_tempo_signature(request, id):
     song = get_object_or_404(Song, id=id)
     beats = int(request.POST['beats'])
@@ -817,10 +834,10 @@ def add_document_for_player_repertory_item(request, id):
     data = dict(player_repertory_item=player_repertory_item.id)
     form = DocumentPlayerRepertoryItemForm(data=data, files=request.FILES)
     if form.is_valid():
-        form.save()
+        doc = form.save()
         summary = 'created for "%s (%s)"' % (player_repertory_item,
                                              player_repertory_item.id)
-        new_history_entry(request.user, form.instance, summary)
+        new_history_entry(request.user, doc, summary)
         c = player_repertory_item_menu_content(request, player_repertory_item)
         c['success'] = True
         return c
