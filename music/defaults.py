@@ -18,6 +18,10 @@ class ChoicesBase:
     def display(cls, t):
         return dict(cls.choices()).get(t)
 
+    @classmethod
+    def length(cls):
+        return len(cls.choices())
+
 
 class Tempo:
     @classmethod

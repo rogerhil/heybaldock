@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n common %}
 <div class="pretty_select"
      toogletagtypeurl="{% url toogle_tag_type player_repertory_item.id %}"
      changeasmemberoptionsurl="{% url change_as_member_options player_repertory_item.id %}"
@@ -63,7 +63,20 @@
             {% trans "Remove this player" %}
         </div>
     </div>
-    <hr />
+    <h3>{% trans "Ratings" %}</h3>
+    {% call player_repertory_item.has_voted with user as voted %}
+    <div class="center ratings_player" ratingurl="{% url rate_player_repertory_item player_repertory_item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
+        title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
+        {% for r in player_repertory_item.ratings_range %}
+            {% if r.active %}
+                <img src="/media/img/star_16.png" class="active" rate="{{ r.rate }}" />
+            {% else %}
+                <img src="/media/img/star_gray_16.png" class="inactive" rate="{{ r.rate }}" />
+            {% endif %}
+        {% endfor %}
+    </div>
+    <br />
+    <h3>{% trans "Materials" %}</h3>
     <div class="option" action="notes">
         <div class="icon" style="padding-top: 5px; padding-left: 4px">
             <img src="/media/img/notes_icon_16.png" />

@@ -1,5 +1,6 @@
 # -*- coding: utf-8; Mode: Python -*-
 
+import math
 from south.modelsinspector import add_introspection_rules
 
 from django.db import models
@@ -450,16 +451,34 @@ class RepertoryGroupItem(models.Model):
 
     @property
     def mode_html_display(self):
-        mode = SongMode.display(self.mode)
-        if mode:
-            mode = mode[0]
+        mode_display = SongMode.display(self.mode)
+        if mode_display:
+            mode = mode_display[0]
         else:
             mode =  'N/A'
-        return '<span class="song_mode mode%s">%s</span>' % (self.mode, mode)
+        return '<span class="song_mode mode%s" title="%s">%s</span>' % (
+                                                self.mode, mode_display,  mode)
 
     @property
     def number_display(self):
         return str(self.number).zfill(2)
+
+    @property
+    def ratings(self):
+        rates = self.users_ratings.all().values_list('rate', flat=True)
+        if not len(rates):
+            return 0
+        average = int(math.ceil(float(sum(rates)) / len(rates)))
+        return average
+
+    @property
+    def ratings_range(self):
+        r = [{'rate': i + 1,
+              'active': self.ratings > i} for i in xrange(Rating.length())]
+        return r
+
+    def has_voted(self, user):
+        return bool(self.users_ratings.filter(user=user).count())
 
     def get_correspond_main_item(self):
         main_group = RepertoryGroup.get_main_group()
@@ -598,6 +617,23 @@ class PlayerRepertoryItem(models.Model):
     def __unicode__(self):
         return "%s %s as %s" % (self.player, self.repertory_item,
                                 self.as_member)
+
+    @property
+    def ratings(self):
+        rates = self.users_ratings.all().values_list('rate', flat=True)
+        if not len(rates):
+            return 0
+        average = int(math.ceil(float(sum(rates)) / len(rates)))
+        return average
+
+    @property
+    def ratings_range(self):
+        r = [{'rate': i + 1,
+              'active': self.ratings > i} for i in xrange(Rating.length())]
+        return r
+
+    def has_voted(self, user):
+        return bool(self.users_ratings.filter(user=user).count())
 
     @property
     def has_tag_types(self):
@@ -818,16 +854,18 @@ class UserRepertoryItemRating(models.Model, Rating):
     rate = models.SmallIntegerField(choices=Rating.choices())
 
     class Meta:
-        unique_together = ('user', 'repertory_item', 'rate')
+        unique_together = ('user', 'repertory_item')
 
 
 class PlayerRepertoryItemRating(models.Model, Rating):
+    user = models.ForeignKey(User,
+                             related_name="player_repertory_items_ratings")
     player_repertory_item = models.ForeignKey(PlayerRepertoryItem,
-                                              related_name="ratings")
+                                              related_name="users_ratings")
     rate = models.SmallIntegerField(choices=Rating.choices())
 
     class Meta:
-        unique_together = ('player_repertory_item', 'rate')
+        unique_together = ('user', 'player_repertory_item')
 
 
 class MusicHistoryChanges(models.Model):

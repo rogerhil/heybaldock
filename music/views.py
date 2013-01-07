@@ -22,7 +22,9 @@ from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   DocumentPlayerRepertoryItemForm
 from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    RepertoryGroupItem, Instrument, Player, \
-                   InstrumentTagType, PlayerRepertoryItem, MusicHistoryChanges
+                   InstrumentTagType, PlayerRepertoryItem, \
+                   MusicHistoryChanges, UserRepertoryItemRating, \
+                   PlayerRepertoryItemRating
 from utils import get_or_create_temporary, mzip, str_list_in_list
 from defaults import Tempo, Tonality, SongMode
 
@@ -851,6 +853,40 @@ def get_song_line_repertory_content(request, item):
 @login_required
 def update_song_line_repertory_content(request, id):
     item = get_object_or_404(RepertoryGroupItem, id=id)
+    content = get_song_line_repertory_content(request, item)
+    return dict(success=True, content=content, item_id=item.id)
+
+@json
+@login_required
+def rate_repertory_item(request, id):
+    user = request.user
+    item = get_object_or_404(RepertoryGroupItem, id=id)
+    rate = int(request.POST['rate'])
+    try:
+        rating = UserRepertoryItemRating.objects.get(user=user,
+                                                     repertory_item=item)
+    except UserRepertoryItemRating.DoesNotExist:
+        rating = UserRepertoryItemRating(user=user, repertory_item=item)
+    rating.rate = rate
+    rating.save()
+    content = get_song_line_repertory_content(request, item)
+    return dict(success=True, content=content, item_id=item.id)
+
+@json
+@login_required
+def rate_player_repertory_item(request, id):
+    user = request.user
+    player_rep = get_object_or_404(PlayerRepertoryItem, id=id)
+    rate = int(request.POST['rate'])
+    try:
+        rating = PlayerRepertoryItemRating.objects.get(user=user,
+                                              player_repertory_item=player_rep)
+    except PlayerRepertoryItemRating.DoesNotExist:
+        rating = PlayerRepertoryItemRating(user=user,
+                                           player_repertory_item=player_rep)
+    rating.rate = rate
+    rating.save()
+    item = player_rep.repertory_item
     content = get_song_line_repertory_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 

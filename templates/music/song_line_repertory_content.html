@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n common %}
 <tr itemid="{{ item.id }}"
     songid="{{ item.song.id }}"
     number="{{ item.number }}"
@@ -23,15 +23,25 @@
             {% endfor %}
         </div>
     </td>
-    <td class="center"><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""><img src="/media/img/star.png" width="20px" alt=""></td>
+    {% call item.has_voted with user as voted %}
+    <td class="center ratings_cel" ratingurl="{% url rate_repertory_item item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
+        title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
+        {% for r in item.ratings_range %}
+            {% if r.active %}
+                <img src="/media/img/star_16.png" class="active" rate="{{ r.rate }}" />
+            {% else %}
+                <img src="/media/img/star_gray_16.png" class="inactive" rate="{{ r.rate }}" />
+            {% endif %}
+        {% endfor %}
+    </td>
     <td class="center mode_cel">
         {% autoescape off %}{{ item.mode_html_display }}{% endautoescape %}
         <div class="mode_menu" style="display: none;" changemodeurl="{% url change_repertory_item_song_mode item.id %}">
-            <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999;">
+            <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); padding: 5px; border: 2px solid #4b5c6c; border-radius: 5px; z-index: 9999;">
                 <h3>{% trans "Change mode" %}</h3>
                 {% for key, title in mode_choices %}
                     <div class="option" modeid="{{ key }}">
-                        <span class="option song_mode mode{{ key }}" style="width: 50px">{{ title }}</span>
+                        <span class="option song_mode mode{{ key }}" style="width: 70px">{{ title }}</span>
                     </div>
                 {% endfor %}
             </div>
@@ -40,7 +50,7 @@
     <td class="center tonality_cel">
         {% autoescape off %}{{ item.tonality_html_display }}{% endautoescape %}
         <div class="tonality_menu" style="display: none;">
-            <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999;">
+            <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); padding: 5px; border: 2px solid #4b5c6c; border-radius: 5px; z-index: 9999;">
                 <h3>{% trans "Change tonality" %}</h3>
                 <div>
                     <span class="option tonality_original" tonalityid="ORIGINAL" style="width: 190px;">{% trans "Original" %}</span>

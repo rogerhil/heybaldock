@@ -337,6 +337,7 @@ function loadChangePlayerMenu($menu, data, callback) {
 		});
 		$file.trigger('click');
 	});
+	loadRatings($menu.find('div.ratings_player'));
 	if (callback) {
 		callback($menu);
 	}
@@ -509,6 +510,7 @@ function updateSongLine(data, callback) {
 	tonalityClick($newTr.find("td.tonality_cel"));
 	modeClick($newTr.find("td.mode_cel"));
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
+	loadRatings($newTr.find("td.ratings_cel"));
 	if (callback) {
 		callback();
 	}
@@ -682,6 +684,45 @@ function loadTonalityMenu($menu) {
 	});
 }
 
+function loadRatings($els) {
+	$els.find('img').unbind('mouseover').mouseover(function (e) {
+		if (Number($(this).parent().attr('voted')) && !e.shiftKey) return;
+		$(this).attr('src', '/media/img/star_selected_16.png');
+		$(this).prevAll().attr('src', '/media/img/star_selected_16.png');
+	});
+	$els.find('img').unbind('mouseleave').mouseleave(function (e) {
+		if ($(this).hasClass('inactive')) {
+			$(this).attr('src', '/media/img/star_gray_16.png');
+		} else {
+			$(this).attr('src', '/media/img/star_16.png');
+		}
+		$(this).prevAll().each(function () {
+			if ($(this).hasClass('inactive')) {
+				$(this).attr('src', '/media/img/star_gray_16.png');
+			} else {
+				$(this).attr('src', '/media/img/star_16.png');
+			}
+		});
+	});
+	$els.find('img').unbind('click').click(function (e) {
+		if (Number($(this).parent().attr('voted')) && !e.shiftKey) return;
+		var url = $(this).parent().attr('ratingurl');
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {rate: $(this).attr('rate')},
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					updateSongLine(data);
+				} else {
+					alert('An error occurred.');
+				}
+			}
+		});
+	});
+}
+
 function loadRepertoryGroup(o) {
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
@@ -691,6 +732,8 @@ function loadRepertoryGroup(o) {
 	$(o).find('img.player').click(changePlayerButton);
 	tonalityClick($("td.tonality_cel"));
 	modeClick($("td.mode_cel"));
+	loadRatings($("td.ratings_cel"));
+
 	
 	$($(o).find('tbody')).sortable({
 		placeholder: "ui-state-highlight",

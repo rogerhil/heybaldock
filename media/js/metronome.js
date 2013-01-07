@@ -22,7 +22,7 @@ $(window).load(function () {
 	MIDI.loadPlugin(function() {
 		miditick = function () {MIDI.noteOn(0, 105, 200, 0);};
 		miditack = function () {MIDI.noteOn(0, 100, 200, 0);};
-	});
+	}, "soundfont/synth_drum-ogg.js");
 });
 
 var intervalMetronome;

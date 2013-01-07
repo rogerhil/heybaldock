@@ -173,6 +173,7 @@ ul {
 
 .table_list th, td {
     padding: 5px;
+    border-radius: 5px;
 }
 
 .table_list th {
@@ -183,6 +184,10 @@ ul {
 
 .table_list .even {
     background-color: #afbfcf;
+}
+
+.table_list tr {
+    border-radius: 5px;
 }
 
 .table_list tr:hover {
@@ -226,7 +231,7 @@ a.button,
     padding: 5px 20px 5px 20px;
     background-color: #f7d453;
     box-shadow: #e9892c 0px -5px;
-    border-radius: 7px;
+    border-radius: 5px;
     font-size: 18px;
     font-weight: bold;
     float: right;
@@ -265,7 +270,7 @@ input[type=submit][disabled=disabled].submit {
 
 .profile_area a {
     display: block;
-    border-radius: 7px;
+    border-radius: 5px;
     background-color: #eae6cc;
     padding: 5px 10px 5px 10px;
     float: left;
@@ -279,7 +284,7 @@ input[type=submit][disabled=disabled].submit {
 }
 
 .edit_mode {
-    border-radius: 7px;
+    border-radius: 5px;
     background-color: #91af62;
     text-align: center;
     letter-spacing: 20px;
@@ -303,7 +308,7 @@ input[type=submit][disabled=disabled].submit {
 .manage_buttons input[type=submit],
 input[type=button].small_button {
     display: block;
-    border-radius: 7px;
+    border-radius: 5px;
     border: none;
     font-size: 14px;
     font-weight: bold;
@@ -344,7 +349,7 @@ input[type=button].small_button {
 h1.draft_head {
     background-color: #e9892c;
     padding: 10px;
-    border-radius: 7px;
+    border-radius: 5px;
     color: #eae6cc;
 }
 
@@ -541,7 +546,7 @@ div.yellow_submarine_title .shadow_small {
 }
 
 #menu div.menu_item {
-    border-radius: 7px;
+    border-radius: 5px;
     background-color: #eae6cc;
     background-image: url(/media/img/content_bg.png);
     padding: 5px 20px 5px 20px;
@@ -568,7 +573,7 @@ div.yellow_submarine_title .shadow_small {
     background-color: #eae6cc;
     background-image: url(/media/img/content_bg.png);
     padding:  10px;
-    border-radius: 7px;
+    border-radius: 5px;
     margin-bottom: 10px;
 }
 
@@ -594,7 +599,7 @@ div.yellow_submarine_title .shadow_small {
     background-color: #eae6cc;
     background-image: url(/media/img/content_bg.png);
     padding:  10px;
-    border-radius: 7px;
+    border-radius: 5px;
     margin-bottom: 10px;
 }
 
@@ -617,7 +622,7 @@ div.yellow_submarine_title .shadow_small {
     background-image: url(/media/img/content_bg.png);
     height: 20px;
     padding: 7px 0px 13px 5px;
-    border-radius: 7px;
+    border-radius: 5px;
     margin: 0px 15px 10px 5px;
 }
 
@@ -638,7 +643,7 @@ div.yellow_submarine_title .shadow_small {
 #search input[type=text] {
     background-color: #eae6cc;
     background-image: url(/media/img/content_bg.png);
-    border-radius: 7px;
+    border-radius: 5px;
     width: 280px;
     border: none;
     color: #4b5c6c;
@@ -667,11 +672,11 @@ div.yellow_submarine_title .shadow_small {
 }
 
 #search_results div.search_image img {
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 #search_results div.search_result {
-    border-radius: 7px;
+    border-radius: 5px;
     padding: 5px 5px 3px 5px;
 }
 
@@ -689,7 +694,7 @@ div.yellow_submarine_title .shadow_small {
 }
 
 .section_content img {
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 /* VIDEO ALBUM */
@@ -705,11 +710,11 @@ div.yellow_submarine_title .shadow_small {
 .video_album li {
     list-style: none;
     margin-bottom: 40px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .video_album div.video_embed {
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 12px 13px 10px 12px;
     background-color: #000;
     margin-top: 10px;
@@ -736,7 +741,7 @@ div.yellow_submarine_title .shadow_small {
 }
 
 .ajax_video_details .ajax_video_thumbnail img {
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 .ajax_video_details .ajax_video_info {
@@ -757,11 +762,11 @@ ul.video_album_list li {
     width: 285px;
     margin: 0px 0px 0px 0px;
     padding: 10px 10px 7px 10px;
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 ul.video_album_list img {
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 ul.video_album_list p {
@@ -791,13 +796,13 @@ ul.photo_album_list li {
     width: 285px;
     margin: 0px 0px 0px 0px;
     padding: 10px 10px 7px 10px;
-    border-radius: 7px;
+    border-radius: 5px;
     height: 95px;
     overflow-y: hidden;
 }
 
 ul.photo_album_list img {
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 ul.photo_album_list p {
@@ -825,7 +830,7 @@ ul.photo_list li {
     display: block;
     float: left;
     padding: 10px 10px 7px 10px;
-    border-radius: 7px !important;
+    border-radius: 5px!important;
     position: relative;
     margin: 0px -1px 0px 0px;
     overflow-y: hidden;
@@ -842,7 +847,7 @@ ul.photo_list li.selected {
 }
 
 ul.photo_list img {
-    border-radius: 7px;
+    border-radius: 5px;
     margin: 0;
     padding: 0;
     width: 184px;
@@ -910,7 +915,7 @@ ul.highlighted li {
 }
 
 ul.photo_list p {
-    border-radius: 7px;
+    border-radius: 5px;
     padding: 0px 7px 0px 7px;
     position: absolute;
     background-image: url(/media/img/content_bg_2.png);
@@ -989,7 +994,7 @@ div.photo_album div.view_action a.quadruplet span {
 }
 
 div.message {
-    border-radius: 7px;
+    border-radius: 5px;
     background-color: #91af62;
     color: #eae6cc;
     padding: 10px;
@@ -1061,7 +1066,7 @@ div.songs_content {
     padding: 5px;
     width: 300px;
     background-image: url(/media/img/content_bg_2.png);
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 5px 0 10px 0;
 }
 
@@ -1085,7 +1090,7 @@ div.songs_content div.song_name {
 div.songs_content div.song_block {
     cursor: pointer;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 2px;
 }
 
@@ -1129,7 +1134,7 @@ div.pretty_select h3 div.title {
 div.pretty_select div.option {
     cursor: pointer;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 2px;
 }
 
@@ -1156,7 +1161,7 @@ div.pretty_select h4.secondary_option {
     padding: 5px 3px 3px 8px;
     margin: 0px 0px 5px 0px;
     background-image: url(/media/img/content_bg.png);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 div.pretty_select h4.secondary_option div.action_button,
 div.pretty_select h3 div.action_button {
@@ -1173,7 +1178,7 @@ div.notes_area {
     height: 430px;
     border: 2px solid black;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     background-image: url(/media/img/content_bg.png);
     margin-bottom: 50px !important;
 }
@@ -1189,7 +1194,7 @@ div.notes_area .cleditorMain {
 div.notes_area textarea {
     width: 380px;
     height: 160px;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 10px;
     resize: none;
 }
@@ -1207,7 +1212,7 @@ div.players_menu {
     width: 200px;
     background-image: url(/media/img/content_bg_2.png);
     z-index: 999;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 5px;
     display: none;
     border: 2px solid #4b5c6c;
@@ -1357,7 +1362,7 @@ div.metadata ul li a {
     padding: 10px;
     margin:  0px 10px 0px 10px;
     width: 260px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 #dashboard .dashboard_item:hover {
@@ -1396,13 +1401,13 @@ div.metadata ul li a {
 
 .song_mode {
     color: #000000;
-    padding: 2px 8px 2px 8px;
+    padding: 0px;
     border-radius: 5px;
-    font-size: 10px;
+    font-size: 14px;
     text-transform: uppercase;
     font-weight: bold;
     display: block;
-    width: 20px;
+    width: 30px;
     background-color: #FDFCEE;
     color: #333333;
     border: 2px solid #FDFCEE;
@@ -1481,9 +1486,9 @@ div.metadata ul li a {
 .tonality_undefined,
 .tonality_original {
     color: #000000;
-    padding: 2px 0px 2px 0px;
+    padding: 0px;
     border-radius: 3px;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: bold;
     margin: 3px;
     display: block;
@@ -1540,4 +1545,9 @@ div.metadata ul li a {
     background-color: #000000;
     border: 2px solid #000000;
     color: white;
+}
+
+div.ratings_player img,
+td.ratings_cel img {
+    cursor: pointer;
 }
