@@ -23,10 +23,12 @@ def login_view(request):
                                 password=data['password'])
             if user is not None and user.is_active:
                 login(request, user)
-                return HttpResponseRedirect("/")
+                url = request.GET.get('next', reverse('section_home'))
+                return HttpResponseRedirect(url)
     else:
         form = AuthenticationForm()
-    c = RequestContext(request, {'form': form})
+    c = {'form': form, 'next': request.GET.get('next')}
+    c = RequestContext(request, c)
     return render_to_response("auth/login.html", c)
 
 def logout_view(request):

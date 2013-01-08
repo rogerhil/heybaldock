@@ -68,6 +68,10 @@ function startMetronome(tempo, beats, $el) {
 function stopMetronome() {
 	clearInterval(intervalMetronome);
 	metronomeCount = 0;
+	if ($mg) {
+		$mg.find('div.led').removeClass('tick');
+		$mg.find('div.led').removeClass('tack');
+	}
 	$('div.metronome_graphic').fadeOut(300);
 }
 

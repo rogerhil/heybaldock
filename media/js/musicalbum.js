@@ -8,13 +8,14 @@ $(window).load(function () {
 	// CLICK OUTSIDE
 	$('html').click(function (e) {
 		if (!($(e.target).hasClass('pretty_select') || $(e.target).parents().hasClass('pretty_select'))) {
-			$('.pretty_select').slideUp();
+			$('.simple_menu').slideUp();
 			stopMetronome();
 		}
 	});
 
 	$("#remove_album").click(removeAlbum);
 	loadUploadAudio();
+	$("img.add_to_main_repertory").click(addToMainRepertory);
 });
 
 
@@ -77,19 +78,18 @@ function loadUploadAudio() {
 			stopMetronome();
 			loadUploadAudio();
 			hideOverlay();
+			$newtr.find("img.add_to_main_repertory").click(addToMainRepertory);
 		}
 	});
 }
 
 function tempoClick($el) {
 
-	//loadMetronome($el.find('span.tempo_metronome'));
-
 	$el.click(function (e) {
 		e.stopPropagation();
-		var $menu = $(this).find("div.pretty_select");
+		var $menu = $(this).find("div.tempo_menu");
 		if ($menu.is(":hidden")) {
-			$("div.pretty_select").hide();
+			$("div.simple_menu").hide();
 			loadTempoMenu($menu);
 		}
 	});
@@ -98,15 +98,20 @@ function tempoClick($el) {
 function tonalityClick($el) {
 	$el.click(function (e) {
 		e.stopPropagation();
-		$("div.pretty_select").hide();
-		var $menu = $(this).find("div.pretty_select");
-		$menu.slideDown();
-		loadTonalityMenu($menu);
+		var $menu = $(this).find("div.tonality_menu");
+		if ($menu.is(':hidden')) {
+			$("div.tonality_menu").hide();
+			var $menu = $(this).find("div.tonality_menu");
+			$menu.slideDown();
+			loadTonalityMenu($menu);
+		} else {
+			$menu.slideUp();
+		}
 	});
 }
 
 function loadTempoMenu($menu) {
-	var $td = $menu.parent();
+	var $td = $menu.parent().parent();
 	var $tr = $td.parent();
 	var url = $tr.attr('changetemposignatureurl');
 	var songTempo = Number($tr.attr('songtempo') || 120);
@@ -129,7 +134,7 @@ function loadTempoMenu($menu) {
 				$par.find('input[name=tempo]').val(ui.value);
 				$par.find('div.tempo_display').html(ui.value + ' bpm');
 			},
-			value: $par.parent().find('input[name=original_tempo]').val() || 120,
+			value: $par.parent().parent().parent().find('input[name=original_tempo]').val() || 120,
 			max: 240,
 			min: 10
 		});
@@ -168,7 +173,7 @@ function loadTempoMenu($menu) {
 }
 
 function loadTonalityMenu($menu) {
-	var $tr = $menu.parent().parent();
+	var $tr = $menu.parent().parent().parent();
 	var url = $tr.attr('changetonalityurl');
 	$menu.find('span.option').unbind('click').click('click', function (e) {
 		e.stopPropagation();
@@ -202,4 +207,21 @@ function removeAlbum() {
 	if (confirm(msg)) {
 		$("#remove_album_form").submit();
 	}
+}
+
+function addToMainRepertory() {
+	var songId = $(this).attr('songid');
+	$.ajax({
+		url: '/music/album/song/add_to_main_pertory/',
+		type: 'post',
+		dataType: 'json',
+		data: {id: songId},
+		success: function (data) {
+			if (data.success) {
+				alert("Song added to the main repertory successfully!")
+			} else {
+				alert(data.message)
+			}
+		}
+	});
 }

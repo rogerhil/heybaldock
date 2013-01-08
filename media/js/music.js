@@ -31,8 +31,6 @@ $(window).load(function () {
 
 	$("#remove_album").click(removeAlbum);
 
-	$("img.add_to_main_repertory").click(addToMainRepertory);
-
 	// CLICK OUTSIDE
 	$('html').click(function (e) {
 		if (!($(e.target).hasClass('pretty_select') || $(e.target).parents().hasClass('pretty_select'))) {
@@ -672,7 +670,7 @@ function loadModeMenu ($menu) {
 }
 
 function loadTonalityMenu($menu) {
-	var $tr = $menu.parent().parent();
+	var $tr = $menu.parent().parent().parent();
 	var url = $tr.attr('changetonalityurl');
 	$menu.find('span.option').unbind('click').click('click', function (e) {
 		e.stopPropagation();
@@ -930,21 +928,4 @@ function removeAlbum() {
 	if (confirm(msg)) {
 		$("#remove_album_form").submit();
 	}
-}
-
-function addToMainRepertory() {
-	var songId = $(this).attr('songid');
-	$.ajax({
-		url: '/music/album/song/add_to_main_pertory/',
-		type: 'post',
-		dataType: 'json',
-		data: {id: songId},
-		success: function (data) {
-			if (data.success) {
-				alert("Song added to the main repertory successfully!")
-			} else {
-				alert(data.message)
-			}
-		}
-	});
 }

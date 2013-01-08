@@ -27,44 +27,52 @@
         <span class="tempo_metronome" tempo="{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %}" signaturebeats="{{ song.signature_beats }}">
             {% autoescape off %}{{ song.tempo_html_display }}{% endautoescape %}
         </span>
-        <div class="metronome_graphic" style="position: absolute; display: none; margin-top: -80px; white-space: nowrap;">
-            {% for i in song.signature_beats_range %}
-                <div class="led led_{{ i }}"></div>
-            {% endfor %}
-        </div>
-        <div class="pretty_select tempo_body" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999; width: 200px;">
-            <h3>{% trans "Tempo and signature" %}</h3>
-            <div class="tempo_display">{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %} bpm</div>
-            <div class="tempo_slider"></div>
-            <input type="hidden" name="tempo" value="{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %}" />
-            <div class="clear"></div>
-            <div style="width: 70px; margin: 0px auto 0px auto;">
-                <div style="float: left; padding-top: 6px; margin-right: 5px;">
-                    <input type="text" name="beats" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_beats }}" />
-                </div>
-                <div style="float: left; margin-right: 2px;">
-                    <span style="font-weight: bold; color: #4b5c6c; font-size: 30px;">/</span>
-                </div>
-                <div style="padding-top: 6px;">
-                    <input type="text" name="value" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_value }}" />
+        <div style="position: relative;">
+            <div class="metronome_graphic simple_menu" style="position: absolute; display: none; margin-top: -70px; white-space: nowrap; width: auto;">
+                {% for i in song.signature_beats_range %}
+                    <div class="led led_{{ i }}"></div>
+                {% endfor %}
+            </div>
+            <div class="tempo_menu simple_menu">
+                <div class="pretty_select tempo_body">
+                    <h3>{% trans "Tempo and signature" %}</h3>
+                    <div class="tempo_display">{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %} bpm</div>
+                    <div class="tempo_slider"></div>
+                    <input type="hidden" name="tempo" value="{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %}" />
+                    <div class="clear"></div>
+                    <div style="width: 70px; margin: 0px auto 0px auto;">
+                        <div style="float: left; padding-top: 6px; margin-right: 5px;">
+                            <input type="text" name="beats" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_beats }}" />
+                        </div>
+                        <div style="float: left; margin-right: 2px;">
+                            <span style="font-weight: bold; color: #4b5c6c; font-size: 30px;">/</span>
+                        </div>
+                        <div style="padding-top: 6px;">
+                            <input type="text" name="value" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_value }}" />
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div style="margin: 5px 0 5px 0;">
+                        <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" style="margin: 0px;" />&nbsp;
+                        <input type="button" class="small_button change_tempo_signature" value="{% trans "Ok" %}" style="margin: 0px;" />
+                    </div>
+                    <div class="clear"></div>
                 </div>
             </div>
-            <div class="clear"></div>
-            <div style="margin: 5px 0 5px 0;">
-                <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" style="margin: 0px;" />&nbsp;
-                <input type="button" class="small_button change_tempo_signature" value="{% trans "Ok" %}" style="margin: 0px;" />
-            </div>
-            <div class="clear"></div>
         </div>
     </td>
     <td class="center tonality_cel">
         {% autoescape off %}{{ song.tonality_html_display }}{% endautoescape %}
-        <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); display: none; padding: 5px; border: 2px solid #4b5c6c; border-radius: 10px; z-index: 9999; width: 200px;">
-            <h3>{% trans "Change tonality" %}</h3>
-            {% for key, title, ttype in tonality_choices %}
-                <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
-            {% endfor %}
-            <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+        <div style="position: relative;">
+            <div class="tonality_menu simple_menu">
+                <div class="pretty_select">
+                    <h3>{% trans "Change tonality" %}</h3>
+                    {% for key, title, ttype in tonality_choices %}
+                        <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
+                    {% endfor %}
+                    <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+                </div>
+            </div>
         </div>
     </td>
     <td class="center" style="position: relative;">

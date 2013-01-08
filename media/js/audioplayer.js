@@ -1,4 +1,6 @@
 
+var newSong;
+
 function playAudio(name, url, $nextto) {
 	var $pl = $("#audio_player");
 	$pl.fadeIn();
@@ -12,30 +14,63 @@ function playAudio(name, url, $nextto) {
 	$pl.find('h3').html('');
 	$pl.find('h3').append($close);
 	$pl.find('h3').append($title);
-	var song = new buzz.sound(url);
+	newSong = new buzz.sound(url);
 	var sliding = false;
 	$pl.find('.play_pause').removeClass('play').addClass('pause');
 	buzz.all().stop();
 	$close.unbind('click').click(function () {
 		$pl.fadeOut();
 		buzz.all().stop();
+		newSong.setTime(0);
 	});
-	song.unbind("loadeddata").bind("loadeddata", function(e) {
-		song.play(url);
+
+	$pl.find('div.advanced').unbind('click').bind('click', function (e) {
+		e.stopPropagation();
+		var $advops = $pl.find('.advanced_controls');
+		if ($advops.is(':hidden')) {
+			$pl.find('.advanced_controls').slideDown();
+		} else {
+			$pl.find('.advanced_controls').slideUp();
+		}
+	});
+
+	$pl.find('.speed_slider').slider({
+		stop: function(event, ui) {
+			newSong.setSpeed(ui.value / 10);
+		},
+		slide: function(event, ui) {
+			var speed = (ui.value / 10).toFixed(1);
+			var $speed = $pl.find('.speed');
+			$speed.html(speed);
+			$speed.css('margin-left', (speed * 34 + 27) + 'px');
+		},
+		max: 40,
+		min: 5,
+		value: 10,
+	});
+
+	newSong.unbind("loadeddata").bind("loadeddata", function(e) {
+		var song = this;
 		var slider = $pl.find('.audio_slider').slider({
+			start: function(event, ui) {
+				sliding = true;
+			},
 			stop: function(event, ui) {
-				song.setTime(ui.value);
 				sliding = false;
+				song.setTime(ui.value);
 			},
 			slide: function(event, ui) {
 				sliding = true;
 				var timer = buzz.toTimer(ui.value);
-				var remain = buzz.toTimer(song.getDuration() - ui.value);
+				var remain = buzz.toTimer(Math.ceil(song.getDuration() - ui.value));
 				$pl.find('.time').html(timer);
 			},
-			max: song.getDuration(),
+			max: Math.ceil(song.getDuration()),
 			min: 0
 		});
+		song.play(url);
+		song.setTime(0);
+		song.trigger('timeupdate');
 
 		song.unbind("timeupdate").bind("timeupdate", function(e) {
 			if (sliding) return;
@@ -47,7 +82,7 @@ function playAudio(name, url, $nextto) {
 		$pl.find('.stop').unbind('click').click(function () {
 			song.stop();
 			$pl.find('.play_pause').removeClass('pause').addClass('play');
-			slider.slider("value", 0);
+			song.setTime(0);
 		});
 		$pl.find('.play_pause').unbind('click').click(function () {
 			song.togglePlay();

@@ -397,11 +397,13 @@ def get_tonality_choices():
     return tonality_choices
 
 @render_to("music/album.html")
+@login_required
 def album(request, id):
     album = get_object_or_404(Album, id=id)
     return dict(album=album, tempo_choices=Tempo.choices(),
                 tonality_choices=get_tonality_choices())
 
+@login_required
 def remove_album(request, id):
     album = get_object_or_404(Album, id=id)
     artist = album.artist
@@ -413,16 +415,19 @@ def remove_album(request, id):
     return HttpResponseRedirect(reverse('albums'))
 
 @render_to("music/albums.html")
+@login_required
 def albums(request):
     artists = Artist.objects.all().order_by('name')
     return dict(artists=artists)
 
 @render_to("music/artists.html")
+@login_required
 def artists(request):
     artists = Artist.objects.all().order_by('name')
     return dict(artists=artists)
 
 @render_to("music/artist_details.html")
+@login_required
 def artist_details(request, id):
     artist = get_object_or_404(Artist, id=id)
     return dict(artist=artist)

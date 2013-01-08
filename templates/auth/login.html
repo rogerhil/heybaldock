@@ -11,7 +11,7 @@
     <div id="login">
         <h1>{% trans "Login" %}</h1>
         <div class="pretty_form">
-            <form action="{% url login %}" method="post">
+            <form action="{% url login %}{% if next %}?next={{ next }}{% endif %}" method="post">
                 {% csrf_token %}
                 <ul>
                     {{ form.as_ul }}

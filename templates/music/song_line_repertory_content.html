@@ -41,40 +41,44 @@
     </td>
     <td class="center mode_cel">
         {% autoescape off %}{{ item.mode_html_display }}{% endautoescape %}
-        <div class="mode_menu" style="display: none;" changemodeurl="{% url change_repertory_item_song_mode item.id %}">
-            <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); padding: 5px; border: 2px solid #4b5c6c; border-radius: 5px; z-index: 9999;">
-                <h3>{% trans "Change mode" %}</h3>
-                {% for key, title in mode_choices %}
-                    <div class="option" modeid="{{ key }}">
-                        <span class="option song_mode mode{{ key }}" style="width: 70px">{{ title }}</span>
-                    </div>
-                {% endfor %}
+        <div style="position: relative;">
+            <div class="mode_menu simple_menu" style="width: 120px;" changemodeurl="{% url change_repertory_item_song_mode item.id %}">
+                <div class="pretty_select">
+                    <h3>{% trans "Change mode" %}</h3>
+                    {% for key, title in mode_choices %}
+                        <div class="option" modeid="{{ key }}">
+                            <span class="option song_mode mode{{ key }}" style="width: 70px">{{ title }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </td>
     <td class="center tonality_cel">
         {% autoescape off %}{{ item.tonality_html_display }}{% endautoescape %}
-        <div class="tonality_menu" style="display: none;">
-            <div class="pretty_select" style="position: absolute; background: url(/media/img/content_bg_2.png); padding: 5px; border: 2px solid #4b5c6c; border-radius: 5px; z-index: 9999;">
-                <h3>{% trans "Change tonality" %}</h3>
-                <div>
-                    <span class="option tonality_original" tonalityid="ORIGINAL" style="width: 190px;">{% trans "Original" %}</span>
+        <div style="position: relative;">
+            <div class="tonality_menu simple_menu">
+                <div class="pretty_select">
+                    <h3>{% trans "Change tonality" %}</h3>
+                    <div>
+                        <span class="option tonality_original" tonalityid="ORIGINAL" style="width: 190px;">{% trans "Original" %}</span>
+                    </div>
+                    <div class="clear"></div>
+                    {% for key, title, ttype in tonality_choices %}
+                        <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
+                    {% endfor %}
+                    <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
                 </div>
-                <div class="clear"></div>
-                {% for key, title, ttype in tonality_choices %}
-                    <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
-                {% endfor %}
-                <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
             </div>
         </div>
     </td>
     <td class="td_players">
         <div style="position: relative;">
             <img src="/media/img/plus_16.png" class="add_player" url="{% url players_menu item.id %}" alt="Add a player for this song" style="float: right;" />
-            <div class="players_menu">
+            <div class="players_menu simple_menu">
                 {% include "music/players_menu.html" %}
             </div>
-            <div class="change_player_menu" itemid="{{ item.id }}">
+            <div class="change_player_menu simple_menu" itemid="{{ item.id }}">
 
             </div>
         </div>

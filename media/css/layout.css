@@ -1101,10 +1101,24 @@ div.songs_content div.selected {
 
 .pretty_select {
     max-width: 200px;
+}
+
+.simple_menu {
+    position: absolute;
+    top: 20px;
+    right: -10px;
+    width: 200px;
+    background-image: url(/media/img/content_bg_2.png);
+    z-index: 999;
+    border-radius: 5px;
+    padding: 5px;
+    display: none;
+    border: 2px solid #4b5c6c;
     box-shadow: #333333 0px 0px 30px 2px;
     -moz-box-shadow: #333333 0px 0px 30px 2px;
     -webkit-box-shadow: #333333 0px 0px 30px 2px;
 }
+
 
 div.pretty_select div.icon {
     float: left;
@@ -1208,30 +1222,6 @@ div.notes_area textarea {
 div.notes_area .notes_save {
     text-align: center;
     margin-top: 5px;
-}
-
-div.change_player_menu,
-div.players_menu {
-    position: absolute;
-    top: 20px;
-    right: -10px;
-    width: 200px;
-    background-image: url(/media/img/content_bg_2.png);
-    z-index: 999;
-    border-radius: 5px;
-    padding: 5px;
-    display: none;
-    border: 2px solid #4b5c6c;
-    box-shadow: #333333 0px 0px 30px 2px;
-    -moz-box-shadow: #333333 0px 0px 30px 2px;
-    -webkit-box-shadow: #333333 0px 0px 30px 2px;
-}
-
-div.change_player_menu .pretty_select,
-div.players_menu .pretty_select {
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
 }
 
 img.add_player,
@@ -1569,8 +1559,8 @@ td.ratings_cel img {
 }
 
 #audio_player {
-    width: 300px;
-    height: 65px;
+    width: 340px;
+    min-height: 65px;
     background-image: url(/media/img/content_bg_2.png);
     border: 2px solid #4b5c6c;
     border-radius: 5px;
@@ -1607,19 +1597,21 @@ td.ratings_cel img {
 #audio_player .time,
 #audio_player .remaining_time {
     width: 30px;
-    margin-left: 10px;
-    margin-top: 5px;
+    height: 20px;
+    margin: 5px 10px 0px 10px;
+    float: left;
 }
 
 #audio_player .controls {
-    width: 290px;
+    width: 330px;
     margin: 5px; auto 0 auto;
 }
 
 #audio_player .controls .play,
 #audio_player .controls .stop,
 #audio_player .controls .mute,
-#audio_player .controls .pause {
+#audio_player .controls .pause,
+#audio_player .controls .advanced {
     width: 24px;
     height: 24px;
     cursor: pointer;
@@ -1646,6 +1638,43 @@ td.ratings_cel img {
 #audio_player .controls .mute {
     background-image: url(/media/img/mute_icon_24.png);
     margin-right: 10px;
+}
+
+#audio_player .controls .advanced {
+    background-image: url(/media/img/audio_track_icon_16.png);
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+#audio_player .advanced_controls {
+    display: none;
+}
+
+#audio_player .speed_slider {
+    width: 120px;
+    height: 7px;
+    margin: 5px 0 10px 5px;
+    float: left;
+    background-color: olive !important;
+}
+
+#audio_player .speed_label {
+    width: 40px;
+    float: left;
+    margin: 5px 0px 0px 5px;
+}
+
+#audio_player .speed {
+    width: 20px;
+    margin: 5px 0px 0px 5px;
+    margin-left: 60px;
+}
+
+#audio_player .advanced_controls {
+    width: 180px;
+    margin: 0px auto 0px auto;
 }
 
 .pp_overlay div.progress_bar {
