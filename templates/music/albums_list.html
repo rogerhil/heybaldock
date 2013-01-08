@@ -1,6 +1,6 @@
 {% if artist.albums.count %}
     <ul id="albums" class="photo_album_list centralize">
-        {% for album in artist.albums.all %}
+        {% for album in artist.albums_by_year %}
             <li class="photo_album_item" url="{% url album album.id %}">
                 <div class="photo_album_cover">
                     <img src="{{ album.thumb_url }}" />

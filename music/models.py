@@ -169,6 +169,10 @@ class Artist(models.Model):
         return [i.member for i in
                 ArtistMembership.objects.filter(active=False, artist=self)]
 
+    @property
+    def albums_by_year(self):
+        return self.albums.all().order_by('year')
+
 
 class ArtistImage(ImageBase):
     artist = models.ForeignKey(Artist, related_name='images')
