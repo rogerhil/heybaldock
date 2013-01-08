@@ -595,7 +595,7 @@ class RepertoryGroupItem(models.Model):
             for rating in player_rep_item.users_ratings.all():
                 PlayerRepertoryItemRating.objects.create(user=rating.user,
                                                          rate=rating.rate,
-                            player_repertory_item=rating.player_repertory_item)
+                                     player_repertory_item=new_player_rep_item)
 
         for rating in main_item.users_ratings.all():
             UserRepertoryItemRating.objects.create(user=rating.user,
