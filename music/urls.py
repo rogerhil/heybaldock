@@ -25,6 +25,7 @@ urlpatterns = patterns('',
 
     url(r'^repertory/add/$', views.add_repertory, name='add_repertory'),
     url(r'^repertory/(?P<id>\d+)/$', views.repertory_details, name='repertory_details'),
+    url(r'^repertory/(?P<id>\d+)/remove/$', views.remove_repertory, name='remove_repertory'),
     url(r'^repertory/(?P<id>\d+)/group/add/$', views.add_repertory_group, name='add_repertory_group'),
     url(r'^repertory/(?P<id>\d+)/group/(?P<group_id>\d+)/remove/$', views.remove_repertory_group, name='remove_repertory_group'),
     url(r'^repertory/(?P<id>\d+)/group/(?P<group_id>\d+)/move/$', views.move_repertory_group, name='move_repertory_group'),

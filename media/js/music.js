@@ -33,11 +33,18 @@ $(window).load(function () {
 
 	// CLICK OUTSIDE
 	$('html').click(function (e) {
-		if (!($(e.target).hasClass('pretty_select') || $(e.target).parents().hasClass('pretty_select'))) {
+		if (!($(e.target).hasClass('simple_menu') || $(e.target).parents().hasClass('simple_menu'))) {
 			if ($(this).find('div.notes_area').is(':visible')) {
 				return;
 			}
-			$('.pretty_select').parent().slideUp();
+			$('.simple_menu').slideUp();
+		}
+	});
+
+	$('a.remove_repertory').unbind('click').click(function () {
+		var yes = confirm("Are you sure you want to remove this entire repertory? All players, customized changes, attached documents will be lost forever!");
+		if (yes) {
+			$('form[name=remove_repertory_form]')[0].submit();
 		}
 	});
 });
@@ -622,7 +629,7 @@ function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
 }
 
 function tonalityClick($el) {
-	$el.click(function (e) {
+	$el.unbind('click').click(function (e) {
 		e.stopPropagation();
 		var $menu = $(this).find("div.tonality_menu");
 		if ($menu.is(":hidden")) {
@@ -636,7 +643,7 @@ function tonalityClick($el) {
 }
 
 function modeClick($el) {
-	$el.click(function (e) {
+	$el.unbind('click').click(function (e) {
 		e.stopPropagation();
 		var $menu = $(this).find("div.mode_menu");
 		if ($menu.is(":hidden")) {

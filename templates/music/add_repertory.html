@@ -3,6 +3,17 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript">
+        $(window).load(function () {
+             $('input[name=mode]').click(function () {
+                if ($(this).val() == 'based_on_repertory') {
+                    $('#repertory_based').fadeIn();
+                } else {
+                    $('#repertory_based').fadeOut();
+                }
+             });
+        });
+    </script>
 {% endblock %}
 
 {% block music_content %}
@@ -10,6 +21,28 @@
         <form action="" method="post" name="repertory_form">
             {% csrf_token %}
             {{ form.as_ul }}
+            {%  if repertories %}
+                <ul>
+                    <li style="padding-left: 120px;">
+                        <div>
+                            <label for="from_scratch" style="width: auto;"><input type="radio" checked="checked" name="mode" value="from_scratch" id="from_scratch" /> {% trans "From scratch" %}</label>
+                        </div>
+                        <div class="clear"></div>
+                        <div>
+                            <label for="based_on_repertory" style="width: auto;"><input type="radio" name="mode" value="based_on_repertory" id="based_on_repertory" /> {% trans "Import songs from another repertory" %}</label>
+                        </div>
+                        <div>
+                            <select name="repertory_based" id="repertory_based" style="display: none; margin: 5px 0px 0px 10px;">
+                                {% for repertory in repertories %}
+                                    <option value="{{ repertory.id }}">{{ repertory }} - {{ repertory.event }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            {% endif %}
+            <div class="clear"></div>
+            <br/>
             <input class="submit" type="submit" value="{% trans "Save" %}" style="margin-left: 10px;"  />
             <input class="submit" type="button" value="{% trans "Cancel" %}" onclick="window.location = '{% url repertories %}'" />
         </form>

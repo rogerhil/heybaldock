@@ -1,6 +1,7 @@
 # -*- coding: utf-8; Mode: Python -*-
 
 import math
+from datetime import datetime
 from south.modelsinspector import add_introspection_rules
 
 from django.db import models
@@ -405,6 +406,10 @@ class Repertory(models.Model):
     def is_main(self):
         return self.name == self.MAIN_NAME
 
+    def import_items_from(self, base):
+        for group in base.groups.all():
+            group.clone_object(self)
+
     @classmethod
     def get_last_new_repertory(cls):
         event = Event.get_last_new_event()
@@ -431,6 +436,14 @@ class RepertoryGroup(models.Model):
     def get_main_group(cls):
         main = Repertory.get_main_repertory()
         return main.groups.all()[0]
+
+    def clone_object(self, repertory):
+        group = RepertoryGroup(name=self.name, order=self.order,
+                               repertory=repertory)
+        group.save()
+        for item in self.items.all():
+            item.clone_object(group)
+        return group
 
     @property
     def ordered_items(self):
@@ -496,9 +509,55 @@ class RepertoryGroupItem(models.Model):
     def has_voted(self, user):
         return bool(self.users_ratings.filter(user=user).count())
 
+    def clone_object(self, group):
+        now = datetime.now()
+        item = RepertoryGroupItem(song=self.song, number=self.number, date=now,
+                                  tempo=self.tempo, mode=self.mode,
+                                  tonality=self.tonality, group=group)
+        item.save()
+        for player in self.players.all():
+            try:
+                item_player = item.players.get(player=player.player)
+            except PlayerRepertoryItem.DoesNotExist:
+                item_player = None
+            new_player, rels = player.clone_object(item_player)
+            new_player.repertory_item = item
+            new_player.save()
+            for attr, values in rels.items():
+                many = getattr(new_player, attr)
+                many.clear()
+                for value in values:
+                    many.add(value)
+            new_player.save()
+            for rating in player.users_ratings.all():
+                try:
+                    rat = new_player.users_ratings.get(user=rating.user)
+                    rat.rate = rating.rate
+                    rat.save()
+                    continue
+                except PlayerRepertoryItemRating.DoesNotExist:
+                    PlayerRepertoryItemRating.objects.create(user=rating.user,
+                                                             rate=rating.rate,
+                            player_repertory_item=rating.player_repertory_item)
+
+        for rating in self.users_ratings.all():
+            try:
+                rat = item.users_ratings.get(user=rating.user)
+                rat.rate = rating.rate
+                rat.save()
+                continue
+            except UserRepertoryItemRating.DoesNotExist:
+                UserRepertoryItemRating.objects.create(user=rating.user,
+                                                       repertory_item=item,
+                                                       rate=rating.rate)
+        return item
+
     def get_correspond_main_item(self):
         main_group = RepertoryGroup.get_main_group()
-        return main_group.items.get(song=self.song)
+        try:
+            return main_group.items.get(song=self.song)
+        except RepertoryGroupItem.DoesNotExist:
+            return
 
     def get_last_new_correspond_items(self):
         last_new_repertory = Repertory.get_last_new_repertory()
@@ -521,6 +580,8 @@ class RepertoryGroupItem(models.Model):
         if not created or instance.group.is_main:
             return
         main_item = instance.get_correspond_main_item()
+        if not main_item:
+            return
         for player_rep_item in main_item.players.all():
             new_player_rep_item, rels = player_rep_item.clone_object()
             new_player_rep_item.repertory_item = instance
@@ -531,6 +592,15 @@ class RepertoryGroupItem(models.Model):
                 for value in values:
                     many.add(value)
             new_player_rep_item.save()
+            for rating in player_rep_item.users_ratings.all():
+                PlayerRepertoryItemRating.objects.create(user=rating.user,
+                                                         rate=rating.rate,
+                            player_repertory_item=rating.player_repertory_item)
+
+        for rating in main_item.users_ratings.all():
+            UserRepertoryItemRating.objects.create(user=rating.user,
+                                                   repertory_item=instance,
+                                                   rate=rating.rate)
 
 
 post_save.connect(RepertoryGroupItem.post_save, RepertoryGroupItem)
@@ -668,6 +738,8 @@ class PlayerRepertoryItem(models.Model):
 
     def get_correspond_main_player(self):
         main_item = self.repertory_item.get_correspond_main_item()
+        if not main_item:
+            return
         try:
             main_player_ri = main_item.players.get(player=self.player)
         except PlayerRepertoryItem.DoesNotExist:

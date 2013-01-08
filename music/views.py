@@ -26,6 +26,7 @@ from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    InstrumentTagType, PlayerRepertoryItem, \
                    MusicHistoryChanges, UserRepertoryItemRating, \
                    PlayerRepertoryItemRating
+from event.models import Event
 from utils import get_or_create_temporary, mzip, str_list_in_list, \
                   generate_filename
 from defaults import Tempo, Tonality, SongMode
@@ -58,6 +59,10 @@ def add_repertory(request):
         form = RepertoryForm(request.POST)
         if form.is_valid():
             form.save()
+            if request.POST.get('mode') == 'based_on_repertory':
+                id = int(request.POST['repertory_based'])
+                based_rep = Repertory.objects.get(id=id)
+                form.instance.import_items_from(based_rep)
             new_history_entry(request.user, form.instance, 'created')
             msg = _('The repertory was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
@@ -65,7 +70,8 @@ def add_repertory(request):
             return HttpResponseRedirect(url)
     else:
         form = RepertoryForm()
-    return dict(form=form)
+    repertories = Repertory.objects.all().exclude(name='Main')
+    return dict(form=form, repertories=repertories)
 
 @login_required
 @render_to("music/repertory_details.html")
@@ -90,6 +96,19 @@ def repertory_details(request, id):
         mode_choices=SongMode.choices()
     )
     return c
+
+@login_required
+def remove_repertory(request, id):
+    repertory = get_object_or_404(Repertory, id=id)
+    url = reverse('repertories')
+    if repertory.is_main:
+        msg = _("You can't remove the main repertory!")
+        messages.add_message(request, messages.WARNING, msg)
+        return HttpResponseRedirect(url)
+    repertory.delete()
+    msg = _('The repertory "%s" was successfully removed.' % repertory.name)
+    messages.add_message(request, messages.SUCCESS, msg)
+    return HttpResponseRedirect(url)
 
 @login_required
 @json
