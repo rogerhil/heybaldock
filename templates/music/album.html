@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block actions %}
+    <a href="{% url artist_albums album.artist.id %}">{% trans 'View all albums' %}</a>
     <a href="{% url artists %}">{% trans 'View all artists' %}</a>
     <a href="{% url add_album %}">{% trans 'Add album' %}</a>
     <a href="#" class="red" id="remove_album">{% trans 'Remove this album' %}</a>
@@ -79,5 +80,13 @@
         <h2>About</h2>
         <p>{{ album.about }}</p>
     {% endif %}
+    <div class="clear"></div>
+    <br/>
+    <br/>
+    <div class="manage_buttons" style="float: none; width: 140px; margin: 0 auto 0 auto;">
+        <a href="{% url artist_albums album.artist.id %}">{% trans 'View all albums' %}</a>
+    </div>
+    <div class="clear"></div>
+    <br/>
 
 {% endblock %}

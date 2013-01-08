@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block actions %}
+    <a href="{% url artist_albums artist.id %}">{% trans 'View all albums' %}</a>
     <a href="{% url artists %}">{% trans 'View all artists' %}</a>
     <a href="{% url add_album %}">{% trans 'Add album' %}</a>
 {% endblock %}
@@ -25,30 +26,30 @@
         <div style="float: left; width: 110px;">
             <img src="{{ artist.thumb_url }}" alt="{{ artist }}" title="{{ artist }}" />
             <br/><br/>
-            <strong>Members:</strong>
+            <strong>{% trans "Members" %}:</strong>
             <ul>
                 {% for member in artist.membership.all %}
                     <li><a href="#">{{ member }}</a></li>
                 {% endfor %}
             </ul>
         </div>
-        <h3>Discogs metadata</h3>
+        <h3>{% trans "Discogs metadata" %}</h3>
         <div class="metadata">
             {% autoescape off %}{{ artist.metadata_display }}{% endautoescape %}
         </div>
         <div class="clear"></div>
         <br />
-        <h2>Albums</h2>
+        <h2><a href="{% url artist_albums artist.id %}">{% trans "Albums" %}</a></h2>
         {% include "music/albums_list.html" %}
         <div class="clear"></div>
         <br />
-        <h2>Photos</h2>
+        <h2>{% trans "Photos" %}</h2>
         {% if artist.images.count %}
             <ul class="photo_list artist_images centralize" style="width: 820px;">
                 {% include "music/artist_images.html" %}
             </ul>
         {% else %}
-            <p>No images included</p>
+            <p>{% trans "No images included" %}</p>
         {% endif %}
         <div class="clear"></div>
         <br />

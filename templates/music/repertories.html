@@ -26,6 +26,11 @@
                     </th>
                 </thead>
                 <tbody>
+                    <tr style="background-color: #9acd32; color: #000000; font-weight: bold;" onclick="window.location = '{% url repertory_details 1 %}'">
+                        <td>{% trans "Main Repertory" %}</td>
+                        <td>{% trans "This is the base for the repertories below." %}</td>
+                        <td>{% trans "Independent" %}</td>
+                    </tr>
                     {% for repertory in repertories %}
                     <tr class="{% cycle odd,even %}" onclick="window.location = '{% url repertory_details repertory.id %}'">
                         <td>{{ repertory.name }}</td>

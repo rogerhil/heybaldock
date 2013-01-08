@@ -164,6 +164,11 @@ class Artist(models.Model):
         return [i.member for i in
                 ArtistMembership.objects.filter(active=True, artist=self)]
 
+    @property
+    def inactive_members(self):
+        return [i.member for i in
+                ArtistMembership.objects.filter(active=False, artist=self)]
+
 
 class ArtistImage(ImageBase):
     artist = models.ForeignKey(Artist, related_name='images')
@@ -967,4 +972,4 @@ class MusicHistoryChanges(models.Model):
 
     def __unicode__(self):
         return "%s by %s in %s" % (self.summary, self.user.first_name,
-                                   self.content_date.strftime("%d/%m/%Y %H:%M"))
+                                  self.content_date.strftime("%d/%m/%Y %H:%M"))

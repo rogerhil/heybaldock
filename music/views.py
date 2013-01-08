@@ -433,11 +433,11 @@ def remove_album(request, id):
     messages.add_message(request, messages.SUCCESS, msg)
     return HttpResponseRedirect(reverse('albums'))
 
-@render_to("music/albums.html")
+@render_to("music/artist_albums.html")
 @login_required
-def albums(request):
-    artists = Artist.objects.all().order_by('name')
-    return dict(artists=artists)
+def artist_albums(request, id):
+    artist = get_object_or_404(Artist, id=id)
+    return dict(artist=artist)
 
 @render_to("music/artists.html")
 @login_required
