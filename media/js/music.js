@@ -884,6 +884,7 @@ function addNewSong(group_id, sid, $el) {
 				tonalityClick($tr.find("td.tonality_cel"));
 				modeClick($tr.find("td.mode_cel"));
 				loadMetronome($("td.tempo_cel span.tempo_metronome"));
+				loadAudio();
 			} else {
 				var $msg = $el.parent().find('span.message');
 				$msg.html(data.message);
