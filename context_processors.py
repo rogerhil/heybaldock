@@ -16,11 +16,12 @@ def main(request):
     locations = Location.objects.all().order_by('name')[:10]
     c = dict(
         sections=SECTIONS,
-         events=events,
-         locations=locations,
-         request_get=request.GET,
-         site_domain=settings.SITE_DOMAIN,
-         facebook_app_id=settings.FACEBOOK_APP_ID,
-         enable_repertory_features=settings.ENABLE_REPERTORY_FEATURES
+        band=request.band,
+        events=events,
+        locations=locations,
+        request_get=request.GET,
+        site_domain=settings.SITE_DOMAIN,
+        facebook_app_id=settings.FACEBOOK_APP_ID,
+        enable_repertory_features=settings.ENABLE_REPERTORY_FEATURES
     )
     return c

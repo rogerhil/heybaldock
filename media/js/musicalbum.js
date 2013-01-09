@@ -13,6 +13,14 @@ $(window).load(function () {
 		}
 	});
 
+	$(document).keydown(function (e) {
+		if (e.keyCode == 27) {
+			$('.simple_menu').slideUp();
+			stopMetronome();
+			stopAudio();
+		}
+	});
+	
 	$("#remove_album").click(removeAlbum);
 	loadUploadAudio();
 	$("img.add_to_main_repertory").click(addToMainRepertory);

@@ -20,12 +20,12 @@ from photo.image import FileHandlerSongAudio
 from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   InstrumentForm, PlayerForm, ArtistForm, \
                   PlayerRepertoryItemForm, InstrumentTagTypeForm, \
-                  DocumentPlayerRepertoryItemForm
+                  DocumentPlayerRepertoryItemForm, BandForm
 from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    RepertoryGroupItem, Instrument, Player, \
                    InstrumentTagType, PlayerRepertoryItem, \
                    MusicHistoryChanges, UserRepertoryItemRating, \
-                   PlayerRepertoryItemRating
+                   PlayerRepertoryItemRating, Band, BandArtist
 from event.models import Event
 from utils import get_or_create_temporary, mzip, str_list_in_list, \
                   generate_filename
@@ -53,12 +53,63 @@ def repertories(request):
     return dict(repertories=repertories)
 
 @login_required
+@render_to("music/band_settings.html")
+def band_settings(request, id):
+    band = get_object_or_404(Band, id=id)
+    if request.POST:
+        form = BandForm(data=request.POST, instance=band)
+        if form.is_valid():
+            band = form.save(commit=False)
+            band.save()
+            band.artists.clear()
+            for artist in form.cleaned_data.get('artists'):
+                band_artist = BandArtist(band=band, artist=artist)
+                band_artist.save()
+            band.members.clear()
+            for member in form.cleaned_data.get('members'):
+                band.members.add(member)
+            Band.set_active_band(request, band)
+            new_history_entry(request.user, form.instance, 'created')
+            msg = _('The band settings was successfully changed.')
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('band_settings', args=(form.instance.id,))
+            return HttpResponseRedirect(url)
+    else:
+        form = BandForm(instance=band)
+    return dict(band=band, form=form)
+
+@login_required
+@render_to("music/add_band.html")
+def add_band(request):
+    if request.POST:
+        form = BandForm(request.POST)
+        if form.is_valid():
+            band = form.save(commit=False)
+            band.save()
+            for artist in form.cleaned_data.get('artists'):
+                band_artist = BandArtist(band=band, artist=artist)
+                band_artist.save()
+            new_history_entry(request.user, form.instance, 'created')
+            msg = _('The band was successfully added.')
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('band_settings', args=(form.instance.id,))
+            return HttpResponseRedirect(url)
+    else:
+        form = BandForm()
+    return dict(form=form)
+
+
+@login_required
 @render_to("music/add_repertory.html")
 def add_repertory(request):
+    initial = {'band': request.band}
     if request.POST:
-        form = RepertoryForm(request.POST)
+        form = RepertoryForm(request.POST, initial=initial)
         if form.is_valid():
             form.save()
+            if not form.instance.band:
+                form.instance.band = request.band
+                form.instance.save()
             if request.POST.get('mode') == 'based_on_repertory':
                 id = int(request.POST['repertory_based'])
                 based_rep = Repertory.objects.get(id=id)
@@ -69,7 +120,7 @@ def add_repertory(request):
             url = reverse('repertory_details', args=(form.instance.id,))
             return HttpResponseRedirect(url)
     else:
-        form = RepertoryForm()
+        form = RepertoryForm(initial=initial)
     repertories = Repertory.objects.all().exclude(name='Main')
     return dict(form=form, repertories=repertories)
 
@@ -80,7 +131,8 @@ def repertory_details(request, id):
         try:
             repertory = Repertory.get_main_repertory()
         except Repertory.DoesNotExist:
-            repertory = Repertory.objects.create(name='Main')
+            repertory = Repertory.objects.create(name='Main',
+                                                 band=request.band)
             RepertoryGroup.objects.create(name='Main', repertory=repertory,
                                           order=1)
     else:
@@ -691,9 +743,13 @@ def players_to_add(request):
 @json
 @login_required
 def players_menu(request, id):
+    enable_inactive = request.band.enable_inactive_members
     item = get_object_or_404(RepertoryGroupItem, id=id)
     ids = item.players.all().values_list('player__id', flat=True)
     players = Player.objects.all().exclude(id__in=ids)
+    if not enable_inactive:
+        players = players.exclude(user__is_active=False)
+
     if not players.count():
         return dict(success=True, no_players=True)
 
@@ -832,10 +888,13 @@ def change_player_user(request, id):
 @json
 @login_required
 def change_player_user_options(request, id):
+    enable_inactive = request.band.enable_inactive_members
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     player = player_repertory_item.player
     players = Player.objects.filter(instrument=player.instrument)\
-    .exclude(id=player.id)
+                            .exclude(id=player.id)
+    if not enable_inactive:
+        players = players.exclude(user__is_active=False)
     template = loader.get_template("music/change_player_user_options.html")
     c = dict(players=players, player_repertory_item=player_repertory_item)
     context = RequestContext(request, c)
@@ -981,7 +1040,7 @@ def add_instrument_tag_type(request):
             new_history_entry(request.user, form.instance, "created")
             msg = _('The instrument tag type was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
-            url = reverse('instrument_tag_types')
+            url = reverse('instruments')
             return HttpResponseRedirect(url)
     else:
         form = InstrumentTagTypeForm

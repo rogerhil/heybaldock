@@ -9,20 +9,22 @@ from django.utils.translation import ugettext as _
 
 from decorators import login_required
 from forms import UserForm
-from music.models import Instrument
+from music.models import Instrument, Band
 
 def login_view(request):
     """Login view
     """
     if request.POST:
         form = AuthenticationForm(data=request.POST)
-        c = RequestContext(request, {'form': form})
         if form.is_valid():
             data = form.cleaned_data
             user = authenticate(username=data['username'],
                                 password=data['password'])
             if user is not None and user.is_active:
                 login(request, user)
+                if user.bands.count():
+                    band = user.bands.all()[0]
+                    Band.set_active_band(request, band)
                 url = request.GET.get('next', reverse('section_home'))
                 return HttpResponseRedirect(url)
     else:

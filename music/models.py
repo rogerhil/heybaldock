@@ -24,6 +24,45 @@ from utils import metadata_display
 add_introspection_rules([], ["^lib\.fields\.PickleField"])
 
 
+class Band(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=256, null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
+    leader = models.ForeignKey(User)
+    members = models.ManyToManyField(User, related_name='bands')
+    artists = models.ManyToManyField('Artist', through='BandArtist')
+    enable_inactive_members = models.BooleanField(default=False)
+
+    ACTIVE_BAND_SESSION_KEY = 'active_band'
+    ENABLE_INACTIVE_MEMBERS_SESSION_KEY = 'enable_inactive_band_members'
+
+
+    def __unicode__(self):
+        return self.name
+
+    @classmethod
+    def get_active_band(cls, request):
+        band = request.session.get(cls.ACTIVE_BAND_SESSION_KEY)
+        return band
+
+    @classmethod
+    def set_active_band(cls, request, band):
+        request.session[cls.ACTIVE_BAND_SESSION_KEY] = band
+
+    @classmethod
+    def clear_active_band(cls, request):
+        request.session[cls.ACTIVE_BAND_SESSION_KEY] = None
+
+
+class BandArtist(models.Model):
+    band = models.ForeignKey(Band)
+    artist = models.ForeignKey('Artist', related_name='bands')
+    enable_inactive_artist_members = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('band', 'artist')
+
+
 class Composer(models.Model):
     name = models.CharField(max_length=128, unique=True)
     description = models.CharField(max_length=256, null=True, blank=True)
@@ -396,6 +435,7 @@ class Song(models.Model):
 class Repertory(models.Model):
     name = models.CharField(max_length=128, unique=True)
     description = models.CharField(max_length=255, null=True, blank=True)
+    band = models.ForeignKey(Band, null=True)
     event = models.ForeignKey(Event, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
 

@@ -1,5 +1,14 @@
 
-var newSong;
+var currentLoadedSong;
+
+function stopAudio() {
+	var $pl = $("#audio_player");
+	$pl.fadeOut();
+	buzz.all().stop();
+	if (currentLoadedSong) {
+		currentLoadedSong.setTime(0);
+	}
+}
 
 function playAudio(name, url, $nextto) {
 	var $pl = $("#audio_player");
@@ -14,16 +23,15 @@ function playAudio(name, url, $nextto) {
 	$pl.find('h3').html('');
 	$pl.find('h3').append($close);
 	$pl.find('h3').append($title);
-	newSong = new buzz.sound(url);
+	currentLoadedSong = new buzz.sound(url);
 	var sliding = false;
 	$pl.find('.play_pause').removeClass('play').addClass('pause');
 	buzz.all().stop();
 	$close.unbind('click').click(function () {
-		$pl.fadeOut();
-		buzz.all().stop();
-		newSong.setTime(0);
+		stopAudio();
 	});
-
+	$pl.find('.advanced_controls').hide();
+	
 	$pl.find('div.advanced').unbind('click').bind('click', function (e) {
 		e.stopPropagation();
 		var $advops = $pl.find('.advanced_controls');
@@ -34,13 +42,16 @@ function playAudio(name, url, $nextto) {
 		}
 	});
 
+	var $speed = $pl.find('.speed');
+	$speed.html("1.0");
+	$speed.css('margin-left', (34 + 27) + 'px');
+
 	$pl.find('.speed_slider').slider({
 		stop: function(event, ui) {
-			newSong.setSpeed(ui.value / 10);
+			currentLoadedSong.setSpeed(ui.value / 10);
 		},
 		slide: function(event, ui) {
 			var speed = (ui.value / 10).toFixed(1);
-			var $speed = $pl.find('.speed');
 			$speed.html(speed);
 			$speed.css('margin-left', (speed * 34 + 27) + 'px');
 		},
@@ -49,7 +60,7 @@ function playAudio(name, url, $nextto) {
 		value: 10,
 	});
 
-	newSong.unbind("loadeddata").bind("loadeddata", function(e) {
+	currentLoadedSong.unbind("loadeddata").bind("loadeddata", function(e) {
 		var song = this;
 		var slider = $pl.find('.audio_slider').slider({
 			start: function(event, ui) {

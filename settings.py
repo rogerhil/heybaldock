@@ -113,6 +113,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'auth.middleware.ComingSoonMiddleware',
     'auth.middleware.UnderMaintenanceMiddleware',
+    'music.middleware.MusicMiddleware',
 )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

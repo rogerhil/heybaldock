@@ -72,7 +72,7 @@ function stopMetronome() {
 		$mg.find('div.led').removeClass('tick');
 		$mg.find('div.led').removeClass('tack');
 	}
-	$('div.metronome_graphic').fadeOut(300);
+	$('div.metronome_graphic').slideUp();
 }
 
 function slideMetronome(tempo, beats) {

@@ -41,12 +41,24 @@ $(window).load(function () {
 		}
 	});
 
+	$(document).keydown(function (e) {
+		if (e.keyCode == 27) {
+			if ($(this).find('div.notes_area').is(':visible')) {
+				return;
+			}
+			$('.simple_menu').slideUp();
+			stopMetronome();
+			stopAudio();
+		}
+	});
+
 	$('a.remove_repertory').unbind('click').click(function () {
 		var yes = confirm("Are you sure you want to remove this entire repertory? All players, customized changes, attached documents will be lost forever!");
 		if (yes) {
 			$('form[name=remove_repertory_form]')[0].submit();
 		}
 	});
+
 });
 
 function calculateTimeTotal() {

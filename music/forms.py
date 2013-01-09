@@ -4,12 +4,13 @@ import time
 from datetime import datetime
 
 from django import forms
+from django.contrib.auth.models import User
 from django.utils import simplejson
 
 from models import Repertory, Album, Artist, Song, AlbumStyle, AlbumGenre, \
                    Composer, ComposerRole, Instrument, Player, \
                    PlayerRepertoryItem, ArtistImage, Size, ImageType, \
-                   ArtistMembership, InstrumentTagType,\
+                   ArtistMembership, InstrumentTagType, Band, \
                    DocumentPlayerRepertoryItem
 from photo.image import ImageHandlerAlbumCoverTemp, ImageHandlerInstrument, \
                         ImageHandlerArtist, FileHandlerDocument
@@ -109,6 +110,12 @@ class SongForm(forms.Form):
             song.composer = composers
         song.save()
         return song
+
+
+class BandForm(forms.ModelForm):
+
+    class Meta:
+        model = Band
 
 
 class RepertoryForm(forms.ModelForm):
