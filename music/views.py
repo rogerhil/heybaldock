@@ -153,6 +153,7 @@ def repertory_details(request, id):
         if data.get('lock'):
             if repertory.is_free():
                 repertory.lock(user)
+                new_history_entry(user, repertory, 'locked')
                 msg = _("The repertory is locked for edition by you.")
                 messages.add_message(request, messages.WARNING, msg)
             else:
@@ -164,6 +165,7 @@ def repertory_details(request, id):
                 messages.add_message(request, messages.SUCCESS, msg)
             else:
                 repertory.unlock()
+                new_history_entry(user, repertory, 'unlocked')
                 msg = _("This repertory was successfully unlocked.")
                 messages.add_message(request, messages.SUCCESS, msg)
         return HttpResponseRedirect(url)
