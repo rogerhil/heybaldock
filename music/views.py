@@ -89,6 +89,8 @@ def add_band(request):
             for artist in form.cleaned_data.get('artists'):
                 band_artist = BandArtist(band=band, artist=artist)
                 band_artist.save()
+            for member in form.cleaned_data.get('members'):
+                band.members.add(member)
             new_history_entry(request.user, form.instance, 'created')
             msg = _('The band was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
