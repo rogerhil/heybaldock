@@ -29,7 +29,9 @@
     <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
     {% if not repertory.is_main %}
         <a href="{% url repertory_details 1 %}">{% trans 'Show main repertory' %}</a>
-        <a class="remove_repertory red" href="#">{% trans 'Remove this repertory' %}</a>
+        {% if editable %}
+            <a class="remove_repertory red" href="#">{% trans 'Remove this repertory' %}</a>
+        {% endif %}
         <form action="{% url remove_repertory repertory.id %}" method="post" name="remove_repertory_form">
         </form>
     {% endif %}
