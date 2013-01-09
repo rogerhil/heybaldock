@@ -5,8 +5,10 @@
 {% endif %}
 <table group_id="{{ group.id }}" order="{{  group.order }}" class="repertory">
     <thead>
+        {% if editable %}
         <th  class="center" width="8px">
         </th>
+        {% endif %}
         <th  class="center" width="20px">
             {% trans "Cov" %}
         </th>
@@ -31,15 +33,17 @@
         <th  class="center" width="200px">
             {% trans "Players" %}
         </th>
+        {% if editable %}
         <th  class="center" width="20px">
-            {% if not group.is_main %}
+            {% if not group.is_main and editable %}
                 <a class="remove_group">
                     <img src="/media/img/cross_16.png" class="remove_song" alt="{% trans "Remove this group" %}" title="{% trans "Remove this group" %}"/>
                 </a>
             {% else %}
-                <img src="/media/img/cross_16.png" class="remove_song" />
+                <img src="/media/img/cross_16_d.png" class="remove_song" style="cursor: default;" />
             {% endif %}
         </th>
+        {% endif %}
     </thead>
     <tbody>
         {% for item in group.ordered_items %}
@@ -47,6 +51,7 @@
         {% endfor %}
     </tbody>
 </table>
+{% if editable %}
 <div class="add_song_form">
     <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
         <img src="/media/img/plus_16.png" alt="Add a song to this group" title="Add a song to this group">&nbsp;
@@ -57,5 +62,6 @@
 
     </div>
 </div>
+{% endif %}
 <br/>
 <hr>

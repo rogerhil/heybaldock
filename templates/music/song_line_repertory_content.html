@@ -5,7 +5,11 @@
     changetonalityurl="{% url change_repertory_item_tonality item.id %}"
     updatesonglineurl="{% url update_song_line_repertory_content item.id %}"
     class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
-    <td class="nopadding center"><span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span></td>
+    {% if editable %}
+        <td class="nopadding center">
+            <span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span>
+        </td>
+    {% endif %}
     <td class="nopadding center">
         <a href="{% url album item.song.album.id %}">
             <img src="{{ item.song.album.icon_url }}" alt="{{ item.number_display }} - {{ item.song.album }}" title="{{ item.number_display }} - {{ item.song.album }}" style="border-radius: 3px;" />
@@ -74,7 +78,9 @@
     </td>
     <td class="td_players">
         <div style="position: relative;">
-            <img src="/media/img/plus_16.png" class="add_player" url="{% url players_menu item.id %}" alt="Add a player for this song" style="float: right;" />
+            {% if editable %}
+                <img src="/media/img/plus_16.png" class="add_player" url="{% url players_menu item.id %}" alt="Add a player for this song" style="float: right;" />
+            {% endif %}
             <div class="players_menu simple_menu">
                 {% include "music/players_menu.html" %}
             </div>
@@ -93,7 +99,13 @@
             {% endfor %}
         </div>
     </td>
-    <td class="center">
-        <img src="/media/img/cross_16.png" class="remove_song" alt="Remove this song" title="Remove this song" removeurl="{% url remove_song_from_repertory repertory.id group.id item.id %}" />
-    </td>
+    {% if editable %}
+        <td class="center">
+            {% if editable %}
+                <img src="/media/img/cross_16.png" class="remove_song" alt="Remove this song" title="Remove this song" removeurl="{% url remove_song_from_repertory repertory.id group.id item.id %}" />
+            {% else %}
+                <img src="/media/img/cross_16_d.png" class="remove_song" alt="Remove this song" title="Remove this song" style="cursor: default;" />
+            {% endif %}
+        </td>
+    {% endif %}
 </tr>

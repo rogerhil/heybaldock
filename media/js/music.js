@@ -3,33 +3,39 @@ $(window).load(function () {
 	var repertory_id = $repertory_content.attr("repertory_id");
 	var $newRepertoryForm = $("#new_repertory_group");
 
-	$("#add_repertory_group").click(function () {
-		if ($newRepertoryForm.is(":hidden")) {
-			var $name = $newRepertoryForm.find('input[name=new_repertory_group_name]');
-			$newRepertoryForm.slideDown()
-			$name.focus();
-		} else {
-			$newRepertoryForm.slideUp()
-		}
-	});
+	if (is_editable) {
+		$("#add_repertory_group").click(function () {
+			if ($newRepertoryForm.is(":hidden")) {
+				var $name = $newRepertoryForm.find('input[name=new_repertory_group_name]');
+				$newRepertoryForm.slideDown()
+				$name.focus();
+			} else {
+				$newRepertoryForm.slideUp()
+			}
+		});
+		var $addRepertoryButton = $newRepertoryForm.find('a');
+		var $groupNameInput = $newRepertoryForm.find('input[name=new_repertory_group_name]');
 
-	var $addRepertoryButton = $newRepertoryForm.find('a');
-	var $groupNameInput = $newRepertoryForm.find('input[name=new_repertory_group_name]');
-
-	$groupNameInput.keypress(function(event) {
-		if (event.which == 13) {
-			event.preventDefault();
+		$groupNameInput.keypress(function(event) {
+			if (event.which == 13) {
+				event.preventDefault();
+				addNewRepertoryGroup();
+			}
+		});
+		$addRepertoryButton.click(function () {
 			addNewRepertoryGroup();
-		}
-	});
+		});
 
-	$addRepertoryButton.click(function () {
-		addNewRepertoryGroup();
-	});
+		$('a.remove_repertory').unbind('click').click(function () {
+			var yes = confirm("Are you sure you want to remove this entire repertory? All players, customized changes, attached documents will be lost forever!");
+			if (yes) {
+				$('form[name=remove_repertory_form]')[0].submit();
+			}
+		});
+
+	}
 
 	loadRepertory();
-
-	$("#remove_album").click(removeAlbum);
 
 	// CLICK OUTSIDE
 	$('html').click(function (e) {
@@ -49,13 +55,6 @@ $(window).load(function () {
 			$('.simple_menu').slideUp();
 			stopMetronome();
 			stopAudio();
-		}
-	});
-
-	$('a.remove_repertory').unbind('click').click(function () {
-		var yes = confirm("Are you sure you want to remove this entire repertory? All players, customized changes, attached documents will be lost forever!");
-		if (yes) {
-			$('form[name=remove_repertory_form]')[0].submit();
 		}
 	});
 
@@ -90,6 +89,9 @@ function calculateTimeTotal() {
 }
 
 function removeSongFromRepertory() {
+	if (!is_editable) {
+		alert("You can't make any changes in a locked repertory");
+	}
 	var url = $(this).attr('removeurl');
 	var $par;
 	var $el = $(this);
@@ -119,12 +121,18 @@ function removeSongFromRepertory() {
 					});
 					calculateTimeTotal();
 				});
+			} else {
+				var msg = data.message || "An error occured";
+				alert(msg);
 			}
 		}
 	});
 }
 
 function addNewRepertoryGroup() {
+	if (!is_editable) {
+		alert("You can't make any changes in a locked repertory");
+	}
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
 	var $newRepertoryForm = $("#new_repertory_group");
@@ -144,6 +152,9 @@ function addNewRepertoryGroup() {
 				$repertory_content.html(data.content);
 				loadRepertory();
 				$name.val('');
+			} else {
+				var msg = data.message || "An error occured";
+				alert(msg);
 			}
 		}
 	});
@@ -161,56 +172,63 @@ function loadRepertory() {
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
 
-	$(".remove_group").click(function () {
-		var group_id = $(this).parents().find('table').attr('group_id');
-		$.ajax({
-			url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/remove/',
-			type: 'post',
-			dataType: 'json',
-			success: function (data) {
-				if (data.success) {
-					$repertory_content.html(data.content);
-					loadRepertory();
-					calculateTimeTotal();
-				}
-			}
-		});
-	});
-
-	$('#repertory_groups').sortable({
-		placeholder: "ui-state-highlight",
-		handle: ".handle",
-		tolerance: "pointer",
-		stop: function (event, ui) {
-			var group_id = ui.item.find('table').attr('group_id');
-			var currOrder = ui.item.find('table').attr('order');
-			var prevOrder = ui.item.prev().find('table').attr('order');
-			var nextOrder = ui.item.next().find('table').attr('order');
-			var order;
-			if (!prevOrder) {
-				order = 1;
-			} else {
-				if (!nextOrder) {
-					order = Number(prevOrder);
-				} else {
-					order = Number(currOrder) < Number(prevOrder) ? Number(prevOrder) : Number(nextOrder);
-				}
-			}
+	if (is_editable) {
+		$(".remove_group").click(function () {
+			var group_id = $(this).parents().find('table').attr('group_id');
 			$.ajax({
-				url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/move/',
+				url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/remove/',
 				type: 'post',
 				dataType: 'json',
-				data: {order: Number(order)},
 				success: function (data) {
 					if (data.success) {
 						$repertory_content.html(data.content);
 						loadRepertory();
+						calculateTimeTotal();
+					} else {
+						var msg = data.message || "An error occured";
+						alert(msg);
 					}
 				}
 			});
-		}
-	});
+		});
 
+		$('#repertory_groups').sortable({
+			placeholder: "ui-state-highlight",
+			handle: ".handle",
+			tolerance: "pointer",
+			stop: function (event, ui) {
+				var group_id = ui.item.find('table').attr('group_id');
+				var currOrder = ui.item.find('table').attr('order');
+				var prevOrder = ui.item.prev().find('table').attr('order');
+				var nextOrder = ui.item.next().find('table').attr('order');
+				var order;
+				if (!prevOrder) {
+					order = 1;
+				} else {
+					if (!nextOrder) {
+						order = Number(prevOrder);
+					} else {
+						order = Number(currOrder) < Number(prevOrder) ? Number(prevOrder) : Number(nextOrder);
+					}
+				}
+				$.ajax({
+					url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/move/',
+					type: 'post',
+					dataType: 'json',
+					data: {order: Number(order)},
+					success: function (data) {
+						if (data.success) {
+							$repertory_content.html(data.content);
+							loadRepertory();
+						} else {
+							var msg = data.message || "An error occured";
+							alert(msg);
+						}
+					}
+				});
+			}
+		});
+	}
 	$('#repertory_groups .repertory_group_block').each(function () {
 		loadRepertoryGroup(this);
 	});
@@ -219,6 +237,9 @@ function loadRepertory() {
 }
 
 function addPlayerButton() {
+	if (!is_editable) {
+		alert("You can't make any changes in a locked repertory");
+	}
 	var $menu = $(this).parent().find('div.players_menu');
 	var $el = $(this);
 	if ($menu.is(':hidden')) {
@@ -239,7 +260,8 @@ function addPlayerButton() {
 						loadInstrumentsMenu($menu);
 					}
 				} else {
-					alert("Could not load the players menu.");
+					var msg = data.message || "An error occured";
+					alert(msg);
 				}
 			}
 		});
@@ -274,10 +296,12 @@ function loadChangePlayerMenu($menu, data, callback) {
 	$options.unbind('click').click(function () {
 		switch ($(this).attr('action')) {
 			case 'remove':
+				if (!is_editable) return;
 				removePlayerItem(data.player.id);
 				$menu.slideUp();
 				break;
 			case 'set_as_lead':
+				if (!is_editable) return;
 				setAsLead(data.player.id, data.player.is_lead);
 				$menu.slideUp();
 				break;
@@ -298,70 +322,73 @@ function loadChangePlayerMenu($menu, data, callback) {
 				break;
 		}
 	});
-	$menu.find('div.tag_types div.tag').click(function () {
-		toogleTagType($menu, this);
-	});
-	$menu.find('img.change_as_member').click(function () {
-		var $changeOptions = $ps.find('div.change_as_member_options');
-		if ($changeOptions.is(':hidden')) {
-			$.ajax({
-				url: $ps.attr('changeasmemberoptionsurl'),
-				type: 'get',
-				dataType: 'json',
-				success: function (data) {
-					loadChangeMemberOptions(data, $menu, $changeOptions);
-				}
-			});
-		} else {
-			$changeOptions.slideUp();
-		}
-
-	});
-	$menu.find('img.change_player_user').click(function () {
-		var $changeOptions = $ps.find('div.change_player_user_options');
-		if ($changeOptions.is(':hidden')) {
-			$.ajax({
-				url: $ps.attr('changeplayeruseroptionsurl'),
-				type: 'get',
-				dataType: 'json',
-				success: function (data) {
-					loadChangePlayerUserOptions(data, $menu, $changeOptions);
-				}
-			});
-		} else {
-			$changeOptions.slideUp();
-		}
-
-	});
-	var $documentsArea = $menu.find('div.documents_area');
-	$menu.find('div.option[action=documents]').mouseover(function () {
-		$(this).find('.add_document').show();
-	});
-	$menu.find('div.option[action=documents]').mouseleave(function () {
-		$(this).find('.add_document').hide();
-	});
-	$menu.find('img.add_document').unbind('click').click(function (e) {
-		e.stopPropagation();
-		var $file = $menu.find('div.new_document_form input[type=file]');
-		$file.fileupload({
-			dataType: 'json',
-			beforeSend: function (e, data) {
-				$documentsArea.show();
-			},
-			progress: function (e, data) {
-				//console.log(data);
-			},
-			fail: function (e, data) {
-				//console.log(data);
-			},
-			done: function (e, data) {
-				loadChangePlayerMenu($menu, data.result, function ($m) {
-					loadDocuments($m);
-				});
-			}
+	if (is_editable) {
+		$menu.find('div.tag_types div.tag').click(function () {
+			toogleTagType($menu, this);
 		});
-		$file.trigger('click');
-	});
+		$menu.find('img.change_as_member').click(function () {
+			var $changeOptions = $ps.find('div.change_as_member_options');
+			if ($changeOptions.is(':hidden')) {
+				$.ajax({
+					url: $ps.attr('changeasmemberoptionsurl'),
+					type: 'get',
+					dataType: 'json',
+					success: function (data) {
+						loadChangeMemberOptions(data, $menu, $changeOptions);
+					}
+				});
+			} else {
+				$changeOptions.slideUp();
+			}
+
+		});
+		$menu.find('img.change_player_user').click(function () {
+			var $changeOptions = $ps.find('div.change_player_user_options');
+			if ($changeOptions.is(':hidden')) {
+				$.ajax({
+					url: $ps.attr('changeplayeruseroptionsurl'),
+					type: 'get',
+					dataType: 'json',
+					success: function (data) {
+						loadChangePlayerUserOptions(data, $menu, $changeOptions);
+					}
+				});
+			} else {
+				$changeOptions.slideUp();
+			}
+
+		});
+
+		var $documentsArea = $menu.find('div.documents_area');
+		$menu.find('div.option[action=documents]').mouseover(function () {
+			$(this).find('.add_document').show();
+		});
+		$menu.find('div.option[action=documents]').mouseleave(function () {
+			$(this).find('.add_document').hide();
+		});
+		$menu.find('img.add_document').unbind('click').click(function (e) {
+			e.stopPropagation();
+			var $file = $menu.find('div.new_document_form input[type=file]');
+			$file.fileupload({
+				dataType: 'json',
+				beforeSend: function (e, data) {
+					$documentsArea.show();
+				},
+				progress: function (e, data) {
+					//console.log(data);
+				},
+				fail: function (e, data) {
+					//console.log(data);
+				},
+				done: function (e, data) {
+					loadChangePlayerMenu($menu, data.result, function ($m) {
+						loadDocuments($m);
+					});
+				}
+			});
+			$file.trigger('click');
+		});
+	}
 	loadRatings($menu.find('div.ratings_player'));
 	if (callback) {
 		callback($menu);
@@ -369,6 +396,7 @@ function loadChangePlayerMenu($menu, data, callback) {
 }
 
 function loadDocuments($menu) {
+
 	var $documentsArea = $menu.find('div.documents_area');
 	if ($documentsArea.is(':hidden')) {
 		$documentsArea.slideDown();
@@ -376,31 +404,38 @@ function loadDocuments($menu) {
 		$documentsArea.slideUp();
 		return
 	}
-	$documentsArea.find('h4.secondary_option').unbind('mouseover').mouseover(function () {
-		$(this).find('div.remove_document').show();
-	});
-	$documentsArea.find('h4.secondary_option').unbind('mouseleave').mouseleave(function () {
-		$(this).find('div.remove_document').hide();
-	});
-	$documentsArea.find('div.remove_document').unbind('click').click(function (e) {
-		e.stopPropagation();
-		var url = $(this).parent().attr('removeurl');
-		$.ajax({
-			url: url,
-			type: 'post',
-			dataType: 'json',
-			success: function (data) {
-				loadChangePlayerMenu($menu, data, function ($m) {
-					loadDocuments($m);
-				});
-			}
+	if (is_editable) {
+		$documentsArea.find('h4.secondary_option').unbind('mouseover').mouseover(function () {
+			$(this).find('div.remove_document').show();
 		});
-	});
+		$documentsArea.find('h4.secondary_option').unbind('mouseleave').mouseleave(function () {
+			$(this).find('div.remove_document').hide();
+		});
+		$documentsArea.find('div.remove_document').unbind('click').click(function (e) {
+			e.stopPropagation();
+			var url = $(this).parent().attr('removeurl');
+			$.ajax({
+				url: url,
+				type: 'post',
+				dataType: 'json',
+				success: function (data) {
+					loadChangePlayerMenu($menu, data, function ($m) {
+						loadDocuments($m);
+					});
+				}
+			});
+		});
+	}
 }
 
 function loadNotes(playerId, o) {
 	var notesArea = $(o).find('div.notes_area');
 	notesArea.slideDown();
+	$('div.notes_save input.close').click(function (e) {
+		e.stopPropagation();
+		notesArea.slideUp();
+	});
+	if (!is_editable) return;
 	loadCLEditor($('textarea.notes'));
 	$('div.notes_save input.cancel').click(function (e) {
 		e.stopPropagation();
@@ -468,6 +503,7 @@ function loadChangeMemberOptions(data, $menu, $changeOptions) {
 }
 
 function toogleTagType($menu, o) {
+	if (!is_editable) return;
 	var $ps = $menu.find('div.pretty_select');
 	$.ajax({
 		url: $ps.attr('toogletagtypeurl'),
@@ -475,11 +511,16 @@ function toogleTagType($menu, o) {
 		data: {tag_type_id: $(o).attr('tagtypeid')},
 		dataType: 'json',
 		success: function (data) {
-			loadChangePlayerMenu($menu, data);
-			if ($(o).hasClass('tag_selected')) {
-				$(o).removeClass('tag_selected');
+			if (data.success) {
+				loadChangePlayerMenu($menu, data);
+				if ($(o).hasClass('tag_selected')) {
+					$(o).removeClass('tag_selected');
+				} else {
+					$(o).addClass('tag_selected');
+				}
 			} else {
-				$(o).addClass('tag_selected');
+				var msg = data.message || "An error occured";
+				alert(msg);
 			}
 		}
 	});
@@ -491,6 +532,7 @@ function getTrLineByRepertoryItemId(itemId) {
 }
 
 function setAsLead(playerItemId, playerisLead) {
+	if (!is_editable) return;
 	var url = '/music/repertory/player_repertory_item/' + playerItemId + '/set_as_lead/';
 	$.ajax({
 		url: url,
@@ -517,6 +559,9 @@ function ajaxUpdateSongLine(itemId, callback) {
 		success: function (data) {
 			if (data.success) {
 				updateSongLine(data, callback);
+			} else {
+				var msg = data.message || "An error occurred";
+				alert(msg);
 			}
 		}
 	});
@@ -529,11 +574,13 @@ function updateSongLine(data, callback) {
 	$newTr.addClass(cssClass);
 	$newTr.insertBefore($tr);
 	$tr.remove();
-	$newTr.find('img.remove_song').click(removeSongFromRepertory);
-	$newTr.find('img.add_player').click(addPlayerButton);
+	if (is_editable) {
+		$newTr.find('img.remove_song').click(removeSongFromRepertory);
+		$newTr.find('img.add_player').click(addPlayerButton);
+		tonalityClick($newTr.find("td.tonality_cel"));
+		modeClick($newTr.find("td.mode_cel"));
+	}
 	$newTr.find('img.player').click(changePlayerButton);
-	tonalityClick($newTr.find("td.tonality_cel"));
-	modeClick($newTr.find("td.mode_cel"));
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
 	loadRatings($newTr.find("td.ratings_cel"));
 	loadAudio();
@@ -543,6 +590,7 @@ function updateSongLine(data, callback) {
 }
 
 function removePlayerItem(playerItemId) {
+	if (!is_editable) return;
 	var url = '/music/repertory/player_repertory_item/' + playerItemId + '/remove/';
 	$.ajax({
 		url: url,
@@ -552,7 +600,8 @@ function removePlayerItem(playerItemId) {
 			if (data.success) {
 				updateSongLine(data);
 			} else {
-				alert('Could not remove player to this song.');
+				var msg = data.message || "An error occured";
+				alert(msg);
 			}
 		}
 	});
@@ -621,6 +670,7 @@ function loadTagTypeMenu($menu, itemid, playerid, instrumentid, memberid) {
 }
 
 function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
+	if (!is_editable) return;
 	$menu.slideUp(1000, function () {
 		$menu.remove();
 	});
@@ -634,13 +684,15 @@ function addPlayer($menu, itemid, playerid, instrumentid, memberid, tagTypes) {
 			if (data.success) {
 				updateSongLine(data);
 			} else {
-				alert('Could not include player to this song.');
+				var msg = data.message || "An error occured";
+				alert(msg);
 			}
 		}
 	});
 }
 
 function tonalityClick($el) {
+	if (!is_editable) return;
 	$el.unbind('click').click(function (e) {
 		e.stopPropagation();
 		var $menu = $(this).find("div.tonality_menu");
@@ -655,6 +707,7 @@ function tonalityClick($el) {
 }
 
 function modeClick($el) {
+	if (!is_editable) return;
 	$el.unbind('click').click(function (e) {
 		e.stopPropagation();
 		var $menu = $(this).find("div.mode_menu");
@@ -669,6 +722,7 @@ function modeClick($el) {
 }
 
 function loadModeMenu ($menu) {
+	if (!is_editable) return;
 	var url = $menu.attr("changemodeurl");
 	$menu.find('div.option').unbind('click').click(function () {
 		var mode = $(this).attr("modeid");
@@ -681,7 +735,8 @@ function loadModeMenu ($menu) {
 				if (data.success) {
 					updateSongLine(data);
 				} else {
-					alert('An error occurred.');
+					var msg = data.message || "An error occured";
+					alert(msg);
 				}
 			}
 		});
@@ -689,6 +744,7 @@ function loadModeMenu ($menu) {
 }
 
 function loadTonalityMenu($menu) {
+	if (!is_editable) return;
 	var $tr = $menu.parent().parent().parent();
 	var url = $tr.attr('changetonalityurl');
 	$menu.find('span.option').unbind('click').click('click', function (e) {
@@ -703,7 +759,8 @@ function loadTonalityMenu($menu) {
 				if (data.success) {
 					updateSongLine(data);
 				} else {
-					alert('An error occurred.');
+					var msg = data.message || "An error occured";
+					alert(msg);
 				}
 			}
 		});
@@ -742,7 +799,8 @@ function loadRatings($els) {
 				if (data.success) {
 					updateSongLine(data);
 				} else {
-					alert('An error occurred.');
+					var msg = data.message || "An error occured";
+					alert(msg);
 				}
 			}
 		});
@@ -752,56 +810,61 @@ function loadRatings($els) {
 function loadRepertoryGroup(o) {
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
-	$(o).find('input[name=song_name]').each(newSong);
-	$(o).find('img.remove_song').click(removeSongFromRepertory);
-	$(o).find('img.add_player').click(addPlayerButton);
-	$(o).find('img.player').click(changePlayerButton);
-	tonalityClick($("td.tonality_cel"));
-	modeClick($("td.mode_cel"));
 	loadRatings($("td.ratings_cel"));
 	loadAudio();
+	$(o).find('img.player').click(changePlayerButton);
+	if (is_editable) {
+		$(o).find('input[name=song_name]').each(newSong);
+		$(o).find('img.remove_song').click(removeSongFromRepertory);
+		$(o).find('img.add_player').click(addPlayerButton);
+		tonalityClick($("td.tonality_cel"));
+		modeClick($("td.mode_cel"));
 
-	
-	$($(o).find('tbody')).sortable({
-		placeholder: "ui-state-highlight",
-		handle: ".song_handle",
-		tolerance: "pointer",
-		stop: function (event, ui) {
-			var $group_content = $(o);
-			var table = $group_content.find('table');
-			var group_id = table.attr('group_id');
-			var tr = ui.item;
-			var item_id = tr.attr('itemid');
-			var currOrder = tr.attr('number');
-			var prevOrder = tr.prev().attr('number');
-			var nextOrder = tr.next().attr('number');
-			var order;
-			if (!prevOrder) {
-				order = 1;
-			} else {
-				if (!nextOrder) {
-					order = Number(prevOrder);
+		$($(o).find('tbody')).sortable({
+			placeholder: "ui-state-highlight",
+			handle: ".song_handle",
+			tolerance: "pointer",
+			stop: function (event, ui) {
+				var $group_content = $(o);
+				var table = $group_content.find('table');
+				var group_id = table.attr('group_id');
+				var tr = ui.item;
+				var item_id = tr.attr('itemid');
+				var currOrder = tr.attr('number');
+				var prevOrder = tr.prev().attr('number');
+				var nextOrder = tr.next().attr('number');
+				var order;
+				if (!prevOrder) {
+					order = 1;
 				} else {
-					order = Number(currOrder) < Number(prevOrder) ? Number(prevOrder) : Number(nextOrder);
-				}
-			}
-			$.ajax({
-				url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/item/' + item_id + '/move/',
-				type: 'post',
-				dataType: 'json',
-				data: {number: Number(order)},
-				success: function (data) {
-					if (data.success) {
-						$group_content.html(data.content);
-						loadRepertoryGroup(o);
+					if (!nextOrder) {
+						order = Number(prevOrder);
+					} else {
+						order = Number(currOrder) < Number(prevOrder) ? Number(prevOrder) : Number(nextOrder);
 					}
 				}
-			});
-		}
-	});
+				$.ajax({
+					url: '/music/repertory/' + repertory_id + '/group/' + group_id + '/item/' + item_id + '/move/',
+					type: 'post',
+					dataType: 'json',
+					data: {number: Number(order)},
+					success: function (data) {
+						if (data.success) {
+							$group_content.html(data.content);
+							loadRepertoryGroup(o);
+						} else {
+							var msg = data.message || "An error occured";
+							alert(msg);
+						}
+					}
+				});
+			}
+		});
+	}
 }
 
 function newSong() {
+	if (!is_editable) return;
 	var group_id = $(this).parents().find('table').attr('group_id');
 	var $name = $(this);
 	$name.unbind('keypress').keypress(function(event) {
@@ -860,6 +923,7 @@ function newSong() {
 }
 
 function addNewSong(group_id, sid, $el) {
+	if (!is_editable) return;
 	var $repContent = $("#repertory_content");
 	var rid = $repContent.attr("repertory_id");
 	var $groups = $("#repertory_groups");
@@ -885,6 +949,7 @@ function addNewSong(group_id, sid, $el) {
 				modeClick($tr.find("td.mode_cel"));
 				loadMetronome($("td.tempo_cel span.tempo_metronome"));
 				loadAudio();
+				loadRatings($tr.find("td.ratings_cel"));
 			} else {
 				var $msg = $el.parent().find('span.message');
 				$msg.html(data.message);
@@ -906,6 +971,7 @@ function addNewSong(group_id, sid, $el) {
 }
 
 function matchSong(name, o) {
+	if (!is_editable) return;
 	var $repCont = $("#repertory_content");
 	var $form = $(o).parent().parent();
 	var group_id = $form.parent().find('table').attr('group_id')
@@ -938,14 +1004,11 @@ function matchSong(name, o) {
 					});
 				});
 				$songsContent.show();
+			} else {
+				var msg = data.message || "An error occured";
+				alert(msg);
 			}
 		}
 	});
 }
 
-function removeAlbum() {
-	var msg = "Are you sure you want to remove this album? WARNING: This action will also remove all songs from repertories related to this album.";
-	if (confirm(msg)) {
-		$("#remove_album_form").submit();
-	}
-}

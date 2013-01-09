@@ -17,9 +17,12 @@
     <script type="text/javascript" src="/media/js/base64binary.js"></script>
     <script type="text/javascript" src="/media/js/metronome.js"></script>
     <script type="text/javascript" src="/media/js/audioplayer.js"></script>
+    <script type="text/javascript">
+        var is_locked = {% if is_locked %}true{% else %}false{% endif %};
+        var is_free = {% if repertory.is_free %}true{% else %}false{% endif %};
+        var is_editable = {% if editable %}true{% else %}false{% endif %};
+    </script>
     <script type="text/javascript" src="/media/js/music.js"></script>
-
-
 {% endblock %}
 
 {% block actions %}
@@ -56,18 +59,47 @@
     </h3>
     <div class="clear"></div>
     <br/>
-    {% if not repertory.is_main %}
+    {% if repertory.is_free %}
+        <div class="pretty_form">
+            <form method="post" name="lock_for_edition">
+                <p>
+                    <input type="hidden" name="lock" value="lock" />
+                    <input type="submit" class="small_button" value="{% trans "Lock this repertory for edition" %}" />
+                </p>
+            </form>
+        </div>
+    {% else %}
+        {% if editable %}
+            <div class="pretty_form">
+                <form method="post" name="lock_for_edition">
+                    <p>
+                        <input type="hidden" name="unlock" value="lock" />
+                        <input type="submit" class="small_button" value="{% trans "Unlock this repertory" %}" />
+                    </p>
+                </form>
+            </div>
+        {% endif %}
+        <p style="color: red; font-size: 14px;">
+            {% trans "This repertory is locked by" %} {{ repertory.user_lock.first_name }}.
+            {% if not editable %}{% trans "It's avaliable for read only." %}{% endif %}
+        </p>
+    {% endif %}
+    <div class="clear"></div>
+    <br/>
+    {% if not repertory.is_main and editable %}
         <a href="javascript:;" id="add_repertory_group">
             <img src="/media/img/plus_16.png" alt="Add group of songs" title="Add group of songs">
             {% trans 'Add group of songs' %}
         </a>
     {% endif %}
     <div class="clear"></div>
+    {% if editable %}
     <div id="new_repertory_group" style="display: none;">
         <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
             <input name="new_repertory_group_name" placeholder="{% trans "Group name"  %}" type="text" style="width: 140px;" /> <a style="display: inline; float: none; width: 20px;" href="javascript:;">Add</a>
         </div>
     </div>
+    {% endif %}
     <div class="clear"></div>
     <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list" main="{% if repertory.is_main %}1{% else %}0{% endif %}">
         {% include "music/repertory_content.html" %}

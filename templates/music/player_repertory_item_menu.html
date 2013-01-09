@@ -4,7 +4,11 @@
      changeasmemberoptionsurl="{% url change_as_member_options player_repertory_item.id %}"
      changeplayeruseroptionsurl="{% url change_player_user_options player_repertory_item.id %}">
     <h3>
-        <div class="action_button"><img class="change_player_user" src="/media/img/exchange_icon_16.gif" alt="{% trans "Exchange player user" %}" title="{% trans "Exchange player user" %}"></div>
+        {% if editable %}
+            <div class="action_button">
+                <img class="change_player_user" src="/media/img/exchange_icon_16.gif" alt="{% trans "Exchange player user" %}" title="{% trans "Exchange player user" %}">
+            </div>
+        {% endif %}
         <div class="icon">
             <img src="{{ player_repertory_item.player.instrument.icon_url }}" />
         </div>
@@ -24,7 +28,11 @@
             {% endif %}
         </h4>
         <h4 class="as_member secondary_option">
-            <div class="action_button"><img class="change_as_member" src="/media/img/exchange_icon_16.gif" alt="{% trans "Exchange member" %}" title="{% trans "Exchange member" %}"></div>
+            {% if editable %}
+                <div class="action_button">
+                    <img class="change_as_member" src="/media/img/exchange_icon_16.gif" alt="{% trans "Exchange member" %}" title="{% trans "Exchange member" %}">
+                </div>
+            {% endif %}
             <div class="icon">
                 <img src="{{ player_repertory_item.as_member.icon_url }}" />
             </div>
@@ -42,27 +50,30 @@
         {% endfor %}
     </div>
     <div class="clear"></div>
-
-    <div class="option" action="set_as_lead">
-        <div class="icon">
-            <img src="/media/img/leader_icon_2.png" />
+    {% if editable %}
+        <div class="option" action="set_as_lead">
+            <div class="icon">
+                <img src="/media/img/leader_icon_2.png" />
+            </div>
+            <div class="title">
+                {% if player_repertory_item.is_lead %}
+                    {% trans "Unset as lead" %}
+                {% else %}
+                    {% trans "Set as lead" %}
+                {% endif %}
+            </div>
         </div>
-        <div class="title">
-            {% if player_repertory_item.is_lead %}
-                {% trans "Unset as lead" %}
-            {% else %}
-                {% trans "Set as lead" %}
-            {% endif %}
+        <div class="option" action="remove">
+            <div class="icon" style="padding-top: 5px; padding-left: 4px">
+                <img src="/media/img/cross_16.png" />
+            </div>
+            <div class="title">
+                {% trans "Remove this player" %}
+            </div>
         </div>
-    </div>
-    <div class="option" action="remove">
-        <div class="icon" style="padding-top: 5px; padding-left: 4px">
-            <img src="/media/img/cross_16.png" />
-        </div>
-        <div class="title">
-            {% trans "Remove this player" %}
-        </div>
-    </div>
+    {% else %}
+        <br/>
+    {% endif %}
     <h3>{% trans "Ratings" %}</h3>
     {% call player_repertory_item.has_voted with user as voted %}
     <div class="center ratings_player" ratingurl="{% url rate_player_repertory_item player_repertory_item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
@@ -91,13 +102,20 @@
                 song {{ player_repertory_item.player.instrument.verb_past_participle }}
                 by {{ player_repertory_item.player.user.first_name }}
             </h3>
-            <textarea class="original_notes" style="display: none;">{{ player_repertory_item.notes }}</textarea>
-            <textarea class="notes">{{ player_repertory_item.notes }}</textarea>
-            <div class="clear"></div>
-            <div class="notes_save">
-                <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" />
-                <input type="button" class="small_button save" value="{% trans "Save" %}" />
-            </div>
+            {% if editable %}
+                <textarea class="original_notes" style="display: none;">{{ player_repertory_item.notes }}</textarea>
+                <textarea class="notes">{{ player_repertory_item.notes }}</textarea>
+                <div class="clear"></div>
+                <div class="notes_save">
+                    <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" />
+                    <input type="button" class="small_button save" value="{% trans "Save" %}" />
+                </div>
+            {% else %}
+                {% autoescape off %}{{ player_repertory_item.notes }}{% endautoescape %}
+                <div class="notes_save">
+                    <input type="button" class="small_button red close" value="{% trans "Close" %}" />
+                </div>
+            {% endif %}
             <div class="clear"></div>
         </div>
     </div>

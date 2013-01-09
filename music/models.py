@@ -438,6 +438,8 @@ class Repertory(models.Model):
     band = models.ForeignKey(Band, null=True)
     event = models.ForeignKey(Event, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
+    user_lock = models.ForeignKey(User, null=True, blank=True,
+                                  related_name="locked_repertories")
 
     MAIN_NAME = 'Main'
 
@@ -449,7 +451,10 @@ class Repertory(models.Model):
 
     @classmethod
     def get_main_repertory(cls):
-        return cls.objects.get(name=cls.MAIN_NAME)
+        try:
+            return cls.objects.get(name=cls.MAIN_NAME)
+        except Repertory.DoesNotExist:
+            return
 
     @property
     def is_main(self):
@@ -458,6 +463,23 @@ class Repertory(models.Model):
     def import_items_from(self, base):
         for group in base.groups.all():
             group.clone_object(self)
+
+    def is_free(self):
+        return self.user_lock is None
+
+    def is_editable(self, user):
+        return self.user_lock == user
+
+    def is_locked(self, user):
+        return self.user_lock is None or self.user_lock != user
+
+    def lock(self, user):
+        self.user_lock = user
+        self.save()
+
+    def unlock(self):
+        self.user_lock = None
+        self.save()
 
     @classmethod
     def get_last_new_repertory(cls):
