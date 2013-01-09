@@ -259,8 +259,11 @@ def search_song_by_name(request):
     main = Repertory.get_main_repertory()
     main_group = main.groups.all()[0]
     if is_main:
+        band = request.band
+        artists_ids = [a.id for a in band.artists.all()]
         ids = main_group.items.all().values_list('song__id', flat=True)
-        songs = Song.objects.filter(name__icontains=name)\
+        songs = Song.objects.filter(name__icontains=name,
+                                    album__artist__id__in=artists_ids)\
                             .exclude(id__in=ids)[:10]
         songs = [item(s) for s in songs]
     else:
