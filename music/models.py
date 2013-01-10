@@ -60,11 +60,11 @@ class Band(models.Model):
 
     @property
     def active_members(self):
-        return self.members.filter(active=True)
+        return self.members.filter(is_active=True)
 
     @property
     def inactive_members(self):
-        return self.members.filter(active=False)
+        return self.members.filter(is_active=False)
 
     @classmethod
     def get_active_band(cls, request):
