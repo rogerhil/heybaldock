@@ -58,6 +58,14 @@ class Band(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def active_members(self):
+        return self.members.filter(active=True)
+
+    @property
+    def inactive_members(self):
+        return self.members.filter(active=False)
+
     @classmethod
     def get_active_band(cls, request):
         band = request.session.get(cls.ACTIVE_BAND_SESSION_KEY)

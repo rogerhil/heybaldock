@@ -119,7 +119,7 @@ def rehearsals(request):
 def get_rehearsal_abscence_payers(band):
     payers = []
     values = []
-    for user in band.members.all():
+    for user in band.active_members:
         count = Rehearsal.objects.filter(paid_by=user).exclude(cost=None)\
                                  .exclude(cost=decimal.Decimal()).count()
         values.append(count)
