@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript" src="/media/js/maps.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="manage_buttons">
+        <a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a>
+        <a href="{% url add_rehearsal %}">{% trans "Add" %}</a>
+        <br/>
+        <div class="clear"></div>
+        <br/>
+        <a href="{% url change_rehearsal rehearsal.id %}">{% trans "Change" %}</a>
+        <a href="{% url remove_rehearsal rehearsal.id %}" class="red">{% trans "Remove" %}</a>
+    </div>
+
+    <div style="min-height: 250px;">
+        <h1>{% trans "Rehearsal" %} in {{ rehearsal.studio.name }}</h1>
+
+        <p>
+            <strong>{% trans "When: " %}</strong>{{ rehearsal.date }}
+        </p>
+        <p>
+            <strong>{% trans "Duration: " %}</strong>{{ rehearsal.duration_display }}
+        </p>
+        <p>
+            <strong>{% trans "Cost: " %}</strong>{{ rehearsal.cost }}
+            {% if rehearsal.paid_by %}
+                {% trans "paid by" %} {{ rehearsal.paid_by.get_full_name }}
+            {% endif %}
+        </p>
+        <h2>{% trans "Notes" %}</h2>
+        {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
+
+        <h2>{% trans "Address" %}</h2>
+        {% with rehearsal.studio as location %}
+            {% include "event/location.html" %}
+        {% endwith %}
+    </div>
+
+{% endblock %}

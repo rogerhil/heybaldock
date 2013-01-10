@@ -32,6 +32,46 @@ class Tempo:
     def display(cls, t):
         return dict(cls.choices()).get(t)
 
+class TimeDuration:
+    MIN_MINUTES = 30
+    MAX_MINUTES = 12 * 60
+
+    @classmethod
+    def choices(cls):
+        minutes1 = range(cls.MIN_MINUTES, 3 * 60 + 1, 30)
+        minutes2 = range(3 * 60, cls.MAX_MINUTES + 1, 60)
+        def display(i):
+            min = i % 60
+            hours = i / 60
+            ret = _('0 hours')
+            if hours == 1 and min > 1:
+                ret = _("%s hour and %s minutes" % (str(hours),
+                                                    str(min).zfill(2)))
+            elif hours > 1 and min > 1:
+                ret = _("%s hours and %s minutes" % (str(hours),
+                                                     str(min).zfill(2)))
+            elif hours == 1 and min == 1:
+                ret = _("%s hour and %s minute" % (str(hours),
+                                                   str(min).zfill(2)))
+            elif hours > 1 and min == 1:
+                ret = _("%s hours and %s minute" % (str(hours),
+                                                    str(min).zfill(2)))
+            elif hours == 1 and not min:
+                ret = _("%s hour" % str(hours))
+            elif hours > 1 and not min:
+                ret = _("%s hours" % str(hours))
+            elif not hours and min == 1:
+                ret = _("%s minute" % str(min))
+            elif not hours and min > 1:
+                ret = _("%s minutes" % str(min))
+            return ret
+        return [(i, display(i)) for i in minutes1] + \
+               [(i, display(i)) for i in minutes2]
+
+    @classmethod
+    def display(cls, t):
+        return dict(cls.choices()).get(t)
+
 
 class SongMode(ChoicesBase):
     slow = 1
@@ -50,7 +90,6 @@ class Rating(ChoicesBase):
     good = 3
     excelent = 4
     awesome = 5
-
 
 class Tonality(ChoicesBase):
     # majors

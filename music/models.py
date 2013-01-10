@@ -13,8 +13,9 @@ from django.contrib.contenttypes import generic
 from django.template import loader, Context
 
 from lib.fields import JSONField, PickleField
-from defaults import Tonality, Rating, Tempo, DocumentType, SongMode
-from event.models import Event
+from defaults import Tonality, Rating, Tempo, DocumentType, SongMode, \
+                     TimeDuration
+from event.models import Event, Location
 from photo.image import ImageHandlerAlbumCover, ImageHandlerInstrument, \
                         ImageHandlerArtist, FileHandlerDocument, \
                         FileHandlerSongAudio
@@ -22,6 +23,23 @@ from video.models import VideoBase
 from utils import metadata_display
 
 add_introspection_rules([], ["^lib\.fields\.PickleField"])
+
+
+class Rehearsal(models.Model):
+    band = models.ForeignKey('Band', editable=False)
+    studio = models.ForeignKey(Location)
+    date = models.DateTimeField()
+    duration = models.IntegerField(default=120)
+    paid_by = models.ForeignKey(User, null=True, blank=True)
+    cost = models.DecimalField(max_digits=6, decimal_places=2, null=True,
+                               blank=True)
+    notes = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return u"Rehearsal in %s on %s" % (self.studio, self.date)
+
+    def duration_display(self):
+        return TimeDuration.display(self.duration)
 
 
 class Band(models.Model):

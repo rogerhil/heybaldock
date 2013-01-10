@@ -1,0 +1,19 @@
+{% load i18n %}
+<div class="table_list">
+    <table>
+        <tr>
+            <th>{% trans "Studio" %}</th>
+            <th>{% trans "When" %}</th>
+            <th>{% trans "Cost" %}</th>
+            <th>{% trans "Paid By" %}</th>
+        </tr>
+        {% for rehearsal in rehearsals %}
+            <tr class="{% cycle odd,even %}" onclick="window.location = '{% url rehearsal rehearsal.id %}'">
+                <td>{{ rehearsal.studio.name }}</td>
+                <td>{{ rehearsal.date }}</td>
+                <td>{{ rehearsal.cost }}</td>
+                <td>{{ rehearsal.paid_by.first_name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

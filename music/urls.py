@@ -6,6 +6,12 @@ urlpatterns = patterns('',
     url(r'^band/add/$', views.add_band, name='add_band'),
     url(r'^band/(?P<id>\d+)/$', views.band_settings, name='band_settings'),
 
+    url(r'^rehearsal/$', views.rehearsals, name='rehearsals'),
+    url(r'^rehearsal/add/$', views.add_rehearsal, name='add_rehearsal'),
+    url(r'^rehearsal/(?P<id>\d+)/$', views.rehearsal, name='rehearsal'),
+    url(r'^rehearsal/(?P<id>\d+)/change/$', views.change_rehearsal, name='change_rehearsal'),
+    url(r'^rehearsal/(?P<id>\d+)/delete/$', views.remove_rehearsal, name='remove_rehearsal'),
+
     url(r'^repertory/$', views.repertories, name='repertories'),
     url(r'^repertory/players_menu/(?P<id>\d+)/$', views.players_menu, name='players_menu'),
     url(r'^repertory/repertory_item/(?P<id>\d+)/player/(?P<player_id>\d+)/add/$', views.add_player_repertory_item, name='add_player_repertory_item'),

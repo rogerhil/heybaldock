@@ -6,7 +6,7 @@
         <a href="{% url add_draft_new 'event' %}">{% trans "Add" %}</a>
     </div>
     {% endif %}
-    <h2>Agenda</h2>
+    <h2>{% trans "Events" %}</h2>
     <ul>
     {% for event in events %}
         <li>

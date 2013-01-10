@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block content %}
+    <div class="manage_buttons">
+        <a href="{% url add_rehearsal %}">{% trans "Add rehearsal" %}</a>
+    </div>
+    <div style="min-height: 350px;">
+        <h1>{% trans "Rehearsals" %}</h1>
+        <h2>{% trans "Upcoming Rehearsals" %}</h2>
+        {% if upcoming %}
+            {% with upcoming as rehearsals %}
+                {% include "music/rehearsals_table.html" %}
+            {% endwith %}
+        {% else %}
+            {% trans "There's no upcoming rehearsals." %}
+        {% endif %}
+
+        <h2>{% trans "Past Rehearsals" %}</h2>
+        {% if past %}
+            {% with past as rehearsals %}
+                {% include "music/rehearsals_table.html" %}
+            {% endwith %}
+        {% else %}
+            {% trans "There's no past rehearsals." %}
+        {% endif %}
+    </div>
+
+{% endblock %}

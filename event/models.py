@@ -36,6 +36,19 @@ STATE_CHOICES = [
     (u'TO', u'Tocantins')
 ]
 
+class LocationType:
+    show = 1
+    studio = 2
+
+    @classmethod
+    def choices(cls):
+        choices = [(getattr(cls, k), k.title()) for k in dir(cls)
+                                                  if not k.startswith('__') and
+                                      not hasattr(getattr(cls, k), '__call__')]
+        choices.sort(lambda a, b: 1 if a[0] > b[0] else -1)
+        return choices
+
+
 class Location(models.Model):
     """
     """
@@ -55,6 +68,8 @@ class Location(models.Model):
     phone1 = models.IntegerField(_("Phone 1"))
     phone2 = models.IntegerField(_("Phone 2"), null=True, blank=True)
     phone3 = models.IntegerField(_("Phone 3"), null=True, blank=True)
+    location_type = models.SmallIntegerField(default=LocationType.show,
+                                             choices=LocationType.choices())
 
     template_view = "event/location.html"
     template_varname = "location"

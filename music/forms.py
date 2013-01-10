@@ -11,11 +11,12 @@ from models import Repertory, Album, Artist, Song, AlbumStyle, AlbumGenre, \
                    Composer, ComposerRole, Instrument, Player, \
                    PlayerRepertoryItem, ArtistImage, Size, ImageType, \
                    ArtistMembership, InstrumentTagType, Band, \
-                   DocumentPlayerRepertoryItem
+                   DocumentPlayerRepertoryItem, Rehearsal
+from event.models import Location, LocationType
 from photo.image import ImageHandlerAlbumCoverTemp, ImageHandlerInstrument, \
                         ImageHandlerArtist, FileHandlerDocument
 from utils import generate_filename
-from defaults import DocumentType
+from defaults import DocumentType, TimeDuration
 from discogs import Discogs
 
 COUNTRIES = [
@@ -116,6 +117,21 @@ class BandForm(forms.ModelForm):
 
     class Meta:
         model = Band
+
+
+class RehearsalForm(forms.ModelForm):
+
+    duration = forms.ChoiceField(initial=120)
+
+    class Meta:
+        model = Rehearsal
+
+    def __init__(self, band, *args, **kwargs):
+        super(RehearsalForm, self).__init__(*args, **kwargs)
+        locations = Location.objects.filter(location_type=LocationType.studio)
+        self.fields['studio'].choices = [(i.id, str(i)) for i in locations]
+        self.fields['duration'].choices = TimeDuration.choices()
+        self.instance.band = band
 
 
 class RepertoryForm(forms.ModelForm):

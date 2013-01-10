@@ -1,6 +1,8 @@
 # -*- coding: utf-8; Mode: Python -*-
 
+import decimal
 import pickle
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -20,12 +22,12 @@ from photo.image import FileHandlerSongAudio
 from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   InstrumentForm, PlayerForm, ArtistForm, \
                   PlayerRepertoryItemForm, InstrumentTagTypeForm, \
-                  DocumentPlayerRepertoryItemForm, BandForm
+                  DocumentPlayerRepertoryItemForm, BandForm, RehearsalForm
 from models import Repertory, Song, Album, Artist, RepertoryGroup, \
                    RepertoryGroupItem, Instrument, Player, \
                    InstrumentTagType, PlayerRepertoryItem, \
                    MusicHistoryChanges, UserRepertoryItemRating, \
-                   PlayerRepertoryItemRating, Band, BandArtist
+                   PlayerRepertoryItemRating, Band, BandArtist, Rehearsal
 from decorators import ajax_check_locked_repertory, check_locked_repertory, \
                        ajax_check_locked_repertory_item, \
                        ajax_check_locked_player_repertory_item, \
@@ -34,7 +36,7 @@ from decorators import ajax_check_locked_repertory, check_locked_repertory, \
 from event.models import Event
 from utils import get_or_create_temporary, mzip, str_list_in_list, \
                   generate_filename
-from defaults import Tempo, Tonality, SongMode
+from defaults import Tempo, Tonality, SongMode, TimeDuration
 
 DISCOGS_PAGES = 500
 MAX_YEARS = 10
@@ -106,6 +108,87 @@ def add_band(request):
         form = BandForm()
     return dict(form=form)
 
+@login_required
+@render_to("music/rehearsals.html")
+def rehearsals(request):
+    now = datetime.now()
+    upcoming = Rehearsal.objects.filter(date__gte=now)
+    past = Rehearsal.objects.filter(date__lte=now)
+    return dict(upcoming=upcoming, past=past)
+
+def get_rehearsal_abscence_payers(band):
+    payers = []
+    values = []
+    for user in band.members.all():
+        count = Rehearsal.objects.filter(paid_by=user).exclude(cost=None)\
+                                 .exclude(cost=decimal.Decimal()).count()
+        values.append(count)
+        payers.append((count, user))
+    abscence_payers = []
+
+    for count, payer in payers:
+        if count < max(values):
+            abscence_payers.append((payer, max(values) - count))
+    abscence_payers = ", ".join(["%s (%s)" % (p.first_name, c) for p, c in
+                                 abscence_payers])
+    return abscence_payers
+
+@login_required
+@render_to("music/add_rehearsal.html")
+def add_rehearsal(request):
+    user = request.user
+    band = Band.get_active_band(request)
+    if request.POST:
+        data = request.POST
+        form = RehearsalForm(band=band, data=data)
+        if form.is_valid():
+            form.save()
+            msg = _("The rehearsal was successfully created.")
+            new_history_entry(user, form.instance, 'created')
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse("rehearsal", args=(form.instance.id,))
+            return HttpResponseRedirect(url)
+    else:
+        form = RehearsalForm(band=band)
+    abscence_payers = get_rehearsal_abscence_payers(band)
+    return dict(form=form, abscence_payers=abscence_payers)
+
+@login_required
+@render_to("music/rehearsal.html")
+def rehearsal(request, id):
+    rehearsal = get_object_or_404(Rehearsal, id=id)
+    return dict(rehearsal=rehearsal)
+
+@login_required
+def remove_rehearsal(request, id):
+    user = request.user
+    rehearsal = get_object_or_404(Rehearsal, id=id)
+    rehearsal.delete()
+    msg = _("The rehearsal was successfully removed.")
+    new_history_entry(user, rehearsal, 'removed')
+    messages.add_message(request, messages.SUCCESS, msg)
+    return HttpResponseRedirect(reverse("rehearsals"))
+
+@login_required
+@render_to("music/add_rehearsal.html")
+def change_rehearsal(request, id):
+    user = request.user
+    band = Band.get_active_band(request)
+    rehearsal = get_object_or_404(Rehearsal, id=id)
+    if request.POST:
+        data = request.POST
+        form = RehearsalForm(band=band, data=data, instance=rehearsal)
+        if form.is_valid():
+            form.save()
+            msg = _("The rehearsal was successfully modified.")
+            new_history_entry(user, form.instance, 'changed')
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse("rehearsal", args=(form.instance.id,))
+            return HttpResponseRedirect(url)
+    else:
+        form = RehearsalForm(band=band, instance=rehearsal)
+    abscence_payers = get_rehearsal_abscence_payers(band)
+    return dict(form=form, abscence_payers=abscence_payers, change=True)
 
 @login_required
 @render_to("music/add_repertory.html")

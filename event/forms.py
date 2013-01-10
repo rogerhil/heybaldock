@@ -16,6 +16,7 @@ class LocationForm(forms.CmsForm):
         model = Location
         fields = ('name', 'description', 'zipcode', 'street', 'number',
                   'complement', 'district', 'city', 'state', 'country',
-                  'latitude', 'longitude', 'phone1', 'phone2', 'phone3')
+                  'latitude', 'longitude', 'phone1', 'phone2', 'phone3',
+                  'location_type')
     class Media:
         js = ('/media/js/locationform.js',)

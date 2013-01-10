@@ -1,0 +1,22 @@
+{% load i18n %}
+<div class="portlet">
+    <div class="manage_buttons">
+        <a href="{% url add_rehearsal %}">{% trans "Add" %}</a>
+    </div>
+    <h2><a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a></h2>
+    <div class="clear"></div>
+    {% if upcoming_rehearsals %}
+        <ul>
+            {% for rehearsal in upcoming_rehearsals %}
+                <li>
+                    <a href="{% url rehearsal rehearsal.id %}">
+                        {{ rehearsal.studio.name }} {% trans "in" %} {{ rehearsal.date }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+
+        {% trans "There's no upcoming rehearsals" %}
+    {% endif %}
+</div>

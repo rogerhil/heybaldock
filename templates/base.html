@@ -164,6 +164,7 @@
                         {% include "draft/portlet.html" %}
                         {% include "event/portlet.html" %}
                         {% if user.is_authenticated %}
+                            {% include "music/rehearsals_portlet.html" %}
                             {% include "event/location_portlet.html" %}
                         {% endif %}
                         {% comment %}
