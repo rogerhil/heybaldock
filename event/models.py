@@ -48,6 +48,10 @@ class LocationType:
         choices.sort(lambda a, b: 1 if a[0] > b[0] else -1)
         return choices
 
+    @classmethod
+    def display(cls, t):
+        return dict(cls.choices()).get(t)
+
 
 class Location(models.Model):
     """
@@ -65,9 +69,9 @@ class Location(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     album = models.ForeignKey('photo.PhotoAlbum', verbose_name=_("Album"), null=True)
-    phone1 = models.IntegerField(_("Phone 1"))
-    phone2 = models.IntegerField(_("Phone 2"), null=True, blank=True)
-    phone3 = models.IntegerField(_("Phone 3"), null=True, blank=True)
+    phone1 = models.CharField(_("Phone 1"), max_length=20)
+    phone2 = models.CharField(_("Phone 2"), max_length=20, null=True, blank=True)
+    phone3 = models.CharField(_("Phone 3"), max_length=20, null=True, blank=True)
     location_type = models.SmallIntegerField(default=LocationType.show,
                                              choices=LocationType.choices())
 
@@ -92,6 +96,28 @@ class Location(models.Model):
         from forms import LocationForm
         return LocationForm
 
+    @property
+    def type_display(self):
+        return LocationType.display(self.location_type)
+
+    @property
+    def zipcode_display(self):
+        if len(self.zipcode) > 5:
+            return "%s-%s" % (self.zipcode[:5], self.zipcode[5:])
+        else:
+            return self.zipcode
+
+    @property
+    def phones_display(self):
+        def d(phone):
+            if len(phone) < 8:
+                return phone
+            elif len(phone) == 8 or len(phone) == 9:
+                return "%s-%s" % (phone[:4], phone[4:])
+            elif len(phone) > 9:
+                return "(%s) %s-%s" % (phone[:2], phone[2:6], phone[6:])
+        phones = [self.phone1, self.phone2, self.phone3]
+        return ', '.join([d(p) for p in phones if p and p.strip()])
 
 
 class Event(models.Model):
