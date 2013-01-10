@@ -9,3 +9,8 @@ class MusicMiddleware(object):
         """
         """
         request.band = Band.get_active_band(request)
+        if not request.band:
+            user = request.user
+            if user.is_authenticated() and user.bands.count():
+                band = user.bands.all()[0]
+                Band.set_active_band(request, band)
