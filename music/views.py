@@ -465,7 +465,7 @@ def get_custom_results(request):
         years.append(res['year'])
         artists += [i['name'] for i in ainfo['artists']]
         for a in ainfo['artists']:
-            artists_dict[i['name']] = a
+            artists_dict[a['name']] = a
         if ainfo.get('styles'):
             styles += ainfo['styles']
         if ainfo.get('genres'):
@@ -520,6 +520,7 @@ def get_custom_results(request):
 
     artists = list(set(artists))
     artists.sort()
+
     artists = [artists_dict[i] for i in artists]
 
     custom = dict(
