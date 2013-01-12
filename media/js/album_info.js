@@ -6,18 +6,23 @@ $(window).load(function () {
 	var $fromYear = $("#id_from_year");
 	$fromYear.css('display', 'inline');
 	$fromYear.css('margin-right', '10px');
+	var tillYear;
 	$fromYear.change(function () {
+		tillYear = Number($(this).val()) + maxYears;
+		tillYear = tillYear <= currentYear ? tillYear : currentYear;
 		$(this).parent().find('strong').remove();
-		$("<strong>till " + (Number($(this).val()) + 10) + "</strong>").insertAfter($(this));
+		$("<strong>till " + tillYear + "</strong>").insertAfter($(this));
 	});
-	$("<strong>till " + (Number($fromYear.val()) + 10) + "</strong>").insertAfter($fromYear);
+	tillYear = 1960 + maxYears;
+	tillYear = tillYear <= currentYear ? tillYear : currentYear;
+	$("<strong>till " + tillYear + "</strong>").insertAfter($fromYear);
 });
 
 function registerAlbum() {
 	var data = {};
 	var validTypes = {text: 1, hidden: 1, radio: 1};
 	var isValid = true;
-	var v, name, type, par, tab;
+	var v, name, type, par, tab, $radios;
 	var $form = $("#id_custom_form");
 	var errors = [];
 	$form.find("input").each(function () {
@@ -27,7 +32,8 @@ function registerAlbum() {
 			par = $form.find("input[name=" + name + "]").parent();
 			tab = par.parents('table.table_choices');
 			tab.parent().find("ul.errorlist").remove();
-			if (type == 'radio' && !$("input[name=" + name + "][type=radio]").is(":checked")) {
+			$radios = $("input[name=" + name + "][type=radio]:visible");
+			if (type == 'radio' && $radios.length && !$radios.is(":checked")) {
 				isValid = false;
 				$('<ul class="errorlist"><li>Required</li></ul>').insertBefore(tab);
 				errors.push(name);

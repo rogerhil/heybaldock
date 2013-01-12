@@ -212,8 +212,8 @@ ul {
 
 div.songs_info {
     overflow-x: scroll !important;
-    width: 920px !important;
-    max-width: 920px !important;
+    width: 910px !important;
+    max-width: 910px !important;
 }
 
 div.songs_info table {

@@ -92,8 +92,6 @@ class SongForm(forms.Form):
             d = data.copy()
             del d['composer']
             song = Song.objects.create(album=album, **d)
-        if not new:
-            return song
         composers = []
         if data['composer']:
             for d in simplejson.loads(data['composer']):
@@ -209,6 +207,10 @@ class ArtistForm(forms.Form):
     description = forms.CharField(max_length=256, required=False)
     about = forms.CharField(required=False)
 
+    def __init__(self, *args, **kwargs):
+        super(ArtistForm, self).__init__(*args, **kwargs)
+        self.is_new = False
+
     def _remove_metadata_keys(self, metadata):
         if metadata.has_key('members'):
             del metadata['members']
@@ -269,6 +271,7 @@ class ArtistForm(forms.Form):
             artist = Artist.objects.create(discogs_id=metadata['id'],
                                            name=metadata['name'],
                                            about=metadata.get('profile'))
+        self.is_new = new
         if not new:
             return artist
         metadata = self._save_images(artist, metadata)
@@ -291,6 +294,7 @@ class AlbumForm(forms.Form):
         super(AlbumForm, self).__init__(*args, **kwargs)
         self.metadata = metadata
         self.artist = artist
+        self.is_new = False
 
     def save(self):
         data = self.cleaned_data
@@ -310,8 +314,7 @@ class AlbumForm(forms.Form):
                 year=data['year'],
                 artist=artist
             )
-        if not new:
-            return album
+        self.is_new = new
         styles = []
         for style in simplejson.loads(data['style']):
             styles.append(AlbumStyle.objects.get_or_create(name=style)[0])

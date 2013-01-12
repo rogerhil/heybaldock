@@ -39,7 +39,7 @@ from utils import get_or_create_temporary, mzip, str_list_in_list, \
 from defaults import Tempo, Tonality, SongMode, TimeDuration
 
 DISCOGS_PAGES = 500
-MAX_YEARS = 10
+MAX_YEARS = 30
 
 def new_history_entry(user, instance, action, summary=''):
     content_type = ContentType.objects.get_for_model(type(instance))
@@ -410,7 +410,8 @@ def music_management(request):
 @login_required
 @render_to("music/add_album.html")
 def add_album(request):
-    c = dict(form=AlbumInfoForm())
+    year = datetime.now().year
+    c = dict(form=AlbumInfoForm(), max_years=MAX_YEARS, year=year)
     return c
 
 def get_custom_results(request):
@@ -508,7 +509,8 @@ def get_custom_results(request):
     songs['titles'] = mzip(songs['htitles'])
     songs['composers'] = mzip(songs['hcomposers'])
 
-    years = list(set(map(int, years)))[:5]
+
+    years = list(set(map(int, years)))
     years.sort()
 
     artists = list(set(artists))
@@ -545,7 +547,10 @@ def register_album(request):
     artist_form = ArtistForm(adata)
     success = artist_form.is_valid()
     artist = artist_form.save()
-    new_history_entry(request.user, artist, "created")
+    if artist_form.is_new:
+        new_history_entry(request.user, artist, "created")
+    else:
+        new_history_entry(request.user, artist, "updated")
 
     if success:
         album_form = AlbumForm(metadata={}, artist=artist, data=data)
@@ -571,7 +576,10 @@ def register_album(request):
                     break
                 forms.append(song_form)
             album = album_form.save()
-            new_history_entry(request.user, album, "created")
+            if album_form.is_new:
+                new_history_entry(request.user, album, "created")
+            else:
+                new_history_entry(request.user, album, "updated")
             for form in forms:
                 form.save(album)
             redirect_url = reverse("album", args=(album.id,))
@@ -602,12 +610,12 @@ def album(request, id):
 def remove_album(request, id):
     album = get_object_or_404(Album, id=id)
     artist = album.artist
-    action = 'album "%s (%s)" has been order changed.' % (album.name, album.id)
+    action = 'album "%s (%s)" removed.' % (album.name, album.id)
     album.delete()
     new_history_entry(request.user, artist, action)
     msg = _('The album was successfully removed.')
     messages.add_message(request, messages.SUCCESS, msg)
-    return HttpResponseRedirect(reverse('albums'))
+    return HttpResponseRedirect(reverse('artist_albums', args=(artist.id,)))
 
 @render_to("music/artist_albums.html")
 @login_required
@@ -1209,4 +1217,5 @@ def music_history(request):
     users = User.objects.all()
     selected_user = int(request.GET.get('u') or users[0].id)
     history = MusicHistoryChanges.objects.filter(user__id=selected_user)
+    history = history.order_by('-content_date')
     return dict(history=history, users=users, selected_user=selected_user)
