@@ -27,6 +27,11 @@
     {% if album.description %}
         <h3>{{ album.description }}</h3>
     {% endif %}
+
+    <h3 style="text-align: right; text-transform: uppercase; text-decoration: underline;">
+        <a href="{% url add_album %}?a={{ album.artist }}">{% blocktrans with album.artist as artist %}Click here to add more albums of {{ artist }}{% endblocktrans %}</a>
+    </h3>
+
     <br />
     <div style="float: left; width: 90px; margin-right: 10px;">
         <img src="{{ album.thumb_url }}" />

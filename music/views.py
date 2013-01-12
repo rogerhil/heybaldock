@@ -411,7 +411,12 @@ def music_management(request):
 @render_to("music/add_album.html")
 def add_album(request):
     year = datetime.now().year
-    c = dict(form=AlbumInfoForm(), max_years=MAX_YEARS, year=year)
+    initial = {'artist': request.GET.get('a', '')}
+    c = dict(
+        form=AlbumInfoForm(initial=initial),
+        max_years=MAX_YEARS,
+        year=year
+    )
     return c
 
 def get_custom_results(request):

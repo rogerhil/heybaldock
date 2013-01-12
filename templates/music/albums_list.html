@@ -1,4 +1,8 @@
+{% load i18n %}
 {% if artist.albums.count %}
+    <p style="text-transform: uppercase; text-decoration: underline; font-size: 11px;">
+        <a href="{% url add_album %}?a={{ artist }}">{% blocktrans %}Click here to add more albums of {{ artist }}{% endblocktrans %}</a>
+    </p>
     <ul id="albums" class="photo_album_list centralize">
         {% for album in artist.albums_by_year %}
             <li class="photo_album_item" url="{% url album album.id %}">
@@ -7,13 +11,16 @@
                 </div>
                 <div class="photo_album_info">
                     <p><strong>{{ album }}</strong></p>
-                    <p><strong>Year: </strong>{{ album.year }}</p>
-                    <p><strong>Genre: </strong>{{ album.genre_display }}</p>
-                    <p><strong>Style: </strong>{{ album.style_display }}</p>
+                    <p><strong>{% trans "Year" %}: </strong>{{ album.year }}</p>
+                    <p><strong>{% trans "Genre" %}: </strong>{{ album.genre_display }}</p>
+                    <p><strong>{% trans "Style" %}: </strong>{{ album.style_display }}</p>
                 </div>
             </li>
         {% endfor %}
     </ul>
 {% else %}
-    <p>No albums included yet</p>
+    <p>{% trans "No albums included yet" %}</p>
+    <p style="text-transform: uppercase; text-decoration: underline; font-size: 11px;">
+        <a href="{% url add_album %}?a={{ artist }}">{% blocktrans %}Click here to add albums of {{ artist }}{% endblocktrans %}</a>
+    </p>
 {% endif %}

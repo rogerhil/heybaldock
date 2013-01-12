@@ -17,8 +17,8 @@
         <a href="{% url music_management %}">{% trans 'Back to music management' %}</a>
         <a href="{% url add_album %}">{% trans 'Add album' %}</a>
     </div>
-    <h1>Albums</h1>
-    {% for artist in artists %}
+    <h1>{% trans "Albums" %}</h1>
+        {% for artist in artists %}
         <h2>{{ artist }}</h2>
         {% include "music/albums_list.html" %}
         <div class="clear"></div>
