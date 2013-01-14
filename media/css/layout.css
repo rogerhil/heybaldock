@@ -1470,15 +1470,20 @@ div.metadata ul li a {
 
 .repertory .players_column {
     width: 260px;
-    padding: 0px;
+    padding: 3px 0px 0px 3px;
+}
+
+.repertory .players_column img {
+    margin:  0px;
 }
 
 .repertory .players_column img.add_player {
     margin-top: 1px;
-    margin-right: 3px;
+    margin-right: 5px;
 }
 
 .repertory .actions_column {
+    padding-top: 8px;
     width: 20px;
 }
 
