@@ -28,3 +28,39 @@ Code Comments, Doc tests, License
     - time
     - 
 
+
+
+Rep. Main
+ Item
+    song = models.ForeignKey(Song)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    notes = models.TextField(null=True, blank=True)
+    tempo = models.IntegerField(choices=Tempo.choices(), null=True,
+                                blank=True)
+    mode = models.IntegerField(choices=SongMode.choices(), null=True,
+                               blank=True)
+    tonality = models.CharField(max_length=10, null=True, blank=True,
+                                choices=Tonality.choices())
+    status = models.SmallIntegerField(default=RepertoryItemStatus.active,
+                                      choices=RepertoryItemStatus.choices())
+
+Rep. Event
+  Item
+    item - Rep. Main. Item.
+    number = models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    status = models.SmallIntegerField(default=RepertoryItemStatus.active,
+                                      choices=RepertoryItemStatus.choices())
+
+Rep. Instrument
+    instrument = models.ForeignKey(Instrument)
+    repertory_item = models.ForeignKey(RepertoryGroupItem,
+                                       related_name="players")
+    as_member = models.ForeignKey(Artist, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    tag_types = models.ManyToManyField(InstrumentTagType, blank=True)
+    is_lead = models.BooleanField(default=False)
+
+Rep. InstrumentPlayer
+    player = PLayer
+    instrument = Rep. Instrument

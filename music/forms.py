@@ -4,14 +4,13 @@ import time
 from datetime import datetime
 
 from django import forms
-from django.contrib.auth.models import User
 from django.utils import simplejson
 
-from models import Repertory, Album, Artist, Song, AlbumStyle, AlbumGenre, \
-                   Composer, ComposerRole, Instrument, Player, \
+from models import EventRepertory, Album, Artist, Song, AlbumStyle, \
+                   AlbumGenre, Composer, ComposerRole, Instrument, Player, \
                    PlayerRepertoryItem, ArtistImage, Size, ImageType, \
-                   ArtistMembership, InstrumentTagType, Band, \
-                   DocumentPlayerRepertoryItem, Rehearsal
+                   ArtistMembership, InstrumentTagType, Band, Rehearsal, \
+                   DocumentPlayerRepertoryItem
 from event.models import Location, LocationType
 from photo.image import ImageHandlerAlbumCoverTemp, ImageHandlerInstrument, \
                         ImageHandlerArtist, FileHandlerDocument
@@ -132,10 +131,11 @@ class RehearsalForm(forms.ModelForm):
         self.instance.band = band
 
 
-class RepertoryForm(forms.ModelForm):
+class EventRepertoryForm(forms.ModelForm):
 
     class Meta:
-        model = Repertory
+        model = EventRepertory
+        exclude = ('user_lock')
 
 
 class InstrumentForm(forms.ModelForm):

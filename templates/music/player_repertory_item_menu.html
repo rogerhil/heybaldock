@@ -2,7 +2,9 @@
 <div class="pretty_select"
      toogletagtypeurl="{% url toogle_tag_type player_repertory_item.id %}"
      changeasmemberoptionsurl="{% url change_as_member_options player_repertory_item.id %}"
-     changeplayeruseroptionsurl="{% url change_player_user_options player_repertory_item.id %}">
+     changeplayeruseroptionsurl="{% url change_player_user_options player_repertory_item.id %}"
+     setasleadurl="{% url player_set_as_lead player_repertory_item.id %}"
+     removeplayerurl="{% url remove_player_repertory_item player_repertory_item.id %}">
     <h3>
         {% if editable %}
             <div class="action_button">
@@ -77,7 +79,7 @@
     <h3>{% trans "Ratings" %}</h3>
     {% call player_repertory_item.has_voted with user as voted %}
     <div class="center ratings_player" ratingurl="{% url rate_player_repertory_item player_repertory_item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
-        title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
+         title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
         {% for r in player_repertory_item.ratings_range %}
             {% if r.active %}
                 <img src="/media/img/star_16.png" class="active" rate="{{ r.rate }}" />

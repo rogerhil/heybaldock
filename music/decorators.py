@@ -31,11 +31,28 @@ def check_locked_repertory(view_func, *args, **kwargs):
     return _wrapped_view
 
 def ajax_check_locked_main_repertory(view_func, *args, **kwargs):
-    from music.models import Repertory
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
-        repertory = Repertory.get_main_repertory()
+        repertory = request.band.repertory
         d = ajax_repertory_is_locked(request, repertory)
+        return d or view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+def ajax_check_locked_event_repertory(view_func, *args, **kwargs):
+    from music.models import EventRepertory
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        repertory = get_object_or_404(EventRepertory, id=kwargs['id'])
+        d = ajax_repertory_is_locked(request, repertory)
+        return d or view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+def ajax_check_locked_event_repertory_item(view_func, *args, **kwargs):
+    from music.models import EventRepertoryItem
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        item = get_object_or_404(EventRepertoryItem, id=kwargs['id'])
+        d = ajax_repertory_is_locked(request, item.repertory)
         return d or view_func(request, *args, **kwargs)
     return _wrapped_view
 
@@ -49,13 +66,12 @@ def ajax_check_locked_repertory(view_func, *args, **kwargs):
     return _wrapped_view
 
 def ajax_check_locked_repertory_item(view_func, *args, **kwargs):
-    from music.models import RepertoryGroupItem
+    from music.models import RepertoryItem
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
-        item = get_object_or_404(RepertoryGroupItem, id=kwargs['id'])
-        d = ajax_repertory_is_locked(request, item.group.repertory)
+        item = get_object_or_404(RepertoryItem, id=kwargs['id'])
+        d = ajax_repertory_is_locked(request, item.repertory)
         return d or view_func(request, *args, **kwargs)
-        return url or view_func(request, *args, **kwargs)
     return _wrapped_view
 
 def ajax_check_locked_player_repertory_item(view_func, *args, **kwargs):
@@ -63,7 +79,7 @@ def ajax_check_locked_player_repertory_item(view_func, *args, **kwargs):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
         player = get_object_or_404(PlayerRepertoryItem, id=kwargs['id'])
-        repertory = player.repertory_item.group.repertory
+        repertory = player.item.repertory
         d = ajax_repertory_is_locked(request, repertory)
         return d or view_func(request, *args, **kwargs)
     return _wrapped_view

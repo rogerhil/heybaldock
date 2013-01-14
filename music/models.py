@@ -14,7 +14,7 @@ from django.template import loader, Context
 
 from lib.fields import JSONField, PickleField
 from defaults import Tonality, Rating, Tempo, DocumentType, SongMode, \
-                     TimeDuration
+                     TimeDuration, RepertoryItemStatus
 from event.models import Event, Location
 from photo.image import ImageHandlerAlbumCover, ImageHandlerInstrument, \
                         ImageHandlerArtist, FileHandlerDocument, \
@@ -458,37 +458,10 @@ class Song(models.Model):
         return ', '.join([str(c.composer) for c in self.composer.all()])
 
 
-class Repertory(models.Model):
-    name = models.CharField(max_length=128, unique=True)
-    description = models.CharField(max_length=255, null=True, blank=True)
-    band = models.ForeignKey(Band, null=True)
-    event = models.ForeignKey(Event, null=True, blank=True)
-    date = models.DateTimeField(auto_now_add=True, null=True)
-    user_lock = models.ForeignKey(User, null=True, blank=True,
-                                  related_name="locked_repertories")
-
-    MAIN_NAME = 'Main'
-
-    def __unicode__(self):
-       return self.name
+class RepertoryBase(models.Model):
 
     class Meta:
-        unique_together = ('name', 'event')
-
-    @classmethod
-    def get_main_repertory(cls):
-        try:
-            return cls.objects.get(name=cls.MAIN_NAME)
-        except Repertory.DoesNotExist:
-            return
-
-    @property
-    def is_main(self):
-        return self.name == self.MAIN_NAME
-
-    def import_items_from(self, base):
-        for group in base.groups.all():
-            group.clone_object(self)
+        abstract = True
 
     def is_free(self):
         return self.user_lock is None
@@ -507,60 +480,48 @@ class Repertory(models.Model):
         self.user_lock = None
         self.save()
 
-    @classmethod
-    def get_last_new_repertory(cls):
-        event = Event.get_last_new_event()
-        if event:
-            try:
-                return cls.objects.filter(event=event).order_by('-id')[0]
-            except IndexError:
-                return
 
-
-class RepertoryGroup(models.Model):
-    name = models.CharField(max_length=128)
-    repertory = models.ForeignKey(Repertory, related_name='groups')
-    order = models.IntegerField()
-
-    class Meta:
-        unique_together = ('repertory', 'order')
-
-    @property
-    def is_main(self):
-        return self.repertory.name == self.repertory.MAIN_NAME
-
-    @classmethod
-    def get_main_group(cls):
-        main = Repertory.get_main_repertory()
-        return main.groups.all()[0]
-
-    def clone_object(self, repertory):
-        group = RepertoryGroup(name=self.name, order=self.order,
-                               repertory=repertory)
-        group.save()
-        for item in self.items.all():
-            item.clone_object(group)
-        return group
-
-    @property
-    def ordered_items(self):
-        return self.items.all().order_by('number')
-
-
-class RepertoryGroupItem(models.Model):
-    song = models.ForeignKey(Song)
-    group = models.ForeignKey(RepertoryGroup, related_name='items')
-    number = models.IntegerField()
+class Repertory(RepertoryBase):
+    band = models.OneToOneField(Band, null=True, related_name='repertory')
     date = models.DateTimeField(auto_now_add=True, null=True)
+    user_lock = models.ForeignKey(User, null=True,
+                                  related_name="main_repertories")
+
+    def __unicode__(self):
+       return "%s Main Repertory" % self.band
+
+    @property
+    def active_items(self):
+        statuses = [RepertoryItemStatus.ready, RepertoryItemStatus.working]
+        return self.items.filter(status__in=statuses).order_by('order')
+
+    @property
+    def trash(self):
+        deleted = RepertoryItemStatus.deleted
+        return self.all_items.filter(status=deleted)
+
+    @property
+    def items(self):
+        deleted = RepertoryItemStatus.deleted
+        return self.all_items.all().exclude(status=deleted).order_by('status')
+
+
+class RepertoryItem(models.Model):
+    song = models.ForeignKey(Song)
+    repertory = models.ForeignKey(Repertory, related_name='all_items')
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    notes = models.TextField(null=True, blank=True)
     tempo = models.IntegerField(choices=Tempo.choices(), null=True,
                                 blank=True)
     mode = models.IntegerField(choices=SongMode.choices(), null=True,
                                blank=True)
     tonality = models.CharField(max_length=10, null=True, blank=True,
                                 choices=Tonality.choices())
+    status = models.SmallIntegerField(default=RepertoryItemStatus.new,
+                                      choices=RepertoryItemStatus.choices())
 
     class Meta:
-        unique_together = (('song', 'group'), ('group', 'number'))
+        unique_together = ('song', 'repertory')
 
     def __unicode__(self):
         return self.song.name
@@ -586,8 +547,14 @@ class RepertoryGroupItem(models.Model):
                                                 self.mode, mode_display,  mode)
 
     @property
-    def number_display(self):
-        return str(self.number).zfill(2)
+    def status_html_display(self):
+        status_display = RepertoryItemStatus.display(self.status)
+        if status_display:
+            status = status_display[:9]
+        else:
+            status =  'N/A'
+        return '<span class="song_status status%s" title="%s">%s</span>' % (
+                                           self.status, status_display, status)
 
     @property
     def ratings(self):
@@ -606,101 +573,70 @@ class RepertoryGroupItem(models.Model):
     def has_voted(self, user):
         return bool(self.users_ratings.filter(user=user).count())
 
-    def clone_object(self, group):
-        now = datetime.now()
-        item = RepertoryGroupItem(song=self.song, number=self.number, date=now,
-                                  tempo=self.tempo, mode=self.mode,
-                                  tonality=self.tonality, group=group)
-        item.save()
-        for player in self.players.all():
-            try:
-                item_player = item.players.get(player=player.player)
-            except PlayerRepertoryItem.DoesNotExist:
-                item_player = None
-            new_player, rels = player.clone_object(item_player)
-            new_player.repertory_item = item
-            new_player.save()
-            for attr, values in rels.items():
-                many = getattr(new_player, attr)
-                many.clear()
-                for value in values:
-                    many.add(value)
-            new_player.save()
-            for rating in player.users_ratings.all():
-                try:
-                    rat = new_player.users_ratings.get(user=rating.user)
-                    rat.rate = rating.rate
-                    rat.save()
-                    continue
-                except PlayerRepertoryItemRating.DoesNotExist:
-                    PlayerRepertoryItemRating.objects.create(user=rating.user,
-                                                             rate=rating.rate,
-                            player_repertory_item=rating.player_repertory_item)
+    def to_trash(self):
+        self.status = RepertoryItemStatus.deleted
+        self.save()
 
-        for rating in self.users_ratings.all():
-            try:
-                rat = item.users_ratings.get(user=rating.user)
-                rat.rate = rating.rate
-                rat.save()
-                continue
-            except UserRepertoryItemRating.DoesNotExist:
-                UserRepertoryItemRating.objects.create(user=rating.user,
-                                                       repertory_item=item,
-                                                       rate=rating.rate)
-        return item
+    def restore(self):
+        self.status = RepertoryItemStatus.restored
+        self.save()
 
-    def get_correspond_main_item(self):
-        main_group = RepertoryGroup.get_main_group()
-        try:
-            return main_group.items.get(song=self.song)
-        except RepertoryGroupItem.DoesNotExist:
-            return
 
-    def get_last_new_correspond_items(self):
-        last_new_repertory = Repertory.get_last_new_repertory()
-        if not last_new_repertory:
-            return []
-        items = []
-        for group in last_new_repertory.groups.all():
-            try:
-                item = group.items.get(song=self.song)
-            except RepertoryGroupItem.DoesNotExist:
-                continue
-            items.append(item)
-        return items
+class EventRepertory(RepertoryBase):
+    event = models.ForeignKey(Event)
+    user_lock = models.ForeignKey(User, null=True, blank=True,
+                                  related_name="event_repertories")
+    band = models.ForeignKey(Band, related_name="event_repertories", null=True)
+
+    def __unicode__(self):
+        return "%s Repertory" % self.event
+
+    def import_items_from(self, base):
+        for item in base.items.all():
+            new_item = item.clone_object(self)
+            new_item.save()
 
     @classmethod
-    def post_save(cls, instance, created, **kwargs):
-        """ All new RepertoryGroupItems will inherit all properties from
-        main repertory.
-        """
-        if not created or instance.group.is_main:
-            return
-        main_item = instance.get_correspond_main_item()
-        if not main_item:
-            return
-        for player_rep_item in main_item.players.all():
-            new_player_rep_item, rels = player_rep_item.clone_object()
-            new_player_rep_item.repertory_item = instance
-            new_player_rep_item.save()
-            for attr, values in rels.items():
-                many = getattr(new_player_rep_item, attr)
-                many.clear()
-                for value in values:
-                    many.add(value)
-            new_player_rep_item.save()
-            for rating in player_rep_item.users_ratings.all():
-                PlayerRepertoryItemRating.objects.create(user=rating.user,
-                                                         rate=rating.rate,
-                                     player_repertory_item=new_player_rep_item)
+    def get_last_new_repertory(cls):
+        event = Event.get_last_new_event()
+        if event:
+            try:
+                return cls.objects.filter(event=event).order_by('-id')[0]
+            except IndexError:
+                return
 
-        for rating in main_item.users_ratings.all():
-            UserRepertoryItemRating.objects.create(user=rating.user,
-                                                   repertory_item=instance,
-                                                   rate=rating.rate)
+    @property
+    def items(self):
+        deleted = RepertoryItemStatus.deleted
+        return self.all_items.all().exclude(item__status=deleted)\
+                                   .order_by('order')
 
 
-post_save.connect(RepertoryGroupItem.post_save, RepertoryGroupItem)
+class EventRepertoryItem(models.Model):
+    repertory = models.ForeignKey(EventRepertory, related_name='all_items')
+    item = models.ForeignKey(RepertoryItem, related_name='events_items',
+                             null=True)
+    order = models.IntegerField(null=True)
+
+    # used for empty intervals
+    empty_duration = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('repertory', 'item')
+
+    @property
+    def order_display(self):
+        return str(self.order).zfill(2)
+
+    def clone_object(self, repertory):
+        item = EventRepertoryItem(item=self.item, repertory=repertory,
+                                  order=self.order)
+        return item
+
+    def empty_duration_display(self):
+        if not self.empty_duration:
+            return ""
+        return TimeDuration.custom_display(self.empty_duration)
 
 
 class Instrument(models.Model):
@@ -784,22 +720,29 @@ class InstrumentTagType(models.Model):
         return template.render(Context(dict(tag_type=self)))
 
 
+class PlayerEventRepertory(models.Model):
+    player = models.ForeignKey(Player, related_name="event_repertories",
+                               null=True, blank=True)
+    item = models.ForeignKey(EventRepertoryItem)
+
+    class Meta:
+        unique_together = ('player', 'item')
+
+
 class PlayerRepertoryItem(models.Model):
     player = models.ForeignKey(Player, related_name="repertory_items",
                                null=True, blank=True)
-    repertory_item = models.ForeignKey(RepertoryGroupItem,
-                                       related_name="players")
+    item = models.ForeignKey(RepertoryItem, related_name="players")
     as_member = models.ForeignKey(Artist, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     tag_types = models.ManyToManyField(InstrumentTagType, blank=True)
     is_lead = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('player', 'repertory_item')
+        unique_together = ('player', 'item')
 
     def __unicode__(self):
-        return "%s %s as %s" % (self.player, self.repertory_item,
-                                self.as_member)
+        return "%s %s as %s" % (self.player, self.item, self.as_member)
 
     @property
     def ratings(self):
@@ -821,114 +764,6 @@ class PlayerRepertoryItem(models.Model):
     @property
     def has_tag_types(self):
         return bool(self.tag_types.all().count())
-
-    def clone_object(self, through=None):
-        if through is None:
-            through = PlayerRepertoryItem()
-        player_repertory_item = through
-        player_repertory_item.player = self.player
-        player_repertory_item.as_member = self.as_member
-        player_repertory_item.notes = self.notes
-        player_repertory_item.is_lead = self.is_lead
-        tag_types = self.tag_types.all() if self.id else []
-        return player_repertory_item, dict(tag_types=tag_types)
-
-    def get_correspond_main_player(self):
-        main_item = self.repertory_item.get_correspond_main_item()
-        if not main_item:
-            return
-        try:
-            main_player_ri = main_item.players.get(player=self.player)
-        except PlayerRepertoryItem.DoesNotExist:
-            return
-        return main_player_ri
-
-    def get_last_new_correspond_players(self):
-        items = self.repertory_item.get_last_new_correspond_items()
-        players = []
-        for item in items:
-            try:
-                player = item.players.get(player=self.player)
-            except PlayerRepertoryItem.DoesNotExist:
-                continue
-            players.append(player)
-        return players
-
-    @classmethod
-    def pre_save(cls, instance, **kwargs):
-        """ If the current PlayerRepertoryItem belongs to a repertory of an
-        Event (not the main one), so replicate all information to the main
-        repertory.
-        """
-        return
-        try:
-            instance
-            instance.repertory_item
-            instance.repertory_item.group
-            instance.repertory_item.group.is_main
-        except:
-            return
-        if instance.id:
-            current = PlayerRepertoryItem.objects.get(id=instance.id)
-        else:
-            current = instance
-        if instance.repertory_item.group.is_main:
-
-            players = current.get_last_new_correspond_players()
-            for player in players:
-                pl, rels = instance.clone_object(player)
-                pl.save()
-                for attr, values in rels.items():
-                    many = getattr(pl, attr)
-                    many.clear()
-                    for value in values:
-                        many.add(value)
-            if not instance.id:
-                items = current.repertory_item.get_last_new_correspond_items()
-                for item in items:
-                    pls = [i.player for i in item.players.all()]
-                    if instance.player in pls:
-                        continue
-                    pl, rels = instance.clone_object()
-                    pl.repertory_item = item
-                    pl.save()
-                    for attr, values in rels.items():
-                        many = getattr(pl, attr)
-                        many.clear()
-                        for value in values:
-                            many.add(value)
-                    item.players.add(pl)
-            return
-        main_player_ri = current.get_correspond_main_player()
-        if not main_player_ri:
-            return
-        main_player_ri, rels = instance.clone_object(main_player_ri)
-        main_player_ri.save()
-        for attr, values in rels.items():
-            many = getattr(main_player_ri, attr)
-            for value in values:
-                many.add(value)
-        main_player_ri.save()
-
-    @classmethod
-    def post_delete(cls, instance, **kwargs):
-        """ If the current PlayerRepertoryItem belongs to a repertory of an
-        Event (not the main one), so replicate all information to the main
-        repertory.
-        """
-        return
-        try:
-            instance.repertory_item
-        except RepertoryGroupItem.DoesNotExist:
-            return
-        if instance.repertory_item.group.is_main:
-            return
-        main_player_rep_item = instance.get_correspond_main_player()
-        main_player_rep_item.delete()
-
-
-pre_save.connect(PlayerRepertoryItem.pre_save, PlayerRepertoryItem)
-post_delete.connect(PlayerRepertoryItem.post_delete, PlayerRepertoryItem)
 
 
 class MusicScoreSegment(models.Model):
@@ -1003,12 +838,11 @@ pre_delete.connect(DocumentPlayerRepertoryItem.pre_delete,
 
 class DocumentRepertoryItem(models.Model):
     name = models.CharField(max_length=64)
-    repertory_item = models.ForeignKey(RepertoryGroupItem)
+    item = models.ForeignKey(RepertoryItem)
     document = models.CharField(max_length=255)
-    notes = models.TextField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('name', 'repertory_item')
+        unique_together = ('name', 'item')
 
     def __unicode__(self):
         return self.name
@@ -1025,21 +859,20 @@ class VideoPlayerRepertoryItem(VideoBase):
 
 class VideoRepertoryItem(VideoBase):
     name = models.CharField(max_length=255, null=True, blank=True)
-    repertory_item = models.ForeignKey(PlayerRepertoryItem)
+    player_repertory_item = models.ForeignKey(PlayerRepertoryItem)
 
     def __unicode__(self):
         title = self.name or self.url
-        return "%s - %s" % (title, self.repertory_item)
+        return "%s - %s" % (title, self.player_repertory_item)
 
 
 class UserRepertoryItemRating(models.Model, Rating):
     user = models.ForeignKey(User, related_name="repertory_items_ratings")
-    repertory_item = models.ForeignKey(RepertoryGroupItem,
-                                       related_name="users_ratings")
+    item = models.ForeignKey(RepertoryItem, related_name="users_ratings")
     rate = models.SmallIntegerField(choices=Rating.choices())
 
     class Meta:
-        unique_together = ('user', 'repertory_item')
+        unique_together = ('user', 'item')
 
 
 class PlayerRepertoryItemRating(models.Model, Rating):

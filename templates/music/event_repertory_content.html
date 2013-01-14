@@ -1,0 +1,76 @@
+{% load i18n %}
+<table class="repertory">
+    <thead>
+        {% if editable %}
+        <th  class="center sort_column">
+        </th>
+        {% endif %}
+        <th  class="center cover_column">
+            {% trans "Cov" %}
+        </th>
+        <th class="name_column">
+            {% trans "Name" %}
+        </th>
+        <th  class="center duration_column">
+            {% trans "Dur" %}
+        </th>
+        <th  class="center tempo_column">
+            {% trans "Tempo" %}
+        </th>
+        <th  class="center ratings_column">
+            {% trans "Ratings" %}
+        </th>
+        <th  class="center mode_column">
+            {% trans "Mode" %}
+        </th>
+        <th  class="center tonality_column">
+            {% trans "Tonality" %}
+        </th>
+        <th  class="center players_column">
+            {% trans "Players" %}
+        </th>
+        {% if editable %}
+        <th  class="center actions_column">
+            <img src="/media/img/cross_16_d.png" class="remove_song" />
+        </th>
+        {% endif %}
+    </thead>
+    <tbody>
+        {% for item in repertory.items %}
+            {% include "music/event_repertory_item_content.html" %}
+        {% endfor %}
+    </tbody>
+</table>
+{% if editable %}
+<div class="add_song_form" style="float: left">
+    <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
+        <img src="/media/img/plus_16.png" alt="Add a song to repertory" title="Add a song to repertory" />&nbsp;
+        <input name="song_name" type="text" style="width: 200px;" addurl="{% url add_item_to_event_repertory repertory.id %}" searchurl="{% url search_item_by_name repertory.id %}" />
+        <span class="message" style="display: none; color: red; font-size: 14px; margin-left: 10px"></span>
+    </div>
+    <div class="songs_content">
+
+    </div>
+</div>
+<div class="add_interval">
+    <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
+        <label for="id_interval">{% trans "or add interval of:" %}</label>
+        <select name="interval" id="id_interval" addintervalurl="{% url add_event_repertory_item_interval repertory.id %}">
+            <option value="" selected="selected">{% trans "Chosse one" %}</option>
+            <option value="5">{% trans "5 minutes" %}</option>
+            <option value="10">{% trans "10 minutes" %}</option>
+            <option value="15">{% trans "15 minutes" %}</option>
+            <option value="20">{% trans "20 minutes" %}</option>
+            <option value="30">{% trans "30 minutes" %}</option>
+            <option value="40">{% trans "40 minutes" %}</option>
+            <option value="50">{% trans "50 minutes" %}</option>
+            <option value="60">{% trans "1 hour" %}</option>
+            <option value="90">{% trans "1 hour and 30 minutes" %}</option>
+            <option value="120">{% trans "2 hours" %}</option>
+            <option value="180">{% trans "3 hours" %}</option>
+        </select>
+    </div>
+</div>
+{% endif %}
+<br/>
+

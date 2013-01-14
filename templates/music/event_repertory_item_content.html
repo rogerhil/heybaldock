@@ -1,0 +1,134 @@
+{% load i18n common %}
+
+{% if not item.item %}
+    <tr style="background-color: #f7d453; font-weight: bold; text-transform: uppercase; font-size: 16px;"
+        itemid="{{ item.id }}"
+        mainitemid="{{ main_item.id }}"
+        songid="{{ main_item.song.id }}"
+        order="{{ item.order }}"
+        moveitemurl="{% url move_event_repertory_item item.id %}">
+        {% if editable %}
+            <td class="nopadding center sort_column">
+                <span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span>
+            </td>
+        {% endif %}
+        <td colspan="8" class="center" style="padding-top: 20px; padding-bottom: 20px;">
+            {% blocktrans with item.empty_duration_display as interval %}
+                Interval of {{ interval }}
+            {% endblocktrans %}
+        </td>
+        {% if editable %}
+            <td class="center actions_column">
+                <img src="/media/img/cross_16.png" class="remove_song" alt="Remove this song" title="Remove this song" removeurl="{% url remove_song_from_event_repertory item.id %}" />
+            </td>
+        {% endif %}
+    </tr>
+{% else %}
+    {% with item.item as main_item %}
+        <tr itemid="{{ item.id }}"
+            mainitemid="{{ main_item.id }}"
+            songid="{{ main_item.song.id }}"
+            order="{{ item.order }}"
+            moveitemurl="{% url move_event_repertory_item item.id %}"
+            class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
+            {% if editable %}
+                <td class="nopadding center sort_column">
+                    <span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span>
+                </td>
+            {% endif %}
+            <td class="nopadding center cover_column">
+                <a href="{% url album main_item.song.album.id %}">
+                    <img src="{{ main_item.song.album.icon_url }}" alt="{{ main_item.order_display }} - {{ main_item.song.album }}" title="{{ main_item.order_display }} - {{ main_item.song.album }}" style="border-radius: 3px;" />
+                </a>
+            </td>
+            <td class="name_column">
+                {% if main_item.song.audio %}
+                    <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ main_item.song.name }}" audiourl="{{ main_item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
+                {% endif %}
+                {{ main_item.song.name }}
+            </td>
+            <td class="center duration duration_column">
+                {{ main_item.song.duration_display }}
+            </td>
+            <td class="center tempo_cel tempo_column">
+                <span class="tempo_metronome" tempo="{{ main_item.song.tempo }}" signaturebeats="{{ main_item.song.signature_beats }}">
+                    {% autoescape off %}{{ main_item.song.tempo_html_display }}{% endautoescape %}
+                </span>
+                <div class="metronome_graphic" style="position: absolute; display: none;">
+                    {% for i in main_item.song.signature_beats_range %}
+                        <div class="led led_{{ i }}"></div>
+                    {% endfor %}
+                </div>
+            </td>
+            {% call main_item.has_voted with user as voted %}
+            <td class="center ratings_cel ratings_column" ratingurl="{% url rate_event_repertory_item item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
+                title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
+                {% for r in main_item.ratings_range %}
+                    {% if r.active %}
+                        <img src="/media/img/star_16.png" class="active" rate="{{ r.rate }}" />
+                    {% else %}
+                        <img src="/media/img/star_gray_16.png" class="inactive" rate="{{ r.rate }}" />
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td class="center mode_cel mode_column">
+                {% autoescape off %}{{ main_item.mode_html_display }}{% endautoescape %}
+                <div style="position: relative;">
+                    <div class="mode_menu simple_menu" style="width: 120px;"">
+                        <div class="pretty_select">
+                            <h3>{% trans "Change mode" %}</h3>
+                            {% for key, title in mode_choices %}
+                                <div class="option" modeid="{{ key }}">
+                                    <span class="option song_mode mode{{ key }}" style="width: 70px">{{ title }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="center tonality_cel tanality_column">
+                {% autoescape off %}{{ main_item.tonality_html_display }}{% endautoescape %}
+                <div style="position: relative;">
+                    <div class="tonality_menu simple_menu">
+                        <div class="pretty_select">
+                            <h3>{% trans "Change tonality" %}</h3>
+                            <div>
+                                <span class="option tonality_original" tonalityid="ORIGINAL" style="width: 190px;">{% trans "Original" %}</span>
+                            </div>
+                            <div class="clear"></div>
+                            {% for key, title, ttype in tonality_choices %}
+                                <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
+                            {% endfor %}
+                            <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="td_players players_column">
+                <div style="position: relative;">
+                    <div class="players_menu simple_menu">
+                        {% include "music/players_menu.html" %}
+                    </div>
+                    <div class="change_player_menu simple_menu" itemid="{{ main_item.id }}">
+
+                    </div>
+                </div>
+                <div>
+                    {% for player in main_item.players.all %}
+                        <img class="player {% if player.is_lead %}player_is_lead{% endif %}"
+                             style="height: 20px;"
+                             src="{{ player.player.instrument.icon_url }}"
+                             alt="{{ player }}"
+                             title="{{ player }}"
+                             changeplayermenuurl="{% url player_repertory_item_menu player.id %}" />
+                    {% endfor %}
+                </div>
+            </td>
+            {% if editable %}
+                <td class="center actions_column">
+                    <img src="/media/img/cross_16.png" class="remove_song" alt="Remove this song" title="Remove this song" removeurl="{% url remove_song_from_event_repertory item.id %}" />
+                </td>
+            {% endif %}
+        </tr>
+    {% endwith %}
+{% endif %}

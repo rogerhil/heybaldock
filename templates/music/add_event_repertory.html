@@ -18,11 +18,14 @@
 {% endblock %}
 
 {% block music_content %}
+    <h1>{% trans "Add Repertory for Event" %}</h1>
+    <h3>{% trans "Select the event below" %}</h3>
+    <br/><br/>
     <div class="pretty_form">
         <form action="" method="post" name="repertory_form">
             {% csrf_token %}
             {{ form.as_ul }}
-            {%  if repertories %}
+            {% if repertories %}
                 <ul>
                     <li style="padding-left: 120px;">
                         <div>

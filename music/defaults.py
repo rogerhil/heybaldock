@@ -37,40 +37,59 @@ class TimeDuration:
     MAX_MINUTES = 12 * 60
 
     @classmethod
+    def _display(cls, i):
+        min = i % 60
+        hours = i / 60
+        ret = _('0 hours')
+        if hours == 1 and min > 1:
+            ret = _("%s hour and %s minutes" % (str(hours),
+                                                str(min).zfill(2)))
+        elif hours > 1 and min > 1:
+            ret = _("%s hours and %s minutes" % (str(hours),
+                                                 str(min).zfill(2)))
+        elif hours == 1 and min == 1:
+            ret = _("%s hour and %s minute" % (str(hours),
+                                               str(min).zfill(2)))
+        elif hours > 1 and min == 1:
+            ret = _("%s hours and %s minute" % (str(hours),
+                                                str(min).zfill(2)))
+        elif hours == 1 and not min:
+            ret = _("%s hour" % str(hours))
+        elif hours > 1 and not min:
+            ret = _("%s hours" % str(hours))
+        elif not hours and min == 1:
+            ret = _("%s minute" % str(min))
+        elif not hours and min > 1:
+            ret = _("%s minutes" % str(min))
+        return ret
+
+    @classmethod
     def choices(cls):
         minutes1 = range(cls.MIN_MINUTES, 3 * 60 + 1, 30)
         minutes2 = range(3 * 60, cls.MAX_MINUTES + 1, 60)
-        def display(i):
-            min = i % 60
-            hours = i / 60
-            ret = _('0 hours')
-            if hours == 1 and min > 1:
-                ret = _("%s hour and %s minutes" % (str(hours),
-                                                    str(min).zfill(2)))
-            elif hours > 1 and min > 1:
-                ret = _("%s hours and %s minutes" % (str(hours),
-                                                     str(min).zfill(2)))
-            elif hours == 1 and min == 1:
-                ret = _("%s hour and %s minute" % (str(hours),
-                                                   str(min).zfill(2)))
-            elif hours > 1 and min == 1:
-                ret = _("%s hours and %s minute" % (str(hours),
-                                                    str(min).zfill(2)))
-            elif hours == 1 and not min:
-                ret = _("%s hour" % str(hours))
-            elif hours > 1 and not min:
-                ret = _("%s hours" % str(hours))
-            elif not hours and min == 1:
-                ret = _("%s minute" % str(min))
-            elif not hours and min > 1:
-                ret = _("%s minutes" % str(min))
-            return ret
-        return [(i, display(i)) for i in minutes1] + \
-               [(i, display(i)) for i in minutes2]
+        return [(i, cls._display(i)) for i in minutes1] + \
+               [(i, cls._display(i)) for i in minutes2]
 
     @classmethod
     def display(cls, t):
         return dict(cls.choices()).get(t)
+
+    @classmethod
+    def custom_display(cls, t):
+        return cls._display(t)
+
+
+class RepertoryItemStatus(ChoicesBase):
+    new = 1
+    deleted = 2
+    restored = 3
+    working = 4
+    ready = 5
+    abandoned = 6
+
+    @classmethod
+    def active_choices(cls):
+        return [i for i in cls.choices() if i[0] != 2]
 
 
 class SongMode(ChoicesBase):

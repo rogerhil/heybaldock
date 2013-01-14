@@ -1425,6 +1425,52 @@ div.metadata ul li a {
     color: #f7c413;
 }
 
+.repertory .sort_column {
+    width: 8px;
+}
+
+.repertory .cover_column {
+    width: 20px;
+}
+
+.repertory .name_column {
+    width: 270px;
+}
+
+.repertory .duration_column {
+    width: 30px;
+}
+
+.repertory .status_column {
+    width: 70px;
+    text-align: center;
+}
+
+.repertory .tempo_column {
+    width: 50px;
+}
+
+.repertory .ratings_column {
+    width: 100px;
+}
+
+.repertory .mode_column {
+    width: 30px;
+}
+
+.repertory .tonality_column {
+    width: 30px;
+}
+
+.repertory .players_column {
+    width: 200px;
+}
+
+.repertory .actions_column {
+    width: 20px;
+}
+
+
 .song_mode {
     color: #000000;
     padding: 0px;
@@ -1463,6 +1509,58 @@ div.metadata ul li a {
     border: 2px solid #993300;
     color: white;
 }
+
+.song_status {
+    padding: 0px;
+    border-radius: 3px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: block;
+    width: 70px;
+    background-color: #FDFCEE;
+    color: #ffffff;
+    border: 2px solid #FDFCEE;
+    margin: 0 auto 0 auto;
+}
+
+.song_status:hover {
+    border: 2px solid #4b5c6c;
+    cursor: pointer;
+}
+
+.status1 {
+    background-color: #993300;
+    border: 2px solid #993300;
+}
+
+.status2 {
+    background-color: red;
+    border: 2px solid red;
+}
+
+.status3 {
+    background-color: #7CA0C7;
+    border: 2px solid #7CA0C7;
+    color: black;
+}
+
+.status4 {
+    background-color: #f7c413;
+    border: 2px solid #f7c413;
+    color: black;
+}
+
+.status5 {
+    background-color: green;
+    border: 2px solid green;
+}
+
+.status6 {
+    background-color: gray;
+    border: 2px solid gray;
+}
+
 
 .tempo_slider {
     width: 180px;

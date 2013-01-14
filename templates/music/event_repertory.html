@@ -1,0 +1,88 @@
+{% extends "music/base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.cmsplugin.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript" src="/media/js/utils.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/cleditor/jquery.cleditor.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/cleditor/jquery.cleditor.cmsplugin.js"></script>
+    <script type="text/javascript" src="/media/js/hbeditor.js"></script>
+    <script type="text/javascript" src="/media/js/buzz.js"></script>
+    <script type="text/javascript" src="/media/js/MIDI.js"></script>
+    <script type="text/javascript" src="/media/js/base64binary.js"></script>
+    <script type="text/javascript" src="/media/js/metronome.js"></script>
+    <script type="text/javascript" src="/media/js/audioplayer.js"></script>
+    <script type="text/javascript">
+        var is_locked = {% if is_locked %}true{% else %}false{% endif %};
+        var is_free = {% if repertory.is_free %}true{% else %}false{% endif %};
+        var is_editable = {% if editable %}true{% else %}false{% endif %};
+        var isMainRepertory = false;
+    </script>
+    <script type="text/javascript" src="/media/js/musiccommonrepertory.js"></script>
+    <script type="text/javascript" src="/media/js/musiceventrepertory.js"></script>
+{% endblock %}
+
+{% block actions %}
+    <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+{% endblock %}
+
+{% block music_content %}
+    {% include "music/audio_player.html" %}
+    <h1>{% trans "Repertory:" %} {{ repertory }}</h1>
+    <h3 id="time_total">
+        {% trans "Time total:" %}
+        <span></span>
+        considering
+        <select name="time_between_songs">
+            <option value="0">no pause</option>
+            <option value="10">10 seconds</option>
+            <option value="20">20 seconds</option>
+            <option value="30" selected="selected">30 seconds</option>
+            <option value="40">40 seconds</option>
+            <option value="50">50 seconds</option>
+            <option value="60">1 minute</option>
+            <option value="120">2 minutes</option>
+            <option value="180">3 minutes</option>
+            <option value="240">4 minutes</option>
+            <option value="300">5 minutes</option>
+        </select>
+        between songs
+    </h3>
+    <div class="clear"></div>
+    <br/>
+    {% if repertory.is_free %}
+        <div class="pretty_form">
+            <form method="post" name="lock_for_edition">
+                <p>
+                    <input type="hidden" name="lock" value="lock" />
+                    <input type="submit" class="small_button" value="{% trans "Lock this repertory for edition" %}" />
+                </p>
+            </form>
+        </div>
+    {% else %}
+        {% if editable %}
+            <div class="pretty_form">
+                <form method="post" name="lock_for_edition">
+                    <p>
+                        <input type="hidden" name="unlock" value="lock" />
+                        <input type="submit" class="small_button" value="{% trans "Unlock this repertory" %}" />
+                    </p>
+                </form>
+            </div>
+        {% endif %}
+        <p style="color: red; font-size: 14px;">
+            {% trans "This repertory is locked by" %} {{ repertory.user_lock.first_name }}.
+            {% if not editable %}{% trans "It's avaliable for read only." %}{% endif %}
+        </p>
+    {% endif %}
+    <div class="clear"></div>
+    <br/>
+    <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list" main="{% if repertory.is_main %}1{% else %}0{% endif %}">
+        {% include "music/event_repertory_content.html" %}
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% load i18n %}
+<table class="repertory">
+    <thead>
+        <th  class="center cover_column">
+            {% trans "Cov" %}
+        </th>
+        <th class="name_column">
+            {% trans "Name" %}
+        </th>
+        <th  class="center duration_column">
+            {% trans "Dur" %}
+        </th>
+        <th class="center status_column">
+            {% trans "Status" %}
+        </th>
+        <th  class="center tempo_column">
+            {% trans "Tempo" %}
+        </th>
+        <th  class="center ratings_column">
+            {% trans "Ratings" %}
+        </th>
+        <th  class="center mode_column">
+            {% trans "Mode" %}
+        </th>
+        <th  class="center tonality_column">
+            {% trans "Tonality" %}
+        </th>
+        <th  class="center players_column">
+            {% trans "Players" %}
+        </th>
+        {% if editable %}
+        <th  class="center actions_column">
+            <img src="/media/img/cross_16_d.png" class="remove_song" />
+        </th>
+        {% endif %}
+    </thead>
+    <tbody>
+        {% for item in repertory.items %}
+            {% include "music/main_repertory_item_content.html" %}
+        {% endfor %}
+    </tbody>
+</table>
+{% if editable %}
+    <div class="add_song_form">
+        <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
+            <img src="/media/img/plus_16.png" alt="Add a song to repertory" title="Add a song to repertory" />&nbsp;
+            <input name="song_name" type="text" style="width: 200px;" addurl="{% url add_song_to_main_repertory %}" searchurl="{% url search_song_by_name %}" />
+            <span class="message" style="display: none; color: red; font-size: 14px; margin-left: 10px"></span>
+        </div>
+        <div class="songs_content">
+
+        </div>
+    </div>
+{% endif %}
+<br/>
+

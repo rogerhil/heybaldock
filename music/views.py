@@ -19,31 +19,33 @@ from auth.decorators import login_required
 from section.decorators import render_to, json
 from discogs import Discogs
 from photo.image import FileHandlerSongAudio
-from forms import RepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
+from forms import EventRepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   InstrumentForm, PlayerForm, ArtistForm, \
                   PlayerRepertoryItemForm, InstrumentTagTypeForm, \
                   DocumentPlayerRepertoryItemForm, BandForm, RehearsalForm
-from models import Repertory, Song, Album, Artist, RepertoryGroup, \
-                   RepertoryGroupItem, Instrument, Player, \
-                   InstrumentTagType, PlayerRepertoryItem, \
+from models import Repertory, EventRepertory, Song, Album, Artist, \
+                   RepertoryItem, EventRepertoryItem, Instrument, \
+                   Player, InstrumentTagType, PlayerRepertoryItem, \
                    MusicHistoryChanges, UserRepertoryItemRating, \
                    PlayerRepertoryItemRating, Band, BandArtist, Rehearsal
 from decorators import ajax_check_locked_repertory, check_locked_repertory, \
                        ajax_check_locked_repertory_item, \
                        ajax_check_locked_player_repertory_item, \
-                       ajax_check_locked_main_repertory
+                       ajax_check_locked_main_repertory, \
+                       ajax_check_locked_event_repertory, \
+                       ajax_check_locked_event_repertory_item
 
 from event.models import Event
 from utils import get_or_create_temporary, mzip, str_list_in_list, \
                   generate_filename
-from defaults import Tempo, Tonality, SongMode, TimeDuration
+from defaults import Tempo, Tonality, SongMode, RepertoryItemStatus
 
 DISCOGS_PAGES = 500
 MAX_YEARS = 30
 
 def new_history_entry(user, instance, action, summary=''):
     content_type = ContentType.objects.get_for_model(type(instance))
-    summary = '%s "%s (%s)" %s. %s' % (content_type, instance,
+    summary = '%s "%s (%s)" %s %s' % (content_type, instance,
                                        instance.id, action, summary)
     history = MusicHistoryChanges.objects.create(
         content_type=content_type,
@@ -56,8 +58,11 @@ def new_history_entry(user, instance, action, summary=''):
 @login_required
 @render_to("music/repertories.html")
 def repertories(request):
-    repertories = Repertory.objects.filter(event__isnull=False)
-    main_repertory = Repertory.get_main_repertory()
+    repertories = EventRepertory.objects.all()
+    try:
+        main_repertory = request.band.repertory
+    except Repertory.DoesNotExist:
+        main_repertory = Repertory.objects.create(band=request.band)
     return dict(repertories=repertories, main_repertory=main_repertory)
 
 @login_required
@@ -191,11 +196,11 @@ def change_rehearsal(request, id):
     return dict(form=form, abscence_payers=abscence_payers, change=True)
 
 @login_required
-@render_to("music/add_repertory.html")
-def add_repertory(request):
+@render_to("music/add_event_repertory.html")
+def add_event_repertory(request):
     initial = {'band': request.band}
     if request.POST:
-        form = RepertoryForm(request.POST, initial=initial)
+        form = EventRepertoryForm(request.POST, initial=initial)
         if form.is_valid():
             form.save()
             if not form.instance.band:
@@ -203,36 +208,30 @@ def add_repertory(request):
                 form.instance.save()
             if request.POST.get('mode') == 'based_on_repertory':
                 id = int(request.POST['repertory_based'])
-                based_rep = Repertory.objects.get(id=id)
+                based_rep = EventRepertory.objects.get(id=id)
                 form.instance.import_items_from(based_rep)
             new_history_entry(request.user, form.instance, 'created')
             msg = _('The repertory was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
-            url = reverse('repertory_details', args=(form.instance.id,))
+            url = reverse('event_repertory', args=(form.instance.id,))
             return HttpResponseRedirect(url)
     else:
-        form = RepertoryForm(initial=initial)
-    repertories = Repertory.objects.all().exclude(name='Main')
+        form = EventRepertoryForm(initial=initial)
+    repertories = EventRepertory.objects.all()
     return dict(form=form, repertories=repertories)
 
 @login_required
-@render_to("music/repertory_details.html")
-def repertory_details(request, id):
+@render_to("music/main_repertory.html")
+def main_repertory(request):
     user = request.user
-    if int(id) == 1:
-        try:
-            repertory = Repertory.get_main_repertory()
-        except Repertory.DoesNotExist:
-            repertory = Repertory.objects.create(name='Main',
-                                                 band=request.band)
-            RepertoryGroup.objects.create(name='Main', repertory=repertory,
-                                          order=1)
-    else:
-        repertory = get_object_or_404(Repertory, id=id)
+    try:
+        repertory = request.band.repertory
+    except Repertory.DoesNotExist:
+        repertory = Repertory.objects.create(band=request.band)
 
     if request.POST:
         data = request.POST
-        url = reverse('repertory_details', args=(repertory.id,))
+        url = reverse('main_repertory')
         if data.get('lock'):
             if repertory.is_free():
                 repertory.lock(user)
@@ -253,14 +252,51 @@ def repertory_details(request, id):
                 messages.add_message(request, messages.SUCCESS, msg)
         return HttpResponseRedirect(url)
 
-    groups = repertory.groups.all().order_by('order')
-
     c = dict(
         repertory=repertory,
-        groups=groups,
+        items=repertory.items,
+        trash=repertory.trash,
         players=Player.objects.all(),
         tonality_choices=get_tonality_choices(),
         mode_choices=SongMode.choices(),
+        status_choices=RepertoryItemStatus.active_choices(),
+        is_locked=repertory.is_locked(user),
+        editable=repertory.is_editable(user)
+    )
+    return c
+
+@login_required
+@render_to("music/event_repertory.html")
+def event_repertory(request, id):
+    user = request.user
+    repertory = get_object_or_404(EventRepertory, id=id)
+
+    if request.POST:
+        data = request.POST
+        url = reverse('event_repertory', args=(id,))
+        if data.get('lock'):
+            if repertory.is_free():
+                repertory.lock(user)
+                new_history_entry(user, repertory, 'locked')
+                msg = _("The repertory is locked for edition by you.")
+                messages.add_message(request, messages.WARNING, msg)
+            else:
+                msg = _("You can't unlock a repertory already locked.")
+                messages.add_message(request, messages.WARNING, msg)
+        if data.get('unlock'):
+            if repertory.is_free():
+                msg = _("This repertory is already unlocked.")
+                messages.add_message(request, messages.SUCCESS, msg)
+            else:
+                repertory.unlock()
+                new_history_entry(user, repertory, 'unlocked')
+                msg = _("This repertory was successfully unlocked.")
+                messages.add_message(request, messages.SUCCESS, msg)
+        return HttpResponseRedirect(url)
+
+    c = dict(
+        repertory=repertory,
+        items=repertory.items,
         is_locked=repertory.is_locked(user),
         editable=repertory.is_editable(user)
     )
@@ -268,133 +304,56 @@ def repertory_details(request, id):
 
 @login_required
 @check_locked_repertory
-def remove_repertory(request, id):
-    repertory = get_object_or_404(Repertory, id=id)
+def remove_event_repertory(request, id):
+    repertory = get_object_or_404(EventRepertory, id=id)
     url = reverse('repertories')
-    if repertory.is_main:
-        msg = _("You can't remove the main repertory!")
-        messages.add_message(request, messages.WARNING, msg)
-        return HttpResponseRedirect(url)
     repertory.delete()
-    msg = _('The repertory "%s" was successfully removed.' % repertory.name)
+    msg = _('The "%s" was successfully removed.' % repertory)
     messages.add_message(request, messages.SUCCESS, msg)
     return HttpResponseRedirect(url)
 
 @login_required
 @json
-@ajax_check_locked_repertory
-def add_repertory_group(request, id):
-    repertory = Repertory.objects.get(id=id)
-    count = repertory.groups.all().count()
-    group = repertory.groups.create(name=request.POST['name'], order=count + 1)
-    new_history_entry(request.user, group, 'created')
-    groups = repertory.groups.all().order_by('order')
-    tc = RequestContext(request, dict(groups=groups, repertory=repertory))
-    c = dict(
-        success=True,
-        content=loader.get_template("music/repertory_content.html").render(tc)
-    )
-    return c
-
-@login_required
-@json
-@ajax_check_locked_repertory
-def remove_repertory_group(request, id, group_id):
-    repertory = Repertory.objects.get(id=id)
-    group = repertory.groups.get(id=group_id)
-    action = 'group "%s (%s)" has been deleted.' % (group.name, group.id)
-    group.delete()
-    new_history_entry(request.user, repertory, action)
-    groups = repertory.groups.filter(order__gt=group.order).order_by('order')
-    # update orders
-    for group in groups:
-        group.order -= 1
-        group.save()
-    groups = repertory.groups.all().order_by('order')
-    tc = RequestContext(request, dict(groups=groups, repertory=repertory))
-    c = dict(
-        success=True,
-        content=loader.get_template("music/repertory_content.html").render(tc)
-    )
-    return c
-
-@login_required
-@json
-@ajax_check_locked_repertory
-def move_repertory_group(request, id, group_id):
-    user = request.user
-    repertory = Repertory.objects.get(id=id)
-    order = int(request.POST['order'])
-    current_group = repertory.groups.get(id=group_id)
-    if current_group.order == order:
-        groups = repertory.groups.all().order_by('order')
-        tc = RequestContext(request, dict(groups=groups))
-        c = dict(
-            success=True,
-            content=loader.get_template("music/repertory_content.html")\
-                          .render(tc)
-        )
-        return c
-    current_order = current_group.order
-    current_group.order = -1 # aux
-    current_group.save()
-    if current_order < order:
-        groups = repertory.groups.filter(order__lte=order,
-                              order__gt=current_order).order_by('order')
-        # update orders
-        for group in groups:
-            group.order -= 1
-            group.save()
-    else:
-        groups = repertory.groups.filter(order__gte=order,
-                              order__lt=current_order).order_by('-order')
-        # update orders
-        for group in groups:
-            group.order += 1
-            group.save()
-
-    current_group.order = order
-    current_group.save()
-
-    new_history_entry(request.user, current_group, 'has been moved.')
-
-    groups = repertory.groups.all().order_by('order')
-    tc = RequestContext(request, dict(groups=groups))
-    c = dict(
-        editable=repertory.is_editable(user),
-        success=True,
-        content=loader.get_template("music/repertory_content.html").render(tc)
-    )
-    return c
-
-@login_required
-@json
 def search_song_by_name(request):
+    band = request.band
     name = request.POST['name']
-    is_main = int(request.POST['main'])
-    group_id = int(request.POST['group_id'])
     def item(s):
         return dict(
             name=str(s.name),
             url=str(s.album.icon_url),
             id=s.id
         )
-    main = Repertory.get_main_repertory()
-    main_group = main.groups.all()[0]
-    if is_main:
-        band = request.band
-        artists_ids = [a.id for a in band.artists.all()]
-        ids = main_group.items.all().values_list('song__id', flat=True)
-        songs = Song.objects.filter(name__icontains=name,
-                                    album__artist__id__in=artists_ids)\
-                            .exclude(id__in=ids)[:10]
-        songs = [item(s) for s in songs]
-    else:
-        group = RepertoryGroup.objects.get(id=group_id)
-        ids = group.items.all().values_list('song__id', flat=True)
-        items = main_group.items.filter(song__name__icontains=name)\
-                                .exclude(song__id__in=ids)[:10]
-        songs = [item(i.song) for i in items]
+    main = band.repertory
+    artists_ids = [a.id for a in band.artists.all()]
+    ids = main.items.values_list('song__id', flat=True)
+    songs = Song.objects.filter(name__icontains=name,
+                                album__artist__id__in=artists_ids)\
+                        .exclude(id__in=ids)[:10]
+    songs = [item(s) for s in songs]
+
+    c = dict(
+        success=True,
+        songs=songs
+    )
+    return c
+
+@login_required
+@json
+def search_item_by_name(request, id):
+    name = request.POST['name']
+    def item(i):
+        return dict(
+            name=str(i.song.name),
+            url=str(i.song.album.icon_url),
+            id=i.id
+        )
+    repertory = EventRepertory.objects.get(id=id)
+    main = request.band.repertory
+    ids = repertory.all_items.values_list('item__id', flat=True)
+    ids = filter(lambda x: x is not None, ids)
+    items = main.items.filter(song__name__icontains=name)\
+                      .exclude(id__in=ids)[:10]
+    songs = [item(i) for i in items]
     c = dict(
         success=True,
         songs=songs
@@ -695,134 +654,216 @@ def change_tonality(request, id):
 @login_required
 @ajax_check_locked_repertory_item
 def change_repertory_item_tonality(request, id):
-    item = get_object_or_404(RepertoryGroupItem, id=id)
+    item = get_object_or_404(RepertoryItem, id=id)
     tonality = request.POST['tonality']
     if tonality == 'ORIGINAL':
         tonality = None
     item.tonality = tonality
     item.save()
     new_history_entry(request.user, item, "tonality has been changed.")
-    content = get_song_line_repertory_content(request, item)
+    content = get_main_repertory_item_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @json
 @login_required
 @ajax_check_locked_repertory_item
 def change_repertory_item_song_mode(request, id):
-    item = get_object_or_404(RepertoryGroupItem, id=id)
+    item = get_object_or_404(RepertoryItem, id=id)
     item.mode = int(request.POST['mode_id'])
     item.save()
     new_history_entry(request.user, item, "song mode has been changed.")
-    content = get_song_line_repertory_content(request, item)
+    content = get_main_repertory_item_content(request, item)
+    return dict(success=True, content=content, item_id=item.id)
+
+@json
+@login_required
+@ajax_check_locked_repertory_item
+def change_repertory_item_status(request, id):
+    item = get_object_or_404(RepertoryItem, id=id)
+    item.status = int(request.POST['status_id'])
+    item.save()
+    new_history_entry(request.user, item, "song status has been changed.")
+    content = get_main_repertory_item_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @json
 @login_required
 @ajax_check_locked_main_repertory
 def add_song_to_main_repertory(request):
+    band = request.band
     song = get_object_or_404(Song, id=request.POST['id'])
-    main = Repertory.get_main_repertory()
-    group = main.groups.all()[0]
-    if group.items.filter(song__id=song.id).count():
+    main = band.repertory
+    if main.trash.filter(song__id=song.id).count():
+        msg = _("This song is in trash, you can restore it from there!")
+        return dict(success=False, message=msg)
+    if main.items.filter(song__id=song.id).count():
         msg = _("Song already exist in repertory!")
         return dict(success=False, message=msg)
-    count = group.items.all().count()
-    item = RepertoryGroupItem.objects.create(group=group, song=song,
-                                             number=count + 1)
-    group.items.add(item)
-    group.save()
-    summary = ', new item "%s (%s)" was added.' % (item, item.id)
+    item = RepertoryItem.objects.create(repertory=main,
+                                        song=song)
+    summary = ', new item "%s" was added.' % item
     new_history_entry(request.user, main, summary)
-    return dict(success=True)
-
-@json
-@login_required
-@ajax_check_locked_repertory
-def add_song_to_repertory(request, id, group_id, song_id):
-    song = get_object_or_404(Song, id=song_id)
-    repertory = get_object_or_404(Repertory, id=id)
-    group = repertory.groups.get(id=group_id)
-    if group.items.filter(song__id=song.id).count():
-        msg = _("Song already exist in repertory!")
-        return dict(success=False, message=msg)
-    count = group.items.all().count()
-    item = RepertoryGroupItem.objects.create(group=group, song=song,
-                                             number=count + 1)
-    group.items.add(item)
-    group.save()
-    summary = ', new item "%s (%s)" was added.' % (item, item.id)
-    new_history_entry(request.user, group, summary)
-    song_line = get_song_line_repertory_content(request, item)
+    song_line = get_main_repertory_item_content(request, item)
     return dict(success=True, song_line=song_line)
 
 @json
 @login_required
-@ajax_check_locked_repertory
-def remove_song_from_repertory(request, id, group_id, item_id):
-    item = get_object_or_404(RepertoryGroupItem, id=item_id,
-                             group__id=group_id, group__repertory__id=id)
-    n = item.number
-    group = item.group
-    summary = 'item "%s (%s)" has been deleted.' % (item, item.id)
+@ajax_check_locked_event_repertory
+def add_item_to_event_repertory(request, id):
+    repertory = get_object_or_404(EventRepertory, id=id)
+    item = get_object_or_404(RepertoryItem, id=request.POST['id'])
+    if repertory.items.filter(item__id=item.id).count():
+        msg = _("Song already exist in repertory!")
+        return dict(success=False, message=msg)
+    count = repertory.items.all().count()
+    item = EventRepertoryItem.objects.create(repertory=repertory, item=item,
+                                             order=count + 1)
+    summary = ', new item "%s" was added.' % item
+    new_history_entry(request.user, repertory, summary)
+    song_line = get_event_repertory_item_content(request, item)
+    return dict(success=True, song_line=song_line)
+
+@json
+@login_required
+@ajax_check_locked_event_repertory
+def add_event_repertory_item_interval(request, id):
+    repertory = get_object_or_404(EventRepertory, id=id)
+    interval = int(request.POST['interval'])
+    count = repertory.items.all().count()
+    item = EventRepertoryItem.objects.create(repertory=repertory,
+                                             order=count + 1,
+                                             empty_duration=interval)
+    summary = ', new item interval "%s" was added.' % item
+    new_history_entry(request.user, repertory, summary)
+    song_line = get_event_repertory_item_content(request, item)
+    return dict(success=True, song_line=song_line)
+
+@json
+@login_required
+@ajax_check_locked_repertory_item
+def remove_song_from_main_repertory(request, id):
+    item = get_object_or_404(RepertoryItem, id=id)
+    repertory = item.repertory
+    summary = 'item "%s" has been removed (moved to trash).' % item
+    item.to_trash()
+    new_history_entry(request.user, repertory, summary)
+    trash_content = get_trash_content(request, repertory)
+    return dict(success=True, trash_content=trash_content)
+
+def get_repertory_content(request, repertory):
+    user = request.user
+    tc = dict(
+        repertory=repertory,
+        items=repertory.items,
+        trash=repertory.trash,
+        players=Player.objects.all(),
+        tonality_choices=get_tonality_choices(),
+        mode_choices=SongMode.choices(),
+        status_choices=RepertoryItemStatus.active_choices(),
+        is_locked=repertory.is_locked(user),
+        editable=repertory.is_editable(user)
+    )
+    tc = RequestContext(request, tc)
+    return loader.get_template("music/main_repertory_content.html").render(tc)
+
+def get_trash_content(request, repertory):
+    tc = dict(
+        repertory=repertory,
+        editable=repertory.is_editable(request.user)
+    )
+    tc = RequestContext(request, tc)
+    return loader.get_template("music/main_repertory_trash.html").render(tc)
+
+@json
+@login_required
+@ajax_check_locked_repertory_item
+def purge_song_from_main_repertory(request, id):
+    item = get_object_or_404(RepertoryItem, id=id)
+    repertory = item.repertory
+    summary = 'item "%s" has been purged (removed from trash).' % item
     item.delete()
-    new_history_entry(request.user, group, summary)
-    items = group.items.filter(number__gt=n).order_by('number')
+    new_history_entry(request.user, repertory, summary)
+    repertory_content = get_repertory_content(request, repertory)
+    trash_content = get_trash_content(request, repertory)
+    return dict(success=True, repertory_content=repertory_content,
+                trash_content=trash_content)
+
+@json
+@login_required
+@ajax_check_locked_repertory_item
+def restore_song_to_main_repertory(request, id):
+    item = get_object_or_404(RepertoryItem, id=id)
+    repertory = item.repertory
+    item.restore()
+    summary = 'item "%s" has been restore from trash.' % item
+    new_history_entry(request.user, repertory, summary)
+    repertory_content = get_repertory_content(request, repertory)
+    trash_content = get_trash_content(request, repertory)
+    return dict(success=True, repertory_content=repertory_content,
+                trash_content=trash_content)
+
+@json
+@login_required
+@ajax_check_locked_event_repertory_item
+def remove_song_from_event_repertory(request, id):
+    item = get_object_or_404(EventRepertoryItem, id=id)
+    order = item.order
+    summary = 'item "%s" has been deleted.' % item
+    item.delete()
+    new_history_entry(request.user, item.repertory, summary)
+    items = item.repertory.items.filter(order__gt=order).order_by('order')
     for item in items:
-        item.number -= 1
+        item.order -= 1
         item.save()
     return dict(success=True)
 
 @login_required
 @json
-@ajax_check_locked_repertory
-def move_song(request, id, group_id, item_id):
+@ajax_check_locked_event_repertory_item
+def move_event_repertory_item(request, id):
     user = request.user
-    number = int(request.POST['number'])
-    current_item = RepertoryGroupItem.objects.get(id=item_id,
-                                                  group__id=group_id,
-                                                  group__repertory__id=id)
-    group = current_item.group
-    repertory = group.repertory
-    if current_item.number == number:
-        tc = RequestContext(request, dict(group=group, repertory=repertory))
+    order = int(request.POST['order'])
+    current_item = EventRepertoryItem.objects.get(id=id)
+    repertory = current_item.repertory
+    if current_item.order == order:
+        tc = RequestContext(request, dict(repertory=repertory))
         c = dict(
             success=True,
-            content=loader.get_template("music/repertory_group_content.html")\
+            content=loader.get_template("music/event_repertory_content.html")\
                           .render(tc)
         )
         return c
-    current_number = current_item.number
+    current_order = current_item.order
     current_item.number = -1 # aux
     current_item.save()
-    if current_number < number:
-        items = group.items.filter(number__lte=number,
-                                   number__gt=current_number)\
-                           .order_by('number')
+    if current_order < order:
+        items = repertory.items.filter(order__lte=order,
+                                       order__gt=current_order)\
+                               .order_by('order')
         # update number
         for item in items:
-            item.number -= 1
+            item.order -= 1
             item.save()
     else:
-        items = group.items.filter(number__gte=number,
-                                   number__lt=current_number)\
-                           .order_by('-number')
+        items = repertory.items.filter(order__gte=order,
+                                       order__lt=current_order)\
+                                .order_by('-order')
         # update numbers
         for item in items:
-            item.number += 1
+            item.order += 1
             item.save()
 
-    current_item.number = number
+    current_item.order = order
     current_item.save()
     new_history_entry(request.user, current_item, "has been moved.")
     tc = dict(
-        group=group,
         repertory=repertory,
         editable=repertory.is_editable(user)
     )
     tc = RequestContext(request, tc)
     c = dict(
         success=True,
-        content=loader.get_template("music/repertory_group_content.html")\
+        content=loader.get_template("music/event_repertory_content.html")\
                       .render(tc)
     )
     return c
@@ -893,7 +934,7 @@ def players_to_add(request):
 @login_required
 def players_menu(request, id):
     enable_inactive = request.band.enable_inactive_members
-    item = get_object_or_404(RepertoryGroupItem, id=id)
+    item = get_object_or_404(RepertoryItem, id=id)
     ids = item.players.all().values_list('player__id', flat=True)
     players = Player.objects.all().exclude(id__in=ids)
     if not enable_inactive:
@@ -941,8 +982,8 @@ def player_repertory_item_menu_content(request, player_repertory_item):
             tag_type.selected = True
         tag_types.append(tag_type)
     template = loader.get_template("music/player_repertory_item_menu.html")
-    item = player_repertory_item.repertory_item
-    repertory = item.group.repertory
+    item = player_repertory_item.item
+    repertory = item.repertory
     c = dict(
         player_repertory_item=player_repertory_item,
         tag_types=tag_types,
@@ -990,7 +1031,7 @@ def toogle_tag_type(request, id):
 @ajax_check_locked_player_repertory_item
 def change_as_member_options(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
-    artist = player_repertory_item.repertory_item.song.album.artist
+    artist = player_repertory_item.item.song.album.artist
     as_member = player_repertory_item.as_member
     members = [i for i in artist.active_members if i.id != as_member.id]
     template = loader.get_template("music/change_as_member_options.html")
@@ -1017,7 +1058,7 @@ def change_as_member(request, id):
 @ajax_check_locked_player_repertory_item
 def change_player_user(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
-    item = player_repertory_item.repertory_item
+    item = player_repertory_item.item
     player = get_object_or_404(Player, id=request.POST['player_id'])
     current_player = player_repertory_item.player
     # exchange
@@ -1100,40 +1141,63 @@ def remove_document_for_player_repertory_item(request, id, document_id):
     c['success'] = True
     return c
 
-def get_song_line_repertory_content(request, item):
+def get_main_repertory_item_content(request, item):
     user = request.user
-    group = item.group
-    repertory = group.repertory
-    temp = loader.get_template("music/song_line_repertory_content.html")
+    repertory = item.repertory
+    temp = loader.get_template("music/main_repertory_item_content.html")
     tonality_choices = get_tonality_choices()
-    c = {'item': item, 'group': group, 'repertory': repertory,
+    c = {'item': item, 'repertory': repertory,
          'tonality_choices': tonality_choices,
          'mode_choices': SongMode.choices(),
+         'status_choices': RepertoryItemStatus.active_choices(),
+         'editable': repertory.is_editable(user)}
+    return temp.render(RequestContext(request, c))
+
+def get_event_repertory_item_content(request, item):
+    user = request.user
+    repertory = item.repertory
+    temp = loader.get_template("music/event_repertory_item_content.html")
+    c = {'item': item, 'repertory': repertory,
          'editable': repertory.is_editable(user)}
     return temp.render(RequestContext(request, c))
 
 @json
 @login_required
-def update_song_line_repertory_content(request, id):
-    item = get_object_or_404(RepertoryGroupItem, id=id)
-    content = get_song_line_repertory_content(request, item)
+def update_main_repertory_item_content(request, id):
+    item = get_object_or_404(RepertoryItem, id=id)
+    content = get_main_repertory_item_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @json
 @login_required
 def rate_repertory_item(request, id):
     user = request.user
-    item = get_object_or_404(RepertoryGroupItem, id=id)
+    item = get_object_or_404(RepertoryItem, id=id)
     rate = int(request.POST['rate'])
     try:
-        rating = UserRepertoryItemRating.objects.get(user=user,
-                                                     repertory_item=item)
+        rating = UserRepertoryItemRating.objects.get(user=user, item=item)
     except UserRepertoryItemRating.DoesNotExist:
-        rating = UserRepertoryItemRating(user=user, repertory_item=item)
+        rating = UserRepertoryItemRating(user=user, item=item)
     rating.rate = rate
     rating.save()
-    content = get_song_line_repertory_content(request, item)
+    content = get_main_repertory_item_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
+
+@json
+@login_required
+def rate_event_repertory_item(request, id):
+    user = request.user
+    event_item = get_object_or_404(EventRepertoryItem, id=id)
+    item = event_item.item
+    rate = int(request.POST['rate'])
+    try:
+        rating = UserRepertoryItemRating.objects.get(user=user, item=item)
+    except UserRepertoryItemRating.DoesNotExist:
+        rating = UserRepertoryItemRating(user=user, item=item)
+    rating.rate = rate
+    rating.save()
+    content = get_event_repertory_item_content(request, event_item)
+    return dict(success=True, content=content, item_id=event_item.id)
 
 @json
 @login_required
@@ -1141,6 +1205,8 @@ def rate_player_repertory_item(request, id):
     user = request.user
     player_rep = get_object_or_404(PlayerRepertoryItem, id=id)
     rate = int(request.POST['rate'])
+    is_main = int(request.POST['is_main'])
+    event_id = int(request.POST.get('event_id', 0))
     try:
         rating = PlayerRepertoryItemRating.objects.get(user=user,
                                               player_repertory_item=player_rep)
@@ -1149,18 +1215,22 @@ def rate_player_repertory_item(request, id):
                                            player_repertory_item=player_rep)
     rating.rate = rate
     rating.save()
-    item = player_rep.repertory_item
-    content = get_song_line_repertory_content(request, item)
+    item = player_rep.item
+    if is_main:
+        content = get_main_repertory_item_content(request, item)
+    else:
+        item = EventRepertoryItem.objects.get(id=event_id)
+        content = get_event_repertory_item_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @json
 @login_required
 @ajax_check_locked_repertory_item
-def add_player_repertory_item(request, id, player_id):
+def add_player_repertory_item(request, id):
     data = request.POST
     data = dict(
-        repertory_item=id,
-        player=player_id,
+        item=id,
+        player=data['player_id'],
         as_member=data.get('member_id') or None,
         tag_types=data.getlist('tag_types[]', [])
     )
@@ -1168,18 +1238,19 @@ def add_player_repertory_item(request, id, player_id):
     if form.is_valid():
         form.save()
         new_history_entry(request.user, form.instance, "created")
-        item = form.instance.repertory_item
-        content = get_song_line_repertory_content(request, item)
+        item = form.instance.item
+        content = get_main_repertory_item_content(request, item)
         return dict(success=True, content=content, item_id=item.id)
-    return dict(success=False)
+    return dict(success=False, message=str(form.errors))
 
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
 def remove_player_repertory_item(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
-    item = player_repertory_item.repertory_item
-    content = get_song_line_repertory_content(request, item)
+    item = player_repertory_item.item
+    player_repertory_item.delete()
+    content = get_main_repertory_item_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @json
@@ -1191,8 +1262,8 @@ def player_set_as_lead(request, id):
     player_repertory_item.save()
     summary = "change is lead as %s" % player_repertory_item.is_lead
     new_history_entry(request.user, player_repertory_item, summary)
-    item = player_repertory_item.repertory_item
-    content = get_song_line_repertory_content(request, item)
+    item = player_repertory_item.item
+    content = get_main_repertory_item_content(request, item)
     return dict(success=True, content=content, item_id=item.id)
 
 @login_required
