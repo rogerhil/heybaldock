@@ -42,10 +42,12 @@
                 </a>
             </td>
             <td class="name_column">
-                {% if main_item.song.audio %}
-                    <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ main_item.song.name }}" audiourl="{{ main_item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
-                {% endif %}
-                {{ main_item.song.name }}
+                <div>
+                    {% if main_item.song.audio %}
+                        <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ main_item.song.name }}" audiourl="{{ main_item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
+                    {% endif %}
+                    {{ main_item.song.name }}
+                </div>
             </td>
             <td class="center duration duration_column">
                 {{ main_item.song.duration_display }}

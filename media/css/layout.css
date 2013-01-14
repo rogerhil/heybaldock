@@ -1434,7 +1434,13 @@ div.metadata ul li a {
 }
 
 .repertory .name_column {
-    width: 270px;
+    width: 160px;
+}
+
+.repertory .name_column div {
+    width: 160px;
+    white-space: nowrap;
+    overflow-x: hidden !important;
 }
 
 .repertory .duration_column {
@@ -1463,7 +1469,13 @@ div.metadata ul li a {
 }
 
 .repertory .players_column {
-    width: 200px;
+    width: 260px;
+    padding: 0px;
+}
+
+.repertory .players_column img.add_player {
+    margin-top: 1px;
+    margin-right: 3px;
 }
 
 .repertory .actions_column {
