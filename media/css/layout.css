@@ -1543,6 +1543,20 @@ div.metadata ul li a {
     text-align: center;
 }
 
+#stats .song_status {
+    text-align: left;
+    padding: 3px 10px 3px 10px;
+    margin-bottom: 5px;
+    width: 100px;
+    min-width: 100px;
+}
+
+#stats .song_status strong {
+    width: 80px;
+    display: block;
+    float: left;
+}
+
 .song_status:hover {
     border: 2px solid #4b5c6c;
     cursor: pointer;

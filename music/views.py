@@ -221,6 +221,49 @@ def add_event_repertory(request):
     repertories = EventRepertory.objects.all()
     return dict(form=form, repertories=repertories)
 
+
+def repertory_stats(repertory):
+    af = repertory.items.filter
+    stats_keys = {
+        1: 'new',
+        2: 'trash',
+        3: 'restored',
+        4: 'working',
+        5: 'ready',
+        6: 'abandoned'
+    }
+
+    artists = {}
+    for item in repertory.items.all():
+        artist = item.song.album.artist
+        if artist.id not in artists:
+            artists[artist.id] = dict(
+                total=0,
+                name=artist.name_display,
+                stats=dict(
+                    new=0,
+                    ready=0,
+                    working=0,
+                    abandoned=0,
+                    restored=0,
+                    trash=0
+                )
+            )
+        artists[artist.id]['total'] += 1
+        artists[artist.id]['stats'][stats_keys[item.status]] += 1
+
+    stats = dict(
+        new=af(status=RepertoryItemStatus.new).count(),
+        ready=af(status=RepertoryItemStatus.ready).count(),
+        working=af(status=RepertoryItemStatus.working).count(),
+        abandoned=af(status=RepertoryItemStatus.abandoned).count(),
+        restored=af(status=RepertoryItemStatus.restored).count(),
+        trash=af(status=RepertoryItemStatus.deleted).count(),
+        artists=artists.values()
+    )
+    return stats
+
+
 @login_required
 @render_to("music/main_repertory.html")
 def main_repertory(request):
@@ -262,7 +305,8 @@ def main_repertory(request):
         mode_choices=SongMode.choices(),
         status_choices=RepertoryItemStatus.active_choices(),
         is_locked=repertory.is_locked(user),
-        editable=repertory.is_editable(user)
+        editable=repertory.is_editable(user),
+        stats=repertory_stats(repertory)
     )
     return c
 
