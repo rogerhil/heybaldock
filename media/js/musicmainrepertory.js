@@ -251,11 +251,14 @@ function tonalityClick($el) {
 	if (!is_editable) return;
 	$el.unbind('click').click(function (e) {
 		e.stopPropagation();
-		var $menu = $(this).find("div.tonality_menu");
+		var $menu = $("#tonality_menu");
+		var url = $(this).attr('changetonalityurl');
+		$menu.css('left', $(this).position().left - 40 + 'px');
+		$menu.css('top', $(this).position().top + 25 + 'px');
 		if ($menu.is(":hidden")) {
 			$("div.tonality_menu").hide();
 			$menu.slideDown();
-			loadTonalityMenu($menu);
+			loadTonalityMenu($menu, url);
 		} else {
 			$menu.slideUp();
 		}
@@ -266,11 +269,14 @@ function modeClick($el) {
 	if (!is_editable) return;
 	$el.unbind('click').click(function (e) {
 		e.stopPropagation();
-		var $menu = $(this).find("div.mode_menu");
+		var $menu = $("#mode_menu");
+		var url = $(this).attr('changemodeurl');
+		$menu.css('left', $(this).position().left - 40 + 'px');
+		$menu.css('top', $(this).position().top + 25 + 'px');
 		if ($menu.is(":hidden")) {
 			$("div.mode_menu").hide();
 			$menu.slideDown();
-			loadModeMenu($menu);
+			loadModeMenu($menu, url);
 		} else {
 			$menu.slideUp();
 		}
@@ -281,20 +287,22 @@ function statusClick($el) {
 	if (!is_editable) return;
 	$el.unbind('click').click(function (e) {
 		e.stopPropagation();
-		var $menu = $(this).find("div.status_menu");
+		var $menu = $("#status_menu");
+		var url = $(this).attr('changestatusurl');
+		$menu.css('left', $(this).position().left - 20 + 'px');
+		$menu.css('top', $(this).position().top + 25 + 'px');
 		if ($menu.is(":hidden")) {
 			$("div.status_menu").hide();
 			$menu.slideDown();
-			loadStatusMenu($menu);
+			loadStatusMenu($menu, url);
 		} else {
 			$menu.slideUp();
 		}
 	});
 }
 
-function loadModeMenu ($menu) {
+function loadModeMenu ($menu, url) {
 	if (!is_editable) return;
-	var url = $menu.attr("changemodeurl");
 	$menu.find('div.option').unbind('click').click(function () {
 		var mode = $(this).attr("modeid");
 		$.ajax({
@@ -305,6 +313,7 @@ function loadModeMenu ($menu) {
 			success: function (data) {
 				if (data.success) {
 					updateSongLine(data);
+					$menu.slideUp();
 				} else {
 					var msg = data.message || "An error occured";
 					alert(msg);
@@ -314,10 +323,9 @@ function loadModeMenu ($menu) {
 	});
 }
 
-function loadTonalityMenu($menu) {
+function loadTonalityMenu($menu, url) {
 	if (!is_editable) return;
 	var $tr = $menu.parent().parent().parent();
-	var url = $tr.attr('changetonalityurl');
 	$menu.find('span.option').unbind('click').click('click', function (e) {
 		e.stopPropagation();
 		var tonality = $(this).attr('tonalityid');
@@ -329,6 +337,7 @@ function loadTonalityMenu($menu) {
 			success: function (data) {
 				if (data.success) {
 					updateSongLine(data);
+					$menu.slideUp();
 				} else {
 					var msg = data.message || "An error occured";
 					alert(msg);
@@ -338,9 +347,8 @@ function loadTonalityMenu($menu) {
 	});
 }
 
-function loadStatusMenu($menu) {
+function loadStatusMenu($menu, url) {
 	if (!is_editable) return;
-	var url = $menu.attr("changestatusurl");
 	$menu.find('div.option').unbind('click').click(function () {
 		var status = $(this).attr("statusid");
 		$.ajax({
@@ -351,6 +359,7 @@ function loadStatusMenu($menu) {
 			success: function (data) {
 				if (data.success) {
 					updateSongLine(data);
+					$menu.slideUp();
 				} else {
 					var msg = data.message || "An error occured";
 					alert(msg);

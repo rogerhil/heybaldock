@@ -1,4 +1,45 @@
 {% load i18n %}
+
+<!-- Hidden action menus: Change Status, Change Mode, Change Tonality -->
+
+    <div id="status_menu" class="status_menu simple_menu" style="width: 120px;">
+        <div class="pretty_select">
+            <h3>{% trans "Change status" %}</h3>
+            {% for key, title in status_choices %}
+                <div class="option" statusid="{{ key }}">
+                    <span class="option song_status status{{ key }}" style="width: 70px">{{ title }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="mode_menu" class="mode_menu simple_menu" style="width: 120px;" >
+        <div class="pretty_select">
+            <h3>{% trans "Change mode" %}</h3>
+            {% for key, title in mode_choices %}
+                <div class="option" modeid="{{ key }}">
+                    <span class="option song_mode mode{{ key }}" style="width: 70px">{{ title }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="tonality_menu" class="tonality_menu simple_menu">
+        <div class="pretty_select">
+            <h3>{% trans "Change tonality" %}</h3>
+            <div>
+                <span class="option tonality_original" tonalityid="ORIGINAL" style="width: 190px;">{% trans "Original" %}</span>
+            </div>
+            <div class="clear"></div>
+            {% for key, title, ttype in tonality_choices %}
+                <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
+            {% endfor %}
+            <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+        </div>
+    </div>
+
+<!-- End of hidden action menus -->
+
 <table class="repertory">
     <thead>
         <th  class="center cover_column">

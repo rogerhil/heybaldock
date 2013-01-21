@@ -1501,10 +1501,11 @@ div.metadata ul li a {
     color: #333333;
     border: 2px solid #FDFCEE;
     margin: 0 auto 0 auto;
+    text-align: center;
 }
 
 .song_mode:hover {
-    border: 2px solid #4b5c6c;
+    border: 2px solid #4b5c6c !important;
     cursor: pointer;
 }
 
@@ -1539,6 +1540,7 @@ div.metadata ul li a {
     color: #ffffff;
     border: 2px solid #FDFCEE;
     margin: 0 auto 0 auto;
+    text-align: center;
 }
 
 .song_status:hover {
@@ -1635,6 +1637,7 @@ div.metadata ul li a {
     display: block;
     float: left;
     width: 40px;
+    text-align: center;
 }
 
 .tonality_block {
