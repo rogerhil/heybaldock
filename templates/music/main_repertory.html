@@ -79,7 +79,12 @@
             {% for artist in stats.artists %}
                 <div>
                     <strong>{{ artist.name }}:</strong> {{ artist.total }}
-                    ({% if artist.stats.new %}{% trans "new:" %} {{ artist.stats.new }}{% endif %}{% if artist.stats.ready %}, {% trans "ready:" %} {{ artist.stats.ready }}{% endif %}{% if artist.stats.working %}, {% trans "working:" %} {{ artist.stats.working }}{% endif %}{% if artist.stats.abandoned %}, {% trans "abandoned:" %} {{ artist.stats.abandoned }}{% endif %}{% if artist.stats.restored %}, {% trans "restored:" %} {{ artist.stats.restored }}{% endif %}{% if artist.stats.trash %}, {% trans "in trash:" %} {{ artist.stats.trash }}{% endif %})
+                    ({% if artist.stats.new %}{% trans "new:" %}{{ artist.stats.new }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.ready %}{% trans "ready:" %} {{ artist.stats.ready }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.working %}{% trans "working:" %} {{ artist.stats.working }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.abandoned %}{% trans "abandoned:" %} {{ artist.stats.abandoned }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.restored %}{% trans "restored:" %} {{ artist.stats.restored }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.trash %}{% trans "in trash:" %} {{ artist.stats.trash }}{% endif %})
                 </div>
             {% endfor %}
         </div>
