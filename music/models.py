@@ -328,7 +328,10 @@ class Album(models.Model):
 
     @property
     def ordered_songs(self):
-        return self.songs.all().order_by('position')
+        songs = list(self.songs.all().order_by('position'))
+        zf = lambda x: str(x.position).zfill(3)
+        songs.sort(lambda a, b: 1 if zf(a) > zf(b) else -1)
+        return songs
 
     @property
     def thumb_url(self):

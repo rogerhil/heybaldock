@@ -19,48 +19,62 @@ Code Comments, Doc tests, License
 
 
 
- * Repertory management
 
-  - Song
-    - name
-    - artist -> Artist
-    - composer <-> Composer
-    - time
-    - 
+- Music Management
+
+ - Think about remove QUICK actions for instruments plays in table (for
+   performance reasons). Will be a bad idea for the cases which user may
+   want add lots of instruments at once in repertory. But, maybe would be
+   better remove quick actions like Documents, Audio Segments, Music Score,
+   etc.
+
+ - Verify song line, to avoid lots of repeatedely html elements in table,
+   for example (menus status, mode, tonality, MAYBE add player)
+
+ - Create a repertory item view, for best edition, and include inside:
+   - Document upload;
+   - Notes;
+   - Music Score:
+   - Videos;
+   - Audio segments;
+
+ - Document and notes: Think about the items above being shared with other
+   players each other, for example: a note or document for the whole repertory
+   item, or a single same note or document for 2 or 3 instruments. How to
+   implement this in interface. Is this practical? User will get confused?
+   Maybe user only document for each player and whole repertory, or just for
+   the whole repertory, I don't know.
+   Considering the other nice features score, cifra, audio etc, that would
+   be very nice to have for each player/instrument, maybe will be enough
+   let just document and notes for the repertory item only, nothing else.
+
+ - Lyrics easy download, will be very usefull for the feature below.
+
+ - Music score, tablature, cifra, audio segments, notes:
+   - Could be an unique infra structure based on LYRICS!
+   - 3 options:
+     1. based on lyrics (the base music score (the music score itself) will
+        belong to repertory item);
+     2. from scratch based on a time signature, free editing, free lyrics,
+        blank "pautas"
+     bdlabdlfbald pensar muito, pq tem ainda o lance do MIDI
 
 
+1    -    2    -    3    -    4
+               Tell          me
 
-Rep. Main
- Item
-    song = models.ForeignKey(Song)
-    date = models.DateTimeField(auto_now_add=True, null=True)
-    notes = models.TextField(null=True, blank=True)
-    tempo = models.IntegerField(choices=Tempo.choices(), null=True,
-                                blank=True)
-    mode = models.IntegerField(choices=SongMode.choices(), null=True,
-                               blank=True)
-    tonality = models.CharField(max_length=10, null=True, blank=True,
-                                choices=Tonality.choices())
-    status = models.SmallIntegerField(default=RepertoryItemStatus.active,
-                                      choices=RepertoryItemStatus.choices())
+1    -    2    -    3    -    4
+why
 
-Rep. Event
-  Item
-    item - Rep. Main. Item.
-    number = models.IntegerField()
-    date = models.DateTimeField(auto_now_add=True, null=True)
-    status = models.SmallIntegerField(default=RepertoryItemStatus.active,
-                                      choices=RepertoryItemStatus.choices())
+1    -    2    -    3    -    4
+          you  cried
 
-Rep. Instrument
-    instrument = models.ForeignKey(Instrument)
-    repertory_item = models.ForeignKey(RepertoryGroupItem,
-                                       related_name="players")
-    as_member = models.ForeignKey(Artist, null=True, blank=True)
-    notes = models.TextField(null=True, blank=True)
-    tag_types = models.ManyToManyField(InstrumentTagType, blank=True)
-    is_lead = models.BooleanField(default=False)
+1    -    2    -    3    -    4
+          and       why       you
 
-Rep. InstrumentPlayer
-    player = PLayer
-    instrument = Rep. Instrument
+1    -    2    -    3    -    4
+lied                          to
+
+1    -    2    -    3    -    4
+me
+
