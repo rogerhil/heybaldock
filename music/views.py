@@ -4,6 +4,7 @@ import decimal
 import pickle
 from datetime import datetime
 
+from django.db.models import Q
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -320,13 +321,15 @@ def search_song_by_name(request):
     def item(s):
         return dict(
             name=str(s.name),
+            artist=str(s.album.artist.short_name),
             url=str(s.album.icon_url),
             id=s.id
         )
     main = band.repertory
     artists_ids = [a.id for a in band.artists.all()]
     ids = main.items.values_list('song__id', flat=True)
-    songs = Song.objects.filter(name__icontains=name,
+    songs = Song.objects.filter((Q(name__icontains=name) |
+                                 Q(album__artist__name__icontains=name)),
                                 album__artist__id__in=artists_ids)\
                         .exclude(id__in=ids)[:10]
     songs = [item(s) for s in songs]

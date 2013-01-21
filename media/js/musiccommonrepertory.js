@@ -513,7 +513,7 @@ function matchSong(name, o) {
 				$songsContent.html('');
 				$(data.songs).each(function () {
 					img = '<div class="icon_image"><img src="' + this.url + '" /></div>';
-					name = '<div class="song_name">' + this.name + '</div>';
+					name = '<div class="song_name">' + this.artist + ' - ' + this.name + '</div>';
 					block = '<div class="song_block" sid="' + this.id + '">' + img + name + '</div>'
 					$songsContent.append($(block));
 					selected = $songsContent.find('div.selected');

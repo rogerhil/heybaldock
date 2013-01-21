@@ -210,6 +210,15 @@ class Artist(models.Model):
             return '/media/img/user.huge.png'
 
     @property
+    def short_name(self):
+        name = self.name_display
+        splited = name.split(' ')
+        if splited[0].lower() in ['the', 'a']:
+            return ' '.join(splited[1:])
+        else:
+            return name
+
+    @property
     def name_display(self):
         splited = self.name.split(', ')
         if len(splited) > 1:
