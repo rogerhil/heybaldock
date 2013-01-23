@@ -40,7 +40,7 @@
 
         {% for repertory in rehearsal.repertories.all %}
             <p>
-                <a href="{% url repertory_details repertory.id %}">
+                <a href="{% url event_repertory repertory.id %}">
                     {{ repertory }}
                 </a>
             </p>
