@@ -263,6 +263,11 @@ def repertory_stats(repertory):
     )
     return stats
 
+@login_required
+@render_to("music/repertories_global_statistics.html")
+def repertory_global_statistics(request):
+    repertory = request.band.repertory
+    return dict(repertory=repertory, item=repertory.items)
 
 @login_required
 @render_to("music/main_repertory.html")

@@ -595,7 +595,8 @@ class RepertoryItem(models.Model):
 
 
 class EventRepertory(RepertoryBase):
-    event = models.ForeignKey(Event)
+    event = models.ForeignKey(Event, null=True, blank=True)
+    rehearsal = models.ForeignKey(Rehearsal, null=True, blank=True)
     user_lock = models.ForeignKey(User, null=True, blank=True,
                                   related_name="event_repertories")
     band = models.ForeignKey(Band, related_name="event_repertories", null=True)
