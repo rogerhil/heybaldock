@@ -1843,3 +1843,13 @@ td.ratings_cel img {
     background-repeat: no-repeat;
     background-position: 0;
 }
+
+th.sort_down {
+    border-bottom: 5px solid black;
+    padding-bottom: 0px;
+}
+
+th.sort_up {
+    border-top: 5px solid black;
+    padding-top: 0px;
+}

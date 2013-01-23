@@ -515,7 +515,7 @@ class Repertory(RepertoryBase):
     @property
     def items(self):
         deleted = RepertoryItemStatus.deleted
-        return self.all_items.all().exclude(status=deleted).order_by('status')
+        return self.all_items.all().exclude(status=deleted)
 
 
 class RepertoryItem(models.Model):

@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 
     url(r'^repertory/$', views.repertories, name='repertories'),
     url(r'^repertory/main/$', views.main_repertory, name='main_repertory'),
+    url(r'^repertory/main/sort/$', views.sort_main_repertory, name='sort_main_repertory'),
     url(r'^repertory/main/song/search/$', views.search_song_by_name, name='search_song_by_name'),
     url(r'^repertory/main/song/add/$', views.add_song_to_main_repertory, name='add_song_to_main_repertory'),
     url(r'^repertory/main/item/(?P<id>\d+)/remove/$', views.remove_song_from_main_repertory, name='remove_song_from_main_repertory'),

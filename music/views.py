@@ -298,7 +298,8 @@ def main_repertory(request):
 
     c = dict(
         repertory=repertory,
-        items=repertory.items,
+        items=repertory.items.order_by('status'),
+        sort=dict(status=True),
         trash=repertory.trash,
         players=Player.objects.all(),
         tonality_choices=get_tonality_choices(),
@@ -799,9 +800,16 @@ def remove_song_from_main_repertory(request, id):
 
 def get_repertory_content(request, repertory):
     user = request.user
+    items = repertory.items
+    sort_by = request.GET.get('sort_by', '')
+    sort = {}
+    if sort_by:
+        items = items.order_by(sort_by)
+        sort[sort_by] = True
     tc = dict(
         repertory=repertory,
-        items=repertory.items,
+        sort=sort,
+        items=items,
         trash=repertory.trash,
         players=Player.objects.all(),
         tonality_choices=get_tonality_choices(),
@@ -812,6 +820,13 @@ def get_repertory_content(request, repertory):
     )
     tc = RequestContext(request, tc)
     return loader.get_template("music/main_repertory_content.html").render(tc)
+
+@json
+@login_required
+def sort_main_repertory(request):
+    repertory = request.band.repertory
+    repertory_content = get_repertory_content(request, repertory)
+    return dict(success=True, repertory_content=repertory_content)
 
 def get_trash_content(request, repertory):
     tc = dict(

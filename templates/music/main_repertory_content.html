@@ -41,29 +41,29 @@
 <!-- End of hidden action menus -->
 
 <table class="repertory">
-    <thead>
-        <th  class="center cover_column">
+    <thead class="repertory_head" sorturl="{% url sort_main_repertory %}">
+        <th  class="center cover_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
             {% trans "Cov" %}
         </th>
-        <th class="name_column">
+        <th class="name_column {% if sort.song__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__name %}-song__name{% else %}song__name{% endif %}">
             {% trans "Name" %}
         </th>
-        <th  class="center duration_column">
+        <th class="center duration_column {% if sort.song__duration %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__duration %}-song__duration{% else %}song__duration{% endif %}">
             {% trans "Dur" %}
         </th>
-        <th class="center status_column">
+        <th class="center status_column {% if sort.status %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.status %}-status{% else %}status{% endif %}">
             {% trans "Status" %}
         </th>
-        <th  class="center tempo_column">
+        <th  class="center tempo_column {% if sort.song__tempo %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__tempo %}-song__tempo{% else %}song__tempo{% endif %}">
             {% trans "Tempo" %}
         </th>
         <th  class="center ratings_column">
             {% trans "Ratings" %}
         </th>
-        <th  class="center mode_column">
+        <th  class="center mode_column {% if sort.mode %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.mode %}-mode{% else %}mode{% endif %}">
             {% trans "Mode" %}
         </th>
-        <th  class="center tonality_column">
+        <th  class="center tonality_column {% if sort.song__tonality %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__tonality %}-song__tonality{% else %}song__tonality{% endif %}">
             {% trans "Tonality" %}
         </th>
         <th  class="center players_column">
@@ -76,7 +76,7 @@
         {% endif %}
     </thead>
     <tbody>
-        {% for item in repertory.items %}
+        {% for item in items %}
             {% include "music/main_repertory_item_content.html" %}
         {% endfor %}
     </tbody>

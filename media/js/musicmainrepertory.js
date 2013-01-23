@@ -26,6 +26,7 @@ function loadRepertory() {
 	}
 	calculateTimeTotal();
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
+	initSortTable();
 }
 
 function addPlayerButton() {
@@ -60,6 +61,29 @@ function addPlayerButton() {
 	} else {
 		$menu.slideUp();
 	}
+}
+
+function initSortTable() {
+	var $head = $('table.repertory thead.repertory_head');
+	var url = $head.attr('sorturl');
+	var sort = '';
+	var $repertoryContent = $('#repertory_content');
+	$head.find('th').unbind('click').click(function () {
+		sort = $(this).attr('sort');
+		if (!sort) return;
+		$.ajax({
+			url: url,
+			data: {sort_by: sort},
+			type: 'get',
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					$repertoryContent.html(data.repertory_content);
+					loadRepertory();
+				}
+			}
+		});
+	});
 }
 
 function loadChangePlayerUserOptions(data, $menu, $changeOptions) {
