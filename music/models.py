@@ -521,7 +521,7 @@ class Repertory(RepertoryBase):
 class RepertoryItem(models.Model):
     song = models.ForeignKey(Song)
     repertory = models.ForeignKey(Repertory, related_name='all_items')
-    date = models.DateTimeField(auto_now_add=True, null=True)
+    date = models.DateField(auto_now_add=True, null=True)
     notes = models.TextField(null=True, blank=True)
     tempo = models.IntegerField(choices=Tempo.choices(), null=True,
                                 blank=True)

@@ -28,6 +28,10 @@
             {% autoescape off %}{{ item.status_html_display }}{% endautoescape %}
         </td>
 
+        <td class="date_cel date_column" date="{{ item.date|date:"Y-m-d" }}" changedateurl="{% url change_repertory_item_date item.id %}">
+            {{ item.date|date:"d/m/y" }}
+        </td>
+
         <td class="center tempo_cel tempo_column">
             <span class="tempo_metronome" tempo="{{ item.song.tempo }}" signaturebeats="{{ item.song.signature_beats }}">
                 {% autoescape off %}{{ item.song.tempo_html_display }}{% endautoescape %}

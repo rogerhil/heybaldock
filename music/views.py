@@ -736,6 +736,17 @@ def change_repertory_item_status(request, id):
 
 @json
 @login_required
+@ajax_check_locked_repertory_item
+def change_repertory_item_date(request, id):
+    item = get_object_or_404(RepertoryItem, id=id)
+    item.date = datetime.strptime(request.POST['date'], "%Y-%m-%d")
+    item.save()
+    new_history_entry(request.user, item, "song date has been changed.")
+    content = get_main_repertory_item_content(request, item)
+    return dict(success=True, content=content, item_id=item.id)
+
+@json
+@login_required
 @ajax_check_locked_main_repertory
 def add_song_to_main_repertory(request):
     band = request.band

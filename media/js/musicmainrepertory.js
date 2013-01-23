@@ -23,6 +23,7 @@ function loadRepertory() {
 		tonalityClick($("td.tonality_cel"));
 		modeClick($("td.mode_cel"));
 		statusClick($("td.status_cel"));
+		dateClick($("td.date_cel"));
 	}
 	calculateTimeTotal();
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
@@ -325,6 +326,25 @@ function statusClick($el) {
 	});
 }
 
+function dateClick($el) {
+	if (!is_editable) return;
+	$el.unbind('click').click(function (e) {
+		e.stopPropagation();
+		var $menu = $("#date_menu");
+		var url = $(this).attr('changedateurl');
+		var date = $(this).attr('date');
+		$menu.css('left', $(this).position().left + 'px');
+		$menu.css('top', $(this).position().top + 'px');
+		if ($menu.is(":hidden")) {
+			$("div.status_menu").hide();
+			$menu.show();
+			loadDateMenu($menu, url, date);
+		} else {
+			$menu.hide();
+		}
+	});
+}
+
 function loadModeMenu ($menu, url) {
 	if (!is_editable) return;
 	$menu.find('div.option').unbind('click').click(function () {
@@ -391,6 +411,37 @@ function loadStatusMenu($menu, url) {
 			}
 		});
 	});
+}
+
+function loadDateMenu($menu, url, date) {
+	if (!is_editable) return;
+	var options = {
+		dateFormat: 'yy-mm-dd'
+	};
+	var $input = $menu.find('input');
+	$input.val(date);
+	$input.datepicker(options);
+	$input.unbind('change').change(function () {
+		$input.val($(this).val());
+		var date = $(this).val();
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {date: date},
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					updateSongLine(data);
+					$menu.slideUp();
+				} else {
+					var msg = data.message || "An error occured";
+					alert(msg);
+				}
+			}
+		});
+	});
+	$input.trigger('focus');
+	$menu.hide();
 }
 
 function trashAction(url) {

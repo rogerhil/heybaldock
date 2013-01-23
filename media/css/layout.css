@@ -1065,7 +1065,7 @@ div.loading_icon {
 }
 
 .ui-state-highlight {
-    height: 40px;
+    /*height: 40px;*/
 }
 
 tr.album-resource:hover {
@@ -1452,8 +1452,13 @@ div.metadata ul li a {
     text-align: center;
 }
 
+.repertory .date_column {
+    width: 50px;
+}
+
 .repertory .tempo_column {
     width: 50px;
+    white-space: nowrap;
 }
 
 .repertory .ratings_column {
@@ -1610,8 +1615,8 @@ div.metadata ul li a {
 }
 
 .tempo_metronome:hover {
-    color: red;
-    font-weight: bold;
+    color: #993300;
+    /*font-weight: bold;*/
 }
 
 .metronome_graphic {
@@ -1852,4 +1857,15 @@ th.sort_down {
 th.sort_up {
     border-top: 5px solid black;
     padding-top: 0px;
+}
+
+td.date_cel {
+    border:  2px solid transparent;
+}
+
+td.date_cel:hover {
+    border: 2px solid #993300;
+    font-weight: bold;
+    color: #993300;
+    background-color: #ffffff;
 }

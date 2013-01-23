@@ -13,6 +13,10 @@
         </div>
     </div>
 
+    <div id="date_menu" class="simple_menu" style="display: none;">
+        <input type="text" value="" name="date" style="visibility: hidden;" />
+    </div>
+
     <div id="mode_menu" class="mode_menu simple_menu" style="width: 120px;" >
         <div class="pretty_select">
             <h3>{% trans "Change mode" %}</h3>
@@ -54,6 +58,9 @@
         <th class="center status_column {% if sort.status %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.status %}-status{% else %}status{% endif %}">
             {% trans "Status" %}
         </th>
+        <th class="center date_column {% if sort.date %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.date %}-date{% else %}date{% endif %}">
+            {% trans "Date" %}
+        </th>
         <th  class="center tempo_column {% if sort.song__tempo %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__tempo %}-song__tempo{% else %}song__tempo{% endif %}">
             {% trans "Tempo" %}
         </th>
@@ -70,7 +77,7 @@
             {% trans "Players" %}
         </th>
         {% if editable %}
-        <th  class="center actions_column">
+        <th  class="center actions_column" style="padding: 2px 0px 0px 0px;">
             <img src="/media/img/cross_16_d.png" class="remove_song" />
         </th>
         {% endif %}
