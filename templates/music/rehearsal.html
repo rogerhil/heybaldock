@@ -36,15 +36,24 @@
         <h2>{% trans "Notes" %}</h2>
         {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
 
-        <h2>{% trans "Repertory of this rehearsal" %}</h2>
-
-        {% for repertory in rehearsal.repertories.all %}
-            <p>
-                <a href="{% url event_repertory repertory.id %}">
-                    {{ repertory }}
-                </a>
-            </p>
-        {% endfor %}
+        {% ifequal rehearsal.repertories.count 1 %}
+            <h2>
+                {% for repertory in rehearsal.repertories.all %}
+                    <a href="{% url event_repertory repertory.id %}">
+                        {% trans "See the repertory for this rehearsal" %}
+                    </a>
+                {% endfor %}
+            </h2>
+        {% else %}
+            <h2>{% trans "See the repertories for this rehearsal below" %}</h2>
+            {% for repertory in rehearsal.repertories.all %}
+                <p>
+                    <a href="{% url event_repertory repertory.id %}">
+                        {% trans "Repertory" %} {{ forloop.counter }}
+                    </a>
+                </p>
+            {% endfor %}
+        {% endifequal %}
         <div class="clear"></div>
         <br />
 
