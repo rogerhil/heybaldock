@@ -36,7 +36,7 @@ class Rehearsal(models.Model):
     notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return u"Rehearsal in %s on %s" % (unicode(self.studio), self.date)
+        return u"Rehearsal in %s on %s" % (unicode(self.studio).encode('utf-8'), self.date)
 
     def duration_display(self):
         return TimeDuration.display(self.duration)
@@ -602,7 +602,7 @@ class EventRepertory(RepertoryBase):
     band = models.ForeignKey(Band, related_name="event_repertories", null=True)
 
     def __unicode__(self):
-        return "%s Repertory" % (self.event or self.rehearsal)
+        return "%s Repertory" % (self.event or unicode(self.rehearsal))
 
     def import_items_from(self, base):
         for item in base.items.all():
