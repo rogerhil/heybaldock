@@ -36,7 +36,18 @@
         <h2>{% trans "Notes" %}</h2>
         {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
 
-        <h2>{% trans "Address" %}</h2>
+        <h2>{% trans "Repertory of this rehearsal" %}</h2>
+
+        {% for repertory in rehearsal.repertories.all %}
+            <p>
+                <a href="{% url repertory_details repertory.id %}">
+                    {{ repertory }}
+                </a>
+            </p>
+        {% endfor %}
+        <div class="clear"></div>
+        <br />
+
         {% with rehearsal.studio as location %}
             {% include "event/location.html" %}
         {% endwith %}
