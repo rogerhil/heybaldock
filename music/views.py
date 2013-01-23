@@ -46,7 +46,7 @@ MAX_YEARS = 30
 
 def new_history_entry(user, instance, action, summary=''):
     content_type = ContentType.objects.get_for_model(type(instance))
-    summary = '%s "%s (%s)" %s %s' % (content_type, unicode(instance),
+    summary = '%s "%s (%s)" %s %s' % (content_type, str(instance).encode('utf-8'),
                                        instance.id, action, summary)
     history = MusicHistoryChanges.objects.create(
         content_type=content_type,
