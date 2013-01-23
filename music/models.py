@@ -602,7 +602,7 @@ class EventRepertory(RepertoryBase):
     band = models.ForeignKey(Band, related_name="event_repertories", null=True)
 
     def __unicode__(self):
-        return "%s Repertory" % self.event
+        return "%s Repertory" % (self.event or self.rehearsal)
 
     def import_items_from(self, base):
         for item in base.items.all():
