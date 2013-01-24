@@ -332,6 +332,8 @@ function updateSongLine(data, callback) {
 			modeClick($newTr.find("td.mode_cel"));
 			statusClick($newTr.find("td.status_cel"));
 			dateClick($newTr.find("td.date_cel"));
+		} else {
+			timesPlayedClick($newTr.find("td.times_played_column"));
 		}
 	}
 	$newTr.find('img.player').click(changePlayerButton);

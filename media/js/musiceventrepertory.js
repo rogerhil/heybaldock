@@ -31,6 +31,7 @@ function loadRepertory() {
 		$repertory_content.find('input[name=song_name]').each(newSong);
 		$repertory_content.find('#id_interval').unbind('change').change(addInterval);
 		$repertory_content.find('img.remove_song').click(removeSongFromRepertory);
+ 		timesPlayedClick($repertory_content.find("td.times_played_column"));
 
 		$($repertory_content.find('tbody')).sortable({
 			placeholder: "ui-state-highlight",
@@ -98,6 +99,8 @@ function addInterval() {
 					tonalityClick($tr.find("td.tonality_cel"));
 					modeClick($tr.find("td.mode_cel"));
 					statusClick($tr.find("td.status_cel"));
+				} else {
+					timesPlayedClick($tr.find("td.times_played_column"));
 				}
 				loadMetronome($("td.tempo_cel span.tempo_metronome"));
 				loadAudio();
@@ -107,5 +110,49 @@ function addInterval() {
 				alert(msg);
 			}
 		}
+	});
+}
+
+function timesPlayedClick($el) {
+	if (!is_editable) return;
+	$el.unbind('click').click(function (e) {
+		e.stopPropagation();
+		var $menu = $("#times_played_menu");
+		var url = $(this).attr('changetimesplayedurl');
+		var timesplayed = $(this).attr('timesplayed');
+		$menu.css('left', $(this).position().left - 30  +  'px');
+		$menu.css('top', $(this).position().top + 25 + 'px');
+		if ($menu.is(":hidden")) {
+			$("div.times_played_menu").hide();
+			$menu.show();
+			loadTimesPlayedMenu($menu, url, timesplayed);
+		} else {
+			$menu.hide();
+		}
+	});
+}
+
+function loadTimesPlayedMenu($menu, url, timesplayed) {
+	if (!is_editable) return;
+	var $select = $menu.find('select');
+	$select.val(timesplayed);
+	$select.trigger('focus');
+	$select.unbind('change').change(function () {
+		var timesplayed = $(this).val();
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {times_played: timesplayed},
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					updateSongLine(data);
+					$menu.slideUp();
+				} else {
+					var msg = data.message || "An error occured";
+					alert(msg);
+				}
+			}
+		});
 	});
 }

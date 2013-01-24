@@ -1,4 +1,20 @@
 {% load i18n %}
+
+<div id="times_played_menu" class="simple_menu" style="display: none; width: 80px; text-align: center;">
+    <select name="times_played">
+        <option value="0">{% trans "zero" %}</option>
+        <option value="1">{% trans "1 time" %}</option>
+        <option value="2">{% trans "2 times" %}</option>
+        <option value="3">{% trans "3 times" %}</option>
+        <option value="4">{% trans "4 times" %}</option>
+        <option value="5">{% trans "5 times" %}</option>
+        <option value="6">{% trans "6 times" %}</option>
+        <option value="7">{% trans "7 times" %}</option>
+        <option value="8">{% trans "8 times" %}</option>
+        <option value="9">{% trans "9 times" %}</option>
+    </select>
+</div>
+
 <table class="repertory">
     <thead>
         {% if editable %}
@@ -13,6 +29,9 @@
         </th>
         <th  class="center duration_column">
             {% trans "Dur" %}
+        </th>
+        <th  class="center times_played_column">
+            {% trans "X" %}
         </th>
         <th  class="center tempo_column">
             {% trans "Tempo" %}

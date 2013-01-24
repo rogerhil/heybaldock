@@ -53,6 +53,9 @@
                 <td class="center duration duration_column">
                     {{ main_item.song.duration_display }}
                 </td>
+                <td class="center times_played times_played_column" timesplayed="{{ item.times_played }}" changetimesplayedurl="{% url change_event_repertory_item_times_played item.id %}">
+                    {{ item.times_played }}
+                </td>
                 <td class="center tempo_cel tempo_column">
                     <span class="tempo_metronome" tempo="{{ main_item.song.tempo }}" signaturebeats="{{ main_item.song.signature_beats }}">
                         {% autoescape off %}{{ main_item.song.tempo_html_display }}{% endautoescape %}

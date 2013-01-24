@@ -50,6 +50,7 @@ urlpatterns = patterns('',
     url(r'^repertory/event/item/(?P<id>\d+)/remove/$', views.remove_song_from_event_repertory, name='remove_song_from_event_repertory'),
     url(r'^repertory/event/item/(?P<id>\d+)/move/$', views.move_event_repertory_item, name='move_event_repertory_item'),
     url(r'^repertory/event/item/(?P<id>\d+)/rate/$', views.rate_event_repertory_item, name='rate_event_repertory_item'),
+    url(r'^repertory/event/item/(?P<id>\d+)/times_played/$', views.change_event_repertory_item_times_played, name='change_event_repertory_item_times_played'),
 
     url(r'^$', views.music_management, name='music_management'),
     url(r'^album/add/$', views.add_album, name='add_album'),

@@ -1447,6 +1447,15 @@ div.metadata ul li a {
     width: 30px;
 }
 
+.repertory .times_played_column {
+    width: 10px;
+    font-weight: bold;
+}
+
+.repertory .times_played_column:hover {
+    color: #993300;
+}
+
 .repertory .status_column {
     width: 70px;
     text-align: center;

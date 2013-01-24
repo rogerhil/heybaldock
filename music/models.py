@@ -631,6 +631,7 @@ class EventRepertoryItem(models.Model):
     item = models.ForeignKey(RepertoryItem, related_name='events_items',
                              null=True)
     order = models.IntegerField(null=True)
+    times_played = models.IntegerField(default=1)
 
     # used for empty intervals
     empty_duration = models.IntegerField(null=True, blank=True)
