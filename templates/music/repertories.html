@@ -33,7 +33,7 @@
                             {% if repertory.event %}
                                 Repertory of the event {{ repertory.event }}
                             {% else %}
-                                Repertory of the rehearsal in {{ repertory.rehearsal.studio.name }} on {{ repertory.rehearsal.studio.date }}
+                                Repertory of the rehearsal in {{ repertory.rehearsal.studio.name }} on {{ repertory.rehearsal.date }}
                             {% endif %}
                         </td>
                         <td class="center">{% if repertory.is_free %}{% trans "Free" %}{% else %}<span style="color: red;">{{ repertory.user_lock.get_full_name }}</span>{% endif %}</td>
