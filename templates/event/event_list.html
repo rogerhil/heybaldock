@@ -1,5 +1,9 @@
 {% load i18n %}
 
+{% include "facebook_like.html" %}
+<div class="clear"></div>
+<br/>
+{% if events %}
 <div class="table_list">
     <table>
         <thead>
@@ -25,3 +29,6 @@
         </tbody>
     </table>
 </div>
+{% else %}
+    <p>{% trans "There's no upcoming events by now." %} {% trans "You can look at the past events by clicking in the button below." %}</p>
+{% endif %}

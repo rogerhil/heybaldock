@@ -10,7 +10,7 @@
 
 {% block content %}
 <h1>{% trans 'Events history' %}</h1>
-{% include "facebook_like.html" %}
+<div class="clear"></div>
 <br />
 {% with events_history as events %}
     {% include "event/event_list.html" %}
