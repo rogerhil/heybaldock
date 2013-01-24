@@ -644,7 +644,20 @@ def artist_albums(request, id):
 @render_to("music/artists.html")
 @login_required
 def artists(request):
-    artists = Artist.objects.all().order_by('name')
+    band = request.band
+    filt = request.GET.get('f')
+    if filt == 'active':
+        artists = band.artists.all().order_by('name')
+    elif filt == 'all':
+        artists = Artist.objects.all().order_by('name')
+    elif filt == 'inactive':
+        ids = band.artists.all().values_list('id', flat=True)
+        artists = Artist.objects.all().exclude(id__in=ids).order_by('name')
+    elif filt == 'withalbums':
+        artists = Artist.objects.all()
+        artists = [a for a in artists if a.albums.count()]
+    else:
+        artists = band.artists.all().order_by('name')
     return dict(artists=artists)
 
 @render_to("music/artist_details.html")
