@@ -29,7 +29,7 @@
                     </tr>
                     {% for repertory in repertories %}
                     <tr class="{% cycle odd,even %}" onclick="window.location = '{% url event_repertory repertory.id %}'">
-                        <td>{{ repertory.event }}</td>
+                        <td>{% if repertory.event %}{{ repertory.event }}{% else %}{{ repertory.rehearsal }}{% endif %}</td>
                         <td class="center">{% if repertory.is_free %}{% trans "Free" %}{% else %}<span style="color: red;">{{ repertory.user_lock.get_full_name }}</span>{% endif %}</td>
                     </tr>
                     {% endfor %}
