@@ -10,12 +10,14 @@
 
     <div class="manage_buttons">
         <a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a>
-        <a href="{% url add_rehearsal %}">{% trans "Add" %}</a>
-        <br/>
-        <div class="clear"></div>
-        <br/>
-        <a href="{% url change_rehearsal rehearsal.id %}">{% trans "Change" %}</a>
-        <a href="{% url remove_rehearsal rehearsal.id %}" class="red">{% trans "Remove" %}</a>
+        {% if permissions.manage_rehearsals %}
+            <a href="{% url add_rehearsal %}">{% trans "Add" %}</a>
+            <br/>
+            <div class="clear"></div>
+            <br/>
+            <a href="{% url change_rehearsal rehearsal.id %}">{% trans "Change" %}</a>
+            <a href="{% url remove_rehearsal rehearsal.id %}" class="red">{% trans "Remove" %}</a>
+        {% endif %}
     </div>
 
     <div style="min-height: 250px;">

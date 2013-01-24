@@ -1,3 +1,4 @@
+
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
@@ -5,19 +6,22 @@ from django.shortcuts import get_object_or_404
 from django.utils import simplejson
 from django.views.decorators.http import require_POST
 
-from auth.decorators import login_required
+from auth.decorators import login_required, draft_permission_required, \
+                            draft_model_permission_required
 from draft.models import ContentDraft
 from section.decorators import render_to
 from section.templatetags.wysiwygtags import UI_TAGS
 
 @login_required
 @render_to("draft/view.html")
+@draft_permission_required
 def view(request, id):
     draft = get_object_or_404(ContentDraft, id=id)
     return dict(draft=draft)
 
 @login_required
 @render_to("draft/edit.html")
+@draft_model_permission_required
 def add_new(request, model):
     ct = ContentType.objects.get(model=model)
     model_class = ct.model_class()
@@ -33,8 +37,8 @@ def add_new(request, model):
         form = model_class.form()(user=request.user)
     return dict(form=form, model=model, model_class=model_class)
 
-
 @login_required
+@draft_model_permission_required
 def add(request, model, id):
     ct = ContentType.objects.get(model=model)
     model_class = ct.model_class()
@@ -42,6 +46,7 @@ def add(request, model, id):
     return _edit(request, object, model=model)
 
 @login_required
+@draft_permission_required
 def edit(request, id):
     draft = get_object_or_404(ContentDraft, id=id)
     return _edit(request, draft.object, draft=draft)
@@ -81,6 +86,7 @@ def _edit(request, object, model=None, draft=None):
 
 @login_required
 @require_POST
+@draft_permission_required
 def publish(request, id):
     draft = get_object_or_404(ContentDraft, id=id)
     ct = draft.content_type
@@ -95,6 +101,7 @@ def publish(request, id):
 
 @login_required
 @require_POST
+@draft_permission_required
 def delete(request, id):
     draft = get_object_or_404(ContentDraft, id=id)
     url = draft.object.url()

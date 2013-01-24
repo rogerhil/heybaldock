@@ -12,12 +12,14 @@
         <div class="play_audio_area" style="float: left; margin-right: 5px; {% if not song.audio %}display: none;{% endif %}">
             <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ song.name }}" audiourl="{{ song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
         </div>
+        {% if has_perm %}
         <div class="upload_audio_area" style="float: left; margin-right: 5px; {% if song.audio %}display: none;{% endif %}">
             <form action="{% url upload_song_audio song.id %}" style="display: none;" enctype="multipart/form-data" method="post">
                 <input type="file" name="audio_file" />
             </form>
             <img src="/media/img/music_icon_16.png" class="upload_audio" alt="{% trans "Upload audio song" %}" title="{% trans "Upload audio song" %}" />
         </div>
+        {% endif %}
         {{ song.name }}
     </td>
     <td style="text-align: center;">{{ song.duration_display }}</td>
@@ -37,25 +39,27 @@
                 <div class="pretty_select tempo_body">
                     <h3>{% trans "Tempo and signature" %}</h3>
                     <div class="tempo_display">{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %} bpm</div>
-                    <div class="tempo_slider"></div>
-                    <input type="hidden" name="tempo" value="{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %}" />
-                    <div class="clear"></div>
-                    <div style="width: 70px; margin: 0px auto 0px auto;">
-                        <div style="float: left; padding-top: 6px; margin-right: 5px;">
-                            <input type="text" name="beats" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_beats }}" />
+                    {% if has_perm %}
+                        <div class="tempo_slider"></div>
+                        <input type="hidden" name="tempo" value="{% if song.tempo and song.tempo >= 10 %}{{ song.tempo }}{% else %}120{% endif %}" />
+                        <div class="clear"></div>
+                        <div style="width: 70px; margin: 0px auto 0px auto;">
+                            <div style="float: left; padding-top: 6px; margin-right: 5px;">
+                                <input type="text" name="beats" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_beats }}" />
+                            </div>
+                            <div style="float: left; margin-right: 2px;">
+                                <span style="font-weight: bold; color: #4b5c6c; font-size: 30px;">/</span>
+                            </div>
+                            <div style="padding-top: 6px;">
+                                <input type="text" name="value" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_value }}" />
+                            </div>
                         </div>
-                        <div style="float: left; margin-right: 2px;">
-                            <span style="font-weight: bold; color: #4b5c6c; font-size: 30px;">/</span>
+                        <div class="clear"></div>
+                        <div style="margin: 5px 0 5px 0;">
+                            <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" style="margin: 0px;" />&nbsp;
+                            <input type="button" class="small_button change_tempo_signature" value="{% trans "Ok" %}" style="margin: 0px;" />
                         </div>
-                        <div style="padding-top: 6px;">
-                            <input type="text" name="value" style="width: 20px; margin-bottom: 10px; text-align: center;" value="{{ song.signature_value }}" />
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                    <div style="margin: 5px 0 5px 0;">
-                        <input type="button" class="small_button red cancel" value="{% trans "Cancel" %}" style="margin: 0px;" />&nbsp;
-                        <input type="button" class="small_button change_tempo_signature" value="{% trans "Ok" %}" style="margin: 0px;" />
-                    </div>
+                    {% endif %}
                     <div class="clear"></div>
                 </div>
             </div>
@@ -63,19 +67,23 @@
     </td>
     <td class="center tonality_cel">
         {% autoescape off %}{{ song.tonality_html_display }}{% endautoescape %}
-        <div style="position: relative;">
-            <div class="tonality_menu simple_menu">
-                <div class="pretty_select">
-                    <h3>{% trans "Change tonality" %}</h3>
-                    {% for key, title, ttype in tonality_choices %}
-                        <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
-                    {% endfor %}
-                    <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+        {% if has_perm %}
+            <div style="position: relative;">
+                <div class="tonality_menu simple_menu">
+                    <div class="pretty_select">
+                        <h3>{% trans "Change tonality" %}</h3>
+                        {% for key, title, ttype in tonality_choices %}
+                            <span class="option tonality_{{ ttype }}" tonalityid="{{ key }}">{{ key }}</span>
+                        {% endfor %}
+                        <span class="option tonality_atonal" tonalityid="Atonal">Atonal</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </td>
-    <td class="center" style="position: relative;">
-        <img class="add_to_main_repertory" songid="{{ song.id }}" src="/media/img/plus_16.png" alt="{% trans "Add to Main Repertory"  %}" title="{% trans "Add to Main Repertory"  %}" />
-    </td>
+    {% if has_perm %}
+        <td class="center" style="position: relative;">
+            <img class="add_to_main_repertory" songid="{{ song.id }}" src="/media/img/plus_16.png" alt="{% trans "Add to Main Repertory"  %}" title="{% trans "Add to Main Repertory"  %}" />
+        </td>
+    {% endif %}
 </tr>

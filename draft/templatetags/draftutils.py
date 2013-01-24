@@ -27,16 +27,29 @@ ACTIONS = {
     'photoalbum': [_ACTIONS['photoalbum_add']]
 }
 
+MODEL_DICT = {
+    'videos': ('video', 'videoalbums'),
+    'fotos': ('photo', 'photoalbums'),
+    'eventos': ('event', 'events')
+}
+
 @register.simple_tag()
 def object_manage_buttons(user, model, object_id):
     template = get_template("draft/object_manage_buttons.html")
     actions = []
     if model == 'section':
-        actions += ACTIONS[model].get(SECTION_ID_MAP[object_id], [])
+        action = ACTIONS[model]
+        mname = MODEL_DICT.get(SECTION_ID_MAP[object_id])
+        if mname and user.has_perm('%s.manage_%s' % mname) or not mname:
+            actions += action.get(SECTION_ID_MAP[object_id], [])
     else:
-        actions += ACTIONS.get(model, [])
-    c = {'user': user,
-         'model': model,
-         'object_id': object_id,
-         'actions': actions}
+        if user.has_perm('section.manage_%ss' % model):
+            actions += ACTIONS.get(model, [])
+    c = {
+        'user': user,
+        'model': model,
+        'object_id': object_id,
+        'actions': actions,
+        'has_perm': user.has_perm('section.manage_sections')
+    }
     return template.render(Context(c))

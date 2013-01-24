@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block actions %}
+{% endblock %}
+
+{% block content %}
+    <div style="height: 300px;">
+        <h1>{% trans "Permission denied" %}</h1>
+        <p>{% trans "You don't have permission to access this area." %}</p>
+    </div>
+{% endblock %}

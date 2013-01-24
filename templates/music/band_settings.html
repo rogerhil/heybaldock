@@ -3,6 +3,7 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript" src="/media/js/bandsettings.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -12,8 +13,37 @@
             {% csrf_token %}
             {{ form.as_ul }}
             <br/>
-            <input class="submit" type="submit" value="{% trans "Save" %}" style="margin-left: 10px;"  />
+            <input class="submit" type="submit" value="{% trans "Save" %}" style="margin-left: 10px;" />
         </form>
+        <div class="clear"></div>
+        {% if user.is_superuser %}
+            <h1>{% trans "Permissions" %}</h1>
+            <div id="member_permissions_selector">
+                {% for member in band.active_members %}
+                    <input type="radio" name="member" value="{{ member.id}}" /> {{ member.first_name }} &nbsp; |
+                {% endfor %}
+            </div>
+            <div class="clear"></div>
+            <br/>
+            {% for member in permissions_users %}
+                <form action="" method="post" name="band_permissions" enctype="multipart/form-data">
+                    <input type="hidden" name="permissions_of" value="{{ member.member.id }}" />
+                    <div style="display: none; padding: 10px;" class="member_permissions" id="member_permissions_{{ member.member.id }}">
+                        <label for="id_member_permissions">{% trans "Permissions:" %}</label>
+                        <select multiple="multiple" style="height: 260px;" name="member_permissions" id="id_member_permissions">
+                            {% for permission in member.permissions %}
+                                <option value="{{ permission.permission.id }}" {% if permission.hasperm %}selected="selected"{% endif %}>
+                                    {{ permission.permission.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <br/>
+                        <input class="submit" type="submit" value="{% blocktrans with member.member.first_name as member %}Change {{ member }} permissions{% endblocktrans %}" style="margin-left: 10px;"  />
+                    </div>
+                    <div class="clear"></div>
+                </form>
+            {% endfor %}
+        {% endif %}
     </div>
     <div class="clear"></div>
 {% endblock %}

@@ -16,8 +16,10 @@
 {% block actions %}
     <a href="{% url artist_albums album.artist.id %}">{% trans 'View all albums' %}</a>
     <a href="{% url artists %}">{% trans 'View all artists' %}</a>
-    <a href="{% url add_album %}">{% trans 'Add album' %}</a>
-    <a href="#" class="red" id="remove_album">{% trans 'Remove this album' %}</a>
+    {% if has_perm %}
+        <a href="{% url add_album %}">{% trans 'Add album' %}</a>
+        <a href="#" class="red" id="remove_album">{% trans 'Remove this album' %}</a>
+    {% endif %}
 {% endblock %}
 
 {% block music_content %}
@@ -27,10 +29,11 @@
     {% if album.description %}
         <h3>{{ album.description }}</h3>
     {% endif %}
-
-    <h3 style="text-align: right; text-transform: uppercase; text-decoration: underline;">
-        <a href="{% url add_album %}?a={{ album.artist }}">{% blocktrans with album.artist as artist %}Click here to add more albums of {{ artist }}{% endblocktrans %}</a>
-    </h3>
+    {% if has_perm %}
+        <h3 style="text-align: right; text-transform: uppercase; text-decoration: underline;">
+            <a href="{% url add_album %}?a={{ album.artist }}">{% blocktrans with album.artist as artist %}Click here to add more albums of {{ artist }}{% endblocktrans %}</a>
+        </h3>
+    {% endif %}
 
     <br />
     <div style="float: left; width: 90px; margin-right: 10px;">
@@ -69,9 +72,11 @@
                 <th width="60px" class="center">
                     {% trans "Tonality" %}
                 </th>
-                <th width="30px" class="center">
-                    {% trans "Actions" %}
-                </th>
+                {% if has_perm %}
+                    <th width="30px" class="center">
+                        {% trans "Actions" %}
+                    </th>
+                {% endif %}
             </thead>
             <tbody>
                 {% for song in album.ordered_songs %}

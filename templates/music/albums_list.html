@@ -1,8 +1,10 @@
 {% load i18n %}
 {% if artist.albums.count %}
-    <p style="text-transform: uppercase; text-decoration: underline; font-size: 11px;">
-        <a href="{% url add_album %}?a={{ artist }}">{% blocktrans %}Click here to add more albums of {{ artist }}{% endblocktrans %}</a>
-    </p>
+    {% if has_perm %}
+        <p style="text-transform: uppercase; text-decoration: underline; font-size: 11px;">
+            <a href="{% url add_album %}?a={{ artist }}">{% blocktrans %}Click here to add more albums of {{ artist }}{% endblocktrans %}</a>
+        </p>
+    {% endif %}
     <ul id="albums" class="photo_album_list centralize">
         {% for album in artist.albums_by_year %}
             <li class="photo_album_item" url="{% url album album.id %}">
@@ -20,7 +22,9 @@
     </ul>
 {% else %}
     <p>{% trans "No albums included yet" %}</p>
-    <p style="text-transform: uppercase; text-decoration: underline; font-size: 11px;">
-        <a href="{% url add_album %}?a={{ artist }}">{% blocktrans %}Click here to add albums of {{ artist }}{% endblocktrans %}</a>
-    </p>
+    {% if has_perm %}
+        <p style="text-transform: uppercase; text-decoration: underline; font-size: 11px;">
+            <a href="{% url add_album %}?a={{ artist }}">{% blocktrans %}Click here to add albums of {{ artist }}{% endblocktrans %}</a>
+        </p>
+    {% endif %}
 {% endif %}

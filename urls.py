@@ -22,6 +22,6 @@ urlpatterns = patterns('',
     url(r'^music/', include('music.urls')),
     url(r'^busca/', include('search.urls')),
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^permission/denied/', TemplateView.as_view(template_name="permission_denied.html"), name="permission_denied"),
     url(r'', include('section.urls'))
 )

@@ -4,6 +4,8 @@
     {% for action in actions %}
         <a href="{{ action.url }}">{{ action.name }}</a>
     {% endfor %}
-    <a href="{% url add_draft model object_id %}">{% trans "Edit" %}</a>
+    {% if has_perm %}
+        <a href="{% url add_draft model object_id %}">{% trans "Edit" %}</a>
+    {% endif %}
 </div>
 {% endif %}

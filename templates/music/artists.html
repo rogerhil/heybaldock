@@ -9,7 +9,9 @@
 {% endblock %}
 
 {% block actions %}
-    <a href="{% url add_album %}">{% trans 'Add album' %}</a>
+    {% if has_perm %}
+        <a href="{% url add_album %}">{% trans 'Add album' %}</a>
+    {% endif %}
 {% endblock %}
 
 {% block music_content %}

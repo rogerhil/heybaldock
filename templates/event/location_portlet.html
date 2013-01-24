@@ -2,8 +2,8 @@
 {% if locations %}
 <div class="portlet">
     <div class="manage_buttons">
-        {% if user.is_authenticated %}
-        <a href="{% url add_draft_new 'location' %}">{% trans "Add" %}</a>
+        {% if permissions.manage_locations %}
+            <a href="{% url add_draft_new 'location' %}">{% trans "Add" %}</a>
         {% endif %}
     </div>
     <h2><a href="{% url location_list %}">{% trans "Locations" %}</a></h2>

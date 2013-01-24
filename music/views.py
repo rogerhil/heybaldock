@@ -7,7 +7,8 @@ from datetime import datetime
 from django.db.models import Q
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
+from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
@@ -71,26 +72,54 @@ def repertories(request):
 def band_settings(request, id):
     band = get_object_or_404(Band, id=id)
     if request.POST:
-        form = BandForm(data=request.POST, instance=band)
-        if form.is_valid():
-            band = form.save(commit=False)
-            band.save()
-            band.artists.clear()
-            for artist in form.cleaned_data.get('artists'):
-                band_artist = BandArtist(band=band, artist=artist)
-                band_artist.save()
-            band.members.clear()
-            for member in form.cleaned_data.get('members'):
-                band.members.add(member)
-            Band.set_active_band(request, band)
-            new_history_entry(request.user, form.instance, 'created')
-            msg = _('The band settings was successfully changed.')
+        if request.POST.get('permissions_of'):
+            member = User.objects.get(id=long(request.POST['permissions_of']))
+            member.user_permissions.clear()
+            for permission in request.POST.getlist('member_permissions', []):
+                member.user_permissions.add(long(permission))
+            member.save()
+            new_history_entry(request.user, member, 'permissions changed')
+            msg = _('The permissions of %s was successfully modified.' %
+                    member.get_full_name())
             messages.add_message(request, messages.SUCCESS, msg)
-            url = reverse('band_settings', args=(form.instance.id,))
+            url = reverse('band_settings', args=(band.id,))
             return HttpResponseRedirect(url)
+        else:
+            form = BandForm(data=request.POST, instance=band)
+            if form.is_valid():
+                band = form.save(commit=False)
+                band.save()
+                band.artists.clear()
+                for artist in form.cleaned_data.get('artists'):
+                    band_artist = BandArtist(band=band, artist=artist)
+                    band_artist.save()
+                band.members.clear()
+                for member in form.cleaned_data.get('members'):
+                    band.members.add(member)
+                Band.set_active_band(request, band)
+                new_history_entry(request.user, form.instance, 'created')
+                msg = _('The band settings was successfully changed.')
+                messages.add_message(request, messages.SUCCESS, msg)
+                url = reverse('band_settings', args=(form.instance.id,))
+                return HttpResponseRedirect(url)
     else:
         form = BandForm(instance=band)
-    return dict(band=band, form=form)
+    permissions = Permission.objects.filter(codename__contains='manage_')
+    permissions_users = []
+    for member in band.active_members:
+        perms = []
+        for permission in permissions:
+            perms.append(dict(
+                permission=permission,
+                hasperm=bool(member.user_permissions.filter(id=permission.id)\
+                                                    .count())
+            ))
+        permissions_users.append(dict(
+            member=member,
+            permissions=perms
+        ))
+    return dict(band=band, form=form, permissions=permissions,
+                permissions_users=permissions_users)
 
 @login_required
 @render_to("music/add_band.html")
@@ -141,6 +170,7 @@ def get_rehearsal_abscence_payers(band):
 
 @login_required
 @render_to("music/add_rehearsal.html")
+@permission_required('music.manage_rehearsals', '/permission/denied/')
 def add_rehearsal(request):
     user = request.user
     band = Band.get_active_band(request)
@@ -166,6 +196,7 @@ def rehearsal(request, id):
     return dict(rehearsal=rehearsal)
 
 @login_required
+@permission_required('music.manage_rehearsals', '/permission/denied/')
 def remove_rehearsal(request, id):
     user = request.user
     rehearsal = get_object_or_404(Rehearsal, id=id)
@@ -177,6 +208,7 @@ def remove_rehearsal(request, id):
 
 @login_required
 @render_to("music/add_rehearsal.html")
+@permission_required('music.manage_rehearsals', '/permission/denied/')
 def change_rehearsal(request, id):
     user = request.user
     band = Band.get_active_band(request)
@@ -198,6 +230,7 @@ def change_rehearsal(request, id):
 
 @login_required
 @render_to("music/add_event_repertory.html")
+@permission_required('music.manage_event_repertories', '/permission/denied/')
 def add_event_repertory(request):
     initial = {'band': request.band}
     if request.POST:
@@ -312,6 +345,7 @@ def main_repertory(request):
         status_choices=RepertoryItemStatus.active_choices(),
         is_locked=repertory.is_locked(user),
         editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_main_repertory'),
         stats=repertory_stats(repertory)
     )
     return c
@@ -349,7 +383,8 @@ def event_repertory(request, id):
         repertory=repertory,
         items=repertory.items,
         is_locked=repertory.is_locked(user),
-        editable=repertory.is_editable(user)
+        editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_event_repertories')
     )
     return c
 
@@ -365,6 +400,7 @@ def remove_event_repertory(request, id):
 
 @login_required
 @json
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def search_song_by_name(request):
     band = request.band
     name = request.POST['name']
@@ -392,6 +428,7 @@ def search_song_by_name(request):
 
 @login_required
 @json
+@permission_required('music.manage_event_repertories', '/permission/denied/')
 def search_item_by_name(request, id):
     name = request.POST['name']
     def item(i):
@@ -421,6 +458,7 @@ def music_management(request):
 
 @login_required
 @render_to("music/add_album.html")
+@permission_required('music.manage_music', '/permission/denied/')
 def add_album(request):
     year = datetime.now().year
     initial = {'artist': request.GET.get('a', '')}
@@ -550,6 +588,7 @@ def get_custom_results(request):
 
 @login_required
 @render_to("music/custom_results.html")
+@permission_required('music.manage_music', '/permission/denied/')
 def custom_album_creation(request):
     custom = get_custom_results(request)
     c = dict(custom=custom)
@@ -557,6 +596,7 @@ def custom_album_creation(request):
 
 @login_required
 @json
+@permission_required('music.manage_music', '/permission/denied/')
 def register_album(request):
     redirect_url = None
     message = ''
@@ -621,10 +661,12 @@ def get_tonality_choices():
 @login_required
 def album(request, id):
     album = get_object_or_404(Album, id=id)
+    has_perm = request.user.has_perm('music.manage_music')
     return dict(album=album, tempo_choices=Tempo.choices(),
-                tonality_choices=get_tonality_choices())
+                tonality_choices=get_tonality_choices(), has_perm=has_perm)
 
 @login_required
+@permission_required('music.manage_music', '/permission/denied/')
 def remove_album(request, id):
     album = get_object_or_404(Album, id=id)
     artist = album.artist
@@ -639,7 +681,8 @@ def remove_album(request, id):
 @login_required
 def artist_albums(request, id):
     artist = get_object_or_404(Artist, id=id)
-    return dict(artist=artist)
+    has_perm = request.user.has_perm('music.manage_music')
+    return dict(artist=artist, has_perm=has_perm)
 
 @render_to("music/artists.html")
 @login_required
@@ -658,13 +701,15 @@ def artists(request):
         artists = [a for a in artists if a.albums.count()]
     else:
         artists = band.artists.all().order_by('name')
-    return dict(artists=artists)
+    has_perm = request.user.has_perm('music.manage_music')
+    return dict(artists=artists, has_perm=has_perm)
 
 @render_to("music/artist_details.html")
 @login_required
 def artist_details(request, id):
     artist = get_object_or_404(Artist, id=id)
-    return dict(artist=artist)
+    has_perm = request.user.has_perm('music.manage_music')
+    return dict(artist=artist, has_perm=has_perm)
 
 def get_song_line_content(request, song):
     template = loader.get_template("music/song_line.html")
@@ -678,6 +723,7 @@ def get_song_line_content(request, song):
 
 @json
 @login_required
+@permission_required('music.manage_music', '/permission/denied/')
 def upload_song_audio(request, id):
     song = get_object_or_404(Song, id=id)
     audio_file = request.FILES['audio_file']
@@ -694,6 +740,7 @@ def upload_song_audio(request, id):
 
 @json
 @login_required
+@permission_required('music.manage_music', '/permission/denied/')
 def change_tempo_signature(request, id):
     song = get_object_or_404(Song, id=id)
     beats = int(request.POST['beats'])
@@ -708,6 +755,7 @@ def change_tempo_signature(request, id):
 
 @json
 @login_required
+@permission_required('music.manage_music', '/permission/denied/')
 def change_tonality(request, id):
     song = get_object_or_404(Song, id=id)
     song.tonality = request.POST['tonality']
@@ -719,6 +767,7 @@ def change_tonality(request, id):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_repertory_item_tonality(request, id):
     item = get_object_or_404(RepertoryItem, id=id)
     tonality = request.POST['tonality']
@@ -733,6 +782,7 @@ def change_repertory_item_tonality(request, id):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_repertory_item_song_mode(request, id):
     item = get_object_or_404(RepertoryItem, id=id)
     item.mode = int(request.POST['mode_id'])
@@ -744,6 +794,7 @@ def change_repertory_item_song_mode(request, id):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_repertory_item_status(request, id):
     item = get_object_or_404(RepertoryItem, id=id)
     item.status = int(request.POST['status_id'])
@@ -755,6 +806,7 @@ def change_repertory_item_status(request, id):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_repertory_item_date(request, id):
     item = get_object_or_404(RepertoryItem, id=id)
     item.date = datetime.strptime(request.POST['date'], "%Y-%m-%d")
@@ -766,6 +818,7 @@ def change_repertory_item_date(request, id):
 @json
 @login_required
 @ajax_check_locked_event_repertory_item
+@permission_required('music.manage_event_repertories', '/permission/denied/')
 def change_event_repertory_item_times_played(request, id):
     item = get_object_or_404(EventRepertoryItem, id=id)
     item.times_played = request.POST['times_played']
@@ -777,6 +830,7 @@ def change_event_repertory_item_times_played(request, id):
 @json
 @login_required
 @ajax_check_locked_main_repertory
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def add_song_to_main_repertory(request):
     band = request.band
     song = get_object_or_404(Song, id=request.POST['id'])
@@ -797,6 +851,7 @@ def add_song_to_main_repertory(request):
 @json
 @login_required
 @ajax_check_locked_event_repertory
+@permission_required('music.manage_event_repertories', '/permission/denied/')
 def add_item_to_event_repertory(request, id):
     repertory = get_object_or_404(EventRepertory, id=id)
     item = get_object_or_404(RepertoryItem, id=request.POST['id'])
@@ -814,6 +869,7 @@ def add_item_to_event_repertory(request, id):
 @json
 @login_required
 @ajax_check_locked_event_repertory
+@permission_required('music.manage_event_repertories', '/permission/denied/')
 def add_event_repertory_item_interval(request, id):
     repertory = get_object_or_404(EventRepertory, id=id)
     interval = int(request.POST['interval'])
@@ -829,6 +885,7 @@ def add_event_repertory_item_interval(request, id):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def remove_song_from_main_repertory(request, id):
     item = get_object_or_404(RepertoryItem, id=id)
     repertory = item.repertory
@@ -856,7 +913,8 @@ def get_repertory_content(request, repertory):
         mode_choices=SongMode.choices(),
         status_choices=RepertoryItemStatus.active_choices(),
         is_locked=repertory.is_locked(user),
-        editable=repertory.is_editable(user)
+        editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_main_repertory')
     )
     tc = RequestContext(request, tc)
     return loader.get_template("music/main_repertory_content.html").render(tc)
@@ -869,9 +927,11 @@ def sort_main_repertory(request):
     return dict(success=True, repertory_content=repertory_content)
 
 def get_trash_content(request, repertory):
+    user = request.user
     tc = dict(
         repertory=repertory,
-        editable=repertory.is_editable(request.user)
+        editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_main_repertory')
     )
     tc = RequestContext(request, tc)
     return loader.get_template("music/main_repertory_trash.html").render(tc)
@@ -879,6 +939,7 @@ def get_trash_content(request, repertory):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def purge_song_from_main_repertory(request, id):
     item = get_object_or_404(RepertoryItem, id=id)
     repertory = item.repertory
@@ -893,6 +954,7 @@ def purge_song_from_main_repertory(request, id):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def restore_song_to_main_repertory(request, id):
     item = get_object_or_404(RepertoryItem, id=id)
     repertory = item.repertory
@@ -907,6 +969,7 @@ def restore_song_to_main_repertory(request, id):
 @json
 @login_required
 @ajax_check_locked_event_repertory_item
+@permission_required('music.manage_event_repertories', '/permission/denied/')
 def remove_song_from_event_repertory(request, id):
     item = get_object_or_404(EventRepertoryItem, id=id)
     order = item.order
@@ -922,6 +985,7 @@ def remove_song_from_event_repertory(request, id):
 @login_required
 @json
 @ajax_check_locked_event_repertory_item
+@permission_required('music.manage_event_repertories', '/permission/denied/')
 def move_event_repertory_item(request, id):
     user = request.user
     order = int(request.POST['order'])
@@ -960,7 +1024,8 @@ def move_event_repertory_item(request, id):
     new_history_entry(request.user, current_item, "has been moved.")
     tc = dict(
         repertory=repertory,
-        editable=repertory.is_editable(user)
+        editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_main_repertory')
     )
     tc = RequestContext(request, tc)
     c = dict(
@@ -972,6 +1037,7 @@ def move_event_repertory_item(request, id):
 
 @login_required
 @render_to("music/add_instrument.html")
+@permission_required('music.manage_music', '/permission/denied/')
 def add_instrument(request):
     if request.POST:
         form = InstrumentForm(data=request.POST, files=request.FILES)
@@ -988,6 +1054,7 @@ def add_instrument(request):
 
 @json
 @login_required
+@permission_required('music.manage_music', '/permission/denied/')
 def remove_instrument(request, id):
     instrument = get_object_or_404(Instrument, id=id)
     new_history_entry(request.user, instrument, "has been removed.")
@@ -998,7 +1065,9 @@ def remove_instrument(request, id):
 def instruments(request):
     instruments = Instrument.objects.all().order_by('name')
     tag_types = InstrumentTagType.objects.all()
-    return dict(instruments=instruments, tag_types=tag_types)
+    has_perm = request.user.has_perm('music.manage_music')
+    return dict(instruments=instruments, tag_types=tag_types,
+                has_perm=has_perm)
 
 @json
 @login_required
@@ -1089,7 +1158,8 @@ def player_repertory_item_menu_content(request, player_repertory_item):
     c = dict(
         player_repertory_item=player_repertory_item,
         tag_types=tag_types,
-        editable=repertory.is_editable(user)
+        editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_main_repertory')
     )
     context = RequestContext(request, c)
     player = dict(
@@ -1110,6 +1180,7 @@ def player_repertory_item_menu(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def toogle_tag_type(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     tag_type_id = int(request.POST.get('tag_type_id'))
@@ -1131,6 +1202,7 @@ def toogle_tag_type(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_as_member_options(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     artist = player_repertory_item.item.song.album.artist
@@ -1144,6 +1216,7 @@ def change_as_member_options(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_as_member(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     artist = get_object_or_404(Artist, id=request.POST['member_id'])
@@ -1158,6 +1231,7 @@ def change_as_member(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_player_user(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     item = player_repertory_item.item
@@ -1187,6 +1261,7 @@ def change_player_user(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_player_user_options(request, id):
     enable_inactive = request.band.enable_inactive_members
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
@@ -1205,6 +1280,7 @@ def change_player_user_options(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def change_notes(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     player_repertory_item.notes = request.POST['notes']
@@ -1215,6 +1291,7 @@ def change_notes(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def add_document_for_player_repertory_item(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     data = dict(player_repertory_item=player_repertory_item.id)
@@ -1233,6 +1310,7 @@ def add_document_for_player_repertory_item(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def remove_document_for_player_repertory_item(request, id, document_id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     document = player_repertory_item.documents.get(id=document_id)
@@ -1248,19 +1326,27 @@ def get_main_repertory_item_content(request, item):
     repertory = item.repertory
     temp = loader.get_template("music/main_repertory_item_content.html")
     tonality_choices = get_tonality_choices()
-    c = {'item': item, 'repertory': repertory,
-         'tonality_choices': tonality_choices,
-         'mode_choices': SongMode.choices(),
-         'status_choices': RepertoryItemStatus.active_choices(),
-         'editable': repertory.is_editable(user)}
+    c = {
+        'item': item,
+        'repertory': repertory,
+        'tonality_choices': tonality_choices,
+        'mode_choices': SongMode.choices(),
+        'status_choices': RepertoryItemStatus.active_choices(),
+        'editable': repertory.is_editable(user),
+        'has_perm': user.has_perm('music.manage_main_repertory')
+    }
     return temp.render(RequestContext(request, c))
 
 def get_event_repertory_item_content(request, item):
     user = request.user
     repertory = item.repertory
     temp = loader.get_template("music/event_repertory_item_content.html")
-    c = {'item': item, 'repertory': repertory,
-         'editable': repertory.is_editable(user)}
+    c = {
+        'item': item,
+        'repertory': repertory,
+        'editable': repertory.is_editable(user),
+        'has_perm': user.has_perm('music.manage_main_repertory')
+    }
     return temp.render(RequestContext(request, c))
 
 @json
@@ -1328,6 +1414,7 @@ def rate_player_repertory_item(request, id):
 @json
 @login_required
 @ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def add_player_repertory_item(request, id):
     data = request.POST
     data = dict(
@@ -1348,6 +1435,7 @@ def add_player_repertory_item(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def remove_player_repertory_item(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     item = player_repertory_item.item
@@ -1358,6 +1446,7 @@ def remove_player_repertory_item(request, id):
 @json
 @login_required
 @ajax_check_locked_player_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
 def player_set_as_lead(request, id):
     player_repertory_item = get_object_or_404(PlayerRepertoryItem, id=id)
     player_repertory_item.is_lead = bool(int(request.POST.get('is_lead')))
@@ -1370,6 +1459,7 @@ def player_set_as_lead(request, id):
 
 @login_required
 @render_to("music/add_instrument_tag_type.html")
+@permission_required('music.manage_music', '/permission/denied/')
 def add_instrument_tag_type(request):
     if request.POST:
         form = InstrumentTagTypeForm(data=request.POST)

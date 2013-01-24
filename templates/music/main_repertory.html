@@ -22,6 +22,7 @@
         var is_locked = {% if is_locked %}true{% else %}false{% endif %};
         var is_free = {% if repertory.is_free %}true{% else %}false{% endif %};
         var is_editable = {% if editable %}true{% else %}false{% endif %};
+        var has_perm = {% if has_perm %}true{% else %}false{% endif %};
         var isMainRepertory = true;
     </script>
     <script type="text/javascript" src="/media/js/musiccommonrepertory.js"></script>
@@ -92,30 +93,38 @@
     </div>
     <div class="clear"></div>
     <br/>
-    {% if repertory.is_free %}
-        <div class="pretty_form">
-            <form method="post" name="lock_for_edition">
-                <p>
-                    <input type="hidden" name="lock" value="lock" />
-                    <input type="submit" class="small_button" value="{% trans "Lock this repertory for edition" %}" />
-                </p>
-            </form>
-        </div>
-    {% else %}
-        {% if editable %}
+    {% if has_perm %}
+        {% if repertory.is_free %}
             <div class="pretty_form">
                 <form method="post" name="lock_for_edition">
                     <p>
-                        <input type="hidden" name="unlock" value="lock" />
-                        <input type="submit" class="small_button" value="{% trans "Unlock this repertory" %}" />
+                        <input type="hidden" name="lock" value="lock" />
+                        <input type="submit" class="small_button" value="{% trans "Lock this repertory for edition" %}" />
                     </p>
                 </form>
             </div>
+        {% else %}
+            {% if editable %}
+                <div class="pretty_form">
+                    <form method="post" name="lock_for_edition">
+                        <p>
+                            <input type="hidden" name="unlock" value="lock" />
+                            <input type="submit" class="small_button" value="{% trans "Unlock this repertory" %}" />
+                        </p>
+                    </form>
+                </div>
+            {% endif %}
+            <p style="color: red; font-size: 14px;">
+                {% trans "This repertory is locked by" %} {{ repertory.user_lock.first_name }}.
+                {% if not editable %}{% trans "It's avaliable for read only." %}{% endif %}
+            </p>
         {% endif %}
-        <p style="color: red; font-size: 14px;">
-            {% trans "This repertory is locked by" %} {{ repertory.user_lock.first_name }}.
-            {% if not editable %}{% trans "It's avaliable for read only." %}{% endif %}
-        </p>
+    {% else %}
+        <div>
+            <p style="font-size: 14px;">
+                {% trans "This repertory is available for read only since you don't have permission to manage the Main Repertory." %}
+            </p>
+        </div>
     {% endif %}
     <div class="clear"></div>
     <br/>

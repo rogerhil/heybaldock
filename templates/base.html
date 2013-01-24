@@ -161,7 +161,9 @@
 
                     <div class="grid_1">
                         {% block right_column %}
-                        {% include "draft/portlet.html" %}
+                        {% if permissions.manage_sections %}
+                            {% include "draft/portlet.html" %}
+                        {% endif %}
                         {% include "event/portlet.html" %}
                         {% if user.is_authenticated %}
                             {% include "music/rehearsals_portlet.html" %}

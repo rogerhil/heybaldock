@@ -479,7 +479,13 @@ class RepertoryBase(models.Model):
         return self.user_lock is None
 
     def is_editable(self, user):
-        return self.user_lock == user
+        if isinstance(self, Repertory):
+            has_perm = user.has_perm('music.manage_main_repertory')
+        elif isinstance(self, EventRepertory):
+            has_perm = user.has_perm('music.manage_event_repertories')
+        else:
+            has_perm = True
+        return self.user_lock == user and has_perm
 
     def is_locked(self, user):
         return self.user_lock is None or self.user_lock != user

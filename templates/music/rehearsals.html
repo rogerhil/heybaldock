@@ -6,7 +6,9 @@
 
 {% block content %}
     <div class="manage_buttons">
-        <a href="{% url add_rehearsal %}">{% trans "Add rehearsal" %}</a>
+        {% if permissions.manage_rehearsals %}
+            <a href="{% url add_rehearsal %}">{% trans "Add rehearsal" %}</a>
+        {% endif %}
     </div>
     <div style="min-height: 350px;">
         <h1>{% trans "Rehearsals" %}</h1>

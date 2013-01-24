@@ -12,7 +12,9 @@
 {% block actions %}
     <a href="{% url artist_albums artist.id %}">{% trans 'View all albums' %}</a>
     <a href="{% url artists %}">{% trans 'View all artists' %}</a>
-    <a href="{% url add_album %}">{% trans 'Add album' %}</a>
+    {% if has_perm %}
+        <a href="{% url add_album %}">{% trans 'Add album' %}</a>
+    {% endif %}
 {% endblock %}
 
 {% block music_content %}
