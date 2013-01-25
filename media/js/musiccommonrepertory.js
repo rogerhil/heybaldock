@@ -475,7 +475,9 @@ function addNewSong(sid, $el) {
 					tonalityClick($tr.find("td.tonality_cel"));
 					modeClick($tr.find("td.mode_cel"));
 					statusClick($tr.find("td.status_cel"));
-				}
+				} else {
+                                       timesPlayedClick($tr.find("td.times_played_column"));
+                                }
 				loadMetronome($("td.tempo_cel span.tempo_metronome"));
 				loadAudio();
 				loadRatings($tr.find("td.ratings_cel"));
