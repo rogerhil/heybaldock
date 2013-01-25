@@ -374,7 +374,6 @@ function loadRatings($els) {
 		}
 		if (!isMainRepertory) {
 			data['event_id'] = getItemId(this);
-			console.log(data['event_id']);
 		}
 		$.ajax({
 			url: url,
