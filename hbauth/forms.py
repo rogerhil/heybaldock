@@ -26,7 +26,7 @@ class UserProfileForm(forms.ModelForm):
     def save(self, commit=True):
         data = self.cleaned_data
         if data.get('photo') and not isinstance(data['photo'], basestring):
-            if self.instance.photo:
+            if self.instance.photo and self.instance.image_handler:
                 self.instance.image_handler.delete()
             filename = generate_filename(data['photo'].name)
             handler = ImageHandlerUserPhoto()
