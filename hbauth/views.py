@@ -99,7 +99,6 @@ def profile(request):
         user_form = UserForm(instance=user)
         profile_form = UserProfileForm(instance=user.profile)
         password_form = PasswordChangeForm(user)
-        print user.profile.address
         location_form = UserLocationForm(user, instance=user.profile.address)
 
     ids = user.instruments.all().values_list('instrument__id', flat=True)

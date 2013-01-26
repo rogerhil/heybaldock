@@ -1140,6 +1140,7 @@ div.songs_content div.selected {
 }
 
 
+.simple_menu div.icon,
 div.pretty_select div.icon {
     float: left;
     margin-right: 10px;
@@ -1148,11 +1149,13 @@ div.pretty_select div.icon {
     max-width: 60px;
 }
 
+.simple_menu div.icon img,
 div.pretty_select div.icon img {
     max-height: 25px;
     border-radius: 5px;
 }
 
+.simple_menu div.title,
 div.pretty_select div.title {
     padding-top: 7px;
     padding-bottom: 5px;
@@ -1160,10 +1163,12 @@ div.pretty_select div.title {
     overflow: hidden;
 }
 
+.simple_menu div.title.highlight:hover,
 div.pretty_select div.title.highlight:hover {
     color: #e9892c;
 }
 
+.simple_menu h3 div.title,
 div.pretty_select h3 div.title {
     text-align: left !important;
 }
@@ -1430,7 +1435,7 @@ div.metadata ul li a {
 }
 
 .repertory .cover_column {
-    width: 20px;
+    width: 28px;
 }
 
 .repertory .name_column {
@@ -1438,7 +1443,6 @@ div.metadata ul li a {
 }
 
 .repertory .name_column div {
-    width: 160px;
     white-space: nowrap;
     overflow-x: hidden !important;
 }
@@ -1457,7 +1461,7 @@ div.metadata ul li a {
 }
 
 .repertory .status_column {
-    width: 70px;
+    width: 80px;
     text-align: center;
 }
 
@@ -1479,7 +1483,7 @@ div.metadata ul li a {
 }
 
 .repertory .tonality_column {
-    width: 30px;
+    width: 50px;
 }
 
 .repertory .players_column {
@@ -1501,6 +1505,32 @@ div.metadata ul li a {
     width: 20px;
 }
 
+thead tr.table_head_actions th {
+    background: none;
+    color: #000000;
+    font-size: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+thead tr.table_head_actions th div.action {
+    background: #00008b;
+    color: #ffffff;
+    padding: 2px 4px 2px 4px;
+    border-radius: 3px;
+    width: auto !important;
+    float: left;
+    margin-left: 3px;
+    margin-bottom: 3px;
+}
+
+thead tr.table_head_actions th div.action:hover {
+    background: #993300;
+}
+
+thead tr.table_head_actions th div.action.selected {
+    color: yellow;
+}
 
 .song_mode {
     color: #000000;
@@ -1722,6 +1752,57 @@ div.metadata ul li a {
 div.ratings_player img,
 td.ratings_cel img {
     cursor: pointer;
+}
+
+td.ratings_cel .rating_stars_by_user .icon {
+    margin-right: 5px !important;
+}
+
+td.ratings_cel .rating_stars_by_user .title {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+td.ratings_cel .rating_stars_by_user {
+    position: absolute;
+    width: 110px !important;
+    top: 20px;
+    left: -12px;
+}
+
+td.ratings_cel .rating_stars_by_user ul {
+    list-style: none;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+td.ratings_cel .ratings_by_user {
+    display: none;
+    margin-top: -3px;
+    margin-bottom: -3px;
+}
+
+td.ratings_cel .ratings_by_user .user_rating {
+    float: left;
+    position: relative;
+    margin-right: 7px;
+}
+
+td.ratings_cel .ratings_by_user .user_rating .rate {
+    position: absolute;
+    background: #8b0000;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 1px 4px 0px 4px;
+    top: 12px;
+    right: -5px;
+}
+
+td.ratings_cel .rating_stars_owner {
+    display: none;
+    border-bottom: 1px solid red;
 }
 
 #audio_player {

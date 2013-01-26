@@ -1,0 +1,56 @@
+{% load i18n common %}
+
+<div style="position: relative;">
+    <div class="rating_stars">
+        {% for r in item.ratings_range %}
+            {% if r.active %}
+                <img src="/media/img/star_16.png" class="active change_star" rate="{{ r.rate }}" />
+            {% else %}
+                <img src="/media/img/star_gray_16.png" class="inactive change_star" rate="{{ r.rate }}" />
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="ratings_by_user">
+        {% for user_rating in item.users_ratings.all %}
+            <div class="user_rating">
+                <img src="{{ user_rating.user.profile.icon_url }}" alt="{{ user_rating.user.nick }}" title="{{ user_rating.user.nick }}" height="20" />
+                <div class="rate">
+                    {{ user_rating.rate }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="rating_stars_owner">
+        {% call item.user_votes_range with user as votes_range %}
+        {% for r in votes_range %}
+            {% if r.active %}
+                <img src="/media/img/star_16.png" class="active change_star rating_owner" rate="{{ r.rate }}" />
+            {% else %}
+                <img src="/media/img/star_gray_16.png" class="inactive change_star rating_owner" rate="{{ r.rate }}" />
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="rating_stars_by_user simple_menu">
+        <h3>{% trans "Votes" %}</h3>
+        <br/>
+        <ul>
+            {% for user_rating in item.users_ratings.all %}
+                <li>
+                    <div class="icon">
+                        <img src="{{ user_rating.user.profile.icon_url }}" alt="{{ user_rating.user.nick }}" title="{{ user_rating.user.nick }}" />
+                    </div>
+                    <div class="title">
+                        {% for r in user_rating.ratings_range %}
+                            {% if r.active %}
+                                <img src="/media/img/star_16.png" class="active{% ifequal user_rating.user user %} change_star rating_owner{% endifequal %}" rate="{{ r.rate }}" />
+                            {% else %}
+                                <img src="/media/img/star_gray_16.png" class="inactive{% ifequal user_rating.user user %} change_star rating_owner{% endifequal %}" rate="{{ r.rate }}" />
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>

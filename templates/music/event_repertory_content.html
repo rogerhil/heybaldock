@@ -17,42 +17,71 @@
 
 <table class="repertory">
     <thead>
-        {% if editable %}
-        <th  class="center sort_column">
-        </th>
-        {% endif %}
-        <th  class="center cover_column">
-            {% trans "Cov" %}
-        </th>
-        <th class="name_column">
-            {% trans "Name" %}
-        </th>
-        <th  class="center duration_column">
-            {% trans "Dur" %}
-        </th>
-        <th  class="center times_played_column">
-            {% trans "X" %}
-        </th>
-        <th  class="center tempo_column">
-            {% trans "Tempo" %}
-        </th>
-        <th  class="center ratings_column">
-            {% trans "Ratings" %}
-        </th>
-        <th  class="center mode_column">
-            {% trans "Mode" %}
-        </th>
-        <th  class="center tonality_column">
-            {% trans "Tonality" %}
-        </th>
-        <th  class="center players_column">
-            {% trans "Players" %}
-        </th>
-        {% if editable %}
-        <th  class="center actions_column">
-            <img src="/media/img/cross_16_d.png" class="remove_song" />
-        </th>
-        {% endif %}
+        <tr class="table_head_actions">
+            {% if editable %}
+                <th  class="center sort_column"></th>
+            {% endif %}
+            <th class="cover_column">&nbsp;</th>
+            <th class="name_column"><div>&nbsp;</div></th>
+            <th class="duration_column">&nbsp;</th>
+            <th class="times_played_column">&nbsp;</th>
+            <th class="tempo_column">&nbsp;</th>
+            <th class="ratings_column" id="ratings_actions">
+                <div class="action selected" action="global">
+                    {% trans "Global" %}
+                </div>
+                <div class="action" action="by_user">
+                    {% trans "By user" %}
+                </div>
+                <div class="action" action="user_owner">
+                    {% trans "My votes only" %}
+                </div>
+            </th>
+            <th class="mode_column">&nbsp;</th>
+            <th class="tonality_column">&nbsp;</th>
+            <th class="players_column">&nbsp;</th>
+            {% if editable %}
+            <th  class="actions_column">&nbsp;</th>
+            {% endif %}
+        </tr>
+        <tr>
+            {% if editable %}
+            <th  class="center sort_column">
+            </th>
+            {% endif %}
+            <th  class="center cover_column">
+                {% trans "Cov" %}
+            </th>
+            <th class="name_column">
+                {% trans "Name" %}
+            </th>
+            <th  class="center duration_column">
+                {% trans "Dur" %}
+            </th>
+            <th  class="center times_played_column">
+                {% trans "X" %}
+            </th>
+            <th  class="center tempo_column">
+                {% trans "Tempo" %}
+            </th>
+            <th  class="center ratings_column">
+                {% trans "Ratings" %}
+            </th>
+            <th  class="center mode_column">
+                {% trans "Mode" %}
+            </th>
+            <th  class="center tonality_column">
+                {% trans "Tonality" %}
+            </th>
+            <th  class="center players_column">
+                {% trans "Players" %}
+            </th>
+            {% if editable %}
+            <th  class="center actions_column">
+                <img src="/media/img/cross_16_d.png" class="remove_song" />
+            </th>
+            {% endif %}
+        </tr>
     </thead>
     <tbody>
         {% for item in repertory.items %}

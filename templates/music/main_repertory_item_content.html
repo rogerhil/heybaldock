@@ -46,13 +46,7 @@
         {% call item.has_voted with user as voted %}
         <td class="center ratings_cel ratings_column" ratingurl="{% url rate_repertory_item item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
             title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
-            {% for r in item.ratings_range %}
-                {% if r.active %}
-                    <img src="/media/img/star_16.png" class="active" rate="{{ r.rate }}" />
-                {% else %}
-                    <img src="/media/img/star_gray_16.png" class="inactive" rate="{{ r.rate }}" />
-                {% endif %}
-            {% endfor %}
+            {% include "music/ratings_cel.html" %}
         </td>
 
         <td class="center mode_cel mode_column" changemodeurl="{% url change_repertory_item_song_mode item.id %}">

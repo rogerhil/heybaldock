@@ -901,7 +901,12 @@ def get_repertory_content(request, repertory):
     sort_by = request.GET.get('sort_by', '')
     sort = {}
     if sort_by:
-        items = items.order_by(sort_by)
+        if sort_by.replace('-', '') == 'ratings':
+            items = list(items)
+            v = (-1, 1) if sort_by.startswith('-') else (1, -1)
+            items.sort(lambda a, b: v[0] if a.ratings > b.ratings else v[1])
+        else:
+            items = items.order_by(sort_by)
         sort[sort_by] = True
     tc = dict(
         repertory=repertory,

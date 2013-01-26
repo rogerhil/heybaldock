@@ -345,13 +345,47 @@ function updateSongLine(data, callback) {
 	}
 }
 
+function loadRatingsView() {
+	switch (RepertoryConfig.ratings.view) {
+		case 'global':
+			$(".rating_stars").show();
+			$(".ratings_by_user").hide();
+			$(".rating_stars_owner").hide();
+			break;
+		case 'by_user':
+			$(".rating_stars").hide();
+			$(".ratings_by_user").show();
+			$(".rating_stars_owner").hide();
+			break;
+		case 'user_owner':
+			$(".rating_stars").hide();
+			$(".ratings_by_user").hide();
+			$(".rating_stars_owner").show();
+			break;
+	}
+}
+
 function loadRatings($els) {
-	$els.find('img').unbind('mouseover').mouseover(function (e) {
-		if (Number($(this).parent().attr('voted')) && !e.shiftKey) return;
+	$els.unbind('mouseover').mouseover(function (e) {
+		$(this).find('.rating_stars_by_user').fadeIn();
+	});
+	$els.unbind('mouseleave').mouseleave(function (e) {
+		$(this).find('.rating_stars_by_user').fadeOut();
+	});
+	$("#ratings_actions div.action").unbind('click').click(function () {
+		$("#ratings_actions div.action").removeClass("selected");
+		$(this).addClass("selected");
+		RepertoryConfig.ratings.view = $(this).attr('action');
+		loadRatingsView();
+	});
+
+	$els.find('img.change_star').unbind('mouseover').mouseover(function (e) {
+		var $par = $(this).parent().parent().parent();
+		if (Number($par.attr('voted')) && !e.shiftKey) return;
 		$(this).attr('src', '/media/img/star_selected_16.png');
 		$(this).prevAll().attr('src', '/media/img/star_selected_16.png');
 	});
-	$els.find('img').unbind('mouseleave').mouseleave(function (e) {
+	$els.find('img.change_star').unbind('mouseleave').mouseleave(function (e) {
 		if ($(this).hasClass('inactive')) {
 			$(this).attr('src', '/media/img/star_gray_16.png');
 		} else {
@@ -365,9 +399,10 @@ function loadRatings($els) {
 			}
 		});
 	});
-	$els.find('img').unbind('click').click(function (e) {
-		if (Number($(this).parent().attr('voted')) && !e.shiftKey) return;
-		var url = $(this).parent().attr('ratingurl');
+	$els.find('img.change_star').unbind('click').click(function (e) {
+		var $par = $(this).parents('td');
+		if (Number($par.attr('voted')) && !$(this).hasClass('rating_owner') && !e.shiftKey) return;
+		var url = $par.attr('ratingurl');
 		var data = {
 			rate: $(this).attr('rate'),
 			is_main: Number(isMainRepertory)
@@ -390,6 +425,7 @@ function loadRatings($els) {
 			}
 		});
 	});
+	loadRatingsView();
 }
 
 function newSong() {

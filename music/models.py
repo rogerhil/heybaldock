@@ -592,6 +592,18 @@ class RepertoryItem(models.Model):
     def has_voted(self, user):
         return bool(self.users_ratings.filter(user=user).count())
 
+    def user_votes(self, user):
+        votes = self.users_ratings.filter(user=user)
+        if votes:
+            return votes[0]
+
+    def user_votes_range(self, user):
+        vote = self.user_votes(user)
+        rate = vote.rate if vote else 0
+        r = [{'rate': i + 1,
+              'active': rate > i} for i in xrange(Rating.length())]
+        return r
+
     def to_trash(self):
         self.status = RepertoryItemStatus.deleted
         self.save()
@@ -902,6 +914,12 @@ class UserRepertoryItemRating(models.Model, Rating):
 
     class Meta:
         unique_together = ('user', 'item')
+
+    @property
+    def ratings_range(self):
+        r = [{'rate': i + 1,
+              'active': self.rate > i} for i in xrange(Rating.length())]
+        return r
 
 
 class PlayerRepertoryItemRating(models.Model, Rating):

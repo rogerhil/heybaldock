@@ -24,6 +24,11 @@
         var is_editable = {% if editable %}true{% else %}false{% endif %};
         var has_perm = {% if has_perm %}true{% else %}false{% endif %};
         var isMainRepertory = true;
+        var RepertoryConfig = {
+            ratings: {
+                view: 'global'
+            }
+        };
     </script>
     <script type="text/javascript" src="/media/js/musiccommonrepertory.js"></script>
     <script type="text/javascript" src="/media/js/musicmainrepertory.js"></script>
