@@ -111,8 +111,8 @@ MIDDLEWARE_CLASSES = (
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'auth.middleware.ComingSoonMiddleware',
-    'auth.middleware.UnderMaintenanceMiddleware',
+    'hbauth.middleware.ComingSoonMiddleware',
+    'hbauth.middleware.UnderMaintenanceMiddleware',
     'music.middleware.MusicMiddleware',
 )
 
@@ -127,6 +127,8 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+AUTH_PROFILE_MODULE = "hbauth.UserProfile"
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -137,7 +139,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.webdesign',
     'south',
-    'auth',
+    'hbauth',
     'section',
     'photo',
     'video',

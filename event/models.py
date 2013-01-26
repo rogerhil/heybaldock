@@ -39,6 +39,7 @@ STATE_CHOICES = [
 class LocationType:
     show = 1
     studio = 2
+    home = 3
 
     @classmethod
     def choices(cls):

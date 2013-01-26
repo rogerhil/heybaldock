@@ -6,8 +6,8 @@ from django.shortcuts import get_object_or_404
 from django.utils import simplejson
 from django.views.decorators.http import require_POST
 
-from auth.decorators import login_required, draft_permission_required, \
-                            draft_model_permission_required
+from hbauth.decorators import login_required, draft_permission_required, \
+                              draft_model_permission_required
 from draft.models import ContentDraft
 from section.decorators import render_to
 from section.templatetags.wysiwygtags import UI_TAGS

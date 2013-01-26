@@ -13,9 +13,10 @@
         {% endif %}
         <div class="icon">
             <img src="{{ player_repertory_item.player.instrument.icon_url }}" />
+            <img src="{{ player_repertory_item.player.user.profile.icon_url }}" />
         </div>
         <div class="title">
-            {{ player_repertory_item.player.user.first_name }}
+            {{ player_repertory_item.player.user.nick }}
         </div>
     </h3>
     <div class="change_player_user_options" style="display: none;">

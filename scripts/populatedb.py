@@ -96,7 +96,7 @@ def populate_sections():
         }
         form = SectionForm(user=user, data=data)
         form.is_valid()
-        print form.errors
+        form.instance.order = order
         form.save()
         form.instance.slug = section.replace(' ', '').lower()
         form.publish()
@@ -120,7 +120,8 @@ def populate_locations():
         for i, phone in enumerate(l[12]):
             data['phone%d' % (i + 1)] = phone
         form = LocationForm(user=user, data=data)
-        form.is_valid()
+        print form.is_valid()
+        print form.errors
         form.save()
         form.publish()
 

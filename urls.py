@@ -12,7 +12,7 @@ js_info_dict = {
 urlpatterns = patterns('',
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    url(r'^auth/', include('auth.urls')),
+    url(r'^auth/', include('hbauth.urls')),
     url(r'^fbchannel.html', TemplateView.as_view(template_name="channel.html"), name="facebook_channel"),
     url(r'^eventos/', include('event.urls')),
     url(r'^videos/', include('video.urls')),

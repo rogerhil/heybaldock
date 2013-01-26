@@ -35,6 +35,17 @@ $(window).load(function () {
 		$(this).slideUp();
 	});
 
+	var $date = $("#id_birth_date");
+	$date.attr("readonly", "readonly");
+	var options = {
+		dateFormat: 'dd/mm/yy',
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "1940:2000"
+	};
+	$date.datepicker(options);
+	$date.datepicker("option", "dateFormat", "dd/mm/yy");
+
 });
 
 function loadAddInstruments() {

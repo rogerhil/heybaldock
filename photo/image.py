@@ -268,6 +268,10 @@ class ImageHandlerArtist(ImageHandlerSimple):
     BASE_DIR = 'artist'
 
 
+class ImageHandlerUserPhoto(ImageHandlerSimple):
+    BASE_DIR = 'user/photo'
+
+
 class FileHandlerDocument(ImageHandlerSimple):
     BASE_DIR = 'document'
 

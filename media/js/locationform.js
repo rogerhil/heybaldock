@@ -1,4 +1,8 @@
 $(window).load(function () {
+	loadLocationForm();
+});
+
+function loadLocationForm() {
 	$('input[name=latitude]').parent().hide();
 	$('input[name=longitude]').parent().hide();
 	$('input[name=zipcode]').change(getZipcode);
@@ -44,4 +48,4 @@ $(window).load(function () {
 		$errmsg.insertBefore($("#view_address_map"));
 
 	}
-});
+}

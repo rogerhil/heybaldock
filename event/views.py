@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
-from auth.decorators import login_required
+from hbauth.decorators import login_required
 from section.decorators import render_to
 from models import Event, Location
 from maps import search_zip
