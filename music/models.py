@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.template import loader, Context
+from django.utils.translation import ugettext as _, ugettext_lazy as l_
 
 from lib.fields import JSONField, PickleField
 from defaults import Tonality, Rating, Tempo, DocumentType, SongMode, \
@@ -692,15 +693,15 @@ class Instrument(models.Model):
 
     @property
     def verb(self):
-        return "sings" if self.is_vocal else "plays"
+        return _("sings") if self.is_vocal else _("plays")
 
     @property
     def verb_past(self):
-        return "sang" if self.is_vocal else "played"
+        return _("sang") if self.is_vocal else _("played")
 
     @property
     def verb_past_participle(self):
-        return "sung" if self.is_vocal else "played"
+        return _("sung") if self.is_vocal else _("played")
 
 
 class Player(models.Model):
@@ -713,9 +714,9 @@ class Player(models.Model):
 
     def __unicode__(self):
         if self.instrument.is_vocal:
-            return "%s %s" % (self.user, self.instrument.verb)
+            return "%s %s" % (self.user.nick, self.instrument.verb)
         else:
-            return "%s %s %s" % (self.user.first_name, self.instrument.verb,
+            return "%s %s %s" % (self.user.nick, self.instrument.verb,
                                  self.instrument)
 
 
