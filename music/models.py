@@ -691,18 +691,6 @@ class Instrument(models.Model):
     def is_vocal(self):
         return self.name.lower() == 'vocal'
 
-    @property
-    def verb(self):
-        return _("sings") if self.is_vocal else _("plays")
-
-    @property
-    def verb_past(self):
-        return _("sang") if self.is_vocal else _("played")
-
-    @property
-    def verb_past_participle(self):
-        return _("sung") if self.is_vocal else _("played")
-
 
 class Player(models.Model):
     instrument = models.ForeignKey(Instrument, related_name="users")
@@ -714,10 +702,13 @@ class Player(models.Model):
 
     def __unicode__(self):
         if self.instrument.is_vocal:
-            return "%s %s" % (self.user.nick, self.instrument.verb)
+            kwargs = dict(
+                user=self.user.nick,
+                instrument=self.instrument
+            )
+            return "%(user)s sings" % kwargs
         else:
-            return "%s %s %s" % (self.user.nick, self.instrument.verb,
-                                 self.instrument)
+            return "%(user)s plays %(instrument)s" % kwargs
 
 
 class InstrumentTagType(models.Model):
@@ -764,7 +755,23 @@ class PlayerRepertoryItem(models.Model):
         unique_together = ('player', 'item')
 
     def __unicode__(self):
-        return "%s %s as %s" % (self.player, self.item, self.as_member)
+        kwargs = dict(
+            user=self.player.user.nick,
+            instrument=self.player.instrument,
+            song=self.item,
+            as_member=self.as_member
+        )
+        if self.as_member:
+            if self.player.instrument.is_vocal:
+                return _('%(user)s sings "%(song)s" as %(as_member)s' % kwargs)
+            else:
+                return _('%(user)s plays %(instrument)s in "%(song)s" as '
+                         '%(as_member)s' % kwargs)
+        else:
+            if self.player.instrument.is_vocal:
+                return _('%(user)s sings "%(song)s"' % kwargs)
+            else:
+                return _('%(user)s plays %(instrument)s in "%(song)s"'% kwargs)
 
     @property
     def ratings(self):
