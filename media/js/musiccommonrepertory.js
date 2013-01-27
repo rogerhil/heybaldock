@@ -366,8 +366,10 @@ function loadRatingsView() {
 }
 
 function loadRatings($els) {
-	$els.unbind('mouseover').mouseover(function (e) {
+	$els.unbind('click').click(function (e) {
+		if (e.shiftKey) return;
 		$(this).find('.rating_stars_by_user').fadeIn();
+		e.stopPropagation();
 	});
 	$els.unbind('mouseleave').mouseleave(function (e) {
 		$(this).find('.rating_stars_by_user').fadeOut();
