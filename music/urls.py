@@ -42,6 +42,8 @@ urlpatterns = patterns('',
     url(r'^repertory/main/item/player/(?P<id>\d+)/rate/$', views.rate_player_repertory_item, name='rate_player_repertory_item'),
 
     url(r'^repertory/event/add/$', views.add_event_repertory, name='add_event_repertory'),
+    url(r'^repertory/event/add_for_rehearsal/(?P<id>\d+)/$', views.add_event_repertory_for_rehearsal, name='add_event_repertory_for_rehearsal'),
+    url(r'^repertory/event/add_for_event/(?P<id>\d+)/$', views.add_event_repertory_for_event, name='add_event_repertory_for_event'),
     url(r'^repertory/event/(?P<id>\d+)/$', views.event_repertory, name='event_repertory'),
     url(r'^repertory/event/(?P<id>\d+)/remove/$', views.remove_event_repertory, name='remove_event_repertory'),
     url(r'^repertory/event/(?P<id>\d+)/item/add/$', views.add_item_to_event_repertory, name='add_item_to_event_repertory'),
@@ -51,6 +53,7 @@ urlpatterns = patterns('',
     url(r'^repertory/event/item/(?P<id>\d+)/move/$', views.move_event_repertory_item, name='move_event_repertory_item'),
     url(r'^repertory/event/item/(?P<id>\d+)/rate/$', views.rate_event_repertory_item, name='rate_event_repertory_item'),
     url(r'^repertory/event/item/(?P<id>\d+)/times_played/$', views.change_event_repertory_item_times_played, name='change_event_repertory_item_times_played'),
+
 
     url(r'^$', views.music_management, name='music_management'),
     url(r'^album/add/$', views.add_album, name='add_album'),

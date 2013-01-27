@@ -21,45 +21,58 @@
     </div>
 
     <div style="min-height: 250px;">
-        <h1>{% trans "Rehearsal" %} in {{ rehearsal.studio.name }}</h1>
+        <h1>
+            {% blocktrans with rehearsal.studio.name as name %}
+                Rehearsal in {{ name }}
+            {% endblocktrans %}
+        </h1>
 
         <p>
-            <strong>{% trans "When: " %}</strong>{{ rehearsal.date }}
+            <strong>{% trans "When" %}:</strong> {{ rehearsal.date }}
         </p>
         <p>
-            <strong>{% trans "Duration: " %}</strong>{{ rehearsal.duration_display }}
+            <strong>{% trans "Where:" %}</strong> {{ rehearsal.studio.name }}
         </p>
         <p>
-            <strong>{% trans "Cost: " %}</strong>{{ rehearsal.cost }}
+            <strong>{% trans "Duration" %}:</strong> {{ rehearsal.duration_display }}
+        </p>
+        <p>
+            <strong>{% trans "Cost" %}:</strong> {{ rehearsal.cost }}
             {% if rehearsal.paid_by %}
                 {% trans "paid by" %} {{ rehearsal.paid_by.get_full_name }}
             {% endif %}
         </p>
-        <h2>{% trans "Notes" %}</h2>
-        {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
-
-        {% ifequal rehearsal.repertories.count 1 %}
-            <h2>
+        {% if rehearsal.repertories.count %}
+            <p>
+                <strong>{% trans "Repertory: " %}</strong>
                 {% for repertory in rehearsal.repertories.all %}
                     <a href="{% url event_repertory repertory.id %}">
-                        {% trans "See the repertory for this rehearsal" %}
+                        {% trans "click here to see the repertory" %}
                     </a>
                 {% endfor %}
-            </h2>
+            </p>
         {% else %}
-            <h2>{% trans "See the repertories for this rehearsal below" %}</h2>
-            {% for repertory in rehearsal.repertories.all %}
-                <p>
-                    <a href="{% url event_repertory repertory.id %}">
-                        {% trans "Repertory" %} {{ forloop.counter }}
-                    </a>
-                </p>
-            {% endfor %}
-        {% endifequal %}
-        <div class="clear"></div>
+            <p>
+                <strong>{% trans "Repertory:" %}</strong>
+                <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
+                <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last rehearsal." %}</a>
+            </p>
+        {% endif %}
 
+        <strong>{% trans "Notes:" %}</strong>
+        <br/>
+        {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
+        <br/>
+        <div class="clear"></div>
+        <br/>
+        <h3>
+            {% blocktrans with rehearsal.studio.name as name %}
+                {{ name }} address
+            {% endblocktrans %}
+        </h3>
+        <div class="clear"></div>
         {% with rehearsal.studio as location %}
-            {% include "event/location.html" %}
+            {% include "event/location_address.html" %}
         {% endwith %}
     </div>
 

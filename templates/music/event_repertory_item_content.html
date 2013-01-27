@@ -13,7 +13,7 @@
                     <span class="song_handle ui-icon ui-icon-arrowthick-2-n-s"></span>
                 </td>
             {% endif %}
-            <td colspan="8" class="center" style="padding-top: 20px; padding-bottom: 20px;">
+            <td colspan="9" class="center" style="padding-top: 20px; padding-bottom: 20px;">
                 {% blocktrans with item.empty_duration_display as interval %}
                     Interval of {{ interval }}
                 {% endblocktrans %}
@@ -39,7 +39,7 @@
                 {% endif %}
                 <td class="nopadding center cover_column">
                     <a href="{% url album main_item.song.album.id %}">
-                        <img src="{{ main_item.song.album.icon_url }}" alt="{{ main_item.order_display }} - {{ main_item.song.album }}" title="{{ main_item.order_display }} - {{ main_item.song.album }}" style="border-radius: 3px;" />
+                        <img src="{{ main_item.song.album.icon_url }}" alt="{{ item.order_display }} - {{ main_item.song.album }}" title="{{ item.order_display }} - {{ main_item.song.album }}" style="border-radius: 3px;" />
                     </a>
                 </td>
                 <td class="name_column">

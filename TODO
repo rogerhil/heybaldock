@@ -1,26 +1,44 @@
 Debug False in production and logs
 
+* General
+ - Poll
+ - PhotoAlbum to Location
+ - Insert Image WYSIWYG
 
-Poll
-PhotoAlbum to Location
-Insert Image WYSIWYG
+* Test again
+ - Social Buttons - FB, Twitter, Pinterest etc
 
-
- * Test again
-Social Buttons - FB, Twitter, Pinterest etc
-
- * Nice to have:
-Avatar photo for user
-Photo Album associated to Event for flyers, like for location
-Contact - captcha
-Contact HTML
-Icons: success, warning, error, info, etc...
-Code Comments, Doc tests, License
+* Nice to have:
+ - Photo Album associated to Event for flyers, like for location
+ - Contact - captcha
+ - Contact HTML
+ - Icons: success, warning, error, info, etc...
+ - Code Comments, Doc tests, License
 
 
+* Bugs:
+ - Album view:
+   - Firefox: tempo display in vertical
+   - When change tempo, the line breaks, not showing the icon for download and actions
 
+* Music Management
 
-- Music Management
+ - Show repertory of day of event for web user
+ - Repertory for rehearsal: show status columns only for rehearsal case
+ - Rehearsal actions like: add songs with rating below X, songs less played, etc
+ - Repertory for event actions like: order by dynamic
+ - Repertories statistics
+ - Music management best menu navigation
+ - Permissions for manage past events repertories
+ - Remove maybe actions column from album view
+ - Print action for event repertory
+ - Print action for main repertory
+ - Slide show offline for event repertory
+ - Mogg upload option for song
+ - Undo action
+ - Repertory item (Event or Main) comments for users (think about using auto-
+   complete user tag, like in facebook tags)
+ - Chat
 
  - Think about remove QUICK actions for instruments plays in table (for
    performance reasons). Will be a bad idea for the cases which user may

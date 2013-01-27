@@ -16,7 +16,25 @@
     <h1>{{ event.name }}</h1>
     <h3>{{ event.description }}</h3>
     <p>{% autoescape off %}{{ event.content }}{% endautoescape %}</p>
-    <p>Data: {{ event.starts_at }}</p>
+    <p><strong>{% trans "Date" %}:</strong>: {{ event.starts_at }}</p>
+    {% if permissions.manage_repertories and event.id %}
+        {% if event.repertories.count %}
+            <p>
+                <strong>{% trans "Repertory: " %}</strong>
+                {% for repertory in event.repertories.all %}
+                    <a href="{% url event_repertory repertory.id %}">
+                        {% trans "click here to see the repertory" %}
+                    </a>
+                {% endfor %}
+            </p>
+        {% else %}
+            <p>
+                <strong>{% trans "Repertory:" %}</strong>
+                <a href="{% url add_event_repertory_for_event event.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
+                <a href="{% url add_event_repertory_for_event event.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last event." %}</a>
+            </p>
+        {% endif %}
+    {% endif %}
 </div>
 {% with event.location as location %}
     {% include "event/location.html" %}

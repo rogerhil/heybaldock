@@ -27,7 +27,15 @@ def check_locked_repertory(view_func, *args, **kwargs):
         repertory = get_object_or_404(Repertory, id=kwargs['id'])
         url = repertory_is_locked(request, repertory)
         return url or view_func(request, *args, **kwargs)
+    return _wrapped_view
 
+def check_locked_event_repertory(view_func, *args, **kwargs):
+    from music.models import EventRepertory
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        repertory = get_object_or_404(EventRepertory, id=kwargs['id'])
+        url = repertory_is_locked(request, repertory)
+        return url or view_func(request, *args, **kwargs)
     return _wrapped_view
 
 def ajax_check_locked_main_repertory(view_func, *args, **kwargs):

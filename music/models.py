@@ -12,6 +12,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.template import loader, Context
 from django.utils.translation import ugettext as _, ugettext_lazy as l_
+from django.template.loader import get_template_from_string
+from django.template import Context
 
 from lib.fields import JSONField, PickleField
 from defaults import Tonality, Rating, Tempo, DocumentType, SongMode, \
@@ -37,7 +39,9 @@ class Rehearsal(models.Model):
     notes = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return u"Rehearsal in %s on %s" % (unicode(self.studio), self.date)
+        temp = get_template_from_string("{{ date }}")
+        date = temp.render(Context({'date': self.date}))
+        return u"Rehearsal in %s, %s" % (unicode(self.studio), date)
 
     def duration_display(self):
         return TimeDuration.display(self.duration)
@@ -614,7 +618,8 @@ class RepertoryItem(models.Model):
 
 
 class EventRepertory(RepertoryBase):
-    event = models.ForeignKey(Event, null=True, blank=True)
+    event = models.ForeignKey(Event, null=True, blank=True,
+                              related_name='repertories')
     rehearsal = models.ForeignKey(Rehearsal, null=True, blank=True,
                                   related_name='repertories')
     user_lock = models.ForeignKey(User, null=True, blank=True,
@@ -622,7 +627,8 @@ class EventRepertory(RepertoryBase):
     band = models.ForeignKey(Band, related_name="event_repertories", null=True)
 
     def __unicode__(self):
-        return "%s Repertory" % (self.event or unicode(self.rehearsal))
+        return "Repertory: %s" % (unicode(self.event) or
+                                  unicode(self.rehearsal))
 
     def import_items_from(self, base):
         for item in base.items.all():
@@ -664,7 +670,8 @@ class EventRepertoryItem(models.Model):
 
     def clone_object(self, repertory):
         item = EventRepertoryItem(item=self.item, repertory=repertory,
-                                  order=self.order)
+                                  order=self.order,
+                                  empty_duration=self.empty_duration)
         return item
 
     def empty_duration_display(self):

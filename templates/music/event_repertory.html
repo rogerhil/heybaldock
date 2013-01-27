@@ -35,11 +35,14 @@
 
 {% block actions %}
     <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+    {% if has_perm and editable %}
+        <a href="{% url remove_event_repertory repertory.id %}" class="red">{% trans 'Remove' %}</a>
+    {% endif %}
 {% endblock %}
 
 {% block music_content %}
     {% include "music/audio_player.html" %}
-    <h1>{% trans "Repertory:" %} {{ repertory }}</h1>
+    <h1>{{ repertory }}</h1>
     <h3 id="time_total">
         {% trans "Time total:" %}
         <span></span>

@@ -111,7 +111,7 @@
                             {% endif %}
                         {% endif %}
                         <a href="{% url profile %}">
-                            <img src="{{ user.profile.icon_url }}" style="margin: -8px 0px -5px -5px; border-radius: 3px;" width="20" />
+                            <img src="{{ user.profile.icon_url }}" style="margin: -8px 0px -5px -5px; border-radius: 3px;" height="20" />
                             {{ user.nick }} {% trans "Profile" %}
                         </a>
                         <a href="{% url logout %}">Logout</a>

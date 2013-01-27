@@ -82,7 +82,7 @@ class Location(models.Model):
                          'https://maps.google.com/maps/api/js?sensor=true']}
 
     def __unicode__(self):
-        return "%s - %s" % (unicode(self.name), unicode(self.address))
+        return unicode(self.name)
 
     @property
     def address(self):

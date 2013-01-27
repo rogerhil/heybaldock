@@ -36,6 +36,9 @@
 
 {% block actions %}
     <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+    {% if has_perm %}
+        <a href="{% url add_event_repertory %}">{% trans "Add Repertory" %}</a>
+    {% endif %}
 {% endblock %}
 
 {% block music_content %}

@@ -14,7 +14,8 @@ SECTIONS_MAP_SLUG_ID = dict([(i.slug, i.id) for i in SECTIONS])
 def main(request):
     user = request.user
     now = datetime.now()
-    events = Event.objects.filter(starts_at__gte=now).order_by('-starts_at')[:10]
+    events = Event.objects.filter(starts_at__gte=now)\
+                          .order_by('-starts_at')[:10]
     locations = Location.objects.all().order_by('name')[:10]
     upcoming_rehearsals = Rehearsal.objects.filter(date__gte=now)
     logged = user.is_authenticated()
@@ -22,6 +23,8 @@ def main(request):
     permissions = dict(
         manage_rehearsals=logged and user.has_perm("music.manage_rehearsals"),
         manage_events=logged and user.has_perm("event.manage_events"),
+        manage_repertories=logged and user.has_perm(
+                                              "music.manage_event_repertories"),
         manage_locations=logged and user.has_perm("event.manage_locations"),
         manage_sections=logged and user.has_perm("section.manage_sections"),
     )
