@@ -37,7 +37,11 @@ Debug False in production and logs
  - Undo action
  - Repertory item (Event or Main) comments for users (think about using auto-
    complete user tag, like in facebook tags)
+ - Event Repertory: option for add song in a list by album and full list
+   ordered by columns (very usefull for a beginning of a rehearsal, to have
+   an overview)
  - Chat
+ - Main Repertory: option for add song in a list by album
 
  - Think about remove QUICK actions for instruments plays in table (for
    performance reasons). Will be a bad idea for the cases which user may

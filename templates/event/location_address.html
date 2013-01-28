@@ -14,10 +14,11 @@
     <div class="clear"></div>
     <script type="text/javascript">
         $(window).load(function () {
-            initialize();
-            {# HACK: using |title filter to avoid brazilizan format using commas... #}
-            codeLatLng({{ location.latitude|title }}, {{ location.longitude|title }});
-
+            if ($("#map_canvas").length) {
+                initialize();
+                {# HACK: using |title filter to avoid brazilizan format using commas... #}
+                codeLatLng({{ location.latitude|title }}, {{ location.longitude|title }});
+            }
         });
     </script>
 </div>
