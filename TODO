@@ -23,7 +23,6 @@ Debug False in production and logs
 
 * Music Management
 
- - Show repertory of day of event for web user
  - Repertory for rehearsal: show status columns only for rehearsal case
  - Rehearsal actions like: add songs with rating below X, songs less played, etc
  - Repertory for event actions like: order by dynamic

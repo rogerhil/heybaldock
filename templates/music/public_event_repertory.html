@@ -1,0 +1,81 @@
+{% load i18n common %}
+
+{% spaceless %}
+<div id="repertory_content" class="table_list">
+    <table class="repertory">
+        <thead>
+            <tr>
+                <th class="center" style="width: 30px;">
+                    {% trans "Cover" %}
+                </th>
+                <th>
+                    {% trans "Artist" %}
+                </th>
+                <th>
+                    {% trans "Album" %}
+                </th>
+                <th>
+                    {% trans "Name" %}
+                </th>
+                <th class="center">
+                    {% trans "Duration" %}
+                </th>
+                <th class="center">
+                    {% trans "Tempo" %}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in repertory.items %}
+                {% if not item.item %}
+                    <tr style="background-color: #f7d453; font-weight: bold; text-transform: uppercase; font-size: 16px;">
+                        <td colspan="6" class="center" style="padding-top: 10px; padding-bottom: 10px;">
+                            {% blocktrans with item.empty_duration_display as interval %}
+                                Interval of {{ interval }}
+                            {% endblocktrans %}
+                        </td>
+                    </tr>
+                {% else %}
+                    {% with item.item as main_item %}
+                        <tr class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
+                            <td class="nopadding center">
+                                <a href="{% url album main_item.song.album.id %}">
+                                    <img src="{{ main_item.song.album.icon_url }}" alt="{{ item.order_display }} - {{ main_item.song.album }}" title="{{ item.order_display }} - {{ main_item.song.album }}" style="border-radius: 3px;" />
+                                </a>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ main_item.song.album.artist }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ main_item.song.album }}
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ main_item.song.name }}
+                                </div>
+                            </td>
+                            <td class="center">
+                                {{ main_item.song.duration_display }}
+                            </td>
+                            <td class="center tempo_cel">
+                                <span class="tempo_metronome" tempo="{{ main_item.song.tempo }}" signaturebeats="{{ main_item.song.signature_beats }}">
+                                    {% autoescape off %}{{ main_item.song.tempo_html_display }}{% endautoescape %}
+                                </span>
+                                <div class="metronome_graphic" style="position: absolute; display: none;">
+                                    {% for i in main_item.song.signature_beats_range %}
+                                        <div class="led led_{{ i }}"></div>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endwith %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endspaceless %}

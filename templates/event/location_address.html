@@ -7,16 +7,17 @@
         Telefones: {{ location.phones_display }}
     </p>
 </div>
-<div class="clear"></div>
 <p>{{ location.description }}</p>
-<div class="clear"></div>
-<div id="map_canvas"></div>
-<div class="clear"></div>
-<script type="text/javascript">
-    $(window).load(function () {
-        initialize();
-        {# HACK: using |title filter to avoid brazilizan format using commas... #}
-        codeLatLng({{ location.latitude|title }}, {{ location.longitude|title }});
+<div id="map_area">
+    <div class="clear"></div>
+    <div id="map_canvas"></div>
+    <div class="clear"></div>
+    <script type="text/javascript">
+        $(window).load(function () {
+            initialize();
+            {# HACK: using |title filter to avoid brazilizan format using commas... #}
+            codeLatLng({{ location.latitude|title }}, {{ location.longitude|title }});
 
-    });
-</script>
+        });
+    </script>
+</div>

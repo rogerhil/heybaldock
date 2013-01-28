@@ -40,19 +40,26 @@
     {% include "event/location.html" %}
 {% endwith %}
 <div class="clear"></div>
-<br />
 {% with event.photos as albums %}
     {% if albums %}
-    <h3>{% trans 'See the photos related to this event below' %}</h3>
-    {% include "photo/photo_albums.html" %}
+        <br />
+        <h3>{% trans 'See the photos related to this event below' %}</h3>
+        {% include "photo/photo_albums.html" %}
     {% endif %}
 {% endwith %}
 <div class="clear"></div>
-<br />
 {% with event.video_albums.all as albums %}
     {% if albums %}
-    <h3>{% trans 'See the videos related to this event below' %}</h3>
-    {% include "video/video_albums.html" %}
+        <br />
+        <h3>{% trans 'See the videos related to this event below' %}</h3>
+        {% include "video/video_albums.html" %}
     {% endif %}
 {% endwith %}
 <div class="clear"></div>
+{% if repertory %}
+    <div>
+        <h2>{% trans 'Repertory of the day' %}</h2>
+        {% include "music/public_event_repertory.html" %}
+    </div>
+    <br />
+{% endif %}

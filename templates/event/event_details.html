@@ -3,12 +3,20 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="/media/css/prettyPhoto.css" type="text/css" />
+    <script type="text/javascript" src="/media/js/buzz.js"></script>
+    <script type="text/javascript" src="/media/js/MIDI.js"></script>
+    <script type="text/javascript" src="/media/js/base64binary.js"></script>
+    <script type="text/javascript" src="/media/js/metronome.js"></script>
     <script type="text/javascript" src="/media/js/event.js"></script>
+    <script type="text/javascript" src="/media/js/events.js"></script>
     <script type="text/javascript" src="/media/js/jquery/jquery.prettyPhoto.js"></script>
     <script type="text/javascript" src="/media/js/photos.js"></script>
     <script type="text/javascript" src="/media/js/videos.js"></script>
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
     <script type="text/javascript" src="/media/js/maps.js"></script>
+    <script type="text/javascript">
+        var event_is_upcoming = {% if event.is_upcoming %}true{% else %}false{% endif %};
+    </script>
 {% endblock %}
 
 {% block open_grap_tags %}

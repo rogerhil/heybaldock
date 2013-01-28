@@ -174,6 +174,11 @@ class Event(models.Model):
             if photos:
                 return photos[0]
 
+    @property
+    def is_upcoming(self):
+        now = datetime.now()
+        return self.starts_at > now
+
     def is_last_event(self):
         last_event = self.get_last_event()
         return self.id == last_event.id

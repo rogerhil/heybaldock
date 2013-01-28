@@ -17,7 +17,10 @@ from lib.decorators import ajax
 @render_to("event/event_details.html")
 def event_details(request, id):
     event = get_object_or_404(Event, id=id)
-    return dict(event=event)
+    repertory = None
+    if event.repertories.count():
+        repertory = event.repertories.all()[0]
+    return dict(event=event, repertory=repertory)
 
 @render_to("event/event_history.html")
 def event_history(request):
