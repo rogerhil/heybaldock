@@ -22,9 +22,9 @@ Debug False in production and logs
    - When change tempo, the line breaks, not showing the icon for download and actions
 
 * Music Management
- - Repertory for event actions like: order by dynamic
  - Repertories statistics (also add actions checkboxes to include songs in new
    repertories)
+ - Repertory for event actions like: order by dynamic
  - Music management best menu navigation
  - Permissions for manage past events repertories
  - Remove maybe actions column from album view
@@ -38,7 +38,8 @@ Debug False in production and logs
  - Event Repertory: option for add song in a list by album and full list
    ordered by columns (very usefull for a beginning of a rehearsal, to have
    an overview)
- - add require_POST, requery_method, etc decorators in music functions
+ - Add song by category (below and above # of plays in shows)
+ - Add require_POST, requery_method, etc decorators in music functions
  - Chat
  - Main Repertory: option for add song in a list by album
 

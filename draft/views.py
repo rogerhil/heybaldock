@@ -9,6 +9,7 @@ from django.views.decorators.http import require_POST
 from hbauth.decorators import login_required, draft_permission_required, \
                               draft_model_permission_required
 from draft.models import ContentDraft
+from event.models import Event
 from section.decorators import render_to
 from section.templatetags.wysiwygtags import UI_TAGS
 
@@ -97,6 +98,9 @@ def publish(request, id):
     else:
         form = ct.model_class().form()(user=user, draft=draft)
     object = form.publish()
+    if isinstance(object, Event) and not object.band:
+        object.band = request.band
+        object.save()
     return HttpResponseRedirect(object.url())
 
 @login_required

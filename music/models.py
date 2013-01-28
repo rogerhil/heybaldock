@@ -56,6 +56,10 @@ class Band(models.Model):
     artists = models.ManyToManyField('Artist', through='BandArtist')
     enable_inactive_members = models.BooleanField(default=False)
 
+    # counts
+    rehearsals_count = models.IntegerField(default=0)
+    shows_count = models.IntegerField(default=0)
+
     ACTIVE_BAND_SESSION_KEY = 'active_band'
     ENABLE_INACTIVE_MEMBERS_SESSION_KEY = 'enable_inactive_band_members'
 
@@ -89,17 +93,38 @@ class Band(models.Model):
         now = datetime.now()
         return self.rehearsals.filter(date__lte=now)
 
-    def repertory_items_with_statistics(self):
-        rehearsals = self.occurred_rehearsals
+    def update_counts(self):
+        rehearsals = self.rehearsals.all()
+        self.rehearsals_count = rehearsals.count()
         stats = {}
         for rehearsal in rehearsals:
             for rep in rehearsal.repertories.all():
                 for ritem in rep.all_items.all():
+                    if not ritem.item:
+                        # inteval
+                        continue
                     if ritem.item.id not in stats:
                         stats[ritem.item.id] = ritem.item
-                        stats[ritem.item.id].rehearsals_plays = 0
-                    stats[ritem.item.id].rehearsals_plays += 1
-        return stats.values()
+                        stats[ritem.item.id].in_rehearsals_count = 0
+                        stats[ritem.item.id].in_shows_count = 0
+                    stats[ritem.item.id].in_rehearsals_count += 1
+        events = self.events.all()
+        self.events_count = events.count()
+        self.save()
+
+        for event in events:
+            for rep in event.repertories.all():
+                for ritem in rep.all_items.all():
+                    if not ritem.item:
+                        # inteval
+                        continue
+                    if ritem.item.id not in stats:
+                        stats[ritem.item.id] = ritem.item
+                        stats[ritem.item.id].in_shows_count = 0
+                    stats[ritem.item.id].in_shows_count += 1
+
+        for item in stats.values():
+            item.save()
 
 
 class BandArtist(models.Model):
@@ -559,6 +584,9 @@ class RepertoryItem(models.Model):
                                 choices=Tonality.choices())
     status = models.SmallIntegerField(default=RepertoryItemStatus.new,
                                       choices=RepertoryItemStatus.choices())
+    # counts
+    in_rehearsals_count = models.IntegerField(default=0)
+    in_shows_count = models.IntegerField(default=0)
 
     class Meta:
         unique_together = ('song', 'repertory')
@@ -625,6 +653,30 @@ class RepertoryItem(models.Model):
               'active': rate > i} for i in xrange(Rating.length())]
         return r
 
+    @property
+    def frequency_in_rehearsals(self):
+        band = self.repertory.band
+        if band.rehearsals_count:
+            return float(self.in_rehearsals_count) / band.rehearsals_count
+        else:
+            return 0.0
+
+    @property
+    def percentage_in_rehearsals(self):
+        return "%.2f%%" % round(self.frequency_in_rehearsals * 100, 2)
+
+    @property
+    def frequency_in_shows(self):
+        band = self.repertory.band
+        if band.shows_count:
+            return float(self.in_shows_count) / band.shows_count
+        else:
+            return 0.0
+
+    @property
+    def percentage_in_shows(self):
+        return "%.2f%%" % round(self.frequency_in_shows * 100, 2)
+
     def to_trash(self):
         self.status = RepertoryItemStatus.deleted
         self.save()
@@ -667,6 +719,31 @@ class EventRepertory(RepertoryBase):
         return self.all_items.all().exclude(item__status=deleted)\
                                    .order_by('order')
 
+    @classmethod
+    def pre_save(cls, instance, **kwargs):
+        if not instance.id and (instance.event or instance.rehearsal):
+            if instance.event:
+                band = instance.event.band
+                band.shows_count += 1
+            elif instance.rehearsal:
+                band = instance.event.band
+                band.rehearsals_count += 1
+            band.save()
+
+    @classmethod
+    def pre_delete(cls, instance, **kwargs):
+        if instance.event or instance.rehearsal:
+            if instance.event:
+                band = instance.event.band
+                band.shows_count -= 1
+            elif instance.rehearsal:
+                band = instance.event.band
+                band.rehearsals_count -= 1
+            band.save()
+
+
+pre_delete.connect(EventRepertory.pre_delete, EventRepertory)
+pre_save.connect(EventRepertory.pre_save, EventRepertory)
 
 class EventRepertoryItem(models.Model):
     repertory = models.ForeignKey(EventRepertory, related_name='all_items')
@@ -695,6 +772,29 @@ class EventRepertoryItem(models.Model):
         if not self.empty_duration:
             return ""
         return TimeDuration.custom_display(self.empty_duration)
+
+    @classmethod
+    def pre_save(cls, instance, **kwargs):
+        if not instance.id and (instance.repertory.event or
+                                instance.repertory.rehearsal):
+            if instance.repertory.event:
+                instance.item.in_shows_count += 1
+            elif instance.repertory.rehearsal:
+                instance.item.in_rehearsals_count += 1
+            instance.item.save()
+
+    @classmethod
+    def pre_delete(cls, instance, **kwargs):
+        if instance.repertory.event or instance.repertory.rehearsal:
+            if instance.repertory.event:
+                instance.item.in_shows_count -= 1
+            elif instance.repertory.rehearsal:
+                instance.item.in_rehearsals_count -= 1
+            instance.item.save()
+
+
+pre_delete.connect(EventRepertoryItem.pre_delete, EventRepertoryItem)
+pre_save.connect(EventRepertoryItem.pre_save, EventRepertoryItem)
 
 
 class Instrument(models.Model):

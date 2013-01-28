@@ -579,3 +579,26 @@ function matchSong(name, o) {
 		}
 	});
 }
+
+function initSortTable() {
+	var $head = $('table.repertory thead.repertory_head');
+	var url = $head.attr('sorturl');
+	var sort = '';
+	var $repertoryContent = $('#repertory_content');
+	$head.find('th').unbind('click').click(function () {
+		sort = $(this).attr('sort');
+		if (!sort) return;
+		$.ajax({
+			url: url,
+			data: {sort_by: sort},
+			type: 'get',
+			dataType: 'json',
+			success: function (data) {
+				if (data.success) {
+					$repertoryContent.html(data.repertory_content);
+					loadRepertory();
+				}
+			}
+		});
+	});
+}

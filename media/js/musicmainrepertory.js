@@ -64,29 +64,6 @@ function addPlayerButton() {
 	}
 }
 
-function initSortTable() {
-	var $head = $('table.repertory thead.repertory_head');
-	var url = $head.attr('sorturl');
-	var sort = '';
-	var $repertoryContent = $('#repertory_content');
-	$head.find('th').unbind('click').click(function () {
-		sort = $(this).attr('sort');
-		if (!sort) return;
-		$.ajax({
-			url: url,
-			data: {sort_by: sort},
-			type: 'get',
-			dataType: 'json',
-			success: function (data) {
-				if (data.success) {
-					$repertoryContent.html(data.repertory_content);
-					loadRepertory();
-				}
-			}
-		});
-	});
-}
-
 function loadChangePlayerUserOptions(data, $menu, $changeOptions) {
 	if (data.no_players) {
 		$changeOptions.html('<p style="padding: 5px 10px 5px 10px;">No more available players for this instrument!</p>');

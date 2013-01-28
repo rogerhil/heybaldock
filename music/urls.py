@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     url(r'^rehearsal/(?P<id>\d+)/delete/$', views.remove_rehearsal, name='remove_rehearsal'),
 
     url(r'^repertory/$', views.repertories, name='repertories'),
+    url(r'^repertory/statistics/$', views.repertories_statistics, name='repertories_statistics'),
+    url(r'^repertory/statistics/sort/$', views.sort_repertories_statistics, name='sort_repertories_statistics'),
+
     url(r'^repertory/main/$', views.main_repertory, name='main_repertory'),
     url(r'^repertory/main/sort/$', views.sort_main_repertory, name='sort_main_repertory'),
     url(r'^repertory/main/song/search/$', views.search_song_by_name, name='search_song_by_name'),

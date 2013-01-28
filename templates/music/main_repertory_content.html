@@ -72,7 +72,7 @@
             {% endif %}
         </tr>
         <tr>
-            <th  class="center cover_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
+            <th class="center cover_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
                 {% trans "Cov" %}
             </th>
             <th class="name_column {% if sort.song__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__name %}-song__name{% else %}song__name{% endif %}">
@@ -87,23 +87,23 @@
             <th class="center date_column {% if sort.date %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.date %}-date{% else %}date{% endif %}">
                 {% trans "Date" %}
             </th>
-            <th  class="center tempo_column {% if sort.song__tempo %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__tempo %}-song__tempo{% else %}song__tempo{% endif %}">
+            <th class="center tempo_column {% if sort.song__tempo %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__tempo %}-song__tempo{% else %}song__tempo{% endif %}">
                 {% trans "Tempo" %}
             </th>
-            <th  class="center ratings_column {% if sort.ratings %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.ratings %}-ratings{% else %}ratings{% endif %}">
+            <th class="center ratings_column {% if sort.ratings %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.ratings %}-ratings{% else %}ratings{% endif %}">
                 {% trans "Ratings" %}
             </th>
-            <th  class="center mode_column {% if sort.mode %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.mode %}-mode{% else %}mode{% endif %}">
+            <th class="center mode_column {% if sort.mode %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.mode %}-mode{% else %}mode{% endif %}">
                 {% trans "Mode" %}
             </th>
-            <th  class="center tonality_column {% if sort.song__tonality %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__tonality %}-song__tonality{% else %}song__tonality{% endif %}">
+            <th class="center tonality_column {% if sort.song__tonality %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__tonality %}-song__tonality{% else %}song__tonality{% endif %}">
                 {% trans "Tonality" %}
             </th>
-            <th  class="center players_column">
+            <th class="center players_column">
                 {% trans "Players" %}
             </th>
             {% if editable %}
-            <th  class="center actions_column" style="padding: 2px 0px 0px 0px;">
+            <th class="center actions_column" style="padding: 2px 0px 0px 0px;">
                 <img src="/media/img/cross_16_d.png" class="remove_song" />
             </th>
             {% endif %}

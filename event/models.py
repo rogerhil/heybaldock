@@ -130,6 +130,7 @@ class Event(models.Model):
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
     location = models.ForeignKey(Location, verbose_name=_("Location"))
+    band = models.ForeignKey("music.Band", null=True, related_name="events")
 
     template_view = "event/details.html"
     template_varname = "event"

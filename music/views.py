@@ -68,6 +68,17 @@ def repertories(request):
     return dict(repertories=repertories, main_repertory=main_repertory)
 
 @login_required
+@render_to("music/repertories_statistics.html")
+def repertories_statistics(request):
+    band = request.band
+    main_repertory = band.repertory
+    items = main_repertory.all_items.all()
+    repertories = EventRepertory.objects.all()
+    stats = repertory_stats(main_repertory)
+    return dict(repertories=repertories, main_repertory=main_repertory,
+                stats=stats, items=items)
+
+@login_required
 @render_to("music/band_settings.html")
 def band_settings(request, id):
     band = get_object_or_404(Band, id=id)
@@ -979,16 +990,12 @@ def add_event_repertory_items_by_category(request, id):
     played_in_rehearsals_below = data.get('played_in_rehearsals_below')
     played_in_rehearsals_above = data.get('played_in_rehearsals_above')
     if played_in_rehearsals_below or played_in_rehearsals_above:
-        percentage = float(played_in_rehearsals_below or
-                           played_in_rehearsals_above) / 100
-        rehearsals = band.occurred_rehearsals
-        total = rehearsals.count()
-        allowed = percentage * total
-        stats_items = band.repertory_items_with_statistics()
+        perc = float(played_in_rehearsals_below or
+                     played_in_rehearsals_above) / 100
         if played_in_rehearsals_below:
-            ids = [i.id for i in stats_items if i.rehearsals_plays <= allowed]
+            ids = [i.id for i in items if i.frequency_in_rehearsals <= perc]
         else:
-            ids = [i.id for i in stats_items if i.rehearsals_plays >= allowed]
+            ids = [i.id for i in items if i.frequency_in_rehearsals >= perc]
         items = [i for i in items if i.id in ids]
 
     items_ids = []
@@ -1046,9 +1053,7 @@ def get_event_repertory_content(request, repertory):
     tc = RequestContext(request, tc)
     return loader.get_template("music/event_repertory_content.html").render(tc)
 
-def get_repertory_content(request, repertory):
-    user = request.user
-    items = repertory.items
+def _sort_repertory(request, items):
     sort_by = request.GET.get('sort_by', '')
     sort = {}
     if sort_by:
@@ -1059,6 +1064,12 @@ def get_repertory_content(request, repertory):
         else:
             items = items.order_by(sort_by)
         sort[sort_by] = True
+    return items, sort
+
+def get_repertory_content(request, repertory):
+    user = request.user
+    items = repertory.all_items.all()
+    items, sort = _sort_repertory(request, items)
     tc = dict(
         repertory=repertory,
         sort=sort,
@@ -1075,12 +1086,26 @@ def get_repertory_content(request, repertory):
     tc = RequestContext(request, tc)
     return loader.get_template("music/main_repertory_content.html").render(tc)
 
+def get_repertories_statistics_content(request):
+    band = request.band
+    repertory = band.repertory
+    items, sort = _sort_repertory(request, repertory.all_items.all())
+    tc = dict(main_repertory=main_repertory, items=items, sort=sort)
+    tc = RequestContext(request, tc)
+    return loader.get_template("music/repertories_statistics_content.html")\
+                 .render(tc)
 
 @json
 @login_required
 def sort_main_repertory(request):
     repertory = request.band.repertory
     repertory_content = get_repertory_content(request, repertory)
+    return dict(success=True, repertory_content=repertory_content)
+
+@json
+@login_required
+def sort_repertories_statistics(request):
+    repertory_content = get_repertories_statistics_content(request)
     return dict(success=True, repertory_content=repertory_content)
 
 def get_trash_content(request, repertory):
