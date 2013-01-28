@@ -451,6 +451,7 @@ def event_repertory(request, id):
     c = dict(
         repertory=repertory,
         items=repertory.items,
+        statuses=RepertoryItemStatus.active_choices(),
         is_locked=repertory.is_locked(user),
         editable=repertory.is_editable(user),
         has_perm=user.has_perm('music.manage_event_repertories')
@@ -932,6 +933,11 @@ def add_item_to_event_repertory(request, id):
     if repertory.items.filter(item__id=item.id).count():
         msg = _("Song already exist in repertory!")
         return dict(success=False, message=msg)
+    new_item = _add_item_to_event_repertory(request, repertory, item)
+    song_line = get_event_repertory_item_content(request, new_item)
+    return dict(success=True, song_line=song_line)
+
+def _add_item_to_event_repertory(request, repertory, item):
     count = repertory.items.all().count()
     times_played = 1
     if repertory.rehearsal:
@@ -941,8 +947,53 @@ def add_item_to_event_repertory(request, id):
                                              times_played=times_played)
     summary = ', new item "%s" was added.' % item
     new_history_entry(request.user, repertory, summary)
-    song_line = get_event_repertory_item_content(request, item)
-    return dict(success=True, song_line=song_line)
+    return item
+
+@json
+@login_required
+@ajax_check_locked_event_repertory
+@permission_required('music.manage_event_repertories', '/permission/denied/')
+def add_event_repertory_items_by_category(request, id):
+    repertory = get_object_or_404(EventRepertory, id=id)
+    user = request.user
+    band = request.band
+    main_repertory = band.repertory
+    data = request.POST
+    items = main_repertory.all_items.all()
+    if data.get('by_status'):
+        items = items.filter(status=int(data['by_status']))
+    if data.get('above_stars'):
+        if data['above_stars_voted_by'] == 'me':
+            items = [i for i in items
+                        if i.user_votes(user).rate >= int(data['above_stars'])]
+        else:
+            items = [i for i in items if i.ratings >= int(data['above_stars'])]
+    if data.get('below_stars'):
+        if data['below_stars_voted_by'] == 'me':
+            items = [i for i in items
+                        if i.user_votes(user).rate <= int(data['below_stars'])]
+        else:
+            items = [i for i in items if i.ratings <= int(data['below_stars'])]
+    if data.get('played_in_rehearsals'):
+        percentage = float(data['played_in_rehearsals']) / 100
+        rehearsals = band.occurred_rehearsals
+        total = rehearsals.count()
+        allowed = percentage * total
+        stats_items = band.repertory_items_with_statistics()
+        ids = [i.id for i in stats_items if i.rehearsals_plays <= allowed]
+        items = [i for i in items if i.id in ids]
+
+    items_ids = []
+    for item in items:
+        if repertory.all_items.filter(item=item):
+            # skip existing in the repertory
+            continue
+        new_item = _add_item_to_event_repertory(request, repertory, item)
+        items_ids.append(new_item.id)
+
+    content = get_event_repertory_content(request, repertory)
+    return dict(success=True, content=content, items_ids=items_ids)
+
 
 @json
 @login_required
@@ -973,6 +1024,20 @@ def remove_song_from_main_repertory(request, id):
     trash_content = get_trash_content(request, repertory)
     return dict(success=True, trash_content=trash_content)
 
+def get_event_repertory_content(request, repertory):
+    user = request.user
+    items = repertory.items
+    tc = dict(
+        repertory=repertory,
+        items=items,
+        statuses=RepertoryItemStatus.active_choices(),
+        is_locked=repertory.is_locked(user),
+        editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_event_repertories')
+    )
+    tc = RequestContext(request, tc)
+    return loader.get_template("music/event_repertory_content.html").render(tc)
+
 def get_repertory_content(request, repertory):
     user = request.user
     items = repertory.items
@@ -1001,6 +1066,7 @@ def get_repertory_content(request, repertory):
     )
     tc = RequestContext(request, tc)
     return loader.get_template("music/main_repertory_content.html").render(tc)
+
 
 @json
 @login_required

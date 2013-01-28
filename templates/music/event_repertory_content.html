@@ -108,9 +108,9 @@
 
     </div>
 </div>
-<div class="add_interval">
-    <div class="pretty_form manage_buttons" style="float: none; margin-top: 10px;">
-        <label for="id_interval">{% trans "or add interval of:" %}</label>
+<div class="add_interval" style="float: left; height: 30px; width: 320px;">
+    <div class="pretty_form" style="float: none; margin-top: 10px; margin-left: 20px;">
+        <label for="id_interval" style="width: auto;">{% trans "or add interval of:" %}</label>
         <select name="interval" id="id_interval" addintervalurl="{% url add_event_repertory_item_interval repertory.id %}">
             <option value="" selected="selected">{% trans "Chosse one" %}</option>
             <option value="5">{% trans "5 minutes" %}</option>
@@ -125,6 +125,85 @@
             <option value="120">{% trans "2 hours" %}</option>
             <option value="180">{% trans "3 hours" %}</option>
         </select>
+    </div>
+    <div class="clear"></div>
+</div>
+<div id="add_songs_by_category" class="pretty_form" style="width: 300px; float: left;">
+    <label style="width: auto; margin-top: 15px; text-decoration: underline;">
+        <a href="javascript:;" class="red add_songs_button">
+            {% trans "or add songs by category" %}
+        </a>
+    </label>
+</div>
+<div class="clear"></div>
+<div style="position: relative;">
+    <div class="simple_menu pretty_select" id="songs_by_category_menu">
+        <h3>{% trans "Add songs by category" %}</h3>
+        <div class="pretty_form" style="float: none; margin-top: 10px;">
+            {% if repertory.rehearsal %}
+                <form action="" name="add_songs_by_category_form" addsongsbycategoryurl="{% url add_event_repertory_items_by_category repertory.id %}">
+                    <ul>
+                        <li>
+                            <label>{% trans "Below" %}:</label>
+                            <select name="below_stars" style="display: inline;">
+                                <option></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            {% trans "stars voted by" %}
+                            <input type="radio" name="below_stars_voted_by" value="all" checked="checked" /> {% trans "all" %}
+                            <input type="radio" name="below_stars_voted_by" value="me" /> {% trans "me" %}
+                        </li>
+                        <li>
+                            <label>{% trans "Above" %}:</label>
+                            <select name="above_stars" style="display: inline;">
+                                <option></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            {% trans "stars voted by" %}
+                            <input type="radio" name="above_stars_voted_by" value="all" checked="checked" /> {% trans "all" %}
+                            <input type="radio" name="above_stars_voted_by" value="me" /> {% trans "me" %}
+                        </li>
+                        <li>
+                            <label>{% trans "Played in rehearsals" %}:</label>
+                            <select name="played_in_rehearsals">
+                                <option></option>
+                                <option value="10">{% trans "below 10%" %}</option>
+                                <option value="20">{% trans "below 20%" %}</option>
+                                <option value="30">{% trans "below 30%" %}</option>
+                                <option value="40">{% trans "below 40%" %}</option>
+                                <option value="50">{% trans "below 50%" %}</option>
+                                <option value="60">{% trans "below 60%" %}</option>
+                                <option value="70">{% trans "below 70%" %}</option>
+                                <option value="80">{% trans "below 80%" %}</option>
+                                <option value="90">{% trans "below 90%" %}</option>
+                            </select>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                            <label>{% trans "By status" %}</label>
+                            <select name="by_status">
+                                <option></option>
+                                {% for id, status in statuses %}
+                                    <option value="{{ id }}">{{ status }}</option>
+                                {% endfor %}
+                            </select>
+                        </li>
+                    </ul>
+                    <div class="center" style="margin-bottom: 5px;">
+                        <input type="button" name="cancel" value="{% trans "Cancel" %}" class="red" />&nbsp;&nbsp;&nbsp;
+                        <input type="button" name="submit" value="{% trans "Submit" %}" />
+                    </div>
+                </form>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endif %}

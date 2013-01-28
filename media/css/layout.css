@@ -1212,6 +1212,23 @@ div.pretty_select h3 div.action_button {
     cursor: pointer;
 }
 
+#songs_by_category_menu {
+    width: 400px;
+    max-width: 400px;
+    position: absolute;
+    top: -270px;
+    left: 450px;
+}
+
+#songs_by_category_menu ul {
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+#songs_by_category_menu label {
+    width: 140px;
+}
+
 div.notes_area {
     position: absolute;
     right: 10px;

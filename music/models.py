@@ -29,7 +29,7 @@ add_introspection_rules([], ["^lib\.fields\.PickleField"])
 
 
 class Rehearsal(models.Model):
-    band = models.ForeignKey('Band', editable=False)
+    band = models.ForeignKey('Band', editable=False, related_name="rehearsals")
     studio = models.ForeignKey(Location)
     date = models.DateTimeField()
     duration = models.IntegerField(default=120)
@@ -83,6 +83,23 @@ class Band(models.Model):
     @classmethod
     def clear_active_band(cls, request):
         request.session[cls.ACTIVE_BAND_SESSION_KEY] = None
+
+    @property
+    def occurred_rehearsals(self):
+        now = datetime.now()
+        return self.rehearsals.filter(date__lte=now)
+
+    def repertory_items_with_statistics(self):
+        rehearsals = self.occurred_rehearsals
+        stats = {}
+        for rehearsal in rehearsals:
+            for rep in rehearsal.repertories.all():
+                for ritem in rep.all_items.all():
+                    if ritem.item.id not in stats:
+                        stats[ritem.item.id] = ritem.item
+                        stats[ritem.item.id].rehearsals_plays = 0
+                    stats[ritem.item.id].rehearsals_plays += 1
+        return stats.values()
 
 
 class BandArtist(models.Model):

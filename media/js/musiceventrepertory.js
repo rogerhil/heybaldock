@@ -21,6 +21,51 @@ $(window).load(function () {
 
 });
 
+function loadAddSongsByCategoryMenu() {
+	var $menu = $("#songs_by_category_menu");
+	$("#add_songs_by_category a.add_songs_button").unbind('click').click(function (e) {
+		$menu.slideDown();
+		e.stopPropagation();
+	});
+	$menu.find('input[type=button][name=cancel]').unbind('click').click(function (e) {
+		$menu.slideUp();
+	});
+	$menu.find('input[type=button][name=submit]').unbind('click').click(function (e) {
+		var $form = $menu.find("form[name=add_songs_by_category_form]");
+		var url = $form.attr("addsongsbycategoryurl");
+		var postData = {};
+		$form.find("select").each(function () {
+			postData[$(this).attr('name')] = $(this).val();
+		});
+		$form.find("input[type=radio]").each(function () {
+			if ($(this).is(":checked")) {
+				postData[$(this).attr('name')] = $(this).val();
+			}
+		});
+		$.ajax({
+			url: url,
+			type: 'post',
+			dataType: 'json',
+			data: postData,
+			success: function (data) {
+				if (data.success) {
+					var $repertory_content = $("#repertory_content");
+					$repertory_content.html(data.content);
+					loadRepertory();
+					$menu.slideUp();
+					for (var k = 0; k < data.items_ids.length; k++) {
+						var $tr = getTrLineByRepertoryItemId(data.items_ids[k]);
+						$tr.effect("highlight", {}, 2000);
+					}
+				} else {
+					var msg = data.message || "An error occured";
+					alert(msg);
+				}
+			}
+		});
+	});
+}
+
 function loadRepertory() {
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
@@ -74,6 +119,7 @@ function loadRepertory() {
 	}
 	calculateTimeTotal();
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
+	loadAddSongsByCategoryMenu();
 }
 
 function addInterval() {
