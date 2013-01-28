@@ -1,0 +1,68 @@
+{% extends "music/base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.cmsplugin.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript" src="/media/js/utils.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.ui.timepicker.addon.js"></script>
+    <script type="text/javascript">
+        var RepertoryConfig = {
+            ratings: {
+                view: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" src="/media/js/musiccommonrepertory.js"></script>
+    <script type="text/javascript" src="/media/js/musicrepertoriesstatistics.js"></script>
+{% endblock %}
+
+{% block actions %}
+    <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+{% endblock %}
+
+{% block music_content %}
+    <h1>{% trans "Repertories statistics" %}</h1>
+    <div class="clear"></div>
+    <br/>
+    <div id="stats">
+        <div style="float: left; width: 250px;">
+            <strong style="font-size: 15px;">{% trans "Statuses" %}</strong>
+            <br/>
+            <br/>
+            <div style="float: left; width: 120px;">
+                <div class="song_status status1"><strong>{% trans "New: " %}</strong>{{ stats.new }}</div>
+                <div class="song_status status5"><strong>{% trans "Ready: " %}</strong>{{ stats.ready }}</div>
+                <div class="song_status status4"><strong>{% trans "Working: " %}</strong>{{ stats.working }}</div>
+            </div>
+            <div style="width: 120px; float: right;">
+                <div class="song_status status6"><strong>{% trans "Abandoned: " %}</strong>{{ stats.abandoned }}</div>
+                <div class="song_status status3"><strong>{% trans "Restored: " %}</strong>{{ stats.restored }}</div>
+                <div class="song_status status2"><strong>{% trans "In trash: " %}</strong>{{ stats.trash }}</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div style="width: 700px; margin-left: 270px;">
+            <strong style="font-size: 15px;">{% trans "Artists" %}</strong>
+            <br/>
+            <br/>
+            {% for artist in stats.artists %}
+                <div>
+                    <strong>{{ artist.name }}:</strong> {{ artist.total }}
+                    ({% if artist.stats.new %}{% trans "new:" %}{{ artist.stats.new }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.ready %}{% trans "ready:" %} {{ artist.stats.ready }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.working %}{% trans "working:" %} {{ artist.stats.working }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.abandoned %}{% trans "abandoned:" %} {{ artist.stats.abandoned }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.restored %}{% trans "restored:" %} {{ artist.stats.restored }}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+                    {% if artist.stats.trash %}{% trans "in trash:" %} {{ artist.stats.trash }}{% endif %})
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list" main="{% if repertory.is_main %}1{% else %}0{% endif %}">
+        {% include "music/repertories_statistics_content.html" %}
+    </div>
+{% endblock %}

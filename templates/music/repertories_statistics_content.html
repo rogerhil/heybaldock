@@ -1,0 +1,127 @@
+{% load i18n common %}
+
+<table class="repertory">
+    <thead class="repertory_head" sorturl="{% url sort_repertories_statistics %}">
+        <tr class="table_head_actions">
+            <th class="cover_column">&nbsp;</th>
+            <th class="artist_column"><div>&nbsp;</div></th>
+            <th class="album_column"><div>&nbsp;</div></th>
+            <th class="name_column"><div>&nbsp;</div></th>
+            <th class="duration_column">&nbsp;</th>
+            <th class="shows_column">&nbsp;</th>
+            <th class="rehearsals_column">&nbsp;</th>
+            <th class="ratings_column" id="ratings_actions">
+                <div class="action selected" action="global">
+                    {% trans "Global" %}
+                </div>
+                <div class="action" action="by_user">
+                    {% trans "By user" %}
+                </div>
+                <div class="action" action="user_owner">
+                    {% trans "My votes only" %}
+                </div>
+            </th>
+            <th class="date_column">&nbsp;</th>
+            <th class="status_column">&nbsp;</th>
+            <th class="mode_column">&nbsp;</th>
+            <th  class="actions_column">&nbsp;</th>
+        </tr>
+        <tr>
+            <th class="center cover_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
+                {% trans "Cov" %}
+            </th>
+            <th class="artist_column {% if sort.song__album__artist__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__artist__name %}-song__album__artist__name{% else %}song__album__artist__name{% endif %}">
+                {% trans "Artist" %}
+            </th>
+            <th class="album_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
+                {% trans "Album" %}
+            </th>
+            <th class="name_column {% if sort.song__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__name %}-song__name{% else %}song__name{% endif %}">
+                {% trans "Name" %}
+            </th>
+            <th class="center duration_column {% if sort.song__duration %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__duration %}-song__duration{% else %}song__duration{% endif %}">
+                {% trans "Dur" %}
+            </th>
+            <th class="center shows_column {% if shows %}sort_down{% else %}sort_up{% endif %}" sort="{% if shows %}-shows{% else %}shows{% endif %}">
+                {% trans "Shows" %}
+            </th>
+            <th class="center rehearsals_column {% if rehearsals %}sort_down{% else %}sort_up{% endif %}" sort="{% if rehearsals %}-rehearsals{% else %}rehearsals{% endif %}">
+                {% trans "Rehearsals" %}
+            </th>
+            <th class="center ratings_column {% if sort.ratings %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.ratings %}-ratings{% else %}ratings{% endif %}">
+                {% trans "Ratings" %}
+            </th>
+            <th class="center date_column {% if sort.date %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.date %}-date{% else %}date{% endif %}">
+                {% trans "Date" %}
+            </th>
+            <th class="center status_column {% if sort.status %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.status %}-status{% else %}status{% endif %}">
+                {% trans "Status" %}
+            </th>
+            <th class="center mode_column {% if sort.mode %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.mode %}-mode{% else %}mode{% endif %}">
+                {% trans "Mode" %}
+            </th>
+            <th class="center actions_column">
+                {% trans "Act" %}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+            <tr itemid="{{ item.id }}"
+                songid="{{ item.song.id }}"
+                class="{% if forloop.counter %}{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}{% endif %}">
+
+                <td class="nopadding center cover_column">
+                    <a href="{% url album item.song.album.id %}">
+                        <img src="{{ item.song.album.icon_url }}" alt="{{ item.song.album }}" title="{{ item.song.album }}" style="border-radius: 3px;" />
+                    </a>
+                </td>
+                <td class="artist_column">
+                    <div>
+                        {{ item.song.album.artist }}
+                    </div>
+                </td>
+                <td class="album_column">
+                    <div>
+                        {{ item.song.album.name }}
+                    </div>
+                </td>
+                <td class="name_column">
+                    <div>
+                        {% if item.song.audio %}
+                            <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ item.song.name }}" audiourl="{{ item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
+                        {% endif %}
+                        {{ item.song.name }}
+                    </div>
+                </td>
+                <td class="center duration duration_column">
+                    {{ item.song.duration_display }}
+                </td>
+                <td class="center shows shows_column">
+                    {{ item.in_shows_count }} ({{ item.percentage_in_shows }})
+                </td>
+                <td class="center rehearsals rehearsals_column">
+                    {{ item.in_rehearsals_count }} ({{ item.percentage_in_rehearsals }})
+                </td>
+                {% call item.has_voted with user as voted %}
+                <td class="center ratings_cel ratings_column" ratingurl="{% url rate_repertory_item item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
+                    title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
+                    {% include "music/ratings_cel.html" %}
+                </td>
+                <td class="date_cel date_column" date="{{ item.date|date:"Y-m-d" }}">
+                    {{ item.date|date:"d/m/y" }}
+                </td>
+                <td class="status_cel status_column">
+                    {% autoescape off %}{{ item.status_html_display }}{% endautoescape %}
+                </td>
+                <td class="center mode_cel mode_column">
+                    {% autoescape off %}{{ item.mode_html_display }}{% endautoescape %}
+                </td>
+                <td class="center actions_cel actions_column">
+                    <input type="checkbox" name="actions" value="{{ item.id }}" />
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
