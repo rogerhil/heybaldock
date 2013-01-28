@@ -34,4 +34,33 @@
             </div>
         </div>
     </div>
+    <div class="clear"></div>
+    <div>
+        <div style="width: 450px; float: left;">
+            <h2>{% trans "Upcoming Rehearsals" %}</h2>
+            {% if all_rehearsals.upcoming %}
+                {% with all_rehearsals.upcoming as rehearsals %}
+                    {% include "music/rehearsals_table.html" %}
+                {% endwith %}
+            {% else %}
+                {% trans "There's no upcoming rehearsals." %}
+            {% endif %}
+        </div>
+        <div style="width: 450px; float: right;">
+            <h2>{% trans "Past 5 Rehearsals" %}</h2>
+            {% if all_rehearsals.past %}
+                {% with all_rehearsals.past as rehearsals %}
+                    {% include "music/rehearsals_table.html" %}
+                {% endwith %}
+            {% else %}
+                {% trans "There's no past rehearsals." %}
+            {% endif %}
+        </div>
+        <div class="clear"></div>
+        <p>
+            <a href="{% url rehearsals %}">
+                {% trans "Click here to see all rehearsals" %}
+            </a>
+        </p>
+    </div>
 {% endblock %}

@@ -627,7 +627,7 @@ class EventRepertory(RepertoryBase):
     band = models.ForeignKey(Band, related_name="event_repertories", null=True)
 
     def __unicode__(self):
-        return "Repertory: %s" % (unicode(self.event) or
+        return "Repertory: %s" % (unicode(self.event) if self.event else
                                   unicode(self.rehearsal))
 
     def import_items_from(self, base):

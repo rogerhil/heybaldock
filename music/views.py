@@ -147,8 +147,8 @@ def add_band(request):
 @render_to("music/rehearsals.html")
 def rehearsals(request):
     now = datetime.now()
-    upcoming = Rehearsal.objects.filter(date__gte=now)
-    past = Rehearsal.objects.filter(date__lte=now)
+    upcoming = Rehearsal.objects.filter(date__gte=now).order_by('date')
+    past = Rehearsal.objects.filter(date__lte=now).order_by('-date')
     return dict(upcoming=upcoming, past=past)
 
 def get_rehearsal_abscence_payers(band):
@@ -523,8 +523,12 @@ def search_item_by_name(request, id):
 @login_required
 @render_to("music/music_management.html")
 def music_management(request):
-    c = dict()
-    return c
+    now = datetime.now()
+    rehearsals = dict(
+        upcoming=Rehearsal.objects.filter(date__gte=now).order_by('date'),
+        past=Rehearsal.objects.filter(date__lte=now).order_by('-date')[:5]
+    )
+    return dict(all_rehearsals=rehearsals)
 
 @login_required
 @render_to("music/add_album.html")
