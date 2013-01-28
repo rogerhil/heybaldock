@@ -24,6 +24,9 @@
             <th class="cover_column">&nbsp;</th>
             <th class="name_column"><div>&nbsp;</div></th>
             <th class="duration_column">&nbsp;</th>
+            {% if repertory.rehearsal %}
+                <th class="status_column">&nbsp;</th>
+            {% endif %}
             <th class="times_played_column">&nbsp;</th>
             <th class="tempo_column">&nbsp;</th>
             <th class="ratings_column" id="ratings_actions">
@@ -58,6 +61,11 @@
             <th  class="center duration_column">
                 {% trans "Dur" %}
             </th>
+            {% if repertory.rehearsal %}
+                <th  class="center status_column">
+                    {% trans "Status" %}
+                </th>
+            {% endif %}
             <th  class="center times_played_column">
                 {% trans "X" %}
             </th>
