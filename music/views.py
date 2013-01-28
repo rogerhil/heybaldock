@@ -971,9 +971,11 @@ def add_event_repertory_items_by_category(request, id):
     if data.get('below_stars'):
         if data['below_stars_voted_by'] == 'me':
             items = [i for i in items
-                        if i.user_votes(user).rate <= int(data['below_stars'])]
+                        if i.user_votes(user).rate and
+                           i.user_votes(user).rate <= int(data['below_stars'])]
         else:
-            items = [i for i in items if i.ratings <= int(data['below_stars'])]
+            items = [i for i in items if i.ratings and
+                                         i.ratings <= int(data['below_stars'])]
     if data.get('played_in_rehearsals'):
         percentage = float(data['played_in_rehearsals']) / 100
         rehearsals = band.occurred_rehearsals
