@@ -140,9 +140,9 @@
     <div class="simple_menu pretty_select" id="songs_by_category_menu">
         <h3>{% trans "Add songs by category" %}</h3>
         <div class="pretty_form" style="float: none; margin-top: 10px;">
-            {% if repertory.rehearsal %}
-                <form action="" name="add_songs_by_category_form" addsongsbycategoryurl="{% url add_event_repertory_items_by_category repertory.id %}">
-                    <ul>
+            <form action="" name="add_songs_by_category_form" addsongsbycategoryurl="{% url add_event_repertory_items_by_category repertory.id %}">
+                <ul>
+                    {% if repertory.rehearsal %}
                         <li>
                             <label>{% trans "Below" %}:</label>
                             <select name="below_stars" style="display: inline;">
@@ -157,23 +157,25 @@
                             <input type="radio" name="below_stars_voted_by" value="all" checked="checked" /> {% trans "all" %}
                             <input type="radio" name="below_stars_voted_by" value="me" /> {% trans "me" %}
                         </li>
-                        <li>
-                            <label>{% trans "Above" %}:</label>
-                            <select name="above_stars" style="display: inline;">
-                                <option></option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                            {% trans "stars voted by" %}
-                            <input type="radio" name="above_stars_voted_by" value="all" checked="checked" /> {% trans "all" %}
-                            <input type="radio" name="above_stars_voted_by" value="me" /> {% trans "me" %}
-                        </li>
+                    {% endif %}
+                    <li>
+                        <label>{% trans "Above" %}:</label>
+                        <select name="above_stars" style="display: inline;">
+                            <option></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        {% trans "stars voted by" %}
+                        <input type="radio" name="above_stars_voted_by" value="all" checked="checked" /> {% trans "all" %}
+                        <input type="radio" name="above_stars_voted_by" value="me" /> {% trans "me" %}
+                    </li>
+                    {% if repertory.rehearsal %}
                         <li>
                             <label>{% trans "Played in rehearsals" %}:</label>
-                            <select name="played_in_rehearsals">
+                            <select name="played_in_rehearsals_below">
                                 <option></option>
                                 <option value="10">{% trans "below 10%" %}</option>
                                 <option value="20">{% trans "below 20%" %}</option>
@@ -187,22 +189,39 @@
                             </select>
                             <div class="clear"></div>
                         </li>
+                    {% else %}
                         <li>
-                            <label>{% trans "By status" %}</label>
-                            <select name="by_status">
+                            <label>{% trans "Played in rehearsals" %}:</label>
+                            <select name="played_in_rehearsals_above">
                                 <option></option>
-                                {% for id, status in statuses %}
-                                    <option value="{{ id }}">{{ status }}</option>
-                                {% endfor %}
+                                <option value="10">{% trans "above 10%" %}</option>
+                                <option value="20">{% trans "above 20%" %}</option>
+                                <option value="30">{% trans "above 30%" %}</option>
+                                <option value="40">{% trans "above 40%" %}</option>
+                                <option value="50">{% trans "above 50%" %}</option>
+                                <option value="60">{% trans "above 60%" %}</option>
+                                <option value="70">{% trans "above 70%" %}</option>
+                                <option value="80">{% trans "above 80%" %}</option>
+                                <option value="90">{% trans "above 90%" %}</option>
                             </select>
+                            <div class="clear"></div>
                         </li>
-                    </ul>
-                    <div class="center" style="margin-bottom: 5px;">
-                        <input type="button" name="cancel" value="{% trans "Cancel" %}" class="red" />&nbsp;&nbsp;&nbsp;
-                        <input type="button" name="submit" value="{% trans "Submit" %}" />
-                    </div>
-                </form>
-            {% endif %}
+                    {% endif %}
+                    <li>
+                        <label>{% trans "By status" %}</label>
+                        <select name="by_status">
+                            <option></option>
+                            {% for id, status in statuses %}
+                                <option value="{{ id }}">{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                </ul>
+                <div class="center" style="margin-bottom: 5px;">
+                    <input type="button" name="cancel" value="{% trans "Cancel" %}" class="red" />&nbsp;&nbsp;&nbsp;
+                    <input type="button" name="submit" value="{% trans "Submit" %}" />
+                </div>
+            </form>
         </div>
     </div>
 </div>
