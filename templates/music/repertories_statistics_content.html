@@ -76,18 +76,18 @@
                         <img src="{{ item.song.album.icon_url }}" alt="{{ item.song.album }}" title="{{ item.song.album }}" style="border-radius: 3px;" />
                     </a>
                 </td>
-                <td style="white-space: nowrap; overflow: hidden;" class="artist_column">
-                    <div>
+                <td class="artist_column">
+                    <div style="white-space: nowrap; overflow: hidden;">
                         {{ item.song.album.artist }}
                     </div>
                 </td>
-                <td style="white-space: nowrap; overflow: hidden;" class="album_column">
-                    <div>
+                <td class="album_column">
+                    <div style="white-space: nowrap; overflow: hidden;">
                         {{ item.song.album.name }}
                     </div>
                 </td>
-                <td style="white-space: nowrap; overflow: hidden;" class="name_column">
-                    <div>
+                <td class="name_column">
+                    <div style="white-space: nowrap; overflow: hidden;">
                         {% if item.song.audio %}
                             <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ item.song.name }}" audiourl="{{ item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
                         {% endif %}
