@@ -8,8 +8,8 @@
             <th class="album_column" style="white-space: nowrap; overflow: hidden;"><div>&nbsp;</div></th>
             <th class="name_column" style="white-space: nowrap; overflow: hidden;"><div>&nbsp;</div></th>
             <th class="duration_column">&nbsp;</th>
-            <th class="shows_column" style="width: 50px;">&nbsp;</th>
-            <th class="rehearsals_column" style="width: 60px;">&nbsp;</th>
+            <th class="shows_column" style="width: 80px;">&nbsp;</th>
+            <th class="rehearsals_column" style="width: 90px;">&nbsp;</th>
             <th class="ratings_column" id="ratings_actions">
                 <div class="action selected" action="global">
                     {% trans "Global" %}
@@ -30,22 +30,22 @@
             <th class="center cover_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
                 {% trans "Cov" %}
             </th>
-            <th class="artist_column {% if sort.song__album__artist__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__artist__name %}-song__album__artist__name{% else %}song__album__artist__name{% endif %}">
+            <th style="white-space: nowrap; overflow: hidden;" class="artist_column {% if sort.song__album__artist__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__artist__name %}-song__album__artist__name{% else %}song__album__artist__name{% endif %}">
                 {% trans "Artist" %}
             </th>
-            <th class="album_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
+            <th style="white-space: nowrap; overflow: hidden;" class="album_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
                 {% trans "Album" %}
             </th>
-            <th class="name_column {% if sort.song__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__name %}-song__name{% else %}song__name{% endif %}">
+            <th style="white-space: nowrap; overflow: hidden;" class="name_column {% if sort.song__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__name %}-song__name{% else %}song__name{% endif %}">
                 {% trans "Name" %}
             </th>
             <th class="center duration_column {% if sort.song__duration %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__duration %}-song__duration{% else %}song__duration{% endif %}">
                 {% trans "Dur" %}
             </th>
-            <th class="center shows_column {% if sort.in_shows_count %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.in_shows_count %}-in_shows_count{% else %}in_shows_count{% endif %}">
+            <th style="width: 80px;" class="center shows_column {% if sort.in_shows_count %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.in_shows_count %}-in_shows_count{% else %}in_shows_count{% endif %}">
                 {% trans "Shows" %} ({{ band.shows_count }})
             </th>
-            <th class="center rehearsals_column {% if sort.in_rehearsals_count %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.in_rehearsals_count %}-in_rehearsals_count{% else %}in_rehearsals_count{% endif %}">
+            <th style="width: 90px;" class="center rehearsals_column {% if sort.in_rehearsals_count %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.in_rehearsals_count %}-in_rehearsals_count{% else %}in_rehearsals_count{% endif %}">
                 {% trans "Rehearsals" %} ({{ band.rehearsals_count }})
             </th>
             <th class="center ratings_column {% if sort.ratings %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.ratings %}-ratings{% else %}ratings{% endif %}">
@@ -76,17 +76,17 @@
                         <img src="{{ item.song.album.icon_url }}" alt="{{ item.song.album }}" title="{{ item.song.album }}" style="border-radius: 3px;" />
                     </a>
                 </td>
-                <td class="artist_column">
+                <td style="white-space: nowrap; overflow: hidden;" class="artist_column">
                     <div>
                         {{ item.song.album.artist }}
                     </div>
                 </td>
-                <td class="album_column">
+                <td style="white-space: nowrap; overflow: hidden;" class="album_column">
                     <div>
                         {{ item.song.album.name }}
                     </div>
                 </td>
-                <td class="name_column">
+                <td style="white-space: nowrap; overflow: hidden;" class="name_column">
                     <div>
                         {% if item.song.audio %}
                             <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ item.song.name }}" audiourl="{{ item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
