@@ -19,9 +19,12 @@ Debug False in production and logs
 * Bugs:
  - Album view:
    - Firefox: tempo display in vertical
-   - When change tempo, the line breaks, not showing the icon for download and actions
+   - When change tempo, the line breaks, not showing the icon for download and
+     actions
 
 * Music Management
+ - Music management dashboard: put day of week in tables of rehearsals
+ - Highlight in whole table when filter, and highlight column when sorting
  - Create a view per user to rating absence items not rated
  - Improve header stats view
  - Repertory for event actions like: order by dynamic
