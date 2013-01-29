@@ -22,8 +22,6 @@ Debug False in production and logs
    - When change tempo, the line breaks, not showing the icon for download and actions
 
 * Music Management
- - Repertories statistics (also add actions checkboxes to include songs in new
-   repertories)
  - Create a view per user to rating absence items not rated
  - Improve header stats view
  - Repertory for event actions like: order by dynamic
