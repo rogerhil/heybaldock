@@ -53,9 +53,14 @@
             </p>
         {% else %}
             <p>
-                <strong>{% trans "Repertory:" %}</strong>
-                <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
-                <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last rehearsal." %}</a>
+                <strong style="float: left; height: 40px; margin-right: 5px;">{% trans "Repertory:" %}</strong>
+                <div>
+                    <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
+                    <br/>
+                    <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last rehearsal." %}</a>{% trans " or" %}
+                    <br/>
+                    <a href="{% url repertories_statistics %}?rehearsal={{ rehearsal.id }}" style="text-decoration: underline;">{% trans "Create a repertory through statistics" %}</a>
+                </div>
             </p>
         {% endif %}
 

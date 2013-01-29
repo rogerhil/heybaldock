@@ -24,6 +24,8 @@ Debug False in production and logs
 * Music Management
  - Repertories statistics (also add actions checkboxes to include songs in new
    repertories)
+ - Create a view per user to rating absence items not rated
+ - Improve header stats view
  - Repertory for event actions like: order by dynamic
  - Music management best menu navigation
  - Permissions for manage past events repertories
@@ -42,6 +44,9 @@ Debug False in production and logs
  - Add require_POST, requery_method, etc decorators in music functions
  - Chat
  - Main Repertory: option for add song in a list by album
+ - Think about ratings per player (I think is very usefull, but maybe is not
+   practical for user. Maybe create a view for user to allow him to vote
+   your instruments and have own statistics)
 
  - Think about remove QUICK actions for instruments plays in table (for
    performance reasons). Will be a bad idea for the cases which user may

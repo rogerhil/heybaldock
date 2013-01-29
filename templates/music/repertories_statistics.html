@@ -62,6 +62,7 @@
         </div>
     </div>
     <div class="clear"></div>
+    {% include "music/repertories_statistics_actions.html" %}
     <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list" main="{% if repertory.is_main %}1{% else %}0{% endif %}">
         {% include "music/repertories_statistics_content.html" %}
     </div>

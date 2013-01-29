@@ -42,11 +42,11 @@
             <th class="center duration_column {% if sort.song__duration %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__duration %}-song__duration{% else %}song__duration{% endif %}">
                 {% trans "Dur" %}
             </th>
-            <th class="center shows_column {% if shows %}sort_down{% else %}sort_up{% endif %}" sort="{% if shows %}-shows{% else %}shows{% endif %}">
-                {% trans "Shows" %}
+            <th class="center shows_column {% if sort.in_shows_count %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.in_shows_count %}-in_shows_count{% else %}in_shows_count{% endif %}">
+                {% trans "Shows" %} ({{ band.shows_count }})
             </th>
-            <th class="center rehearsals_column {% if rehearsals %}sort_down{% else %}sort_up{% endif %}" sort="{% if rehearsals %}-rehearsals{% else %}rehearsals{% endif %}">
-                {% trans "Rehearsals" %}
+            <th class="center rehearsals_column {% if sort.in_rehearsals_count %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.in_rehearsals_count %}-in_rehearsals_count{% else %}in_rehearsals_count{% endif %}">
+                {% trans "Rehearsals" %} ({{ band.rehearsals_count }})
             </th>
             <th class="center ratings_column {% if sort.ratings %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.ratings %}-ratings{% else %}ratings{% endif %}">
                 {% trans "Ratings" %}
@@ -60,7 +60,7 @@
             <th class="center mode_column {% if sort.mode %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.mode %}-mode{% else %}mode{% endif %}">
                 {% trans "Mode" %}
             </th>
-            <th class="center actions_column">
+            <th class="center actions_column" id="select_all" ischecked="false">
                 {% trans "Act" %}
             </th>
         </tr>

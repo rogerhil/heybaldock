@@ -5,8 +5,7 @@ from datetime import datetime
 from south.modelsinspector import add_introspection_rules
 
 from django.db import models
-from django.db.models.signals import pre_delete, pre_save, post_save,\
-                                     post_delete
+from django.db.models.signals import pre_delete, pre_save
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -46,6 +45,26 @@ class Rehearsal(models.Model):
     def duration_display(self):
         return TimeDuration.display(self.duration)
 
+    @classmethod
+    def pre_save(cls, instance, **kwargs):
+        if not instance.id:
+            band = instance.band
+            band.rehearsals_count += 1
+            band.save()
+
+    @classmethod
+    def pre_delete(cls, instance, **kwargs):
+        from music.models import EventRepertory
+        band = instance.band
+        band.rehearsals_count -= 1
+        band.save()
+        repertories = EventRepertory.objects.filter(rehearsal=instance)
+        # make sure all repertories related will go on too
+        repertories.delete()
+
+pre_save.connect(Rehearsal.pre_save, Rehearsal)
+pre_delete.connect(Rehearsal.pre_delete, Rehearsal)
+
 
 class Band(models.Model):
     name = models.CharField(max_length=255)
@@ -84,6 +103,10 @@ class Band(models.Model):
     def set_active_band(cls, request, band):
         request.session[cls.ACTIVE_BAND_SESSION_KEY] = band
 
+    def reload_band_cache(self, request):
+        band = Band.objects.get(id=self.id)
+        request.session[self.ACTIVE_BAND_SESSION_KEY] = band
+
     @classmethod
     def clear_active_band(cls, request):
         request.session[cls.ACTIVE_BAND_SESSION_KEY] = None
@@ -109,7 +132,7 @@ class Band(models.Model):
                         stats[ritem.item.id].in_shows_count = 0
                     stats[ritem.item.id].in_rehearsals_count += 1
         events = self.events.all()
-        self.events_count = events.count()
+        self.shows_count = events.count()
         self.save()
 
         for event in events:
@@ -120,10 +143,18 @@ class Band(models.Model):
                         continue
                     if ritem.item.id not in stats:
                         stats[ritem.item.id] = ritem.item
+                        stats[ritem.item.id].in_rehearsals_count = 0
                         stats[ritem.item.id].in_shows_count = 0
                     stats[ritem.item.id].in_shows_count += 1
 
         for item in stats.values():
+            item.save()
+
+        for item in self.repertory.all_items.all():
+            if item.id in stats.keys():
+                continue
+            item.in_shows_count = 0
+            item.in_rehearsals_count = 0
             item.save()
 
 
@@ -719,31 +750,6 @@ class EventRepertory(RepertoryBase):
         return self.all_items.all().exclude(item__status=deleted)\
                                    .order_by('order')
 
-    @classmethod
-    def pre_save(cls, instance, **kwargs):
-        if not instance.id and (instance.event or instance.rehearsal):
-            if instance.event:
-                band = instance.event.band
-                band.shows_count += 1
-            elif instance.rehearsal:
-                band = instance.event.band
-                band.rehearsals_count += 1
-            band.save()
-
-    @classmethod
-    def pre_delete(cls, instance, **kwargs):
-        if instance.event or instance.rehearsal:
-            if instance.event:
-                band = instance.event.band
-                band.shows_count -= 1
-            elif instance.rehearsal:
-                band = instance.event.band
-                band.rehearsals_count -= 1
-            band.save()
-
-
-pre_delete.connect(EventRepertory.pre_delete, EventRepertory)
-pre_save.connect(EventRepertory.pre_save, EventRepertory)
 
 class EventRepertoryItem(models.Model):
     repertory = models.ForeignKey(EventRepertory, related_name='all_items')
@@ -775,20 +781,31 @@ class EventRepertoryItem(models.Model):
 
     @classmethod
     def pre_save(cls, instance, **kwargs):
-        if not instance.id and (instance.repertory.event or
-                                instance.repertory.rehearsal):
-            if instance.repertory.event:
+        try:
+            repertory = instance.repertory
+        except:
+            return
+        if not instance.id and (repertory.event or repertory.rehearsal):
+            if not instance.item:
+                return
+            if repertory.event:
                 instance.item.in_shows_count += 1
-            elif instance.repertory.rehearsal:
+            elif repertory.rehearsal:
                 instance.item.in_rehearsals_count += 1
             instance.item.save()
 
     @classmethod
     def pre_delete(cls, instance, **kwargs):
-        if instance.repertory.event or instance.repertory.rehearsal:
-            if instance.repertory.event:
+        try:
+            repertory = instance.repertory
+        except:
+            return
+        if repertory.event or repertory.rehearsal:
+            if not instance.item:
+                return
+            if repertory.event:
                 instance.item.in_shows_count -= 1
-            elif instance.repertory.rehearsal:
+            elif repertory.rehearsal:
                 instance.item.in_rehearsals_count -= 1
             instance.item.save()
 

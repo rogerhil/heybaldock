@@ -89,7 +89,7 @@ class RepertoryItemStatus(ChoicesBase):
 
     @classmethod
     def active_choices(cls):
-        return [i for i in cls.choices() if i[0] != 2 and i[0] != 3]
+        return [i for i in cls.choices() if i[0] != 2]
 
 
 class SongMode(ChoicesBase):

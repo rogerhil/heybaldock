@@ -1,0 +1,34 @@
+{% load i18n %}
+
+{% if repertories %}
+    <div class="table_list">
+        <table>
+            <thead>
+                <th>
+                    {% trans "Related Event" %}
+                </th>
+                <th width="200px" class="center">
+                    {% trans "Locked by" %}
+                </th>
+            </thead>
+            <tbody>
+                {% for repertory in repertories %}
+                <tr class="{% cycle odd,even %}" onclick="window.location = '{% url event_repertory repertory.id %}'">
+                    <td>
+                        {% if repertory.event %}
+                            {% trans "Show" %}: {{ repertory.event }}
+                        {% else %}
+                            {% trans "Rehearsal" %}: {{ repertory.rehearsal.studio.name }} on {{ repertory.rehearsal.date }}
+                        {% endif %}
+                    </td>
+                    <td class="center">{% if repertory.is_free %}{% trans "Free" %}{% else %}<span style="color: red;">{{ repertory.user_lock.get_full_name }}</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>{% trans "There are no repertories yet." %}</p>
+    <p><a href="{% url main_repertory %}">{% trans "Click here to add songs to the main repertory." %}</a></p>
+    <p><a href="{% url add_event_repertory %}">{% trans "Or click here to add new repertory based on event." %}</a></p>
+{% endif %}

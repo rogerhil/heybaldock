@@ -1618,6 +1618,44 @@ thead tr.table_head_actions th div.action.selected {
     float: left;
 }
 
+.repertories_statistics_actions {
+    background-image: url(/media/img/content_bg_2.png);
+    border-radius: 5px;
+    padding: 1px 10px 5px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.repertories_statistics_actions input,
+.repertories_statistics_actions select {
+    border-radius: 3px !important;
+    border-width: 1px;
+    background-image: url(/media/img/content_bg.png);
+}
+
+.repertories_statistics_actions input[type=text] {
+    padding-left: 3px;
+    padding-right: 3px;
+    width: 120px;
+}
+
+.repertories_statistics_actions select[multiple=multiple] {
+    padding: 5px;
+    height: 78px;
+}
+
+.repertories_statistics_actions ul {
+    list-style: none;
+}
+
+.repertories_statistics_actions ul li {
+    float: left;
+    margin-right: 10px;
+    background-image: url(/media/img/content_bg.png);
+    padding: 5px;
+    border-radius: 5px;
+}
+
 .song_status:hover {
     border: 2px solid #4b5c6c;
     cursor: pointer;

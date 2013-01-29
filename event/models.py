@@ -3,8 +3,10 @@
 from datetime import datetime
 
 from django.db import models
+from django.db.models.signals import pre_save, pre_delete
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext, ugettext_lazy as _
+
 
 STATE_CHOICES = [
     (u'AC', u'Acre'),
@@ -203,3 +205,24 @@ class Event(models.Model):
                               .order_by('-starts_at')[0]
         except IndexError:
             return
+
+    @classmethod
+    def pre_save(cls, instance, **kwargs):
+        if not instance.id:
+            band = instance.band
+            band.shows_count += 1
+            band.save()
+
+    @classmethod
+    def pre_delete(cls, instance, **kwargs):
+        from music.models import EventRepertory
+        band = instance.band
+        band.shows_count -= 1
+        band.save()
+        repertories = EventRepertory.objects.filter(event=instance)
+        # make sure all repertories related will go on too
+        repertories.delete()
+
+
+pre_save.connect(Event.pre_save, Event)
+pre_delete.connect(Event.pre_delete, Event)

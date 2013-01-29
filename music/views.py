@@ -60,23 +60,32 @@ def new_history_entry(user, instance, action, summary=''):
 @login_required
 @render_to("music/repertories.html")
 def repertories(request):
-    repertories = EventRepertory.objects.all()
+    event_repertories = EventRepertory.objects.filter(event__isnull=False)
+    rehearsal_repertories = EventRepertory.objects\
+                                          .filter(rehearsal__isnull=False)
     try:
         main_repertory = request.band.repertory
     except Repertory.DoesNotExist:
         main_repertory = Repertory.objects.create(band=request.band)
-    return dict(repertories=repertories, main_repertory=main_repertory)
+    return dict(event_repertories=event_repertories,
+                rehearsal_repertories=rehearsal_repertories,
+                main_repertory=main_repertory)
 
 @login_required
 @render_to("music/repertories_statistics.html")
 def repertories_statistics(request):
     band = request.band
     main_repertory = band.repertory
-    items = main_repertory.all_items.all()
+    items = main_repertory.items.all()
     repertories = EventRepertory.objects.all()
     stats = repertory_stats(main_repertory)
+    statuses = RepertoryItemStatus.active_choices()
+    modes = SongMode.choices()
+    rehearsal_id = long(request.GET.get('rehearsal', 0))
+    event_id = long(request.GET.get('show', 0))
     return dict(repertories=repertories, main_repertory=main_repertory,
-                stats=stats, items=items)
+                stats=stats, items=items, band=band, statuses=statuses,
+                modes=modes, rehearsal_id=rehearsal_id, event_id=event_id)
 
 @login_required
 @render_to("music/band_settings.html")
@@ -194,6 +203,7 @@ def add_rehearsal(request):
             new_history_entry(user, form.instance, 'created')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse("rehearsal", args=(form.instance.id,))
+            band.reload_band_cache(request)
             return HttpResponseRedirect(url)
     else:
         form = RehearsalForm(band=band)
@@ -209,12 +219,14 @@ def rehearsal(request, id):
 @login_required
 @permission_required('music.manage_rehearsals', '/permission/denied/')
 def remove_rehearsal(request, id):
+    band = request.band
     user = request.user
     rehearsal = get_object_or_404(Rehearsal, id=id)
     rehearsal.delete()
     msg = _("The rehearsal was successfully removed.")
     new_history_entry(user, rehearsal, 'removed')
     messages.add_message(request, messages.SUCCESS, msg)
+    band.reload_band_cache(request)
     return HttpResponseRedirect(reverse("rehearsals"))
 
 @login_required
@@ -259,6 +271,7 @@ def add_event_repertory(request):
             msg = _('The repertory was successfully created.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('event_repertory', args=(form.instance.id,))
+            band.reload_band_cache(request)
             return HttpResponseRedirect(url)
     else:
         form = EventRepertoryForm(initial=initial)
@@ -268,12 +281,64 @@ def add_event_repertory(request):
 @login_required
 @permission_required('music.manage_event_repertories', '/permission/denied/')
 def add_event_repertory_for_rehearsal(request, id):
+    success, rep, msg = _add_event_repertory_for_rehearsal(request, id)
+    if success:
+        messages.add_message(request, messages.SUCCESS, msg)
+        url = reverse('event_repertory', args=(rep.id,))
+        return HttpResponseRedirect(url)
+    else:
+        messages.add_message(request, messages.ERROR, msg)
+        url = reverse('rehearsal', args=(id,))
+        return HttpResponseRedirect(url)
+
+@json
+@login_required
+@permission_required('music.manage_event_repertories', '/permission/denied/')
+def add_event_repertory_for_rehearsal_ajax(request, id):
+    success, rep, msg = _add_event_repertory_for_rehearsal(request, id)
+    if success:
+        url = reverse('event_repertory', args=(rep.id,))
+        return dict(success=success, url=url)
+    else:
+        return dict(success=success, message=msg)
+
+@json
+@login_required
+@permission_required('music.manage_event_repertories', '/permission/denied/')
+def add_event_repertory_for_event_ajax(request, id):
+    success, rep, msg = _add_event_repertory_for_event(request, id)
+    if success:
+        url = reverse('event_repertory', args=(rep.id,))
+        return dict(success=success, url=url)
+    else:
+        return dict(success=success, message=msg)
+
+@login_required
+@permission_required('music.manage_event_repertories', '/permission/denied/')
+def add_event_repertory_for_event(request, id):
+    success, rep, msg = _add_event_repertory_for_event(request, id)
+    if success:
+        messages.add_message(request, messages.SUCCESS, msg)
+        url = reverse('event_repertory', args=(rep.id,))
+        return HttpResponseRedirect(url)
+    else:
+        messages.add_message(request, messages.ERROR, msg)
+        url = reverse('event_details', args=(id,))
+        return HttpResponseRedirect(url)
+
+def _add_event_repertory_for_rehearsal(request, id):
     band = request.band
     data = {
         'band': band.id,
         'rehearsal': id
     }
-    form = EventRepertoryForm(data)
+    try:
+        repertory = EventRepertory.objects.get(band=band.id,
+                                               rehearsal__id=long(id))
+    except EventRepertory.DoesNotExist:
+        repertory = None
+    form = EventRepertoryForm(data, instance=repertory)
+
     if form.is_valid():
         form.save()
         last = request.GET.get('import_from_last')
@@ -288,27 +353,41 @@ def add_event_repertory_for_rehearsal(request, id):
                     new_item = item.clone_object(form.instance)
                     new_item.times_played = 0
                     new_item.save()
-        msg = _('The repertory was successfully created.')
-        messages.add_message(request, messages.SUCCESS, msg)
+        if request.POST:
+            ids = [long(i) for i in request.POST.getlist('items_ids[]')]
+            items = RepertoryItem.objects.filter(id__in=ids)
+            for item in items:
+                ids = form.instance.all_items.all().values_list('item__id',
+                                                                flat=True)
+                if item.id in ids:
+                    continue
+                new_item = EventRepertoryItem.objects.create(item=item,
+                                                       repertory=form.instance,
+                                                       times_played=0)
+                new_history_entry(request.user, new_item, 'created')
+
         new_history_entry(request.user, form.instance, 'created')
-        url = reverse('event_repertory', args=(form.instance.id,))
-        return HttpResponseRedirect(url)
+        msg = _('The repertory was successfully created.')
+        band.reload_band_cache(request)
+        return True, form.instance, msg
     else:
         msg = _(u'Some error occurred while trying to create the repertory. %s'
                 % form.errors)
-        messages.add_message(request, messages.ERROR, msg)
-        url = reverse('rehearsal', args=(id,))
-        return HttpResponseRedirect(url)
+        return False, None, msg
 
-@login_required
-@permission_required('music.manage_event_repertories', '/permission/denied/')
-def add_event_repertory_for_event(request, id):
+def _add_event_repertory_for_event(request, id):
     band = request.band
     data = {
         'band': band.id,
         'event': id
     }
-    form = EventRepertoryForm(data)
+    try:
+        repertory = EventRepertory.objects.get(band=band.id,
+                                               event__id=long(id))
+    except EventRepertory.DoesNotExist:
+        repertory = None
+    form = EventRepertoryForm(data, instance=repertory)
+
     if form.is_valid():
         form.save()
         last = request.GET.get('import_from_last')
@@ -323,17 +402,27 @@ def add_event_repertory_for_event(request, id):
                     new_item = item.clone_object(form.instance)
                     new_item.times_played = 0
                     new_item.save()
+        if request.POST:
+            ids = [long(i) for i in request.POST.getlist('items_ids[]')]
+            items = RepertoryItem.objects.filter(id__in=ids)
+            for item in items:
+                ids = form.instance.all_items.all().values_list('item__id',
+                                                                flat=True)
+                if item.id in ids:
+                    continue
+                new_item = EventRepertoryItem.objects.create(item=item,
+                                                       repertory=form.instance,
+                                                       times_played=1)
+                new_history_entry(request.user, new_item, 'created')
         msg = _('The repertory was successfully created.')
-        messages.add_message(request, messages.SUCCESS, msg)
         new_history_entry(request.user, form.instance, 'created')
-        url = reverse('event_repertory', args=(form.instance.id,))
-        return HttpResponseRedirect(url)
+        band.reload_band_cache(request)
+        return True, form.instance, msg
+
     else:
         msg = _(u'Some error occurred while trying to create the repertory. %s'
                 % form.errors)
-        messages.add_message(request, messages.ERROR, msg)
-        url = reverse('event_details', args=(id,))
-        return HttpResponseRedirect(url)
+        return False, None, msg
 
 def repertory_stats(repertory):
     af = repertory.items.filter
@@ -375,12 +464,6 @@ def repertory_stats(repertory):
         artists=artists.values()
     )
     return stats
-
-@login_required
-@render_to("music/repertories_global_statistics.html")
-def repertory_global_statistics(request):
-    repertory = request.band.repertory
-    return dict(repertory=repertory, item=repertory.items)
 
 @login_required
 @render_to("music/main_repertory.html")
@@ -472,11 +555,13 @@ def event_repertory(request, id):
 @login_required
 @check_locked_event_repertory
 def remove_event_repertory(request, id):
+    band = request.band
     repertory = get_object_or_404(EventRepertory, id=id)
     url = reverse('repertories')
     repertory.delete()
     msg = _(u'The "%s" was successfully removed.' % repertory)
     messages.add_message(request, messages.SUCCESS, msg)
+    band.reload_band_cache(request)
     return HttpResponseRedirect(url)
 
 @login_required
@@ -1054,6 +1139,52 @@ def get_event_repertory_content(request, repertory):
     return loader.get_template("music/event_repertory_content.html").render(tc)
 
 def _sort_repertory(request, items):
+    filters = {}
+    for key in request.GET.keys():
+        if not key.startswith('filter_'):
+            continue
+        value = request.GET.getlist(key)
+        if len(value) == 1:
+            value = value[0]
+        filters[key.replace('filter_', '')] = value
+
+    if filters:
+        band = request.band
+        shows = band.shows_count
+        rehearsals = band.rehearsals_count
+        if filters.get('date_from'):
+            date = datetime.strptime(filters['date_from'], "%d/%m/%Y")
+            items = items.filter(date__gte=date)
+        if filters.get('date_to'):
+            date = datetime.strptime(filters['date_to'], "%d/%m/%Y")
+            items = items.filter(date__lte=date)
+        if filters.get('song'):
+            items = items.filter(song__name__icontains=filters['song'].strip())
+        if filters.get('album'):
+            items = items.filter(song__album__name__icontains=
+                                                      filters['album'].strip())
+        if filters.get('artist'):
+            items = items.filter(song__album__artist__name__icontains=
+                                                     filters['artist'].strip())
+        if filters.get('mode[]'):
+            modes = filters.get('mode[]')
+            items = items.filter(song__mode__in=modes)
+        if filters.get('status[]'):
+            statuses = filters.get('status[]')
+            items = items.filter(status__in=statuses)
+        if filters.get('shows_above'):
+            f = float(shows * int(filters['shows_above'])) / 100
+            items = items.filter(in_shows_count__gte=f)
+        if filters.get('shows_below'):
+            f = float(shows * int(filters['shows_below'])) / 100
+            items = items.filter(in_shows_count__lte=f)
+        if filters.get('rehearsals_above'):
+            f = float(rehearsals * int(filters['rehearsals_above'])) / 100
+            items = items.filter(in_rehearsals_count__gte=f)
+        if filters.get('rehearsals_below'):
+            f = float(rehearsals * int(filters['rehearsals_below'])) / 100
+            items = items.filter(in_rehearsals_count__lte=f)
+
     sort_by = request.GET.get('sort_by', '')
     sort = {}
     if sort_by:
@@ -1064,6 +1195,14 @@ def _sort_repertory(request, items):
         else:
             items = items.order_by(sort_by)
         sort[sort_by] = True
+
+    if filters.get('ratings_above'):
+        items = [i for i in items if i.ratings >=
+                                     int(filters['ratings_above'])]
+    if filters.get('ratings_below'):
+        items = [i for i in items if i.ratings <=
+                                     int(filters['ratings_below'])]
+
     return items, sort
 
 def get_repertory_content(request, repertory):
@@ -1089,8 +1228,8 @@ def get_repertory_content(request, repertory):
 def get_repertories_statistics_content(request):
     band = request.band
     repertory = band.repertory
-    items, sort = _sort_repertory(request, repertory.all_items.all())
-    tc = dict(main_repertory=main_repertory, items=items, sort=sort)
+    items, sort = _sort_repertory(request, repertory.items)
+    tc = dict(main_repertory=main_repertory, items=items, sort=sort, band=band)
     tc = RequestContext(request, tc)
     return loader.get_template("music/repertories_statistics_content.html")\
                  .render(tc)

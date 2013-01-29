@@ -1,0 +1,167 @@
+{% load i18n common %}
+
+
+<div class="repertories_statistics_actions">
+    <h2>{% trans "Filter by" %}:</h2>
+    <form name="filter_by">
+        <ul>
+            <li>
+                <label>{% trans "Shows frequency between" %}:</label>
+                <select name="filter_shows_above">
+                    <option value="">{% trans "0%" %}</option>
+                    <option value="10">{% trans "10%" %}</option>
+                    <option value="20">{% trans "20%" %}</option>
+                    <option value="30">{% trans "30%" %}</option>
+                    <option value="40">{% trans "40%" %}</option>
+                    <option value="50">{% trans "50%" %}</option>
+                    <option value="60">{% trans "60%" %}</option>
+                    <option value="70">{% trans "70%" %}</option>
+                    <option value="80">{% trans "80%" %}</option>
+                    <option value="90">{% trans "90%" %}</option>
+                </select>
+                <label>{% trans "and" %}</label>
+                <select name="filter_shows_below">
+                    <option value="10">{% trans "10%" %}</option>
+                    <option value="20">{% trans "20%" %}</option>
+                    <option value="30">{% trans "30%" %}</option>
+                    <option value="40">{% trans "40%" %}</option>
+                    <option value="50">{% trans "50%" %}</option>
+                    <option value="60">{% trans "60%" %}</option>
+                    <option value="70">{% trans "70%" %}</option>
+                    <option value="80">{% trans "80%" %}</option>
+                    <option value="90">{% trans "90%" %}</option>
+                    <option value="100" selected="selected">{% trans "100%" %}</option>
+                </select>
+            </li>
+            <li>
+                <label>{% trans "Rehearsals frequency between" %}:</label>
+                <select name="filter_rehearsals_above">
+                    <option value="">{% trans "0%" %}</option>
+                    <option value="10">{% trans "10%" %}</option>
+                    <option value="20">{% trans "20%" %}</option>
+                    <option value="30">{% trans "30%" %}</option>
+                    <option value="40">{% trans "40%" %}</option>
+                    <option value="50">{% trans "50%" %}</option>
+                    <option value="60">{% trans "60%" %}</option>
+                    <option value="70">{% trans "70%" %}</option>
+                    <option value="80">{% trans "80%" %}</option>
+                    <option value="90">{% trans "90%" %}</option>
+                </select>
+                <label>{% trans "and" %}</label>
+                <select name="filter_rehearsals_below">
+                    <option value="10">{% trans "10%" %}</option>
+                    <option value="20">{% trans "20%" %}</option>
+                    <option value="30">{% trans "30%" %}</option>
+                    <option value="40">{% trans "40%" %}</option>
+                    <option value="50">{% trans "50%" %}</option>
+                    <option value="60">{% trans "60%" %}</option>
+                    <option value="70">{% trans "70%" %}</option>
+                    <option value="80">{% trans "80%" %}</option>
+                    <option value="90">{% trans "90%" %}</option>
+                    <option value="100" selected="selected">{% trans "100%" %}</option>
+                </select>
+            </li>
+            <li>
+                <label>{% trans "Ratings between" %}:</label>
+                <select name="filter_ratings_above">
+                    <option value="">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <label>{% trans "and" %}</label>
+                <select name="filter_ratings_below">
+                    <option value="">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5" selected="selected">5</option>
+                </select>
+            </li>
+        </ul>
+        <div class="clear"></div>
+        <ul>
+            <li>
+                <label>{% trans "Date between" %}:</label>
+                <input type="text" name="filter_date_from" style="width: 80px" />
+                <label>{% trans "and" %}</label>
+                <input type="text" name="filter_date_to" style="width: 80px" />
+            </li>
+            <li>
+                <label>{% trans "Artist" %}:</label>
+                <input type="text" name="filter_artist" />
+            </li>
+            <li>
+                <label>{% trans "Album" %}:</label>
+                <input type="text" name="filter_album" />
+            </li>
+            <li>
+                <label>{% trans "Song" %}:</label>
+                <input type="text" name="filter_song" />
+            </li>
+        </ul>
+        <div class="clear"></div>
+        <ul>
+            <li>
+                <label>{% trans "Status" %}:</label>
+                <select name="filter_status" multiple="multiple">
+                    {% for id, status in statuses %}
+                        <option value="{{ id }}">{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li>
+                <label>{% trans "Mode" %}:</label>
+                <select name="filter_mode" multiple="multiple">
+                    {% for id, mode in modes %}
+                        <option value="{{ id }}">{{ mode }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li>
+                <input type="button" class="small_button submit" style="background: #333333; margin: 0px;" value="{% trans "Submit Filter" %}">
+            </li>
+            <li>
+                <input type="button" class="small_button clear_filter" style="background: #333333; margin: 0px;" value="{% trans "Clear Filter" %}">
+            </li>
+        </ul>
+    </form>
+    <div class="clear"></div>
+    {% if events or upcoming_rehearsals %}
+    <h2>{% trans "Add selected songs to" %}:</h2>
+    <form>
+        <ul>
+            {% if events %}
+                <li>
+                    <label>{% trans "Event  repertory" %}:</label>
+                    <select name="upcoming_events" class="add_songs">
+                        {% for event in events %}
+                            <option value=""></option>
+                            <option value="{% url add_event_repertory_for_event_ajax event.id %}">
+                                {{ event }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </li>
+            {% endif %}
+            {% if upcoming_rehearsals %}
+                <li>
+                    <label>{% trans "Rehearsal repertory" %}:</label>
+                    <select name="upcoming_events" class="add_songs">
+                        <option value=""></option>
+                        {% for rehearsal in upcoming_rehearsals %}
+                            <option value="{% url add_event_repertory_for_rehearsal_ajax rehearsal.id %}">{{ rehearsal }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+            {% endif %}
+        </ul>
+    </form>
+    <div class="clear"></div>
+    {% else %}
+        {% trans "There's no upcoming shows and rehearsals." %}
+    {% endif %}
+</div>

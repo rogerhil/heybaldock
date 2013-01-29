@@ -12,41 +12,22 @@
 {% endblock %}
 
 {% block music_content %}
-    <h1>{% trans "Repertories" %}</h1>
-    {% if repertories %}
-        <div class="table_list">
-            <table>
-                <thead>
-                    <th>
-                        {% trans "Related Event" %}
-                    </th>
-                    <th width="200px" class="center">
-                        {% trans "Locked by" %}
-                    </th>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #9acd32; color: #000000; font-weight: bold;" onclick="window.location = '{% url main_repertory %}'">
-                        <td>{% trans "Main Repertory" %}. {% trans "This is the base for the repertories below." %}</td>
-                        <td class="center">{% if main_repertory.is_free %}{% trans "Free" %}{% else %}<span style="color: red;">{{ main_repertory.user_lock.first_name }}</span>{% endif %}</td>
-                    </tr>
-                    {% for repertory in repertories %}
-                    <tr class="{% cycle odd,even %}" onclick="window.location = '{% url event_repertory repertory.id %}'">
-                        <td>
-                            {% if repertory.event %}
-                                {% trans "Show" %}: {{ repertory.event }}
-                            {% else %}
-                                {% trans "Rehearsal" %}: {{ repertory.rehearsal.studio.name }} on {{ repertory.rehearsal.date }}
-                            {% endif %}
-                        </td>
-                        <td class="center">{% if repertory.is_free %}{% trans "Free" %}{% else %}<span style="color: red;">{{ repertory.user_lock.get_full_name }}</span>{% endif %}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>{% trans "There are no repertories yet." %}</p>
-        <p><a href="{% url main_repertory %}">{% trans "Click here to add songs to the main repertory." %}</a></p>
-        <p><a href="{% url add_event_repertory %}">{% trans "Or click here to add new repertory based on event." %}</a></p>
-    {% endif %}
+    <br/>
+    <div style="width: 660px; margin: 0 auto 0 auto;">
+        <h1 style="background: url(/media/img/content_bg_2.png); border-radius: 7px; padding: 10px; width: 300px; text-align: center; float: left; display: block;">
+            <a href="{% url main_repertory %}">{% trans 'Show Main Repertory' %}</a>
+        </h1>
+        <h1 style="background: url(/media/img/content_bg_2.png); border-radius: 7px; padding: 10px; width: 300px; text-align: center; float: right;">
+            <a href="{% url repertories_statistics %}">{% trans 'Show Statistics' %}</a>
+        </h1>
+    </div>
+    <h1>{% trans "Repertories for shows" %}</h1>
+    {% with event_repertories as repertories %}
+        {% include "music/repertories_table_content.html" %}
+    {% endwith %}
+    <br/>
+    <h1>{% trans "Repertories for rehearsals" %}</h1>
+    {% with rehearsal_repertories as repertories %}
+        {% include "music/repertories_table_content.html" %}
+    {% endwith %}
 {% endblock %}

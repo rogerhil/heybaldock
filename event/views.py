@@ -35,6 +35,7 @@ def delete_event(request, id):
     name = event.name
     try:
         event.delete()
+        request.band.reload_band_cache(request)
         msg = _('The event "%s" was successfully deleted.' % name)
         messages.add_message(request, messages.SUCCESS, msg)
     except Exception, err:

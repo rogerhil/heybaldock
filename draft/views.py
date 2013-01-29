@@ -97,10 +97,10 @@ def publish(request, id):
         form = ct.model_class().form()(user=user, instance=object, draft=draft)
     else:
         form = ct.model_class().form()(user=user, draft=draft)
+    if isinstance(form.instance, Event) and not form.instance.band:
+        form.instance.band = request.band
     object = form.publish()
-    if isinstance(object, Event) and not object.band:
-        object.band = request.band
-        object.save()
+    request.band.reload_band_cache(request)
     return HttpResponseRedirect(object.url())
 
 @login_required

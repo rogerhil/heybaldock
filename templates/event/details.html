@@ -1,41 +1,46 @@
 {% load i18n %}
 {% load photoutils %}
 <div class="clear"></div>
-<div class="event_flyer">
-    {% with event.flyers as albums %}
-        {% for album in albums %}
-            {% for img in album.photos.all %}
-                <span href="{% img_url img 'huge' %}">
-                    <img src="{% img_url img 'big' %}" />
-                </span>
-            {% endfor %}
-        {% endfor %}
-    {% endwith %}
-</div>
-<div class="event_details">
-    <h1>{{ event.name }}</h1>
-    <h3>{{ event.description }}</h3>
-    <p>{% autoescape off %}{{ event.content }}{% endautoescape %}</p>
-    <p><strong>{% trans "Date" %}:</strong>: {{ event.starts_at }}</p>
-    {% if permissions.manage_repertories and event.id %}
-        {% if event.repertories.count %}
-            <p>
-                <strong>{% trans "Repertory: " %}</strong>
-                {% for repertory in event.repertories.all %}
-                    <a href="{% url event_repertory repertory.id %}">
-                        {% trans "click here to see the repertory" %}
-                    </a>
+<div style="clear: both;">
+    {% if event.flyers.count %}
+        <div class="event_flyer">
+            {% with event.flyers as albums %}
+                {% for album in albums %}
+                    {% for img in album.photos.all %}
+                        <span href="{% img_url img 'huge' %}">
+                            <img src="{% img_url img 'big' %}" />
+                        </span>
+                    {% endfor %}
                 {% endfor %}
-            </p>
-        {% else %}
-            <p>
-                <strong>{% trans "Repertory:" %}</strong>
-                <a href="{% url add_event_repertory_for_event event.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
-                <a href="{% url add_event_repertory_for_event event.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last event." %}</a>
-            </p>
-        {% endif %}
+            {% endwith %}
+        </div>
     {% endif %}
+    <div class="event_details">
+        <h1>{{ event.name }}</h1>
+        <h3>{{ event.description }}</h3>
+        <p>{% autoescape off %}{{ event.content }}{% endautoescape %}</p>
+        <p><strong>{% trans "Date" %}:</strong>: {{ event.starts_at }}</p>
+        {% if permissions.manage_repertories and event.id %}
+            {% if event.repertories.count %}
+                <p>
+                    <strong>{% trans "Repertory: " %}</strong>
+                    {% for repertory in event.repertories.all %}
+                        <a href="{% url event_repertory repertory.id %}">
+                            {% trans "click here to see the repertory" %}
+                        </a>
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p>
+                    <strong>{% trans "Repertory:" %}</strong>
+                    <a href="{% url add_event_repertory_for_event event.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
+                    <a href="{% url add_event_repertory_for_event event.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last event." %}</a>
+                </p>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
+<div class="clear"></div>
 {% with event.location as location %}
     {% include "event/location.html" %}
 {% endwith %}
