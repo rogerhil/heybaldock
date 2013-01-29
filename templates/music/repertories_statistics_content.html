@@ -77,17 +77,17 @@
                     </a>
                 </td>
                 <td class="artist_column">
-                    <div style="white-space: nowrap; overflow: hidden;">
+                    <div>
                         {{ item.song.album.artist }}
                     </div>
                 </td>
                 <td class="album_column">
-                    <div style="white-space: nowrap; overflow: hidden;">
+                    <div>
                         {{ item.song.album.name }}
                     </div>
                 </td>
                 <td class="name_column">
-                    <div style="white-space: nowrap; overflow: hidden;">
+                    <div>
                         {% if item.song.audio %}
                             <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ item.song.name }}" audiourl="{{ item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
                         {% endif %}
