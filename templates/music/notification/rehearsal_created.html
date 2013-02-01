@@ -1,0 +1,24 @@
+
+{% load i18n %}
+
+<h2>
+    {% blocktrans with user.nick as user %}
+        Hi {{ user }},
+    {% endblocktrans %}
+</h2>
+
+<p>
+    {% blocktrans with instance.date as date and instance.studio as studio %}
+        There's a new rehearsal coming at {{ date }} in {{ studio }}.
+    {% endblocktrans %}
+</p>
+
+<p>
+    {% trans "For further information click on the following link:" %} <a href="http://www.heybaldock.com.br{{ instance.url }}">www.heybaldock.com.br{{ instance.url }}</a>.
+</p>
+
+{% if notification.notes %}
+    <p>
+        {{ notification.notes }}
+    </p>
+{% endif %}

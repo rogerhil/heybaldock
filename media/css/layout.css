@@ -10,7 +10,7 @@ body {
     /* background-color: #5c9fe3; */
     background-color: white;
     font-family: arial, verdana;
-    color: #4b5c6c;
+    color: #2b3543;
     font-size: 12px;
 }
 
@@ -25,21 +25,21 @@ h1 {
     text-shadow: #eaadb9 0px -4px;
     */
     margin: 0px 0px 10px 0px;
-    color: #4b5c6c;
+    color: #2b3543;
 }
 
 h3 {
     margin: 0px;
-    color: #4b5c6c;
+    color: #2b3543;
 }
 
 p {
-    color: #4b5c6c;
+    color: #2b3543;
     font-size: 12px;
 }
 
 a {
-    color: #4b5c6c;
+    color: #2b3543;
     text-decoration: none;
 }
 
@@ -178,7 +178,7 @@ ul {
 
 .table_list th {
     text-align: left;
-    background-color: #4b5c6c;
+    background-color: #2b3543;
     color: #eae6cc;
 }
 
@@ -237,7 +237,7 @@ a.button,
     float: right;
     border: none;
     cursor: pointer;
-    color: #4b5c6c;
+    color: #2b3543;
     margin-left: 10px;
 }
 
@@ -255,7 +255,7 @@ a.button:hover,
     background-image: url(/media/img/content_bg.png);
     border-radius: 10px;
     padding: 5px 10px 5px 10px;
-    color: #4b5c6c;
+    color: #2b3543;
     font-size: 14px;
     width: 460px;
     margin-left: 130px;
@@ -300,7 +300,7 @@ input[type=submit][disabled=disabled].submit {
 .profile_area a:hover {
     background-color: #f7d453;
     box-shadow: #e9892c 0px -5px;
-    color: #4b5c6c;
+    color: #2b3543;
 }
 
 .edit_mode {
@@ -350,7 +350,7 @@ input[type=button].small_button.red {
 .manage_buttons a:hover,
 .manage_buttons input[type=submit]:hover,
 input[type=button].small_button:hover {
-    color: #4b5c6c;
+    color: #2b3543;
 }
 
 input[type=button].small_button {
@@ -558,7 +558,7 @@ div.yellow_submarine_title .shadow_small {
 }
 
 #menu {
-    color: #4b5c6c;
+    color: #2b3543;
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -576,7 +576,7 @@ div.yellow_submarine_title .shadow_small {
 }
 
 #menu a {
-    color: #4b5c6c;
+    color: #2b3543;
     text-decoration: none;
 
 }
@@ -666,7 +666,7 @@ div.yellow_submarine_title .shadow_small {
     border-radius: 5px;
     width: 280px;
     border: none;
-    color: #4b5c6c;
+    color: #2b3543;
     font-size: 18px;
     padding: 5px 10px 5px 10px;
     margin:  0px;
@@ -683,7 +683,7 @@ div.yellow_submarine_title .shadow_small {
 
 #search_results li {
     *margin-bottom: 10px;
-    border-bottom: 1px dashed #4b5c6c;
+    border-bottom: 1px dashed #2b3543;
 }
 
 #search_results div.search_image {
@@ -991,7 +991,7 @@ div.photo_album div.view_action a.selected {
 div.photo_album div.view_action a span {
     display: block;
     float: left;
-    background: #4b5c6c;
+    background: #2b3543;
     border-radius: 3px;
 }
 
@@ -1133,7 +1133,7 @@ div.songs_content div.selected {
     border-radius: 5px;
     padding: 5px;
     display: none;
-    border: 2px solid #4b5c6c;
+    border: 2px solid #2b3543;
     box-shadow: #333333 0px 0px 30px 2px;
     -moz-box-shadow: #333333 0px 0px 30px 2px;
     -webkit-box-shadow: #333333 0px 0px 30px 2px;
@@ -1185,10 +1185,11 @@ div.pretty_select div.selected {
     background-color: #afbfcf;
 }
 
+div.simple_menu h3.pretty_title,
 div.pretty_select h3 {
     text-align: center;
     padding: 5px;
-    background-color: #4b5c6c;
+    background-color: #2b3543;
     color: #eae6cc;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -1210,6 +1211,43 @@ div.pretty_select h3 div.action_button {
     float: right;
     padding: 3px 5px 0px 0px;
     cursor: pointer;
+}
+
+#my_notifications_menu {
+    width: 700px;
+    right: auto;
+    left: 130px;
+    top: 250px;
+}
+
+#my_notifications_menu .subjects {
+    height: 260px;
+    overflow: auto;
+}
+
+#my_notifications_menu .subjects td {
+    border-bottom: 1px solid;
+    border-radius: 0px;
+}
+
+#my_notifications_menu .subjects tr.opened td {
+    border-bottom: 1px solid #eae6cc !important;
+    background: url(/media/img/content_bg.png);
+}
+
+#my_notifications_menu .subjects tr.message td {
+    background: url(/media/img/content_bg.png);
+}
+
+#my_notifications_menu .subjects .unread {
+    font-weight: bold;
+}
+
+#my_notifications_menu .subjects .unread td.subject {
+    padding-left: 20px;
+    background-image: url(/media/img/notification_icon_16.png);
+    background-repeat: no-repeat;
+    background-position: 0 3px;
 }
 
 #songs_by_category_menu {
@@ -1337,11 +1375,11 @@ div.metadata ul li a {
     float: left;
     padding: 2px;
     font-weight: bold;
-    background-color: #4b5c6c;
+    background-color: #2b3543;
     color: #f7d453;
     margin: 3px;
     border-radius: 5px;
-    border: 2px solid #4b5c6c;
+    border: 2px solid #2b3543;
     font-size: 13px;
     min-width: 70px;
     text-align: center !important;
@@ -1351,7 +1389,7 @@ div.metadata ul li a {
 
 .tag:hover {
     cursor: pointer;
-    border: 3px solid #4b5c6c;
+    border: 3px solid #2b3543;
     opacity: 1 !important;
 }
 
@@ -1363,14 +1401,14 @@ div.metadata ul li a {
 
 .tag.level1 {
     background-color: #afbfcf;
-    color: #4b5c6c;
+    color: #2b3543;
     border: 3px solid #afbfcf;
     opacity: 0.8;
 }
 
 .tag.level2 {
     background-color: #a1cb5e;
-    color: #4b5c6c;
+    color: #2b3543;
     border: 3px solid #a1cb5e;
     opacity: 0.8;
 }
@@ -1566,7 +1604,7 @@ thead tr.table_head_actions th div.action.selected {
 }
 
 .song_mode:hover {
-    border: 2px solid #4b5c6c !important;
+    border: 2px solid #2b3543 !important;
     cursor: pointer;
 }
 
@@ -1657,7 +1695,7 @@ thead tr.table_head_actions th div.action.selected {
 }
 
 .song_status:hover {
-    border: 2px solid #4b5c6c;
+    border: 2px solid #2b3543;
     cursor: pointer;
 }
 
@@ -1700,7 +1738,7 @@ thead tr.table_head_actions th div.action.selected {
 }
 
 .tempo_body {
-    color: #4b5c6c;
+    color: #2b3543;
 }
 
 .tempo_display {
@@ -1715,7 +1753,7 @@ thead tr.table_head_actions th div.action.selected {
 
 .metronome_graphic {
     padding: 5px;
-    border: 2px solid #4b5c6c;
+    border: 2px solid #2b3543;
     border-radius: 5px;
     background-image: url(/media/img/content_bg_2.png);
     z-index: 99999;
@@ -1765,7 +1803,7 @@ thead tr.table_head_actions th div.action.selected {
 .tonality_major:hover ,
 .tonality_undefined:hover,
 .tonality_original:hover {
-    border: 2px solid #4b5c6c;
+    border: 2px solid #2b3543;
     cursor: pointer;
 }
 
@@ -1843,6 +1881,7 @@ td.ratings_cel .ratings_by_user .user_rating {
     margin-right: 7px;
 }
 
+div.notifications_count,
 td.ratings_cel .ratings_by_user .user_rating .rate {
     position: absolute;
     background: #8b0000;
@@ -1864,7 +1903,7 @@ td.ratings_cel .rating_stars_owner {
     width: 340px;
     min-height: 65px;
     background-image: url(/media/img/content_bg_2.png);
-    border: 2px solid #4b5c6c;
+    border: 2px solid #2b3543;
     border-radius: 5px;
     position: absolute;
     top: 30px;
@@ -1879,7 +1918,7 @@ td.ratings_cel .rating_stars_owner {
 #audio_player h3 {
     text-align: center;
     padding: 5px;
-    background-color: #4b5c6c;
+    background-color: #2b3543;
     color: #eae6cc;
     border-radius: 5px;
     margin: 3px;

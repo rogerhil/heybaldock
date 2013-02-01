@@ -1,0 +1,33 @@
+{% load i18n %}
+<div id="my_notifications_menu" class="simple_menu">
+    <h3 class="pretty_title">
+        <img src="/media/img/cross_16.png" class="close" style="float: right;" alt="{% trans "Close" %}" title="{% trans "Close" %}"/>
+        {% trans "My notifications" %}
+    </h3>
+    <div class="subjects table_list">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        {% trans "Subject" %}
+                    </th>
+                    <th width="200px">
+                        {% trans "Date" %}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notification in notifications %}
+                    <tr class="{% if not notification.read %}unread{% endif %}" url="{% url user_notification_content notification.id %}">
+                        <td class="subject">
+                            {{ notification.subject }}
+                        </td>
+                        <td>
+                            {{ notification.notification.date }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

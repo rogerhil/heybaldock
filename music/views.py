@@ -45,16 +45,19 @@ from defaults import Tempo, Tonality, SongMode, RepertoryItemStatus
 DISCOGS_PAGES = 500
 MAX_YEARS = 30
 
-def new_history_entry(user, instance, action, summary=''):
+def new_history_entry(user, instance, action, created=False):
     content_type = ContentType.objects.get_for_model(type(instance))
-    summary = '%s "%s (%s)" %s %s' % (content_type, instance,
-                                       instance.id, action, summary)
+    summary = '%s "%s (%s)" %s' % (content_type, instance,
+                                       instance.id, action)
     history = MusicHistoryChanges.objects.create(
         content_type=content_type,
         object_id=instance.id,
         user=user,
-        summary=summary
+        summary=summary,
+        created=created
     )
+    history.set_content_object(instance)
+    history.save()
     return history
 
 @login_required
@@ -117,7 +120,7 @@ def band_settings(request, id):
                 for member in form.cleaned_data.get('members'):
                     band.members.add(member)
                 Band.set_active_band(request, band)
-                new_history_entry(request.user, form.instance, 'created')
+                new_history_entry(request.user, form.instance, 'created', True)
                 msg = _('The band settings was successfully changed.')
                 messages.add_message(request, messages.SUCCESS, msg)
                 url = reverse('band_settings', args=(form.instance.id,))
@@ -154,7 +157,7 @@ def add_band(request):
                 band_artist.save()
             for member in form.cleaned_data.get('members'):
                 band.members.add(member)
-            new_history_entry(request.user, form.instance, 'created')
+            new_history_entry(request.user, form.instance, 'created', True)
             msg = _('The band was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('band_settings', args=(form.instance.id,))
@@ -200,7 +203,7 @@ def add_rehearsal(request):
         if form.is_valid():
             form.save()
             msg = _("The rehearsal was successfully created.")
-            new_history_entry(user, form.instance, 'created')
+            new_history_entry(user, form.instance, 'created', True)
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse("rehearsal", args=(form.instance.id,))
             band.reload_band_cache(request)
@@ -255,7 +258,8 @@ def change_rehearsal(request, id):
 @render_to("music/add_event_repertory.html")
 @permission_required('music.manage_event_repertories', '/permission/denied/')
 def add_event_repertory(request):
-    initial = {'band': request.band}
+    band = request.band
+    initial = {'band': band}
     if request.POST:
         form = EventRepertoryForm(request.POST, initial=initial)
         if form.is_valid():
@@ -267,7 +271,7 @@ def add_event_repertory(request):
                 id = int(request.POST['repertory_based'])
                 based_rep = EventRepertory.objects.get(id=id)
                 form.instance.import_items_from(based_rep)
-            new_history_entry(request.user, form.instance, 'created')
+            new_history_entry(request.user, form.instance, 'created', True)
             msg = _('The repertory was successfully created.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('event_repertory', args=(form.instance.id,))
@@ -364,9 +368,9 @@ def _add_event_repertory_for_rehearsal(request, id):
                 new_item = EventRepertoryItem.objects.create(item=item,
                                                        repertory=form.instance,
                                                        times_played=0)
-                new_history_entry(request.user, new_item, 'created')
+                new_history_entry(request.user, new_item, 'created', True)
 
-        new_history_entry(request.user, form.instance, 'created')
+        new_history_entry(request.user, form.instance, 'created', True)
         msg = _('The repertory was successfully created.')
         band.reload_band_cache(request)
         return True, form.instance, msg
@@ -413,9 +417,9 @@ def _add_event_repertory_for_event(request, id):
                 new_item = EventRepertoryItem.objects.create(item=item,
                                                        repertory=form.instance,
                                                        times_played=1)
-                new_history_entry(request.user, new_item, 'created')
+                new_history_entry(request.user, new_item, 'created', True)
         msg = _('The repertory was successfully created.')
-        new_history_entry(request.user, form.instance, 'created')
+        new_history_entry(request.user, form.instance, 'created', True)
         band.reload_band_cache(request)
         return True, form.instance, msg
 
@@ -777,7 +781,7 @@ def register_album(request):
     success = artist_form.is_valid()
     artist = artist_form.save()
     if artist_form.is_new:
-        new_history_entry(request.user, artist, "created")
+        new_history_entry(request.user, artist, "created", True)
     else:
         new_history_entry(request.user, artist, "updated")
 
@@ -806,7 +810,7 @@ def register_album(request):
                 forms.append(song_form)
             album = album_form.save()
             if album_form.is_new:
-                new_history_entry(request.user, album, "created")
+                new_history_entry(request.user, album, "created", True)
             else:
                 new_history_entry(request.user, album, "updated")
             for form in forms:
@@ -1364,7 +1368,7 @@ def add_instrument(request):
         form = InstrumentForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            new_history_entry(request.user, form.instance, 'created')
+            new_history_entry(request.user, form.instance, 'created', True)
             msg = _('The instrument was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('instruments')
@@ -1398,7 +1402,7 @@ def add_player(request, id, user_id):
     user = request.user
     if form.is_valid():
         form.save()
-        new_history_entry(request.user, form.instance, 'created')
+        new_history_entry(request.user, form.instance, 'created', True)
         template = loader.get_template("auth/profile_instruments.html")
         context = RequestContext(request, dict(user=user))
         return dict(success=True, content=template.render(context))
@@ -1621,7 +1625,7 @@ def add_document_for_player_repertory_item(request, id):
         doc = form.save()
         summary = 'created for "%s (%s)"' % (player_repertory_item,
                                              player_repertory_item.id)
-        new_history_entry(request.user, doc, summary)
+        new_history_entry(request.user, doc, summary, True)
         c = player_repertory_item_menu_content(request, player_repertory_item)
         c['success'] = True
         return c
@@ -1747,7 +1751,7 @@ def add_player_repertory_item(request, id):
     form = PlayerRepertoryItemForm(data=data)
     if form.is_valid():
         form.save()
-        new_history_entry(request.user, form.instance, "created")
+        new_history_entry(request.user, form.instance, "created", True)
         item = form.instance.item
         content = get_main_repertory_item_content(request, item)
         return dict(success=True, content=content, item_id=item.id)
@@ -1786,7 +1790,7 @@ def add_instrument_tag_type(request):
         form = InstrumentTagTypeForm(data=request.POST)
         if form.is_valid():
             form.save()
-            new_history_entry(request.user, form.instance, "created")
+            new_history_entry(request.user, form.instance, "created", True)
             msg = _('The instrument tag type was successfully added.')
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('instruments')

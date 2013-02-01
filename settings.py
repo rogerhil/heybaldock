@@ -145,6 +145,7 @@ INSTALLED_APPS = (
     'video',
     'event',
     'draft',
+    'contact',
     'music'
 
     # Uncomment the next line to enable admin documentation:
@@ -205,6 +206,8 @@ SIMPLE_IMAGE_SIZES = {
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT =  587
 MAIL_USER = "heybaldock@heybaldock.com.br"
+NO_REPLY_EMAIL = "noreply@heybaldock.com.br"
+FAKE_EMAIL = ''
 MAIL_PASSWORD = cfg.get('gmail', 'specific_password')
 
 MAX_DRAFTS_PER_OBJECT = 20

@@ -1,5 +1,5 @@
 function startCursor() {
-	$('body').append('<img style="position:absolute;cursor:none;" id="mycursor" src="/media/img/loading_24.png" />');
+	$('body').append('<img style="position:absolute;cursor:none; z-index: 999999;" id="mycursor" src="/media/img/loading_24.png" />');
 	var element = $('body');
 	element.css('cursor','none');
 	$(element).mousemove(function(e){

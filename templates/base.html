@@ -17,6 +17,8 @@
         <script src="/media/js/jquery/jquery.flip.min.js"></script>
         <script src="/media/js/jquery/jquery.placeholder.min.js"></script>
         <script type="text/javascript" src="/media/js/main.js"></script>
+        <script type="text/javascript" src="/media/js/buzz.js"></script>
+        <script type="text/javascript" src="/media/js/notification.js"></script>
         {% block stylesheet %}
         {% endblock %}
         <script type="text/javascript" src="/media/js/last.js"></script>
@@ -78,6 +80,7 @@
         <div id="background-top"></div>
 
         <div class="container container_3">
+            <div id="my_notifications_base" style="position: relative;"></div>
             <div class="clear"></div>
             <div class="grid_3">
                 <div id="header">
@@ -103,13 +106,23 @@
             {% block container %}
                 <div class="grid_3">
                     {% if user.is_authenticated %}
-                    <div class="profile_area">
+                    <div class="profile_area" style="">
                         {% if enable_repertory_features %}
                             <a href="{% url music_management %}">{% trans "Music Management" %}</a>
                             {% if band %}
                                 <a href="{% url band_settings band.id %}">{% trans "Band Settings" %}</a>
                             {% endif %}
                         {% endif %}
+                        <a href="javascript:;" id="my_notifications" style="padding: 0px; position: relative;" url="{% url my_notifications %}" urlcount="{% url my_notifications_count %}">
+                            <img src="/media/img/notification_icon_16.png" style="margin: 6px 5px 2px 5px;" />
+                            {% with user.get_profile.unread_notifications.count as count %}
+                            <div class="notifications_count" style="left: 13px; top: 17px; right: auto; border: 2px solid white; {% if not count %}display: none;{% endif %}">
+                                {% if count %}
+                                    {{ count }}
+                                {% endif %}
+                            </div>
+                            {% endwith %}
+                        </a>
                         <a href="{% url profile %}">
                             <img src="{{ user.profile.icon_url }}" style="margin: -8px 0px -5px -5px; border-radius: 3px;" height="20" />
                             {{ user.nick }} {% trans "Profile" %}

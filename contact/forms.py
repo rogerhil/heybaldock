@@ -1,7 +1,10 @@
+
 from django import forms
+from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from mail import send_mail
+
 
 class ContactForm(forms.Form):
     """
@@ -14,5 +17,7 @@ class ContactForm(forms.Form):
 
     def save(self):
         data = self.cleaned_data
-        send_mail(data['name'], data['email'],
-                  data['subject'], data['message'])
+        args = dict(name=data['name'], email=data['email'])
+        msgfrom = _("Message from %(name)s, e-mail: %(email)s\n\n" % args)
+        body = msgfrom + data['message']
+        send_mail(data['subject'], body, settings.MAIL_USER)

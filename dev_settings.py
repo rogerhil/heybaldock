@@ -20,3 +20,5 @@ UNDER_MAINTENANCE = False
 DEBUG = True
 
 ENABLE_REPERTORY_FEATURES = True
+
+FAKE_EMAIL = 'rogerhil@gmail.com'

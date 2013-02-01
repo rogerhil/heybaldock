@@ -82,3 +82,7 @@ function showLoadingIconNearTo($obj, position) {
 function dropAllLoadingIcons() {
 	$('div.loading_icon').remove();
 }
+
+function closeSimpleMenus() {
+	$('.simple_menu').slideUp();
+}

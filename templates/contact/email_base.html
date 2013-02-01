@@ -1,0 +1,18 @@
+{% load i18n %}
+<div style="border: 3px solid #2b3543; border-radius: 7px; padding: 5px; width: 640px; text-align: justify; font-family: tahoma;">
+    <div style="background-color: #2b3543; padding: 5px 10px; border-radius: 7px; ">
+        <img src="http://heybaldock.com.br/media/img/logo.png" />
+    </div>
+
+    {{ content }}
+
+    <p>
+        {% trans "Hey Baldock System Notification" %}<br/>
+        <a href="http://www.heybaldock.com.br">www.heybaldock.com.br</a>
+    </p>
+
+    <p>
+        <span style="font-size: 12px;">**{% trans "This is an automatic email, please don't reply." %}**</span>
+    </p>
+
+</div>

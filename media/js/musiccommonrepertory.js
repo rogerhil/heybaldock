@@ -6,7 +6,11 @@ function loadGlobalCancelActions() {
 			if ($(this).find('div.notes_area').is(':visible')) {
 				return;
 			}
-			$('.simple_menu').slideUp();
+			if ($(e.target).attr("id") == "notify_users") {
+				e.stopPropagation();
+				return;
+			}
+			closeSimpleMenus();
 		}
 	});
 
@@ -15,7 +19,7 @@ function loadGlobalCancelActions() {
 			if ($(this).find('div.notes_area').is(':visible')) {
 				return;
 			}
-			$('.simple_menu').slideUp();
+			closeSimpleMenus();
 			stopMetronome();
 			stopAudio();
 		}

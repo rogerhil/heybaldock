@@ -9,10 +9,10 @@ from django.db.models.signals import pre_delete, pre_save
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.core.urlresolvers import reverse
 from django.template import loader, Context
-from django.utils.translation import ugettext as _, ugettext_lazy as l_
 from django.template.loader import get_template_from_string
-from django.template import Context
+from django.utils.translation import ugettext as _, ugettext_lazy as l_
 
 from lib.fields import JSONField, PickleField
 from defaults import Tonality, Rating, Tempo, DocumentType, SongMode, \
@@ -44,6 +44,10 @@ class Rehearsal(models.Model):
 
     def duration_display(self):
         return TimeDuration.display(self.duration)
+
+    @property
+    def url(self):
+        return reverse("rehearsal", args=(self.id,))
 
     @classmethod
     def pre_save(cls, instance, **kwargs):
@@ -750,6 +754,10 @@ class EventRepertory(RepertoryBase):
         return self.all_items.all().exclude(item__status=deleted)\
                                    .order_by('order')
 
+    @property
+    def url(self):
+        return reverse("event_repertory", args=(self.id,))
+
 
 class EventRepertoryItem(models.Model):
     repertory = models.ForeignKey(EventRepertory, related_name='all_items')
@@ -1081,7 +1089,8 @@ class MusicHistoryChanges(models.Model):
     object_id = models.IntegerField(null=True)
     content_date = models.DateTimeField(auto_now=True)
     content = PickleField(default='')
-    object = generic.GenericForeignKey('content_type', 'object_id')
+    object = generic.GenericForeignKey()
+    created = models.BooleanField(default=False)
 
     def __unicode__(self):
         return "%s by %s in %s" % (self.summary, self.user.first_name,

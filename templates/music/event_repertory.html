@@ -1,5 +1,5 @@
 {% extends "music/base.html" %}
-{% load i18n %}
+{% load i18n notification %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
@@ -35,6 +35,9 @@
 
 {% block actions %}
     <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+    {% if has_perm %}
+        {% notify repertory "created" %}
+    {% endif %}
     {% if has_perm and editable %}
         <a href="{% url remove_event_repertory repertory.id %}" class="red">{% trans 'Remove' %}</a>
     {% endif %}

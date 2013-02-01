@@ -1,0 +1,40 @@
+{% load i18n %}
+
+<a href="javascript:;" id="notify_users">{% trans "Notify users" %}</a>
+
+<div style="position: relative;">
+    <div id="notification_menu" class="simple_menu pretty_form" style="width: 490px;">
+        <h3 class="pretty_title">{% trans "Notify members" %}</h3>
+        {% if notified %}
+            <h2 class="center">
+                {% trans "Already notified." %}
+            </h2>
+            <p style="width: 200px; margin: 0 auto 0 auto; padding-bottom: 30px;">
+                <a href="javascript:;" class="notify_again" style="float: right">{% trans "Notify again" %}</a>
+                <a href="javascript:;" class="red cancel">{% trans "Close" %}</a>
+
+            </p>
+        {% endif %}
+        <form name="notification_form" method="post" notifyurl="{% url notify app_label model_name instance.id action %}" {% if notified %}style="display: none;"{% endif %}>
+            <ul>
+                <li>
+                    <label style="text-align: left;">{% trans "Notes (optional)" %}:</label>
+                    <div class="clear"></div>
+                    <textarea name="notes" rows="" cols=""></textarea>
+                </li>
+                <li>
+                    <input type="checkbox" name="mail" checked="checked" />
+                    {% trans "Also send email to users" %}
+
+                </li>
+            </ul>
+            <div class="clear"></div>
+            <div style="width: 180px; margin: 0 auto 0 auto; padding-bottom: 30px;">
+                <a href="javascript:;" class="red cancel">{% trans "Cancel" %}</a>
+                <a href="javascript:;" class="notify_button">{% trans "Notify" %}</a>
+            </div>
+            <div class="clear"></div>
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>

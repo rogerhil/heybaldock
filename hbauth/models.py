@@ -24,6 +24,10 @@ class UserProfile(models.Model):
             self.image_handler.load(self.photo)
 
     @property
+    def unread_notifications(self):
+        return self.user.notifications.filter(read=False)
+
+    @property
     def huge_url(self):
         if self.photo:
             return self.image_handler.url('huge')
