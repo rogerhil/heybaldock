@@ -36,7 +36,7 @@
             <span class="tempo_metronome" tempo="{{ item.song.tempo }}" signaturebeats="{{ item.song.signature_beats }}">
                 {% autoescape off %}{{ item.song.tempo_html_display }}{% endautoescape %}
             </span>
-            <div class="metronome_graphic" style="position: absolute; display: none;">
+            <div class="metronome_graphic">
                 {% for i in item.song.signature_beats_range %}
                     <div class="led led_{{ i }}"></div>
                 {% endfor %}

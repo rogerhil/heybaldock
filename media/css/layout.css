@@ -1752,6 +1752,9 @@ thead tr.table_head_actions th div.action.selected {
 }
 
 .metronome_graphic {
+    position: absolute;
+    display: none;
+    white-space: nowrap;
     padding: 5px;
     border: 2px solid #2b3543;
     border-radius: 5px;

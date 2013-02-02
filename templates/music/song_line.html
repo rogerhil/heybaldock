@@ -30,7 +30,7 @@
             {% autoescape off %}{{ song.tempo_html_display }}{% endautoescape %}
         </span>
         <div style="position: relative;">
-            <div class="metronome_graphic simple_menu" style="position: absolute; display: none; margin-top: -70px; white-space: nowrap; width: auto;">
+            <div class="metronome_graphic simple_menu" style="margin-top: -70px;">
                 {% for i in song.signature_beats_range %}
                     <div class="led led_{{ i }}"></div>
                 {% endfor %}
@@ -65,8 +65,9 @@
             </div>
         </div>
     </td>
-    <td class="center tonality_cel">
+    <td class="center tonality_cel">>
         {% autoescape off %}{{ song.tonality_html_display }}{% endautoescape %}
+        <div class="clear"></div>
         {% if has_perm %}
             <div style="position: relative;">
                 <div class="tonality_menu simple_menu">

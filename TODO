@@ -23,12 +23,10 @@ Debug False in production and logs
      actions
 
 * Music Management
- - Bug in tonality in firefox
  - Put gettext in all __unicode__
  - Translate remaining items, mainly ChooseOptions
  - Modify all event names to show name
  - Filter locations in select box in Event Creation form
- - Create suggestion box
  - Hover in header tables to sort
  - Music management dashboard: put day of week in tables of rehearsals
  - Highlight in whole table when filter, and highlight column when sorting
@@ -44,6 +42,7 @@ Debug False in production and logs
  - Slide show offline for event repertory
  - Mogg upload option for song
  - Undo action
+ - Create suggestion box
  - Repertory item (Event or Main) comments for users (think about using auto-
    complete user tag, like in facebook tags)
  - Event Repertory: option for add song in a list by album and full list
