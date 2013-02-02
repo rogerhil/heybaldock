@@ -41,18 +41,15 @@ class TimeDuration:
         min = i % 60
         hours = i / 60
         ret = _('0 hours')
+        kwargs = dict(hours=str(hours), minutes=str(min).zfill(2))
         if hours == 1 and min > 1:
-            ret = _("%s hour and %s minutes" % (str(hours),
-                                                str(min).zfill(2)))
+            ret = _("%(hours)s hour and %(minutes)s minutes" % kwargs)
         elif hours > 1 and min > 1:
-            ret = _("%s hours and %s minutes" % (str(hours),
-                                                 str(min).zfill(2)))
+            ret = _("%(hours)s hours and %(minutes)s minutes" % kwargs)
         elif hours == 1 and min == 1:
-            ret = _("%s hour and %s minute" % (str(hours),
-                                               str(min).zfill(2)))
+            ret = _("%(hours)s hour and %(minutes)s minute" % kwargs)
         elif hours > 1 and min == 1:
-            ret = _("%s hours and %s minute" % (str(hours),
-                                                str(min).zfill(2)))
+            ret = _("%(hours)s hours and %(minutes)s minute" % kwargs)
         elif hours == 1 and not min:
             ret = _("%s hour" % str(hours))
         elif hours > 1 and not min:

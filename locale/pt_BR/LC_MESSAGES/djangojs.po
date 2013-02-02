@@ -20,7 +20,7 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:45
 #, c-format
 msgid "Available %s"
-msgstr ""
+msgstr "%s disponível"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:46
 #, c-format
@@ -36,16 +36,16 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:57
 msgid "Filter"
-msgstr ""
+msgstr "Filtrar"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:61
 msgid "Choose all"
-msgstr ""
+msgstr "Escolher todos"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:61
 #, c-format
 msgid "Click to choose all %s at once."
-msgstr ""
+msgstr "Clique para escolher todos %s de uma vez."
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:67
 #, fuzzy
@@ -54,12 +54,12 @@ msgstr "Fotos"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:69
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:75
 #, c-format
 msgid "Chosen %s"
-msgstr ""
+msgstr "%s escolhildos"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:76
 #, c-format
@@ -70,12 +70,12 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:80
 msgid "Remove all"
-msgstr ""
+msgstr "Remover todos"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:80
 #, c-format
 msgid "Click to remove all chosen %s at once."
-msgstr ""
+msgstr "Clique para remover todos %s de uma vez."
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.js:18
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/actions.min.js:1
@@ -115,23 +115,23 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/calendar.js:27
 msgid "S M T W T F S"
-msgstr ""
+msgstr "D S T Q Q S S"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.js:8
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.js:19
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.min.js:1
 msgid "Show"
-msgstr ""
+msgstr "Mostrar"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.js:15
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/collapse.min.js:1
 msgid "Hide"
-msgstr ""
+msgstr "Esconder"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:49
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:85
 msgid "Now"
-msgstr ""
+msgstr "Agora"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/admin/DateTimeShortcuts.js:53
 msgid "Clock"

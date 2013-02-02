@@ -114,6 +114,7 @@ class BandForm(forms.ModelForm):
 
     class Meta:
         model = Band
+        exclude = ('rehearsals_count', 'shows_count')
 
 
 class RehearsalForm(forms.ModelForm):

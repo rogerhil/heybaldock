@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-23 14:54-0300\n"
+"POT-Creation-Date: 2013-02-01 14:23-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,44 +18,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-#: auth/views.py:45
-msgid "Your changes were successfully saved."
-msgstr "Suas mudanças foram salvas com sucesso."
-
-#: auth/views.py:49 auth/views.py:60
-msgid "Please fix the errors below."
-msgstr "Por favor corrija os erros abaixo."
-
-#: auth/views.py:56
-msgid "Your password was successfully changed."
-msgstr "Sua senha foi modificada com sucesso."
-
-#: contact/forms.py:10 event/models.py:40 event/models.py:83
+#: contact/forms.py:13 event/models.py:62 event/models.py:129
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/forms.py:96
-#: photo/models.py:16 templates/event/event_list.html:7
-#: templates/event/location_list.html:21 video/models.py:13 video/models.py:45
+#: photo/models.py:16 templates/event/event_list.html:11
+#: templates/event/location_list.html:22
+#: templates/music/event_repertory_content.html:59
+#: templates/music/main_repertory_content.html:79
+#: templates/music/main_repertory_trash.html:17
+#: templates/music/public_event_repertory.html:18
+#: templates/music/repertories_statistics_content.html:40 video/models.py:13
+#: video/models.py:69
 msgid "Name"
 msgstr "Nome"
 
-#: contact/forms.py:11
+#: contact/forms.py:14
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/forms.py:196
 msgid "E-mail"
 msgstr "E-mail"
 
-#: contact/forms.py:12
+#: contact/forms.py:15 templates/contact/my_notifications.html:12
 msgid "Subject"
 msgstr "Assunto"
 
-#: contact/forms.py:13
+#: contact/forms.py:16
 msgid "Message"
 msgstr "Mensagem"
 
-#: contact/mail.py:13
-#, python-format
-msgid "Message from website: %s"
-msgstr "Mensagem do website: %s"
-
-#: contact/mail.py:15
+#: contact/forms.py:21
 #, python-format
 msgid ""
 "Message from %(name)s, e-mail: %(email)s\n"
@@ -64,9 +53,43 @@ msgstr ""
 "Mensagem de %(name)s, e-mail: %(email)s\n"
 "\n"
 
-#: contact/views.py:15
+#: contact/models.py:32
+#, python-format
+msgid "Show %(instance)s"
+msgstr ""
+
+#: contact/models.py:36
+#, python-format
+msgid "Show %(instance)s has been published"
+msgstr "Show %(instance)s foi publicado"
+
+#: contact/models.py:40
+#, python-format
+msgid "Show %(instance)s has been changed"
+msgstr "Show %(instance)s foi modificado"
+
+#: contact/models.py:46 contact/models.py:56
+#, python-format
+msgid "%(instance)s"
+msgstr ""
+
+#: contact/models.py:50 contact/models.py:60
+#, python-format
+msgid "%(instance)s has been changed"
+msgstr "%(instance)s foi modificado"
+
+#: contact/views.py:23
 msgid "Your message has been successfully sent"
 msgstr "Sua mensagem foi enviada com sucesso"
+
+#: contact/views.py:39
+#, python-format
+msgid "%(model)s with id %(id)s does not exist"
+msgstr "%(model)s com id %(id)s não existe"
+
+#: contact/views.py:71
+msgid "You're not allowed to read a notification of another user."
+msgstr "Você não é autorizado a ler uma notificação de outro usuário."
 
 #: draft/templatetags/draftutils.py:13
 msgid "Add video album"
@@ -80,94 +103,143 @@ msgstr "Adicionar álbum de fotos"
 msgid "Add new event"
 msgstr "Adicionar novo evento"
 
-#: event/models.py:41 event/models.py:84 photo/models.py:17 photo/models.py:54
-#: section/models.py:27 video/models.py:14 video/models.py:46
+#: event/forms.py:33
+msgid "Phone must have only digits"
+msgstr "Favor fornecer o telefone somente com dígitos"
+
+#: event/forms.py:35
+msgid "Phone must have at least 8 digits"
+msgstr "Favor fornecer o telefone com no mínimo 8 dígitos"
+
+#: event/models.py:63 event/models.py:130 photo/models.py:17
+#: photo/models.py:54 section/models.py:27 video/models.py:14
+#: video/models.py:70
 msgid "Description"
 msgstr "Descrição"
 
-#: event/models.py:42
+#: event/models.py:64
 msgid "Zip code"
 msgstr "CEP"
 
-#: event/models.py:43
+#: event/models.py:65
 msgid "Street"
 msgstr "Logradouro"
 
-#: event/models.py:44
+#: event/models.py:66
 msgid "District"
 msgstr "Bairro"
 
-#: event/models.py:45
+#: event/models.py:67
 msgid "Number"
 msgstr "Número"
 
-#: event/models.py:46
+#: event/models.py:68
 msgid "Complement"
 msgstr "Complemento"
 
-#: event/models.py:47 templates/event/location_list.html:27
+#: event/models.py:69 templates/event/location_list.html:28
 msgid "City"
 msgstr "Cidade"
 
-#: event/models.py:48
+#: event/models.py:70
 msgid "State"
 msgstr "Estado"
 
-#: event/models.py:49
+#: event/models.py:71
 msgid "Country"
 msgstr "País"
 
-#: event/models.py:52 photo/models.py:55 video/models.py:47
+#: event/models.py:74 photo/models.py:55
+#: templates/music/public_event_repertory.html:15
+#: templates/music/repertories_statistics_actions.html:98
+#: templates/music/repertories_statistics_content.html:37 video/models.py:71
 msgid "Album"
 msgstr "Álbum"
 
-#: event/models.py:53
+#: event/models.py:75
 msgid "Phone 1"
 msgstr "Telefone 1"
 
-#: event/models.py:54
+#: event/models.py:76
 msgid "Phone 2"
 msgstr "Telefone 2"
 
-#: event/models.py:55
+#: event/models.py:77
 msgid "Phone 3"
 msgstr "Telefone 3"
 
-#: event/models.py:85
+#: event/models.py:131
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/admin.py:12
 #: section/models.py:29
 msgid "Content"
 msgstr "Conteúdo"
 
-#: event/models.py:88 section/decorators.py:22
-#: templates/event/event_list.html:10
+#: event/models.py:134 hbauth/models.py:15 section/decorators.py:23
+#: templates/event/event_list.html:14
 msgid "Location"
 msgstr "Local"
 
-#: event/models.py:107
+#: event/models.py:154
 #, python-format
 msgid "from %(start)s to %(end)s"
 msgstr "de %(start)s até %(end)s"
 
-#: event/views.py:35
+#: event/views.py:39
 #, python-format
 msgid "The event \"%s\" was successfully deleted."
 msgstr "O evento \"%s\" foi removido com sucesso."
 
-#: event/views.py:39
+#: event/views.py:43
 #, python-format
 msgid "Error while trying to delete the \"%(name)s\" event. %(err)s"
 msgstr "Erro ocorrido ao tentar remover o evento \"%(name)s\". %(err)s"
 
-#: event/views.py:61
+#: event/views.py:65
 #, python-format
 msgid "The location \"%s\" was successfully deleted."
 msgstr "O local \"%s\" foi removido com sucesso."
 
-#: event/views.py:65
+#: event/views.py:69
 #, python-format
 msgid "Error while trying to delete the \"%(name)s\" location. %(err)s"
 msgstr "Erro ocorrido ao tentar remover o local \"%(name)s\". %(err)s"
+
+#: hbauth/forms.py:45
+msgid "House"
+msgstr "Casa"
+
+#: hbauth/forms.py:46
+msgid "Apartment"
+msgstr "Apartamento"
+
+#: hbauth/models.py:13
+msgid "Friendly Name"
+msgstr "Apelido"
+
+#: hbauth/models.py:17
+msgid "Photo"
+msgstr "Foto"
+
+#: hbauth/models.py:18
+msgid "Birth Date"
+msgstr "Data de nascimento"
+
+#: hbauth/views.py:54 hbauth/auth/views.py:50
+msgid "Your changes were successfully saved."
+msgstr "Suas mudanças foram salvas com sucesso."
+
+#: hbauth/views.py:58 hbauth/views.py:71 hbauth/views.py:87
+#: hbauth/auth/views.py:54 hbauth/auth/views.py:65
+msgid "Please fix the errors below."
+msgstr "Por favor corrija os erros abaixo."
+
+#: hbauth/views.py:67 hbauth/auth/views.py:61
+msgid "Your password was successfully changed."
+msgstr "Sua senha foi modificada com sucesso."
+
+#: hbauth/views.py:83
+msgid "Your address changes were successfully saved."
+msgstr "Suas mudanças de endereço foram salvas com sucesso."
 
 #: hbenv/lib/python2.7/site-packages/django/conf/global_settings.py:48
 msgid "Arabic"
@@ -479,6 +551,7 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/filters.py:231
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/filters.py:268
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/filters.py:378
+#: templates/music/artists.html:23
 msgid "All"
 msgstr ""
 
@@ -589,6 +662,7 @@ msgid "None"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:671
+#, python-format
 msgid "Changed %s."
 msgstr ""
 
@@ -598,13 +672,17 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/templates/comments/preview.html:16
 #: hbenv/lib/python2.7/site-packages/django/db/models/base.py:787
 #: hbenv/lib/python2.7/site-packages/django/forms/models.py:577
+#: templates/music/repertories_statistics_actions.html:22
+#: templates/music/repertories_statistics_actions.html:50
+#: templates/music/repertories_statistics_actions.html:74
+#: templates/music/repertories_statistics_actions.html:90
 msgid "and"
-msgstr ""
+msgstr "e"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:676
 #, python-format
 msgid "Added %(name)s \"%(object)s\"."
-msgstr ""
+msgstr "Added %(name)s \"%(object)s\"."
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:680
 #, python-format
@@ -621,6 +699,7 @@ msgid "No fields changed."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:772
+#, python-format
 msgid "The %(name)s \"%(obj)s\" was added successfully."
 msgstr ""
 
@@ -636,6 +715,7 @@ msgid "You may add another %s below."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:822
+#, python-format
 msgid "The %(name)s \"%(obj)s\" was changed successfully."
 msgstr ""
 
@@ -657,6 +737,7 @@ msgid "No action selected."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:998
+#, python-format
 msgid "Add %s"
 msgstr ""
 
@@ -667,6 +748,7 @@ msgid "%(name)s object with primary key %(key)r does not exist."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1089
+#, python-format
 msgid "Change %s"
 msgstr ""
 
@@ -694,10 +776,12 @@ msgid "0 of %(cnt)s selected"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1283
+#, python-format
 msgid "The %(name)s \"%(obj)s\" was deleted successfully."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/options.py:1330
+#, python-format
 msgid "Change history: %s"
 msgstr ""
 
@@ -843,7 +927,7 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/auth/user/change_password.html:53
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_done.html:4
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_form.html:5
-#: templates/auth/profile.html:25
+#: templates/auth/profile.html:39
 msgid "Change password"
 msgstr "Modificar senha"
 
@@ -863,14 +947,15 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_form.html:24
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/index.html:29
-#: templates/event/location_portlet.html:7 templates/event/portlet.html:6
+#: templates/event/location_portlet.html:6 templates/event/portlet.html:7
+#: templates/music/rehearsal.html:15 templates/music/rehearsals_portlet.html:5
 msgid "Add"
 msgstr "Adicionar"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_form.html:34
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/object_history.html:12
 msgid "History"
-msgstr ""
+msgstr "Histórico"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_form.html:35
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/edit_inline/stacked.html:9
@@ -885,12 +970,13 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/registration/password_change_form.html:21
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Favor corrigir o erro abaixo"
+msgstr[1] "Favor corrigir os erros abaixo"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_list.html:60
+#, python-format
 msgid "Add %(name)s"
-msgstr ""
+msgstr "Adicionar %(name)s"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/change_list.html:80
 msgid "Filter"
@@ -980,7 +1066,8 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/index.html:35
 #: hbenv/lib/python2.7/site-packages/django/forms/widgets.py:326
-#: templates/auth/profile.html:34
+#: templates/auth/profile.html:48 templates/auth/profile.html.py:61
+#: templates/music/rehearsal.html:19
 msgid "Change"
 msgstr "Modificar"
 
@@ -1028,6 +1115,7 @@ msgid "Date/time"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/object_history.html:25
+#: templates/music/history.html:45
 msgid "User"
 msgstr ""
 
@@ -1047,7 +1135,12 @@ msgstr "Ver todos"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/pagination.html:11
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/submit_line.html:3
-#: templates/auth/profile.html:21
+#: templates/auth/profile.html:35 templates/music/add_band.html:14
+#: templates/music/add_event_repertory.html:50
+#: templates/music/add_instrument.html:14
+#: templates/music/add_instrument_tag_type.html:14
+#: templates/music/add_rehearsal.html:21 templates/music/band_settings.html:16
+#: templates/music/player_repertory_item_menu.html:114
 msgid "Save"
 msgstr "Salvar"
 
@@ -1122,6 +1215,7 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/edit_inline/stacked.html:70
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/templates/admin/edit_inline/tabular.html:118
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/templates/comments/delete.html:12
+#: templates/music/event_repertory.html:42 templates/music/rehearsal.html:20
 msgid "Remove"
 msgstr ""
 
@@ -1347,6 +1441,7 @@ msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/views.py:230
 #: hbenv/lib/python2.7/site-packages/django/contrib/admindocs/views.py:263
+#, python-format
 msgid "number of %s"
 msgstr ""
 
@@ -1442,6 +1537,7 @@ msgid "Personal info"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/admin.py:42
+#: templates/music/band_settings.html:20
 msgid "Permissions"
 msgstr ""
 
@@ -1454,6 +1550,7 @@ msgid "Password changed successfully."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/auth/admin.py:135
+#, python-format
 msgid "Change password: %s"
 msgstr ""
 
@@ -1725,6 +1822,7 @@ msgid "Remove selected comments"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/admin.py:65
+#, python-format
 msgid "1 comment was successfully %(action)s."
 msgid_plural "%(count)s comments were successfully %(action)s."
 msgstr[0] ""
@@ -1976,6 +2074,7 @@ msgid "%(ct_name)s objects don't have a get_absolute_url() method"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/flatpages/admin.py:10
+#: templates/music/audio_player.html:10
 msgid "Advanced options"
 msgstr ""
 
@@ -2242,6 +2341,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:74
+#, python-format
 msgid "%(value)s sextillion"
 msgid_plural "%(value)s sextillion"
 msgstr[0] ""
@@ -2255,6 +2355,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/humanize/templatetags/humanize.py:78
+#, python-format
 msgid "%(value)s septillion"
 msgid_plural "%(value)s septillion"
 msgstr[0] ""
@@ -6861,10 +6962,12 @@ msgid "Index of %(directory)s"
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/views/generic/create_update.py:121
+#, python-format
 msgid "The %(verbose_name)s was created successfully."
 msgstr ""
 
 #: hbenv/lib/python2.7/site-packages/django/views/generic/create_update.py:164
+#, python-format
 msgid "The %(verbose_name)s was updated successfully."
 msgstr ""
 
@@ -6938,6 +7041,152 @@ msgstr "Somente vídeos do youtube são permitidos"
 msgid "Invalid youtube video url."
 msgstr "Url de vídeo do youtube inválida"
 
+#: music/decorators.py:13 music/decorators.py:20
+msgid "You can't make any changes in a locked repertory."
+msgstr ""
+
+#: music/defaults.py:43
+msgid "0 hours"
+msgstr "0 horas"
+
+#: music/defaults.py:46
+#, python-format
+msgid "%(hours)s hour and %(minutes)s minutes"
+msgstr "%(hours)s hora e %(minutes)s minutos"
+
+#: music/defaults.py:48
+#, python-format
+msgid "%(hours)s hours and %(minutes)s minutes"
+msgstr "%(hours)s horas e %(minutes)s minutos"
+
+#: music/defaults.py:50
+#, python-format
+msgid "%(hours)s hour and %(minutes)s minute"
+msgstr "%(hours)s hora e %(minutes)s minuto"
+
+#: music/defaults.py:52
+#, python-format
+msgid "%(hours)s hours and %(minutes)s minute"
+msgstr "%(hours)s horas e %(minutes)s minutos"
+
+#: music/defaults.py:54
+#, python-format
+msgid "%s hour"
+msgstr "%s hora"
+
+#: music/defaults.py:56
+#, python-format
+msgid "%s hours"
+msgstr "%s horas"
+
+#: music/defaults.py:58
+#, python-format
+msgid "%s minute"
+msgstr "%s minuto"
+
+#: music/defaults.py:60
+#, python-format
+msgid "%s minutes"
+msgstr "%s minutos"
+
+#: music/models.py:927
+#, python-format
+msgid "%(user)s sings \"%(song)s\" as %(as_member)s"
+msgstr "%(user)s canta \"%(song)s\" como %(as_member)s"
+
+#: music/models.py:929
+#, python-format
+msgid "%(user)s plays %(instrument)s in \"%(song)s\" as %(as_member)s"
+msgstr "%(user)s toca %(instrument)s em \"%(song)s\" como %(as_member)s"
+
+#: music/models.py:933
+#, python-format
+msgid "%(user)s sings \"%(song)s\""
+msgstr "%(user)s canta \"%(song)s\""
+
+#: music/models.py:935
+#, python-format
+msgid "%(user)s plays %(instrument)s in \"%(song)s\""
+msgstr "%(user)s toca %(instrument)s em \"%(song)s\""
+
+#: music/views.py:105
+msgid "The permissions of %s was successfully modified."
+msgstr "As permissões de %s foram modificadas com sucesso."
+
+#: music/views.py:124
+msgid "The band settings was successfully changed."
+msgstr "As configurações da banda foram modificadas com sucesso."
+
+#: music/views.py:161
+msgid "The band was successfully added."
+msgstr "A banda foi adicionada com sucesso."
+
+#: music/views.py:205
+msgid "The rehearsal was successfully created."
+msgstr "O ensaio foi criado com sucesso."
+
+#: music/views.py:229
+#, fuzzy
+msgid "The rehearsal was successfully removed."
+msgstr "O ensaio foi removido com sucesso."
+
+#: music/views.py:247
+#, fuzzy
+msgid "The rehearsal was successfully modified."
+msgstr "O ensaio foi modificado com sucesso."
+
+#: music/views.py:275 music/views.py:374 music/views.py:421
+msgid "The repertory was successfully created."
+msgstr "O repertório foi criado com sucesso."
+
+#: music/views.py:378 music/views.py:427
+msgid "Some error occurred while trying to create the repertory. %s"
+msgstr "Erro ocorrido ao tentar criar um repertório. %s"
+
+#: music/views.py:488 music/views.py:533
+msgid "The repertory is locked for edition by you."
+msgstr "O repertório está bloqueado para edição por você."
+
+#: music/views.py:491 music/views.py:536
+msgid "You can't unlock a repertory already locked."
+msgstr "Você não pode bloquear um repertório já bloqueado."
+
+#: music/views.py:495 music/views.py:540
+msgid "This repertory is already unlocked."
+msgstr "Este repertório já está desbloqueado."
+
+#: music/views.py:500 music/views.py:545
+msgid "This repertory was successfully unlocked."
+msgstr "O repertório foi debloqueado com sucesso."
+
+#: music/views.py:566
+msgid "The \"%s\" was successfully removed."
+msgstr "O \"%s\" foi removido com sucesso."
+
+#: music/views.py:819
+msgid "The album was successfully registered."
+msgstr "O álbum foi registrado com sucesso."
+
+#: music/views.py:851
+msgid "The album was successfully removed."
+msgstr "O álbum foi removido com sucesso."
+
+#: music/views.py:1014
+msgid "This song is in trash, you can restore it from there!"
+msgstr "Esta música está na lixeira, você pode restaurá-la se quiser."
+
+#: music/views.py:1017 music/views.py:1034
+msgid "Song already exist in repertory!"
+msgstr "Esta música já se encontra no repertório."
+
+#: music/views.py:1372
+msgid "The instrument was successfully added."
+msgstr "O instrumento foi adicionado com sucesso."
+
+#: music/views.py:1794
+msgid "The instrument tag type was successfully added."
+msgstr "A tag de instrumento foi adicionada com sucesso."
+
 #: photo/forms.py:77
 msgid "A photo album must have at least one photo"
 msgstr "Um álbum de fotos precisa ter ao menos uma foto"
@@ -6978,8 +7227,11 @@ msgstr ""
 msgid "Photo Album %s"
 msgstr "Álbum de Fotos %s"
 
-#: photo/models.py:56 templates/draft/view.html:39
-#: templates/event/event_list.html:13 video/models.py:48
+#: photo/models.py:56 templates/contact/my_notifications.html:15
+#: templates/draft/view.html:39 templates/event/details.html:22
+#: templates/event/event_list.html:17 templates/music/history.html:48
+#: templates/music/main_repertory_content.html:88
+#: templates/music/repertories_statistics_content.html:55 video/models.py:46
 msgid "Date"
 msgstr "Data"
 
@@ -6996,17 +7248,54 @@ msgstr "O álbum de fotos \"%s\" foi removido com sucesso."
 #: photo/views.py:52
 #, python-format
 msgid "Error while trying to delete the \"%(name)s\" photo album. %(err)s"
-msgstr ""
+msgstr "Erro ao tentar remover o álbum de fotos \"%(name)s\". %(err)s"
 
-#: section/decorators.py:21
+#: scripts/permissions.py:18
+msgid "Manage main repertory"
+msgstr "Gerenciar o repertório principal"
+
+#: scripts/permissions.py:21
+msgid "Manage event repertories"
+msgstr "Gerenciar os repertório de eventos"
+
+#: scripts/permissions.py:24
+msgid "Manage rehearsals"
+msgstr "Gerenciar ensaios"
+
+#: scripts/permissions.py:27
+msgid "Manage sections"
+msgstr "Gerenciar seções"
+
+#: scripts/permissions.py:30
+msgid "Manage events"
+msgstr "Gerenciar eventos"
+
+#: scripts/permissions.py:33
+msgid "Manage photos"
+msgstr "Gerenciar fotos"
+
+#: scripts/permissions.py:36
+#, fuzzy
+msgid "Manage locations"
+msgstr "Mais locais"
+
+#: scripts/permissions.py:39
+msgid "Manage videos"
+msgstr "Gerenciar vídeos"
+
+#: scripts/permissions.py:42
+msgid "Manage music and albums"
+msgstr "Gerenciar música e álbuns"
+
+#: section/decorators.py:22
 msgid "Event"
 msgstr "Evento"
 
-#: section/decorators.py:23 section/decorators.py:26
+#: section/decorators.py:24 section/decorators.py:27
 msgid "Video Album"
 msgstr "Álbum de Vídeos"
 
-#: section/decorators.py:24 section/decorators.py:25
+#: section/decorators.py:25 section/decorators.py:26
 msgid "Photo Album"
 msgstr "Álbum de Fotos"
 
@@ -7014,7 +7303,7 @@ msgstr "Álbum de Fotos"
 msgid "Menu title"
 msgstr "Título do menu"
 
-#: section/models.py:26
+#: section/models.py:26 templates/music/album.html:61
 msgid "Title"
 msgstr "Título"
 
@@ -7042,21 +7331,50 @@ msgstr "Formulário de contato"
 msgid "Facebook Like Button"
 msgstr "Botão Like do Facebook"
 
-#: templates/base.html:110
-msgid "EDIT MODE"
-msgstr "MODO DE EDIÇÃO"
+#: templates/base.html:39
+msgid "L O A D I N G"
+msgstr "C A R R E G A N D O"
 
-#: templates/base.html:131
+#: templates/base.html:111 templates/music/base.html:14
+#: templates/music/base.html.py:15
+msgid "Music Management"
+msgstr "Gerenciamento de Músicas"
+
+#: templates/base.html:113
+msgid "Band Settings"
+msgstr "Configurações"
+
+#: templates/base.html:128
+msgid "Profile"
+msgstr "Profile"
+
+#: templates/base.html:156
 msgid "search..."
 msgstr "busca..."
 
+#: templates/base.html:195
+msgid "Follow us:"
+msgstr "Siga-nos:"
+
 #: templates/coming_soon.html:5 templates/coming_soon.html.py:6
 msgid "Hey Baldock Page Comming Soon"
-msgstr ""
+msgstr "Hey Baldock Em Breve"
 
 #: templates/coming_soon.html:17
 msgid "Comming Soon"
-msgstr "Em breve"
+msgstr "Em Breve"
+
+#: templates/facebook_comments.html:14
+msgid "Comments"
+msgstr "Comentários"
+
+#: templates/permission_denied.html:12
+msgid "Permission denied"
+msgstr "Permissão negada"
+
+#: templates/permission_denied.html:13
+msgid "You don't have permission to access this area."
+msgstr "Você não tem permissão para acessar esta área."
 
 #: templates/under_maintenance.html:7
 msgid "Under Maintenance"
@@ -7066,17 +7384,83 @@ msgstr "Em manutenção"
 msgid "Login"
 msgstr "Login"
 
-#: templates/auth/profile.html:12
+#: templates/auth/profile.html:19
 msgid "My profile"
 msgstr "Meu profile"
+
+#: templates/auth/profile.html:52
+msgid "Change address"
+msgstr "Modificar endereço"
+
+#: templates/auth/profile.html:66
+msgid "Instruments you play"
+msgstr "Instrumentos que você toca"
+
+#: templates/auth/profile.html:73 templates/music/add_instrument.html:9
+#: templates/music/instrument_tag_types.html:21
+#: templates/music/instruments.html:19
+msgid "Add instrument"
+msgstr "Adicionar instrumento"
 
 #: templates/contact/contact_form.html:8
 msgid "Send"
 msgstr "Enviar"
 
-#: templates/draft/edit.html:26
+#: templates/contact/email_base.html:10
+msgid "Hey Baldock System Notification"
+msgstr "Sistema de Notificação da Hey Baldock"
+
+#: templates/contact/email_base.html:15
+msgid "This is an automatic email, please don't reply."
+msgstr "Este é um email automático, favor não responder."
+
+#: templates/contact/my_notifications.html:4
+#: templates/contact/notify_button.html:14
+#: templates/music/player_repertory_item_menu.html:119
+msgid "Close"
+msgstr "Fechar"
+
+#: templates/contact/my_notifications.html:5
+msgid "My notifications"
+msgstr "Minhas notificações"
+
+#: templates/contact/notify_button.html:3
+msgid "Notify users"
+msgstr "Notificar usuários"
+
+#: templates/contact/notify_button.html:7
+msgid "Notify members"
+msgstr "Notificar membros"
+
+#: templates/contact/notify_button.html:10
+msgid "Already notified."
+msgstr "Já foi notificado."
+
+#: templates/contact/notify_button.html:13
+msgid "Notify again"
+msgstr "Notificar novamente"
+
+#: templates/contact/notify_button.html:21
+msgid "Notes (optional)"
+msgstr "Notas (opcional)"
+
+#: templates/contact/notify_button.html:27
+msgid "Also send email to users"
+msgstr "Enviar também email para os usuários"
+
+#: templates/contact/notify_button.html:33 templates/draft/edit.html:26
+#: templates/music/add_event_repertory.html:51
+#: templates/music/add_instrument.html:15
+#: templates/music/add_instrument_tag_type.html:15
+#: templates/music/event_repertory_content.html:221
+#: templates/music/player_repertory_item_menu.html:113
+#: templates/music/song_line.html:59
 msgid "Cancel"
 msgstr "Cancelar"
+
+#: templates/contact/notify_button.html:34
+msgid "Notify"
+msgstr "Notificar"
 
 #: templates/draft/edit.html:32
 #, python-format
@@ -7097,7 +7481,7 @@ msgstr "Rascunho - Editar %(model)s"
 msgid "Save draft"
 msgstr "Salvar rascunho"
 
-#: templates/draft/object_manage_buttons.html:7 templates/draft/view.html:26
+#: templates/draft/object_manage_buttons.html:8 templates/draft/view.html:26
 msgid "Edit"
 msgstr "Editar"
 
@@ -7130,24 +7514,54 @@ msgstr "Tipo"
 msgid "Made by"
 msgstr "Feito por"
 
-#: templates/event/details.html:28
+#: templates/event/details.html:26 templates/music/rehearsal.html:52
+msgid "Repertory: "
+msgstr "Repertório: "
+
+#: templates/event/details.html:29 templates/music/rehearsal.html:55
+msgid "click here to see the repertory"
+msgstr "clique aqui para para ver o repertório"
+
+#: templates/event/details.html:35 templates/music/main_repertory.html:46
+#: templates/music/rehearsal.html:61
+msgid "Repertory:"
+msgstr "Repertório:"
+
+#: templates/event/details.html:36 templates/music/rehearsal.html:63
+msgid "Create a new one from scratch"
+msgstr "Criar um novo do começo"
+
+#: templates/event/details.html:36 templates/music/rehearsal.html:63
+#: templates/music/rehearsal.html.py:65
+msgid " or"
+msgstr " ou"
+
+#: templates/event/details.html:37
+msgid "Create a repertory based on songs of the last event."
+msgstr "Criar um repertório baseado nas músicas do último evento."
+
+#: templates/event/details.html:51
 msgid "See the photos related to this event below"
 msgstr "Veja as fotos abaixo relacionadas a este evento"
 
-#: templates/event/details.html:36
+#: templates/event/details.html:59
 msgid "See the videos related to this event below"
 msgstr "Veja os vídeos abaixo relacionados a este evento"
 
-#: templates/event/event_details.html:15
+#: templates/event/details.html:66
+msgid "Repertory of the day"
+msgstr "Repertório do dia"
+
+#: templates/event/event_details.html:23
 #, python-format
 msgid "Hey Baldock Event %(name)s"
 msgstr "Evento da Hey Baldock %(name)s"
 
-#: templates/event/event_details.html:27
+#: templates/event/event_details.html:35
 msgid "Delete this Event"
 msgstr "Remover este Evento"
 
-#: templates/event/event_details.html:34
+#: templates/event/event_details.html:43
 msgid "More events"
 msgstr "Mais eventos"
 
@@ -7168,7 +7582,15 @@ msgstr "Histórico de eventos"
 msgid "Upcoming events"
 msgstr "Eventos recentes"
 
-#: templates/event/location.html:6
+#: templates/event/event_list.html:33
+msgid "There's no upcoming events by now."
+msgstr "Não existem próximos eventos agora."
+
+#: templates/event/event_list.html:33
+msgid "You can look at the past events by clicking in the button below."
+msgstr "Você pode ver os eventos passados clicando no botão abaixo."
+
+#: templates/event/location_address.html:5
 msgid "ZIpcode: "
 msgstr "CEP: "
 
@@ -7201,21 +7623,1202 @@ msgstr "Listagem de locais cuja banda Hey Baldock costuma fazer apresentações"
 msgid "Locations list"
 msgstr "Listagem de locais"
 
-#: templates/event/location_list.html:24
+#: templates/event/location_list.html:25
 msgid "Address"
 msgstr "Endereço"
 
-#: templates/event/location_portlet.html:5
-#: templates/photo/photo_album_view.html:22
-#: templates/video/video_album_view.html:20
-msgid "View all"
-msgstr "Ver todos"
-
-#: templates/event/location_portlet.html:10
+#: templates/event/location_portlet.html:9
 msgid "Locations"
 msgstr "Locais"
 
-#: templates/photo/album_details.html:12
+#: templates/event/portlet.html:11
+#, fuzzy
+msgid "Events"
+msgstr "Evento"
+
+#: templates/music/add_album.html:19 templates/music/album.html:18
+#: templates/music/artist_albums.html:15
+#: templates/music/artist_details.html:14
+#, fuzzy
+msgid "View all artists"
+msgstr "Ver todos"
+
+#: templates/music/add_album.html:23 templates/music/album.html:20
+#: templates/music/albums.html:18 templates/music/artist_albums.html:18
+#: templates/music/artist_details.html:16 templates/music/artists.html:13
+#, fuzzy
+msgid "Add album"
+msgstr "Adicionar álbum de vídeos"
+
+#: templates/music/add_album.html:24
+msgid "Please, fill the fields below to make a search first"
+msgstr "Favor, preencha os campos abaixo para fazer um busca primeiro"
+
+#: templates/music/add_album.html:32
+msgid "Custom info"
+msgstr "Informação personalizada"
+
+#: templates/music/add_band.html:9
+msgid "Add band"
+msgstr "Adicionar banda"
+
+#: templates/music/add_event_repertory.html:21
+msgid "Add Repertory for Event"
+msgstr "Adicionar repertório para um Evento"
+
+#: templates/music/add_event_repertory.html:22
+msgid "Select the event below"
+msgstr "Selecione o evento abaixo"
+
+#: templates/music/add_event_repertory.html:32
+msgid "From scratch"
+msgstr "Do começo"
+
+#: templates/music/add_event_repertory.html:36
+msgid "Import songs from another repertory"
+msgstr "Importar músicas de um outro repertório"
+
+#: templates/music/add_instrument_tag_type.html:9
+#: templates/music/instrument_tag_types.html:22
+#: templates/music/instruments.html:18
+msgid "Add instrument tag type"
+msgstr "Adicionar tag de instrumento"
+
+#: templates/music/add_rehearsal.html:16
+msgid "Modify rehearsal"
+msgstr "Modificar ensaio"
+
+#: templates/music/add_rehearsal.html:16 templates/music/rehearsals.html:10
+msgid "Add rehearsal"
+msgstr "Adicionar ensaio"
+
+#: templates/music/album.html:17 templates/music/album.html.py:97
+#: templates/music/artist_details.html:13
+msgid "View all albums"
+msgstr "Ver todos álbuns"
+
+#: templates/music/album.html:21
+msgid "Remove this album"
+msgstr "Remover este álbum"
+
+#: templates/music/album.html:34 templates/music/albums_list.html:5
+#, python-format
+msgid "Click here to add more albums of %(artist)s"
+msgstr "Clique aqui para adicionar álbuns de %(artist)s"
+
+#: templates/music/album.html:58
+msgid "Position"
+msgstr "Posição"
+
+#: templates/music/album.html:64
+#: templates/music/public_event_repertory.html:21
+#: templates/music/rehearsal.html:42
+msgid "Duration"
+msgstr "Duração"
+
+#: templates/music/album.html:67
+msgid "Composers"
+msgstr "Compositores"
+
+#: templates/music/album.html:70
+#: templates/music/event_repertory_content.html:73
+#: templates/music/main_repertory_content.html:91
+#: templates/music/public_event_repertory.html:24
+msgid "Tempo"
+msgstr "Tempo"
+
+#: templates/music/album.html:73
+#: templates/music/event_repertory_content.html:82
+#: templates/music/main_repertory_content.html:100
+msgid "Tonality"
+msgstr "Tonalidade"
+
+#: templates/music/album.html:77
+msgid "Actions"
+msgstr "Ações"
+
+#: templates/music/albums.html:17
+msgid "Back to music management"
+msgstr "Voltar para o gerenciamento de músicas"
+
+#: templates/music/albums.html:20 templates/music/artist_details.html:44
+msgid "Albums"
+msgstr "Álbums"
+
+#: templates/music/albums_list.html:16
+msgid "Year"
+msgstr "Ano"
+
+#: templates/music/albums_list.html:17
+msgid "Genre"
+msgstr "Gênero"
+
+#: templates/music/albums_list.html:18
+msgid "Style"
+msgstr "Estilo"
+
+#: templates/music/albums_list.html:24
+msgid "No albums included yet"
+msgstr "Nenhum álbum incluído ainda"
+
+#: templates/music/albums_list.html:27
+#, python-format
+msgid "Click here to add albums of %(artist)s"
+msgstr "Clique para adicionar álbuns de %(artist)s"
+
+#: templates/music/artist_albums.html:16
+msgid "Artist details"
+msgstr "Detalhes do artista"
+
+#: templates/music/artist_albums.html:24
+#, python-format
+msgid ""
+"\n"
+"            %(artist)s and its members albums\n"
+"        "
+msgstr ""
+"\n"
+"            Álbuns de %(artist)s e seus membros\n"
+"        "
+
+#: templates/music/artist_albums.html:35
+msgid "Active members"
+msgstr "Membros ativos"
+
+#: templates/music/artist_albums.html:45
+msgid "Inactive members"
+msgstr "Membros inativos"
+
+#: templates/music/artist_details.html:31
+msgid "Members"
+msgstr "Membros"
+
+#: templates/music/artist_details.html:38
+msgid "Discogs metadata"
+msgstr "Metadados do Discogs"
+
+#: templates/music/artist_details.html:48
+msgid "Photos"
+msgstr "Fotos"
+
+#: templates/music/artist_details.html:54
+msgid "No images included"
+msgstr "Nenhuma imagem incluída"
+
+#: templates/music/artists.html:19
+msgid "Filter by:"
+msgstr "Filtrar por:"
+
+#: templates/music/artists.html:20
+msgid "Active"
+msgstr "Ativo"
+
+#: templates/music/artists.html:21
+msgid "Inactive"
+msgstr "Inativo"
+
+#: templates/music/artists.html:22
+msgid "With albums"
+msgstr "Com álbuns"
+
+#: templates/music/artists.html:25 templates/music/main_repertory.html:86
+#: templates/music/music_management.html:17
+#: templates/music/repertories_statistics.html:48
+msgid "Artists"
+msgstr "Artistas"
+
+#: templates/music/artists.html:44
+msgid "There are no artists registered yet."
+msgstr "Não existem artistas registrados ainda."
+
+#: templates/music/artists.html:45
+msgid "Add an album by clicking here"
+msgstr "Adicione um álbum clicando aqui"
+
+#: templates/music/audio_player.html:3
+msgid "Audio player"
+msgstr ""
+
+#: templates/music/audio_player.html:16
+msgid "Speed"
+msgstr "Velocidade"
+
+#: templates/music/band_settings.html:10
+msgid "Band settings"
+msgstr "Configurações da banda"
+
+#: templates/music/band_settings.html:32
+msgid "Permissions:"
+msgstr "Permissões:"
+
+#: templates/music/band_settings.html:41
+#, python-format
+msgid "Change %(member)s permissions"
+msgstr "Modificar as permissões de %(member)s"
+
+#: templates/music/custom_results.html:184
+msgid "Register Album"
+msgstr "Registrar álbum"
+
+#: templates/music/event_repertory.html:37
+#: templates/music/main_repertory.html:38
+#: templates/music/repertories_statistics.html:23
+msgid "Show repertories List"
+msgstr "Mostrar lista de repertórios"
+
+#: templates/music/event_repertory.html:50
+#: templates/music/main_repertory.html:48
+msgid "Time total:"
+msgstr "Tempo total:"
+
+#: templates/music/event_repertory.html:76
+#: templates/music/main_repertory.html:110
+msgid "Lock this repertory for edition"
+msgstr "Bloquear este repertório para edição"
+
+#: templates/music/event_repertory.html:86
+#: templates/music/main_repertory.html:120
+msgid "Unlock this repertory"
+msgstr "Desbloquear este repertório"
+
+#: templates/music/event_repertory.html:92
+#: templates/music/main_repertory.html:126
+msgid "This repertory is locked by"
+msgstr "Este repertório está bloqueado por"
+
+#: templates/music/event_repertory.html:93
+#: templates/music/main_repertory.html:127
+msgid "It's avaliable for read only."
+msgstr "Está disponível para somente leitura."
+
+#: templates/music/event_repertory.html:99
+#: templates/music/main_repertory.html:133
+msgid ""
+"This repertory is available for read only since you don't have permission to "
+"manage the Main Repertory."
+msgstr ""
+"Este repertório está disponível para leitura somente, já que você não possui "
+"permissão para gerenciar o repertório principal."
+
+#: templates/music/event_repertory_content.html:5
+msgid "zero"
+msgstr "zero"
+
+#: templates/music/event_repertory_content.html:6
+msgid "1 time"
+msgstr "1 vez"
+
+#: templates/music/event_repertory_content.html:7
+msgid "2 times"
+msgstr "2 vezes"
+
+#: templates/music/event_repertory_content.html:8
+msgid "3 times"
+msgstr "3 vezes"
+
+#: templates/music/event_repertory_content.html:9
+msgid "4 times"
+msgstr "4 vezes"
+
+#: templates/music/event_repertory_content.html:10
+msgid "5 times"
+msgstr "5 vezes"
+
+#: templates/music/event_repertory_content.html:11
+msgid "6 times"
+msgstr "6 vezes"
+
+#: templates/music/event_repertory_content.html:12
+msgid "7 times"
+msgstr "7 vezes"
+
+#: templates/music/event_repertory_content.html:13
+msgid "8 times"
+msgstr "8 vezes"
+
+#: templates/music/event_repertory_content.html:14
+msgid "9 times"
+msgstr "9 vezes"
+
+#: templates/music/event_repertory_content.html:34
+#: templates/music/main_repertory_content.html:58
+#: templates/music/repertories_statistics_content.html:15
+msgid "Global"
+msgstr "Global"
+
+#: templates/music/event_repertory_content.html:37
+#: templates/music/main_repertory_content.html:61
+#: templates/music/repertories_statistics_content.html:18
+msgid "By user"
+msgstr "Usuário"
+
+#: templates/music/event_repertory_content.html:40
+#: templates/music/main_repertory_content.html:64
+#: templates/music/repertories_statistics_content.html:21
+msgid "My votes only"
+msgstr "Minhas notas"
+
+#: templates/music/event_repertory_content.html:56
+#: templates/music/main_repertory_content.html:76
+#: templates/music/main_repertory_trash.html:14
+#: templates/music/repertories_statistics_content.html:31
+msgid "Cov"
+msgstr "Cap"
+
+#: templates/music/event_repertory_content.html:62
+#: templates/music/main_repertory_content.html:82
+#: templates/music/repertories_statistics_content.html:43
+msgid "Dur"
+msgstr "Dur"
+
+#: templates/music/event_repertory_content.html:66
+#: templates/music/main_repertory_content.html:85
+#: templates/music/repertories_statistics_actions.html:109
+#: templates/music/repertories_statistics_content.html:58
+msgid "Status"
+msgstr "Estado"
+
+#: templates/music/event_repertory_content.html:70
+msgid "X"
+msgstr "X"
+
+#: templates/music/event_repertory_content.html:76
+#: templates/music/main_repertory_content.html:94
+#: templates/music/player_repertory_item_menu.html:80
+#: templates/music/repertories_statistics_content.html:52
+msgid "Ratings"
+msgstr "Notas"
+
+#: templates/music/event_repertory_content.html:79
+#: templates/music/main_repertory_content.html:97
+#: templates/music/repertories_statistics_actions.html:117
+#: templates/music/repertories_statistics_content.html:61
+msgid "Mode"
+msgstr "Modo"
+
+#: templates/music/event_repertory_content.html:85
+#: templates/music/main_repertory_content.html:103
+#: templates/music/main_repertory_trash.html:20
+msgid "Players"
+msgstr "Instrumentistas"
+
+#: templates/music/event_repertory_content.html:113
+msgid "or add interval of:"
+msgstr "ou adicione um intervalo de:"
+
+#: templates/music/event_repertory_content.html:115
+msgid "Chosse one"
+msgstr "Escolha um"
+
+#: templates/music/event_repertory_content.html:116
+msgid "5 minutes"
+msgstr "5 minutos"
+
+#: templates/music/event_repertory_content.html:117
+msgid "10 minutes"
+msgstr "10 minutos"
+
+#: templates/music/event_repertory_content.html:118
+msgid "15 minutes"
+msgstr "15 minutos"
+
+#: templates/music/event_repertory_content.html:119
+msgid "20 minutes"
+msgstr "20 minutos"
+
+#: templates/music/event_repertory_content.html:120
+msgid "30 minutes"
+msgstr "30 minutos"
+
+#: templates/music/event_repertory_content.html:121
+msgid "40 minutes"
+msgstr "40 minutos"
+
+#: templates/music/event_repertory_content.html:122
+msgid "50 minutes"
+msgstr "50 minutos"
+
+#: templates/music/event_repertory_content.html:123
+msgid "1 hour"
+msgstr "1 hora"
+
+#: templates/music/event_repertory_content.html:124
+msgid "1 hour and 30 minutes"
+msgstr "1 hora e 30 minutos"
+
+#: templates/music/event_repertory_content.html:125
+msgid "2 hours"
+msgstr "2 horas"
+
+#: templates/music/event_repertory_content.html:126
+msgid "3 hours"
+msgstr "3 horas"
+
+#: templates/music/event_repertory_content.html:134
+msgid "or add songs by category"
+msgstr "ou adicione músicas por categoria"
+
+#: templates/music/event_repertory_content.html:141
+msgid "Add songs by category"
+msgstr "Adicione músicas por categoria"
+
+#: templates/music/event_repertory_content.html:147
+msgid "Below"
+msgstr "Notas abaixo de"
+
+#: templates/music/event_repertory_content.html:156
+#: templates/music/event_repertory_content.html:171
+msgid "stars voted by"
+msgstr "votadas por"
+
+#: templates/music/event_repertory_content.html:157
+#: templates/music/event_repertory_content.html:172
+msgid "all"
+msgstr "todos"
+
+#: templates/music/event_repertory_content.html:158
+#: templates/music/event_repertory_content.html:173
+msgid "me"
+msgstr "mim"
+
+#: templates/music/event_repertory_content.html:162
+msgid "Above"
+msgstr "Notas acima de"
+
+#: templates/music/event_repertory_content.html:177
+#: templates/music/event_repertory_content.html:194
+msgid "Played in rehearsals"
+msgstr "Tocadas em ensaios"
+
+#: templates/music/event_repertory_content.html:180
+#, python-format
+msgid "below 10%%"
+msgstr "abaixo de 10%%"
+
+#: templates/music/event_repertory_content.html:181
+#, python-format
+msgid "below 20%%"
+msgstr "abaixo de 20%%"
+
+#: templates/music/event_repertory_content.html:182
+#, python-format
+msgid "below 30%%"
+msgstr "abaixo de 30%%"
+
+#: templates/music/event_repertory_content.html:183
+#, python-format
+msgid "below 40%%"
+msgstr "abaixo de 40%%"
+
+#: templates/music/event_repertory_content.html:184
+#, python-format
+msgid "below 50%%"
+msgstr "abaixo de 50%%"
+
+#: templates/music/event_repertory_content.html:185
+#, python-format
+msgid "below 60%%"
+msgstr "abaixo de 60%%"
+
+#: templates/music/event_repertory_content.html:186
+#, python-format
+msgid "below 70%%"
+msgstr "abaixo de 70%%"
+
+#: templates/music/event_repertory_content.html:187
+#, python-format
+msgid "below 80%%"
+msgstr "abaixo de 80%%"
+
+#: templates/music/event_repertory_content.html:188
+#, python-format
+msgid "below 90%%"
+msgstr "abaixo de 90%%"
+
+#: templates/music/event_repertory_content.html:197
+#, python-format
+msgid "above 10%%"
+msgstr "acima de 10%%"
+
+#: templates/music/event_repertory_content.html:198
+#, python-format
+msgid "above 20%%"
+msgstr "acima de 20%%"
+
+#: templates/music/event_repertory_content.html:199
+#, python-format
+msgid "above 30%%"
+msgstr "acima de 30%%"
+
+#: templates/music/event_repertory_content.html:200
+#, python-format
+msgid "above 40%%"
+msgstr "acima de 40%%"
+
+#: templates/music/event_repertory_content.html:201
+#, python-format
+msgid "above 50%%"
+msgstr "acima de 50%%"
+
+#: templates/music/event_repertory_content.html:202
+#, python-format
+msgid "above 60%%"
+msgstr "acima de 60%%"
+
+#: templates/music/event_repertory_content.html:203
+#, python-format
+msgid "above 70%%"
+msgstr "acima de 70%%"
+
+#: templates/music/event_repertory_content.html:204
+#, python-format
+msgid "above 80%%"
+msgstr "acima de 80%%"
+
+#: templates/music/event_repertory_content.html:205
+#, python-format
+msgid "above 90%%"
+msgstr "acima de 90%%"
+
+#: templates/music/event_repertory_content.html:211
+msgid "By status"
+msgstr "Por estado"
+
+#: templates/music/event_repertory_content.html:222
+msgid "Submit"
+msgstr "Submeter"
+
+#: templates/music/event_repertory_item_content.html:17
+msgid ""
+"\n"
+"                    Interval of %(interval)s\n"
+"                "
+msgstr ""
+"\n"
+"                    Intervalo de %(interval)s\n"
+"                "
+
+#: templates/music/event_repertory_item_content.html:48
+#: templates/music/main_repertory_item_content.html:17
+#: templates/music/main_repertory_trash.html:36
+#: templates/music/repertories_statistics_content.html:92
+#: templates/music/song_line.html:13
+msgid "Play this song"
+msgstr "Tocar esta música"
+
+#: templates/music/event_repertory_item_content.html:76
+#: templates/music/main_repertory_item_content.html:48
+#: templates/music/player_repertory_item_menu.html:83
+#: templates/music/repertories_statistics_content.html:108
+msgid "You've already voted. To change your vote just hold SHIFT button."
+msgstr "Você já deu a sua nota. Para modificar sua nota segure SHIFT."
+
+#: templates/music/event_repertory_item_content.html:76
+#: templates/music/main_repertory_item_content.html:48
+#: templates/music/player_repertory_item_menu.html:83
+#: templates/music/repertories_statistics_content.html:108
+msgid "Vote"
+msgstr "Vote"
+
+#: templates/music/history.html:23
+msgid "Music History Changes"
+msgstr "Histório de modificações"
+
+#: templates/music/history.html:25
+msgid "By user:"
+msgstr "Por usuário:"
+
+#: templates/music/history.html:42
+msgid "Summary"
+msgstr "Resumo"
+
+#: templates/music/instrument_tag_types.html:20
+msgid "View all instruments"
+msgstr "Ver todos os instrumentos"
+
+#: templates/music/instrument_tag_types.html:27
+#: templates/music/instruments.html:42
+msgid "Instrument tag types"
+msgstr "Tags de instrumentos"
+
+#: templates/music/instruments.html:24
+#: templates/music/music_management.html:25
+msgid "Instruments"
+msgstr "Instrumentos"
+
+#: templates/music/instruments.html:37
+msgid "There's no instruments registered yet."
+msgstr "Não existem instrumentos registrados ainda."
+
+#: templates/music/instruments.html:38
+msgid "Click here to add an instrument now."
+msgstr "Clique aqui para adicionar um instrumento agora."
+
+#: templates/music/instruments.html:48
+msgid "There ano no tag types registered yet."
+msgstr "Não existem tags de intrumentos registradas ainda."
+
+#: templates/music/instruments.html:49
+msgid "Click here to add an instrument tag type now."
+msgstr "Clique aqui para adicionar uma tag de instrumento agora."
+
+#: templates/music/main_repertory.html:40 templates/music/repertories.html:10
+msgid "Add Repertory"
+msgstr "Adicionar repertório"
+
+#: templates/music/main_repertory.html:70
+#: templates/music/repertories_statistics.html:32
+msgid "Statuses"
+msgstr "Estados"
+
+#: templates/music/main_repertory.html:74
+#: templates/music/repertories_statistics.html:36
+msgid "New: "
+msgstr "Novas: "
+
+#: templates/music/main_repertory.html:75
+#: templates/music/repertories_statistics.html:37
+msgid "Ready: "
+msgstr "Prontas: "
+
+#: templates/music/main_repertory.html:76
+#: templates/music/repertories_statistics.html:38
+msgid "Working: "
+msgstr "Em trabalho: "
+
+#: templates/music/main_repertory.html:79
+#: templates/music/repertories_statistics.html:41
+msgid "Abandoned: "
+msgstr "Abandonadas: "
+
+#: templates/music/main_repertory.html:80
+#: templates/music/repertories_statistics.html:42
+msgid "Restored: "
+msgstr "Restauradas: "
+
+#: templates/music/main_repertory.html:81
+#: templates/music/repertories_statistics.html:43
+msgid "In trash: "
+msgstr "Na lixeira: "
+
+#: templates/music/main_repertory.html:92
+#: templates/music/repertories_statistics.html:54
+msgid "new:"
+msgstr "novas:"
+
+#: templates/music/main_repertory.html:93
+#: templates/music/repertories_statistics.html:55
+msgid "ready:"
+msgstr "prontas:"
+
+#: templates/music/main_repertory.html:94
+#: templates/music/repertories_statistics.html:56
+msgid "working:"
+msgstr "em trabalho:"
+
+#: templates/music/main_repertory.html:95
+#: templates/music/repertories_statistics.html:57
+msgid "abandoned:"
+msgstr "abandonadas:"
+
+#: templates/music/main_repertory.html:96
+#: templates/music/repertories_statistics.html:58
+msgid "restored:"
+msgstr "restauradas:"
+
+#: templates/music/main_repertory.html:97
+#: templates/music/repertories_statistics.html:59
+msgid "in trash:"
+msgstr "na lixeira:"
+
+#: templates/music/main_repertory_content.html:7
+msgid "Change status"
+msgstr "Modificar estado"
+
+#: templates/music/main_repertory_content.html:22
+msgid "Change mode"
+msgstr "Modificar modo"
+
+#: templates/music/main_repertory_content.html:33
+#: templates/music/song_line.html:74
+msgid "Change tonality"
+msgstr "Modificar tonalidade"
+
+#: templates/music/main_repertory_content.html:35
+msgid "Original"
+msgstr "Original"
+
+#: templates/music/main_repertory_trash.html:9
+msgid "Trash"
+msgstr "Lixeira"
+
+#: templates/music/main_repertory_trash.html:23
+msgid "Restore / Purge"
+msgstr "Restaurar / Purgar"
+
+#: templates/music/music_management.html:33
+msgid "Repertories"
+msgstr "Repertórios"
+
+#: templates/music/music_management.html:40 templates/music/rehearsals.html:15
+msgid "Upcoming Rehearsals"
+msgstr "Eventos recentes"
+
+#: templates/music/music_management.html:46 templates/music/rehearsals.html:21
+msgid "There's no upcoming rehearsals."
+msgstr "Não existem ensaios marcados."
+
+#: templates/music/music_management.html:50
+msgid "Past 5 Rehearsals"
+msgstr "Últimos 5 ensaios"
+
+#: templates/music/music_management.html:56 templates/music/rehearsals.html:30
+msgid "There's no past rehearsals."
+msgstr "Não existem ensaios passados."
+
+#: templates/music/music_management.html:62
+msgid "Click here to see all rehearsals"
+msgstr "Clique aqui para ver todos os ensaios."
+
+#: templates/music/player_repertory_item_menu.html:11
+msgid "Exchange player user"
+msgstr "Trocar instrumentista"
+
+#: templates/music/player_repertory_item_menu.html:28
+#: templates/music/players_menu.html:34
+msgid "Sing as"
+msgstr "Cantar como"
+
+#: templates/music/player_repertory_item_menu.html:30
+#: templates/music/players_menu.html:33
+msgid "Play as"
+msgstr "Tocar como"
+
+#: templates/music/player_repertory_item_menu.html:36
+msgid "Exchange member"
+msgstr "Trocar membro"
+
+#: templates/music/player_repertory_item_menu.html:63
+msgid "Unset as lead"
+msgstr "Des-definir como principal"
+
+#: templates/music/player_repertory_item_menu.html:65
+msgid "Set as lead"
+msgstr "Definir como principal"
+
+#: templates/music/player_repertory_item_menu.html:74
+msgid "Remove this player"
+msgstr "Remover este instrumentista"
+
+#: templates/music/player_repertory_item_menu.html:93
+msgid "Materials"
+msgstr "Materiais"
+
+#: templates/music/player_repertory_item_menu.html:99
+msgid "Notes"
+msgstr "Notas"
+
+#: templates/music/player_repertory_item_menu.html:127
+msgid "Add document"
+msgstr "Adicionar documento"
+
+#: templates/music/player_repertory_item_menu.html:133
+msgid "Documents"
+msgstr "Documentos"
+
+#: templates/music/player_repertory_item_menu.html:143
+msgid "Remove this document"
+msgstr "Remover este documento"
+
+#: templates/music/player_repertory_item_menu.html:160
+msgid "Videos"
+msgstr "Vídeos"
+
+#: templates/music/player_repertory_item_menu.html:168
+msgid "Audios Segments"
+msgstr "Segmentos de áudio"
+
+#: templates/music/player_repertory_item_menu.html:176
+msgid "Music score"
+msgstr "Partitura"
+
+#: templates/music/players_menu.html:3
+msgid "Choose instrument"
+msgstr "Escolher instrumento"
+
+#: templates/music/players_menu.html:16
+msgid "Choose player"
+msgstr "Escolher instrumentista"
+
+#: templates/music/players_menu.html:50
+msgid "No matter"
+msgstr "Não importa"
+
+#: templates/music/players_menu.html:58
+msgid "Select tag types"
+msgstr "Selecione tag"
+
+#: templates/music/public_event_repertory.html:9
+msgid "Cover"
+msgstr "Capa"
+
+#: templates/music/public_event_repertory.html:12
+#: templates/music/repertories_statistics_actions.html:94
+#: templates/music/repertories_statistics_content.html:34
+msgid "Artist"
+msgstr "Artista"
+
+#: templates/music/public_event_repertory.html:33
+#, python-format
+msgid ""
+"\n"
+"                                Interval of %(interval)s\n"
+"                            "
+msgstr ""
+"\n"
+"                                Intervalo de %(interval)s\n"
+"                            "
+
+#: templates/music/ratings_cel.html:34
+msgid "Votes"
+msgstr "Notas"
+
+#: templates/music/rehearsal.html:13 templates/music/rehearsals.html:14
+#: templates/music/rehearsals_portlet.html:8
+#: templates/music/repertories_statistics_content.html:49
+msgid "Rehearsals"
+msgstr "Ensaios"
+
+#: templates/music/rehearsal.html:30
+#, python-format
+msgid ""
+"\n"
+"                Rehearsal in %(name)s\n"
+"            "
+msgstr ""
+"\n"
+"                Ensaio em %(name)s\n"
+"            "
+
+#: templates/music/rehearsal.html:36 templates/music/rehearsals_table.html:6
+msgid "When"
+msgstr "Quando"
+
+#: templates/music/rehearsal.html:39
+msgid "Where:"
+msgstr "Onde:"
+
+#: templates/music/rehearsal.html:45 templates/music/rehearsals_table.html:7
+msgid "Cost"
+msgstr "Custo"
+
+#: templates/music/rehearsal.html:47
+msgid "paid by"
+msgstr "pago por"
+
+#: templates/music/rehearsal.html:65
+msgid "Create a repertory based on songs of the last rehearsal."
+msgstr "Criar um repertório baseado nas músicas do último ensaio."
+
+#: templates/music/rehearsal.html:67
+msgid "Create a repertory through statistics"
+msgstr "Criar um repertório através de estatísticas"
+
+#: templates/music/rehearsal.html:72
+msgid "Notes:"
+msgstr "Notas:"
+
+#: templates/music/rehearsal.html:79
+#, python-format
+msgid ""
+"\n"
+"                %(name)s address\n"
+"            "
+msgstr ""
+"\n"
+"                %(name)s endereço\n"
+"            "
+
+#: templates/music/rehearsals.html:24
+msgid "Past Rehearsals"
+msgstr "Ensaios passados"
+
+#: templates/music/rehearsals_portlet.html:15
+msgid "in"
+msgstr "em"
+
+#: templates/music/rehearsals_portlet.html:22
+msgid "There's no upcoming rehearsals"
+msgstr "Não existem ensaios marcados"
+
+#: templates/music/rehearsals_table.html:5
+msgid "Studio"
+msgstr "Estúdio"
+
+#: templates/music/rehearsals_table.html:8
+msgid "Paid By"
+msgstr "Pago por"
+
+#: templates/music/repertories.html:8 templates/music/repertories.html:18
+msgid "Show Main Repertory"
+msgstr "Repertório Principal"
+
+#: templates/music/repertories.html:21
+msgid "Show Statistics"
+msgstr "Mostrar estatísticas"
+
+#: templates/music/repertories.html:24
+msgid "Repertories for shows"
+msgstr "Repertórios para shows"
+
+#: templates/music/repertories.html:29
+msgid "Repertories for rehearsals"
+msgstr "Repertórios para ensaios"
+
+#: templates/music/repertories_statistics.html:27
+msgid "Repertories statistics"
+msgstr "Estatísticas dos repertórios"
+
+#: templates/music/repertories_statistics_actions.html:5
+msgid "Filter by"
+msgstr "Filtrar por"
+
+#: templates/music/repertories_statistics_actions.html:9
+msgid "Shows frequency between"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:11
+#: templates/music/repertories_statistics_actions.html:39
+#, python-format
+msgid "0%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:12
+#: templates/music/repertories_statistics_actions.html:24
+#: templates/music/repertories_statistics_actions.html:40
+#: templates/music/repertories_statistics_actions.html:52
+#, python-format
+msgid "10%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:13
+#: templates/music/repertories_statistics_actions.html:25
+#: templates/music/repertories_statistics_actions.html:41
+#: templates/music/repertories_statistics_actions.html:53
+#, python-format
+msgid "20%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:14
+#: templates/music/repertories_statistics_actions.html:26
+#: templates/music/repertories_statistics_actions.html:42
+#: templates/music/repertories_statistics_actions.html:54
+#, python-format
+msgid "30%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:15
+#: templates/music/repertories_statistics_actions.html:27
+#: templates/music/repertories_statistics_actions.html:43
+#: templates/music/repertories_statistics_actions.html:55
+#, python-format
+msgid "40%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:16
+#: templates/music/repertories_statistics_actions.html:28
+#: templates/music/repertories_statistics_actions.html:44
+#: templates/music/repertories_statistics_actions.html:56
+#, python-format
+msgid "50%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:17
+#: templates/music/repertories_statistics_actions.html:29
+#: templates/music/repertories_statistics_actions.html:45
+#: templates/music/repertories_statistics_actions.html:57
+#, python-format
+msgid "60%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:18
+#: templates/music/repertories_statistics_actions.html:30
+#: templates/music/repertories_statistics_actions.html:46
+#: templates/music/repertories_statistics_actions.html:58
+#, python-format
+msgid "70%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:19
+#: templates/music/repertories_statistics_actions.html:31
+#: templates/music/repertories_statistics_actions.html:47
+#: templates/music/repertories_statistics_actions.html:59
+#, python-format
+msgid "80%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:20
+#: templates/music/repertories_statistics_actions.html:32
+#: templates/music/repertories_statistics_actions.html:48
+#: templates/music/repertories_statistics_actions.html:60
+#, python-format
+msgid "90%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:33
+#: templates/music/repertories_statistics_actions.html:61
+#, python-format
+msgid "100%%"
+msgstr ""
+
+#: templates/music/repertories_statistics_actions.html:37
+msgid "Rehearsals frequency between"
+msgstr "Frequência de ensaios entre"
+
+#: templates/music/repertories_statistics_actions.html:65
+msgid "Ratings between"
+msgstr "Notas entre"
+
+#: templates/music/repertories_statistics_actions.html:88
+msgid "Date between"
+msgstr "Data entre"
+
+#: templates/music/repertories_statistics_actions.html:102
+msgid "Song"
+msgstr "Música"
+
+#: templates/music/repertories_statistics_actions.html:125
+msgid "Submit Filter"
+msgstr "Submeter Filtro"
+
+#: templates/music/repertories_statistics_actions.html:128
+msgid "Clear Filter"
+msgstr "Limpar Filtro"
+
+#: templates/music/repertories_statistics_actions.html:134
+msgid "Add selected songs to"
+msgstr "Adicionar as músicas selecionadas"
+
+#: templates/music/repertories_statistics_actions.html:139
+msgid "Event  repertory"
+msgstr "Repertório de Evento"
+
+#: templates/music/repertories_statistics_actions.html:152
+msgid "Rehearsal repertory"
+msgstr "Repertório de ensaio"
+
+#: templates/music/repertories_statistics_actions.html:165
+msgid "There's no upcoming shows and rehearsals."
+msgstr "Não existem shows e ensaios marcados"
+
+#: templates/music/repertories_statistics_content.html:46
+msgid "Shows"
+msgstr "Shows"
+
+#: templates/music/repertories_statistics_content.html:64
+msgid "Act"
+msgstr "Açõ"
+
+#: templates/music/repertories_table_content.html:8
+msgid "Related Event"
+msgstr "Evento relacionado"
+
+#: templates/music/repertories_table_content.html:11
+msgid "Locked by"
+msgstr "Bloqueado por"
+
+#: templates/music/repertories_table_content.html:19
+msgid "Show"
+msgstr "Show"
+
+#: templates/music/repertories_table_content.html:21
+msgid "Rehearsal"
+msgstr "Ensaio"
+
+#: templates/music/repertories_table_content.html:24
+msgid "Free"
+msgstr "Livre"
+
+#: templates/music/repertories_table_content.html:31
+msgid "There are no repertories yet."
+msgstr "Não existem repertórios ainda."
+
+#: templates/music/repertories_table_content.html:32
+msgid "Click here to add songs to the main repertory."
+msgstr "Clique aqui para adicionar músicas no repertório principal."
+
+#: templates/music/repertories_table_content.html:33
+msgid "Or click here to add new repertory based on event."
+msgstr "Ou clique aqui para adicionar um novo repertório baseado em algum "
+"evento."
+
+#: templates/music/song_line.html:20
+msgid "Upload audio song"
+msgstr "Upload um audio de música"
+
+#: templates/music/song_line.html:40
+msgid "Tempo and signature"
+msgstr "Tempo e compasso"
+
+#: templates/music/song_line.html:60
+msgid "Ok"
+msgstr "Ok"
+
+#: templates/music/song_line.html:86
+msgid "Add to Main Repertory"
+msgstr "Adicionar no Repertório Principal"
+
+#: templates/music/notification/event_repertory_created.html:5
+#: templates/music/notification/rehearsal_created.html:5
+#, python-format
+msgid ""
+"\n"
+"        Hi %(user)s,\n"
+"    "
+msgstr ""
+"\n"
+"        Olá %(user)s,\n"
+"    "
+
+#: templates/music/notification/event_repertory_created.html:12
+#, python-format
+msgid ""
+"\n"
+"            There's a new repertory created for the %(rehearsal)s.\n"
+"        "
+msgstr ""
+"\n"
+"            Existe um repertório criado para o %(rehearsal)s.\n"
+"        "
+
+#: templates/music/notification/event_repertory_created.html:16
+#, python-format
+msgid ""
+"\n"
+"            There's a new repertory created for the show in %(show)s.\n"
+"        "
+msgstr ""
+"\n"
+"            Existe um repertório criado para o show em %(show)s.\n"
+"        "
+
+#: templates/music/notification/event_repertory_created.html:23
+#: templates/music/notification/rehearsal_created.html:17
+msgid "For further information click on the following link:"
+msgstr "Para informações adicionais, clique no seguinte link:"
+
+#: templates/music/notification/rehearsal_created.html:11
+#, python-format
+msgid ""
+"\n"
+"        There's a new rehearsal coming at %(date)s in %(studio)s.\n"
+"    "
+msgstr ""
+"\n"
+"        Existe um novo ensaio marcado em %(date)s em %(studio)s.\n"
+"    "
+
+#: templates/photo/album_details.html:32
 #, python-format
 msgid ""
 "\n"
@@ -7228,7 +8831,7 @@ msgstr ""
 "realizado em %(date)s.\n"
 "            "
 
-#: templates/photo/album_details.html:20
+#: templates/photo/album_details.html:39
 msgid "Number of photos:"
 msgstr "Número de fotos:"
 
@@ -7237,11 +8840,12 @@ msgstr "Número de fotos:"
 msgid "Hey Baldock Photo Album %(name)s"
 msgstr "Álbum de Fotos da Hey Baldock - %(name)s"
 
-#: templates/photo/photo_album_view.html:19
-msgid "Photo album"
-msgstr "Álbum de fotos"
+#: templates/photo/photo_album_view.html:21
+#: templates/video/video_album_view.html:19
+msgid "View all"
+msgstr "Ver todos"
 
-#: templates/photo/photo_album_view.html:28
+#: templates/photo/photo_album_view.html:27
 msgid "Delete this Photo Album"
 msgstr "Remover este ábum de fotos"
 
@@ -7269,15 +8873,22 @@ msgid "Search results"
 msgstr "Resultados da busca"
 
 #: templates/search/search.html:37
-msgid "No results found"
-msgstr "Nenhum resultado encontrado"
+#, python-format
+msgid ""
+"\n"
+"            No results found for the sentence \"%(query)s\"\n"
+"        "
+msgstr ""
+"\n"
+"            Nenhum resultado encontrado para a sentença \"%(query)s\"\n"
+"        "
 
 #: templates/section/section.html:16
 #, python-format
 msgid "Hey Baldock %(title)s"
 msgstr "Hey Baldock - %(title)s"
 
-#: templates/section/section.html:28
+#: templates/section/section.html:29
 #, python-format
 msgid ""
 "\n"
@@ -7309,7 +8920,7 @@ msgstr "Número de vídeos:"
 msgid "Hey Baldock Video Album"
 msgstr "Álbum de Vídeos da Hey Baldock"
 
-#: templates/video/video_album_view.html:17
+#: templates/video/video_album_view.html:21
 msgid "Video album"
 msgstr "Álbum de Vídeos"
 
@@ -7348,7 +8959,7 @@ msgstr "A url não pode ser vazia"
 msgid "This video is provided more than once"
 msgstr "Este vídeo foi fornecido mais de uma vez"
 
-#: video/models.py:17 video/models.py:51
+#: video/models.py:17 video/models.py:49
 msgid "Url"
 msgstr "Url"
 
@@ -7361,15 +8972,15 @@ msgstr "Este ábum será exibido na seção de Vídeos"
 msgid "Video Album %s"
 msgstr "Álbum de Vídeos %s"
 
-#: video/models.py:49
+#: video/models.py:47
 msgid "Thumbnail"
 msgstr "Thumbnail"
 
-#: video/models.py:50
+#: video/models.py:48
 msgid "Small thumbnail"
 msgstr "Thumbnail pequeno"
 
-#: video/models.py:54
+#: video/models.py:55 video/models.py:74
 #, python-format
 msgid "Video %s"
 msgstr "Vídeo %s"
@@ -7384,3 +8995,12 @@ msgstr "O ábum de vídeo \"%s\" foi removido com sucesso."
 msgid "Error while trying to delete the \"%(name)s\" video album. %(err)s"
 msgstr ""
 "Erro occorrido ao tentar remover o álbum de vídeos \"%(name)s\". %(err)s"
+
+#~ msgid "Message from website: %s"
+#~ msgstr "Mensagem do website: %s"
+
+#~ msgid "EDIT MODE"
+#~ msgstr "MODO DE EDIÇÃO"
+
+#~ msgid "No results found"
+#~ msgstr "Nenhum resultado encontrado"

@@ -36,10 +36,10 @@ def notify(request, app, model, id, action):
     try:
         obj = ct.get_object_for_this_type(id=id)
     except:
-        message = _("%s with id %s does not exist" % (model, id))
+        message = _("%(model)s with id %(id)s does not exist" %
+                    dict(model=model, id=id))
         return dict(success=False, message=message)
     users = band.active_members
-    print request.POST
     notes = request.POST.get('notes') or None
     mail = request.POST.get('mail') or False
     Notification.notify(obj, action, users, notes=notes, mail=mail)
