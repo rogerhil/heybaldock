@@ -28,14 +28,16 @@ Debug False in production and logs
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
 
- - Create a view per user to rating absence items not rated
  - Improve header stats view
+ - Create a view per user to rating absence items not rated
  - Repertory for event actions like: order by dynamic
  - Music management best menu navigation
  - Permissions for manage past events repertories
  - Remove maybe actions column from album view
  - Events view, improve showing like photo albums, item more detailed with
    image event flyer etc.
+ - Find a way to include notify changed/deleted(canceled) repertory, event,
+   rehearsal
  - Print action for event repertory
  - Print action for main repertory
  - Replace all alerts to an beautiful alert box

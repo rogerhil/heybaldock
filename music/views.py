@@ -429,7 +429,7 @@ def _add_event_repertory_for_event(request, id):
         return False, None, msg
 
 def repertory_stats(repertory):
-    af = repertory.items.filter
+    af = repertory.all_items.filter
     stats_keys = {
         1: 'new',
         2: 'trash',
@@ -459,6 +459,7 @@ def repertory_stats(repertory):
         artists[artist.id]['stats'][stats_keys[item.status]] += 1
 
     stats = dict(
+        total=repertory.items.all().count(),
         new=af(status=RepertoryItemStatus.new).count(),
         ready=af(status=RepertoryItemStatus.ready).count(),
         working=af(status=RepertoryItemStatus.working).count(),

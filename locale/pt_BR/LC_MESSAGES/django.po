@@ -8632,7 +8632,7 @@ msgstr "Filtrar por"
 
 #: templates/music/repertories_statistics_actions.html:9
 msgid "Shows frequency between"
-msgstr ""
+msgstr "Frequência de shows entre"
 
 #: templates/music/repertories_statistics_actions.html:11
 #: templates/music/repertories_statistics_actions.html:39

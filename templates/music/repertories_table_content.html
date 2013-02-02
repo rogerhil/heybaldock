@@ -5,7 +5,11 @@
         <table>
             <thead>
                 <th>
-                    {% trans "Related Event" %}
+                    {% if repertories.0.event %}
+                        {% trans "Show" %}
+                    {% else %}
+                        {% trans "Rehearsal" %}
+                    {% endif %}
                 </th>
                 <th width="200px" class="center">
                     {% trans "Locked by" %}
@@ -16,12 +20,12 @@
                 <tr class="{% cycle odd,even %}" onclick="window.location = '{% url event_repertory repertory.id %}'">
                     <td>
                         {% if repertory.event %}
-                            {% trans "Show" %}: {{ repertory.event }}
+                            {{ repertory.event }}
                         {% else %}
-                            {% trans "Rehearsal" %}: {{ repertory.rehearsal.studio.name }} on {{ repertory.rehearsal.date }}
+                            {{ repertory.rehearsal.studio.name }} on {{ repertory.rehearsal.date }}
                         {% endif %}
                     </td>
-                    <td class="center">{% if repertory.is_free %}{% trans "Free" %}{% else %}<span style="color: red;">{{ repertory.user_lock.get_full_name }}</span>{% endif %}</td>
+                    <td class="center">{% if repertory.is_free %}{% trans "Free" %}{% else %}<span style="color: #8b0000;">{{ repertory.user_lock.get_full_name }}</span>{% endif %}</td>
                 </tr>
                 {% endfor %}
             </tbody>
