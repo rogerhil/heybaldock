@@ -1243,13 +1243,17 @@ def get_repertories_statistics_content(request):
 def sort_main_repertory(request):
     repertory = request.band.repertory
     repertory_content = get_repertory_content(request, repertory)
-    return dict(success=True, repertory_content=repertory_content)
+    sort_by = request.GET.get('sort_by', '')
+    return dict(success=True, repertory_content=repertory_content,
+                sort_by=sort_by)
 
 @json
 @login_required
 def sort_repertories_statistics(request):
     repertory_content = get_repertories_statistics_content(request)
-    return dict(success=True, repertory_content=repertory_content)
+    sort_by = request.GET.get('sort_by', '')
+    return dict(success=True, repertory_content=repertory_content,
+                sort_by=sort_by)
 
 def get_trash_content(request, repertory):
     user = request.user

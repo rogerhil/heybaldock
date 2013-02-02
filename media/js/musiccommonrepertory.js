@@ -601,6 +601,17 @@ function initSortTable() {
 				if (data.success) {
 					$repertoryContent.html(data.repertory_content);
 					loadRepertory();
+					if (data.sort_by) {
+						var prefix = '-';
+						if (data.sort_by[0] == '-') {
+							prefix = '';
+						}
+						var sort_by = data.sort_by.replace('-', '');
+						var index = $repertoryContent.find("th[sort=" + prefix + sort_by + "]").index();
+						$repertoryContent.find("tr").each(function () {
+							$($(this).find('td')[index]).effect("highlight", 2000);
+						});
+					}
 				}
 			}
 		});

@@ -8612,7 +8612,7 @@ msgstr "Repertório Principal"
 
 #: templates/music/repertories.html:21
 msgid "Show Statistics"
-msgstr "Mostrar estatísticas"
+msgstr "Estatísticas"
 
 #: templates/music/repertories.html:24
 msgid "Repertories for shows"

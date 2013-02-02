@@ -23,14 +23,14 @@ Debug False in production and logs
      actions
 
 * Music Management
- - Filter locations in select box in Event Creation form
- - Hover in header tables to sort
- - Music management dashboard: put day of week in tables of rehearsals
+ - Cosmetic improvements:
+     - Put gettext in all __unicode__
+     - Translate remaining items, mainly ChooseOptions
+     - Create suggestion box (not important at all)
  - Highlight in whole table when filter, and highlight column when sorting
+ - Music management dashboard: put day of week in tables of rehearsals
  - Create a view per user to rating absence items not rated
  - Improve header stats view
- - Put gettext in all __unicode__
- - Translate remaining items, mainly ChooseOptions
  - Repertory for event actions like: order by dynamic
  - Music management best menu navigation
  - Permissions for manage past events repertories
@@ -41,7 +41,6 @@ Debug False in production and logs
  - Slide show offline for event repertory
  - Mogg upload option for song
  - Undo action
- - Create suggestion box
  - Repertory item (Event or Main) comments for users (think about using auto-
    complete user tag, like in facebook tags)
  - Event Repertory: option for add song in a list by album and full list

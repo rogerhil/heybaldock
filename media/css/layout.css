@@ -199,6 +199,11 @@ ul {
     color: inherit;
 }
 
+.table_list th.sort_up:hover,
+.table_list th.sort_down:hover {
+    background-color: #a0522d;
+}
+
 .songs_info td {
     white-space: nowrap;
     vertical-align: top;
@@ -222,6 +227,10 @@ div.songs_info table {
 
 #positions_choices td {
     text-align: center;
+}
+
+.filter_button:hover {
+    color: #f7d453 !important;
 }
 
 a.button,

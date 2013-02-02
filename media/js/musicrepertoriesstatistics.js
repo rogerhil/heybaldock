@@ -80,6 +80,7 @@ function loadActions() {
 				if (data.success) {
 					$repertoryContent.html(data.repertory_content);
 					loadRepertory();
+					$repertoryContent.effect("highlight", 2000);
 				}
 			}
 		});

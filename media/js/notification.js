@@ -69,7 +69,6 @@ function closeActions() {
 	});
 
 	$(document).keydown(function (e) {
-		console.log(e.keyCode);
 		if (e.keyCode == 27) {
 			if ($(this).find('div.notes_area').is(':visible')) {
 				return;
@@ -176,7 +175,6 @@ function notificationsCountUpdate() {
 			}
 			if (Number(data.count) > Number($ncount.html().trim())) {
 				$menu = $("#my_notifications_menu");
-				console.log($menu.length);
 				if ($menu.length) {
 					loadMyNotifications(true);
 				}
