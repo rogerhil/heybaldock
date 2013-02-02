@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-02 01:12-0200\n"
+"POT-Creation-Date: 2013-02-02 05:24-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,30 +53,35 @@ msgstr ""
 "Mensagem de %(name)s, e-mail: %(email)s\n"
 "\n"
 
-#: contact/models.py:33
+#: contact/models.py:34
 #, python-format
 msgid "Show %(instance)s"
 msgstr ""
 
-#: contact/models.py:37
+#: contact/models.py:38
 #, python-format
 msgid "Show %(instance)s has been published"
 msgstr "Show %(instance)s foi publicado"
 
-#: contact/models.py:41
+#: contact/models.py:42
 #, python-format
 msgid "Show %(instance)s has been changed"
 msgstr "Show %(instance)s foi modificado"
 
-#: contact/models.py:47 contact/models.py:57
+#: contact/models.py:48 contact/models.py:58
 #, python-format
 msgid "%(instance)s"
 msgstr ""
 
-#: contact/models.py:51 contact/models.py:61
+#: contact/models.py:52 contact/models.py:62
 #, python-format
 msgid "%(instance)s has been changed"
 msgstr "%(instance)s foi modificado"
+
+#: contact/models.py:66
+#, python-format
+msgid "Rate the songs of %(instance)s"
+msgstr "Dê sua nota às músicas do %(instance)s"
 
 #: contact/views.py:23
 msgid "Your message has been successfully sent"
@@ -103,11 +108,11 @@ msgstr "Adicionar álbum de fotos"
 msgid "Add new event"
 msgstr "Adicionar novo evento"
 
-#: event/forms.py:33
+#: event/forms.py:39
 msgid "Phone must have only digits"
 msgstr "Favor fornecer o telefone somente com dígitos"
 
-#: event/forms.py:35
+#: event/forms.py:41
 msgid "Phone must have at least 8 digits"
 msgstr "Favor fornecer o telefone com no mínimo 8 dígitos"
 
@@ -7089,32 +7094,22 @@ msgstr "%s minuto"
 msgid "%s minutes"
 msgstr "%s minutos"
 
-#: music/models.py:44
-#, python-format
-msgid "Rehearsal in %(studio)s, %(date)s"
-msgstr "Ensaio no(a) %(studio)s, %(date)s"
-
-#: music/models.py:739
-#, python-format
-msgid "Repertory: %s"
-msgstr "Repertório: %s"
-
-#: music/models.py:932
+#: music/models.py:933
 #, python-format
 msgid "%(user)s sings \"%(song)s\" as %(as_member)s"
 msgstr "%(user)s canta \"%(song)s\" como %(as_member)s"
 
-#: music/models.py:934
+#: music/models.py:935
 #, python-format
 msgid "%(user)s plays %(instrument)s in \"%(song)s\" as %(as_member)s"
 msgstr "%(user)s toca %(instrument)s em \"%(song)s\" como %(as_member)s"
 
-#: music/models.py:938
+#: music/models.py:939
 #, python-format
 msgid "%(user)s sings \"%(song)s\""
 msgstr "%(user)s canta \"%(song)s\""
 
-#: music/models.py:940
+#: music/models.py:941
 #, python-format
 msgid "%(user)s plays %(instrument)s in \"%(song)s\""
 msgstr "%(user)s toca %(instrument)s em \"%(song)s\""
@@ -7153,48 +7148,48 @@ msgstr "O repertório foi criado com sucesso."
 msgid "Some error occurred while trying to create the repertory. %s"
 msgstr "Erro ocorrido ao tentar criar um repertório. %s"
 
-#: music/views.py:488 music/views.py:533
+#: music/views.py:489 music/views.py:534
 msgid "The repertory is locked for edition by you."
 msgstr "O repertório está bloqueado para edição por você."
 
-#: music/views.py:491 music/views.py:536
+#: music/views.py:492 music/views.py:537
 msgid "You can't unlock a repertory already locked."
 msgstr "Você não pode bloquear um repertório já bloqueado."
 
-#: music/views.py:495 music/views.py:540
+#: music/views.py:496 music/views.py:541
 msgid "This repertory is already unlocked."
 msgstr "Este repertório já está desbloqueado."
 
-#: music/views.py:500 music/views.py:545
+#: music/views.py:501 music/views.py:546
 msgid "This repertory was successfully unlocked."
 msgstr "O repertório foi debloqueado com sucesso."
 
-#: music/views.py:566
+#: music/views.py:567
 #, python-format
 msgid "The \"%s\" was successfully removed."
 msgstr "O \"%s\" foi removido com sucesso."
 
-#: music/views.py:819
+#: music/views.py:820
 msgid "The album was successfully registered."
 msgstr "O álbum foi registrado com sucesso."
 
-#: music/views.py:851
+#: music/views.py:852
 msgid "The album was successfully removed."
 msgstr "O álbum foi removido com sucesso."
 
-#: music/views.py:1014
+#: music/views.py:1015
 msgid "This song is in trash, you can restore it from there!"
 msgstr "Esta música está na lixeira, você pode restaurá-la se quiser."
 
-#: music/views.py:1017 music/views.py:1034
+#: music/views.py:1018 music/views.py:1035
 msgid "Song already exist in repertory!"
 msgstr "Esta música já se encontra no repertório."
 
-#: music/views.py:1372
+#: music/views.py:1377
 msgid "The instrument was successfully added."
 msgstr "O instrumento foi adicionado com sucesso."
 
-#: music/views.py:1794
+#: music/views.py:1799
 msgid "The instrument tag type was successfully added."
 msgstr "A tag de instrumento foi adicionada com sucesso."
 
@@ -7650,10 +7645,6 @@ msgstr "Endereço"
 msgid "Locations"
 msgstr "Locais"
 
-#: templates/event/portlet.html:11
-msgid "Events"
-msgstr "Eventos"
-
 #: templates/event/notification/event_created.html:5
 #: templates/music/notification/event_repertory_created.html:5
 #: templates/music/notification/rehearsal_created.html:5
@@ -7867,9 +7858,8 @@ msgstr "Inativo"
 msgid "With albums"
 msgstr "Com álbuns"
 
-#: templates/music/artists.html:25 templates/music/main_repertory.html:86
-#: templates/music/music_management.html:17
-#: templates/music/repertories_statistics.html:48
+#: templates/music/artists.html:25 templates/music/music_management.html:17
+#: templates/music/repertories_stats.html:20
 msgid "Artists"
 msgstr "Artistas"
 
@@ -7918,27 +7908,27 @@ msgid "Time total:"
 msgstr "Tempo total:"
 
 #: templates/music/event_repertory.html:76
-#: templates/music/main_repertory.html:110
+#: templates/music/main_repertory.html:77
 msgid "Lock this repertory for edition"
 msgstr "Bloquear este repertório para edição"
 
 #: templates/music/event_repertory.html:86
-#: templates/music/main_repertory.html:120
+#: templates/music/main_repertory.html:87
 msgid "Unlock this repertory"
 msgstr "Desbloquear este repertório"
 
 #: templates/music/event_repertory.html:92
-#: templates/music/main_repertory.html:126
+#: templates/music/main_repertory.html:93
 msgid "This repertory is locked by"
 msgstr "Este repertório está bloqueado por"
 
 #: templates/music/event_repertory.html:93
-#: templates/music/main_repertory.html:127
+#: templates/music/main_repertory.html:94
 msgid "It's avaliable for read only."
 msgstr "Está disponível para somente leitura."
 
 #: templates/music/event_repertory.html:99
-#: templates/music/main_repertory.html:133
+#: templates/music/main_repertory.html:100
 msgid ""
 "This repertory is available for read only since you don't have permission to "
 "manage the Main Repertory."
@@ -8313,71 +8303,6 @@ msgstr "Clique aqui para adicionar uma tag de instrumento agora."
 msgid "Add Repertory"
 msgstr "Adicionar repertório"
 
-#: templates/music/main_repertory.html:70
-#: templates/music/repertories_statistics.html:32
-msgid "Statuses"
-msgstr "Estados"
-
-#: templates/music/main_repertory.html:74
-#: templates/music/repertories_statistics.html:36
-msgid "New: "
-msgstr "Novas: "
-
-#: templates/music/main_repertory.html:75
-#: templates/music/repertories_statistics.html:37
-msgid "Ready: "
-msgstr "Prontas: "
-
-#: templates/music/main_repertory.html:76
-#: templates/music/repertories_statistics.html:38
-msgid "Working: "
-msgstr "Em trabalho: "
-
-#: templates/music/main_repertory.html:79
-#: templates/music/repertories_statistics.html:41
-msgid "Abandoned: "
-msgstr "Abandonadas: "
-
-#: templates/music/main_repertory.html:80
-#: templates/music/repertories_statistics.html:42
-msgid "Restored: "
-msgstr "Restauradas: "
-
-#: templates/music/main_repertory.html:81
-#: templates/music/repertories_statistics.html:43
-msgid "In trash: "
-msgstr "Na lixeira: "
-
-#: templates/music/main_repertory.html:92
-#: templates/music/repertories_statistics.html:54
-msgid "new:"
-msgstr "novas:"
-
-#: templates/music/main_repertory.html:93
-#: templates/music/repertories_statistics.html:55
-msgid "ready:"
-msgstr "prontas:"
-
-#: templates/music/main_repertory.html:94
-#: templates/music/repertories_statistics.html:56
-msgid "working:"
-msgstr "em trabalho:"
-
-#: templates/music/main_repertory.html:95
-#: templates/music/repertories_statistics.html:57
-msgid "abandoned:"
-msgstr "abandonadas:"
-
-#: templates/music/main_repertory.html:96
-#: templates/music/repertories_statistics.html:58
-msgid "restored:"
-msgstr "restauradas:"
-
-#: templates/music/main_repertory.html:97
-#: templates/music/repertories_statistics.html:59
-msgid "in trash:"
-msgstr "na lixeira:"
-
 #: templates/music/main_repertory_content.html:7
 msgid "Change status"
 msgstr "Modificar estado"
@@ -8387,7 +8312,7 @@ msgid "Change mode"
 msgstr "Modificar modo"
 
 #: templates/music/main_repertory_content.html:33
-#: templates/music/song_line.html:74
+#: templates/music/song_line.html:75
 msgid "Change tonality"
 msgstr "Modificar tonalidade"
 
@@ -8407,25 +8332,28 @@ msgstr "Restaurar / Purgar"
 msgid "Repertories"
 msgstr "Repertórios"
 
-#: templates/music/music_management.html:40 templates/music/rehearsals.html:15
+#: templates/music/music_management.html:40
+#: templates/music/music_management.html:52
+#: templates/music/music_management.html:65
+#: templates/music/music_management.html:66
+msgid "Click here to see all rehearsals"
+msgstr "Clique aqui para ver todos os ensaios."
+
+#: templates/music/music_management.html:41 templates/music/rehearsals.html:15
 msgid "Upcoming Rehearsals"
 msgstr "Próximos ensaios"
 
-#: templates/music/music_management.html:46 templates/music/rehearsals.html:21
+#: templates/music/music_management.html:48 templates/music/rehearsals.html:21
 msgid "There's no upcoming rehearsals."
 msgstr "Não existem ensaios marcados."
 
-#: templates/music/music_management.html:50
+#: templates/music/music_management.html:53
 msgid "Past 5 Rehearsals"
 msgstr "Últimos 5 ensaios"
 
-#: templates/music/music_management.html:56 templates/music/rehearsals.html:30
+#: templates/music/music_management.html:60 templates/music/rehearsals.html:30
 msgid "There's no past rehearsals."
 msgstr "Não existem ensaios passados."
-
-#: templates/music/music_management.html:62
-msgid "Click here to see all rehearsals"
-msgstr "Clique aqui para ver todos os ensaios."
 
 #: templates/music/player_repertory_item_menu.html:11
 msgid "Exchange player user"
@@ -8555,7 +8483,7 @@ msgstr "Quando"
 msgid "Where:"
 msgstr "Onde:"
 
-#: templates/music/rehearsal.html:47 templates/music/rehearsals_table.html:7
+#: templates/music/rehearsal.html:47 templates/music/rehearsals_table.html:8
 msgid "Cost"
 msgstr "Custo"
 
@@ -8602,7 +8530,7 @@ msgstr "Não existem ensaios marcados"
 msgid "Studio"
 msgstr "Estúdio"
 
-#: templates/music/rehearsals_table.html:8
+#: templates/music/rehearsals_table.html:9
 msgid "Paid By"
 msgstr "Pago por"
 
@@ -8766,35 +8694,63 @@ msgstr "Shows"
 msgid "Act"
 msgstr "Açõ"
 
-#: templates/music/repertories_table_content.html:8
-msgid "Related Event"
-msgstr "Evento relacionado"
+#: templates/music/repertories_stats.html:4
+msgid "Statuses"
+msgstr "Estados"
 
-#: templates/music/repertories_table_content.html:11
-msgid "Locked by"
-msgstr "Bloqueado por"
+#: templates/music/repertories_stats.html:4
+msgid "total"
+msgstr "total"
 
-#: templates/music/repertories_table_content.html:19
+#: templates/music/repertories_stats.html:8
+msgid "New: "
+msgstr "Novas: "
+
+#: templates/music/repertories_stats.html:9
+msgid "Ready: "
+msgstr "Prontas: "
+
+#: templates/music/repertories_stats.html:10
+msgid "Working: "
+msgstr "Em trabalho: "
+
+#: templates/music/repertories_stats.html:13
+msgid "Abandoned: "
+msgstr "Abandonadas: "
+
+#: templates/music/repertories_stats.html:14
+msgid "Restored: "
+msgstr "Restauradas: "
+
+#: templates/music/repertories_stats.html:15
+msgid "In trash: "
+msgstr "Na lixeira: "
+
+#: templates/music/repertories_table_content.html:9
 msgid "Show"
 msgstr "Show"
 
-#: templates/music/repertories_table_content.html:21
+#: templates/music/repertories_table_content.html:11
 msgid "Rehearsal"
 msgstr "Ensaio"
 
-#: templates/music/repertories_table_content.html:24
+#: templates/music/repertories_table_content.html:15
+msgid "Locked by"
+msgstr "Bloqueado por"
+
+#: templates/music/repertories_table_content.html:28
 msgid "Free"
 msgstr "Livre"
 
-#: templates/music/repertories_table_content.html:31
+#: templates/music/repertories_table_content.html:35
 msgid "There are no repertories yet."
 msgstr "Não existem repertórios ainda."
 
-#: templates/music/repertories_table_content.html:32
+#: templates/music/repertories_table_content.html:36
 msgid "Click here to add songs to the main repertory."
 msgstr "Clique aqui para adicionar músicas no repertório principal."
 
-#: templates/music/repertories_table_content.html:33
+#: templates/music/repertories_table_content.html:37
 msgid "Or click here to add new repertory based on event."
 msgstr ""
 "Ou clique aqui para adicionar um novo repertório baseado em algum evento."
@@ -8811,7 +8767,7 @@ msgstr "Tempo e compasso"
 msgid "Ok"
 msgstr "Ok"
 
-#: templates/music/song_line.html:86
+#: templates/music/song_line.html:87
 msgid "Add to Main Repertory"
 msgstr "Adicionar no Repertório Principal"
 
@@ -8847,6 +8803,21 @@ msgstr ""
 "\n"
 "        Existe um novo ensaio marcado em %(date)s em %(studio)s.\n"
 "    "
+
+#: templates/music/notification/rehearsal_rate_reminder.html:4
+#, python-format
+msgid ""
+"\n"
+"        You didn't rate the %(instance)s yet.\n"
+"    "
+msgstr ""
+"\n"
+"        Você ainda não deu sua nota para o %(instance)s.\n"
+"    "
+
+#: templates/music/notification/rehearsal_rate_reminder.html:11
+msgid "Rate now by clicking here!"
+msgstr "Dê sua nota agora clicando aqui"
 
 #: templates/photo/album_details.html:32
 #, python-format
@@ -9025,6 +8996,36 @@ msgstr "O ábum de vídeo \"%s\" foi removido com sucesso."
 msgid "Error while trying to delete the \"%(name)s\" video album. %(err)s"
 msgstr ""
 "Erro occorrido ao tentar remover o álbum de vídeos \"%(name)s\". %(err)s"
+
+#~ msgid "Rehearsal in %(studio)s, %(date)s"
+#~ msgstr "Ensaio no(a) %(studio)s, %(date)s"
+
+#~ msgid "Repertory: %s"
+#~ msgstr "Repertório: %s"
+
+#~ msgid "Events"
+#~ msgstr "Eventos"
+
+#~ msgid "new:"
+#~ msgstr "novas:"
+
+#~ msgid "ready:"
+#~ msgstr "prontas:"
+
+#~ msgid "working:"
+#~ msgstr "em trabalho:"
+
+#~ msgid "abandoned:"
+#~ msgstr "abandonadas:"
+
+#~ msgid "restored:"
+#~ msgstr "restauradas:"
+
+#~ msgid "in trash:"
+#~ msgstr "na lixeira:"
+
+#~ msgid "Related Event"
+#~ msgstr "Evento relacionado"
 
 #~ msgid "Message from website: %s"
 #~ msgstr "Mensagem do website: %s"

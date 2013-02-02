@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<p class="center">
+    {% blocktrans %}
+        You didn't rate the {{ instance }} yet.
+    {% endblocktrans %}
+</p>
+
+<p class="center">
+    <a href="{{ site_url }}{{ instance.url }}" style="text-transform: uppercase; font-weight: bold;">
+        {% trans "Rate now by clicking here!" %}
+    </a>
+</p>
+

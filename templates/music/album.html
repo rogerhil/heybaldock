@@ -72,11 +72,6 @@
                 <th width="60px" class="center">
                     {% trans "Tonality" %}
                 </th>
-                {% if has_perm %}
-                    <th width="30px" class="center">
-                        {% trans "Actions" %}
-                    </th>
-                {% endif %}
             </thead>
             <tbody>
                 {% for song in album.ordered_songs %}

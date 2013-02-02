@@ -27,13 +27,9 @@ Debug False in production and logs
      - Put gettext in all __unicode__
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
-
- - Improve header stats view
- - Create a view per user to rating absence items not rated
- - Repertory for event actions like: order by dynamic
  - Music management best menu navigation
+ - Repertory for event actions like: order by dynamic
  - Permissions for manage past events repertories
- - Remove maybe actions column from album view
  - Events view, improve showing like photo albums, item more detailed with
    image event flyer etc.
  - Find a way to include notify changed/deleted(canceled) repertory, event,
@@ -43,6 +39,7 @@ Debug False in production and logs
  - Replace all alerts to an beautiful alert box
  - Slide show offline for event repertory
  - Mogg upload option for song
+ - Option to add/change composers in album view
  - Undo action
  - Repertory item (Event or Main) comments for users (think about using auto-
    complete user tag, like in facebook tags)

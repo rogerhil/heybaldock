@@ -25,6 +25,7 @@ class Notification(models.Model):
     template_context = PickleField(null=True, blank=True)
     content_type = models.ForeignKey(ContentType)
     object_id = models.IntegerField(null=True)
+    action = models.CharField(max_length=32, null=True, blank=True)
     object = generic.GenericForeignKey()
 
     _notifications = {
@@ -61,6 +62,10 @@ class Notification(models.Model):
                 'subject': _("%(instance)s has been changed"),
                 'template': 'music/notification/event_repertory_changed.html'
             },
+            'rate_reminder': {
+                'subject': _("Rate the songs of %(instance)s"),
+                'template': 'music/notification/rehearsal_rate_reminder.html'
+            }
         }
     }
 
@@ -118,6 +123,13 @@ class Notification(models.Model):
         for user in users:
             UserNotification.objects.create(user=user, notification=self)
 
+    def get_data(self):
+        ct = self.content_type
+        action = self.action
+        key = "%s.%s" % (ct.app_label, ct.name)
+        data = self._notifications[key].get(action)
+        return data
+
     @classmethod
     def notify(cls, instance, action, users, context=None, notes=None,
                mail=True):
@@ -128,7 +140,8 @@ class Notification(models.Model):
             object_id=instance.id,
             notes=notes,
             template=data['template'],
-            subject=data['subject']
+            subject=data['subject'],
+            action=action
         )
         template_context = dict(
             instance=instance,

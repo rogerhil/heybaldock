@@ -1,10 +1,13 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 
-from section.models import Section
+from contact.models import Notification, UserNotification
 from event.models import Event, Location
+from section.models import Section
 from music.models import Rehearsal
+
 
 SECTIONS = [i for i in Section.objects.all().order_by('order')]
 SECTIONS_MAP = dict([(i.slug, i) for i in SECTIONS])
@@ -28,6 +31,9 @@ def main(request):
         manage_locations=logged and user.has_perm("event.manage_locations"),
         manage_sections=logged and user.has_perm("section.manage_sections"),
     )
+
+    repertories_unrated(user)
+
     c = dict(
         sections=SECTIONS,
         band=request.band,
@@ -41,3 +47,19 @@ def main(request):
         permissions=permissions
     )
     return c
+
+def repertories_unrated(user):
+    now = datetime.now()
+    rehearsals = Rehearsal.objects.filter(date__lte=now)
+    for rehearsal in rehearsals:
+        for rep in rehearsal.repertories.all():
+            ct = ContentType.objects.get_for_model(type(rep))
+            notified = UserNotification.objects.filter(
+                                notification__content_type=ct,
+                                notification__object_id=rep.id,
+                                notification__action='rate_reminder',
+                                user=user).count()
+            print notified
+            if notified:
+                continue
+            Notification.notify(rep, 'rate_reminder', users=[user], mail=False)

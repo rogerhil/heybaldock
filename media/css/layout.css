@@ -1253,6 +1253,12 @@ div.pretty_select h3 div.action_button {
     font-weight: bold;
 }
 
+#my_notifications_menu .subjects td.subject {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 250px !important;
+}
+
 #my_notifications_menu .subjects .unread td.subject {
     padding-left: 20px;
     background-image: url(/media/img/notification_icon_16.png);
