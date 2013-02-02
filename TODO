@@ -23,6 +23,13 @@ Debug False in production and logs
      actions
 
 * Music Management
+ - Bug in tonality in firefox
+ - Put gettext in all __unicode__
+ - Translate remaining items, mainly ChooseOptions
+ - Modify all event names to show name
+ - Filter locations in select box in Event Creation form
+ - Create suggestion box
+ - Hover in header tables to sort
  - Music management dashboard: put day of week in tables of rehearsals
  - Highlight in whole table when filter, and highlight column when sorting
  - Create a view per user to rating absence items not rated
@@ -33,6 +40,7 @@ Debug False in production and logs
  - Remove maybe actions column from album view
  - Print action for event repertory
  - Print action for main repertory
+ - Replace all alerts to an beautiful alert box
  - Slide show offline for event repertory
  - Mogg upload option for song
  - Undo action

@@ -3,6 +3,7 @@
 from south.modelsinspector import add_introspection_rules
 
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -84,8 +85,20 @@ class Notification(models.Model):
         return self.get_template_context_object()
 
     @property
+    def times_notified(self):
+        times = Notification.objects.filter(
+            content_type=self.content_type,
+            object_id=self.object_id
+        ).count()
+        return times
+
+    @property
     def has_notified(self):
         return bool(self.users_notifications.all().count())
+
+    @property
+    def has_notified_twice(self):
+        return self.times_notified == 2
 
     def send_mails(self):
         for user_notification in self.users_notifications.all():
@@ -119,7 +132,8 @@ class Notification(models.Model):
         )
         template_context = dict(
             instance=instance,
-            notification=notification
+            notification=notification,
+            site_url=settings.SITE_URL
         )
         if context is not None:
             template_context.update(context)

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-{% load i18n draftutils %}
+{% load i18n draftutils notification %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="/media/css/prettyPhoto.css" type="text/css" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" />
     <script type="text/javascript" src="/media/js/buzz.js"></script>
     <script type="text/javascript" src="/media/js/MIDI.js"></script>
     <script type="text/javascript" src="/media/js/base64binary.js"></script>
@@ -31,6 +32,7 @@
 {% object_manage_buttons user 'event' event.id %}
 {% if user.is_authenticated %}
     <div class="manage_buttons">
+        {% notify event 'created' %}
         <form action="{% url delete_event event.id %}" method="post" name="delete_action">
             <a href="javascript:deleteEvent();" class="red">{% trans "Delete this Event" %}</a>
         </form>

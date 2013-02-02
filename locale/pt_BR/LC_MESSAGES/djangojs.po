@@ -48,9 +48,8 @@ msgid "Click to choose all %s at once."
 msgstr "Clique para escolher todos %s de uma vez."
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:67
-#, fuzzy
 msgid "Choose"
-msgstr "Fotos"
+msgstr "Escolha"
 
 #: hbenv/lib/python2.7/site-packages/django/contrib/admin/static/admin/js/SelectFilter2.js:69
 msgid "Remove"

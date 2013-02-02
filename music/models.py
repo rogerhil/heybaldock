@@ -40,10 +40,16 @@ class Rehearsal(models.Model):
     def __unicode__(self):
         temp = get_template_from_string("{{ date }}")
         date = temp.render(Context({'date': self.date}))
-        return u"Rehearsal in %s, %s" % (unicode(self.studio), date)
+        kwargs = dict(studio=unicode(self.studio), date=date)
+        return u"Ensaio no %(studio)s, %(date)s" % kwargs
+        #return _(u"Rehearsal in %(studio)s, %(date)s" % kwargs)
 
     def duration_display(self):
         return TimeDuration.display(self.duration)
+
+    @property
+    def is_upcoming(self):
+        return self.date > datetime.now()
 
     @property
     def url(self):
@@ -731,8 +737,8 @@ class EventRepertory(RepertoryBase):
     band = models.ForeignKey(Band, related_name="event_repertories", null=True)
 
     def __unicode__(self):
-        return "Repertory: %s" % (unicode(self.event) if self.event else
-                                  unicode(self.rehearsal))
+        return _(u"Repertory: %s" % (unicode(self.event) if self.event else
+                                     unicode(self.rehearsal)))
 
     def import_items_from(self, base):
         for item in base.items.all():

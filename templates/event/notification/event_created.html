@@ -8,15 +8,9 @@
 </h2>
 
 <p>
-    {% if instance.rehearsal %}
-        {% blocktrans with instance.rehearsal as rehearsal %}
-            There's a new repertory created for the {{ rehearsal }}.
-        {% endblocktrans %}
-    {% else %}
-        {% blocktrans with instance.event as show %}
-            There's a new repertory created for the show in {{ show }}.
-        {% endblocktrans %}
-    {% endif %}
+    {% blocktrans with instance.starts_at as date and instance.location as location %}
+        There's a new show coming at {{ date }} in {{ location }}.
+    {% endblocktrans %}
 </p>
 
 <p>

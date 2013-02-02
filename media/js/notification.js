@@ -16,7 +16,7 @@ $(window).load(function () {
 			notes: $form.find("textarea[name=notes]").val(),
 			mail: $form.find("input[name=mail]").is(":checked") ? true : ''
 		};
-		showOverlay();
+		showOverlay(gettext("S E N D I N G"));
 		$.ajax({
 			url: url,
 			type: 'post',
@@ -26,7 +26,7 @@ $(window).load(function () {
 				stopCursor();
 				hideOverlay();
 				if (data.success) {
-					alert(gettext("Members has been notified successfully."));
+					notificationsCountUpdate();
 					closeSimpleMenus();
 				} else {
 					alert(data.message);

@@ -14,7 +14,7 @@
 </p>
 
 <p>
-    {% trans "For further information click on the following link:" %} <a href="http://www.heybaldock.com.br{{ instance.url }}">www.heybaldock.com.br{{ instance.url }}</a>.
+    {% trans "For further information click on the following link:" %} <a href="{{ site_url }}{{ instance.url }}">heybaldock.com.br{{ instance.url }}</a>.
 </p>
 
 {% if notification.notes %}

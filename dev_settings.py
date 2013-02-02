@@ -22,3 +22,5 @@ DEBUG = True
 ENABLE_REPERTORY_FEATURES = True
 
 FAKE_EMAIL = 'rogerhil@gmail.com'
+
+SITE_URL = 'http://localhost:8000'

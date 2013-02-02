@@ -7,12 +7,19 @@
         <h3 class="pretty_title">{% trans "Notify members" %}</h3>
         {% if notified %}
             <h2 class="center">
-                {% trans "Already notified." %}
+                {% if notified_once %}
+                    {% trans "Already notified." %}
+                {% else %}
+                    {% if notified_twice %}
+                        {% trans "Already notified twice." %}
+                    {% else %}
+                        {% blocktrans %}Already notified {{ notified_times }} times.{% endblocktrans %}
+                    {% endif %}
+                {% endif %}
             </h2>
-            <p style="width: 200px; margin: 0 auto 0 auto; padding-bottom: 30px;">
+            <p style="width: 250px; margin: 0 auto 0 auto; padding-bottom: 30px;">
                 <a href="javascript:;" class="notify_again" style="float: right">{% trans "Notify again" %}</a>
                 <a href="javascript:;" class="red cancel">{% trans "Close" %}</a>
-
             </p>
         {% endif %}
         <form name="notification_form" method="post" notifyurl="{% url notify app_label model_name instance.id action %}" {% if notified %}style="display: none;"{% endif %}>

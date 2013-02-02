@@ -21,7 +21,9 @@
             <br/>
             <div class="clear"></div>
             <br/>
-            {% notify rehearsal "created" %}
+            {% if rehearsal.is_upcoming %}
+                {% notify rehearsal "created" %}
+            {% endif %}
         {% endif %}
     </div>
 

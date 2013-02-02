@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-01 14:23-0200\n"
+"POT-Creation-Date: 2013-02-02 01:12-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,27 +53,27 @@ msgstr ""
 "Mensagem de %(name)s, e-mail: %(email)s\n"
 "\n"
 
-#: contact/models.py:32
+#: contact/models.py:33
 #, python-format
 msgid "Show %(instance)s"
 msgstr ""
 
-#: contact/models.py:36
+#: contact/models.py:37
 #, python-format
 msgid "Show %(instance)s has been published"
 msgstr "Show %(instance)s foi publicado"
 
-#: contact/models.py:40
+#: contact/models.py:41
 #, python-format
 msgid "Show %(instance)s has been changed"
 msgstr "Show %(instance)s foi modificado"
 
-#: contact/models.py:46 contact/models.py:56
+#: contact/models.py:47 contact/models.py:57
 #, python-format
 msgid "%(instance)s"
 msgstr ""
 
-#: contact/models.py:50 contact/models.py:60
+#: contact/models.py:51 contact/models.py:61
 #, python-format
 msgid "%(instance)s has been changed"
 msgstr "%(instance)s foi modificado"
@@ -7043,7 +7043,7 @@ msgstr "Url de vídeo do youtube inválida"
 
 #: music/decorators.py:13 music/decorators.py:20
 msgid "You can't make any changes in a locked repertory."
-msgstr ""
+msgstr "Você não pode fazer modificações num repertório bloqueado."
 
 #: music/defaults.py:43
 msgid "0 hours"
@@ -7089,27 +7089,38 @@ msgstr "%s minuto"
 msgid "%s minutes"
 msgstr "%s minutos"
 
-#: music/models.py:927
+#: music/models.py:44
+#, python-format
+msgid "Rehearsal in %(studio)s, %(date)s"
+msgstr "Ensaio no(a) %(studio)s, %(date)s"
+
+#: music/models.py:739
+#, python-format
+msgid "Repertory: %s"
+msgstr "Repertório: %s"
+
+#: music/models.py:932
 #, python-format
 msgid "%(user)s sings \"%(song)s\" as %(as_member)s"
 msgstr "%(user)s canta \"%(song)s\" como %(as_member)s"
 
-#: music/models.py:929
+#: music/models.py:934
 #, python-format
 msgid "%(user)s plays %(instrument)s in \"%(song)s\" as %(as_member)s"
 msgstr "%(user)s toca %(instrument)s em \"%(song)s\" como %(as_member)s"
 
-#: music/models.py:933
+#: music/models.py:938
 #, python-format
 msgid "%(user)s sings \"%(song)s\""
 msgstr "%(user)s canta \"%(song)s\""
 
-#: music/models.py:935
+#: music/models.py:940
 #, python-format
 msgid "%(user)s plays %(instrument)s in \"%(song)s\""
 msgstr "%(user)s toca %(instrument)s em \"%(song)s\""
 
 #: music/views.py:105
+#, python-format
 msgid "The permissions of %s was successfully modified."
 msgstr "As permissões de %s foram modificadas com sucesso."
 
@@ -7126,12 +7137,10 @@ msgid "The rehearsal was successfully created."
 msgstr "O ensaio foi criado com sucesso."
 
 #: music/views.py:229
-#, fuzzy
 msgid "The rehearsal was successfully removed."
 msgstr "O ensaio foi removido com sucesso."
 
 #: music/views.py:247
-#, fuzzy
 msgid "The rehearsal was successfully modified."
 msgstr "O ensaio foi modificado com sucesso."
 
@@ -7140,6 +7149,7 @@ msgid "The repertory was successfully created."
 msgstr "O repertório foi criado com sucesso."
 
 #: music/views.py:378 music/views.py:427
+#, python-format
 msgid "Some error occurred while trying to create the repertory. %s"
 msgstr "Erro ocorrido ao tentar criar um repertório. %s"
 
@@ -7160,6 +7170,7 @@ msgid "This repertory was successfully unlocked."
 msgstr "O repertório foi debloqueado com sucesso."
 
 #: music/views.py:566
+#, python-format
 msgid "The \"%s\" was successfully removed."
 msgstr "O \"%s\" foi removido com sucesso."
 
@@ -7275,9 +7286,8 @@ msgid "Manage photos"
 msgstr "Gerenciar fotos"
 
 #: scripts/permissions.py:36
-#, fuzzy
 msgid "Manage locations"
-msgstr "Mais locais"
+msgstr "Gerenciar locais"
 
 #: scripts/permissions.py:39
 msgid "Manage videos"
@@ -7415,7 +7425,7 @@ msgid "This is an automatic email, please don't reply."
 msgstr "Este é um email automático, favor não responder."
 
 #: templates/contact/my_notifications.html:4
-#: templates/contact/notify_button.html:14
+#: templates/contact/notify_button.html:22
 #: templates/music/player_repertory_item_menu.html:119
 msgid "Close"
 msgstr "Fechar"
@@ -7432,23 +7442,32 @@ msgstr "Notificar usuários"
 msgid "Notify members"
 msgstr "Notificar membros"
 
-#: templates/contact/notify_button.html:10
+#: templates/contact/notify_button.html:11
 msgid "Already notified."
 msgstr "Já foi notificado."
 
-#: templates/contact/notify_button.html:13
+#: templates/contact/notify_button.html:14
+msgid "Already notified twice."
+msgstr "Já foi notificado 2 vezes."
+
+#: templates/contact/notify_button.html:16
+#, python-format
+msgid "Already notified %(notified_times)s times."
+msgstr "Já foi modificado %(notified_times)s vezes."
+
+#: templates/contact/notify_button.html:21
 msgid "Notify again"
 msgstr "Notificar novamente"
 
-#: templates/contact/notify_button.html:21
+#: templates/contact/notify_button.html:28
 msgid "Notes (optional)"
 msgstr "Notas (opcional)"
 
-#: templates/contact/notify_button.html:27
+#: templates/contact/notify_button.html:34
 msgid "Also send email to users"
 msgstr "Enviar também email para os usuários"
 
-#: templates/contact/notify_button.html:33 templates/draft/edit.html:26
+#: templates/contact/notify_button.html:40 templates/draft/edit.html:26
 #: templates/music/add_event_repertory.html:51
 #: templates/music/add_instrument.html:15
 #: templates/music/add_instrument_tag_type.html:15
@@ -7458,7 +7477,7 @@ msgstr "Enviar também email para os usuários"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: templates/contact/notify_button.html:34
+#: templates/contact/notify_button.html:41
 msgid "Notify"
 msgstr "Notificar"
 
@@ -7514,25 +7533,25 @@ msgstr "Tipo"
 msgid "Made by"
 msgstr "Feito por"
 
-#: templates/event/details.html:26 templates/music/rehearsal.html:52
+#: templates/event/details.html:26 templates/music/rehearsal.html:54
 msgid "Repertory: "
 msgstr "Repertório: "
 
-#: templates/event/details.html:29 templates/music/rehearsal.html:55
+#: templates/event/details.html:29 templates/music/rehearsal.html:57
 msgid "click here to see the repertory"
 msgstr "clique aqui para para ver o repertório"
 
 #: templates/event/details.html:35 templates/music/main_repertory.html:46
-#: templates/music/rehearsal.html:61
+#: templates/music/rehearsal.html:63
 msgid "Repertory:"
 msgstr "Repertório:"
 
-#: templates/event/details.html:36 templates/music/rehearsal.html:63
+#: templates/event/details.html:36 templates/music/rehearsal.html:65
 msgid "Create a new one from scratch"
 msgstr "Criar um novo do começo"
 
-#: templates/event/details.html:36 templates/music/rehearsal.html:63
-#: templates/music/rehearsal.html.py:65
+#: templates/event/details.html:36 templates/music/rehearsal.html:65
+#: templates/music/rehearsal.html.py:67
 msgid " or"
 msgstr " ou"
 
@@ -7552,16 +7571,16 @@ msgstr "Veja os vídeos abaixo relacionados a este evento"
 msgid "Repertory of the day"
 msgstr "Repertório do dia"
 
-#: templates/event/event_details.html:23
+#: templates/event/event_details.html:24
 #, python-format
 msgid "Hey Baldock Event %(name)s"
 msgstr "Evento da Hey Baldock %(name)s"
 
-#: templates/event/event_details.html:35
+#: templates/event/event_details.html:37
 msgid "Delete this Event"
 msgstr "Remover este Evento"
 
-#: templates/event/event_details.html:43
+#: templates/event/event_details.html:45
 msgid "More events"
 msgstr "Mais eventos"
 
@@ -7632,23 +7651,50 @@ msgid "Locations"
 msgstr "Locais"
 
 #: templates/event/portlet.html:11
-#, fuzzy
 msgid "Events"
-msgstr "Evento"
+msgstr "Eventos"
+
+#: templates/event/notification/event_created.html:5
+#: templates/music/notification/event_repertory_created.html:5
+#: templates/music/notification/rehearsal_created.html:5
+#, python-format
+msgid ""
+"\n"
+"        Hi %(user)s,\n"
+"    "
+msgstr ""
+"\n"
+"        Olá %(user)s,\n"
+"    "
+
+#: templates/event/notification/event_created.html:11
+#, python-format
+msgid ""
+"\n"
+"        There's a new show coming at %(date)s in %(location)s.\n"
+"    "
+msgstr ""
+"\n"
+"        Existe um novo show marcado em %(date)s no %(location)s.\n"
+"    "
+
+#: templates/event/notification/event_created.html:17
+#: templates/music/notification/event_repertory_created.html:23
+#: templates/music/notification/rehearsal_created.html:17
+msgid "For further information click on the following link:"
+msgstr "Para informações adicionais, clique no seguinte link:"
 
 #: templates/music/add_album.html:19 templates/music/album.html:18
 #: templates/music/artist_albums.html:15
 #: templates/music/artist_details.html:14
-#, fuzzy
 msgid "View all artists"
-msgstr "Ver todos"
+msgstr "Ver todos artistas"
 
 #: templates/music/add_album.html:23 templates/music/album.html:20
 #: templates/music/albums.html:18 templates/music/artist_albums.html:18
 #: templates/music/artist_details.html:16 templates/music/artists.html:13
-#, fuzzy
 msgid "Add album"
-msgstr "Adicionar álbum de vídeos"
+msgstr "Adicionar álbum"
 
 #: templates/music/add_album.html:24
 msgid "Please, fill the fields below to make a search first"
@@ -7712,7 +7758,7 @@ msgstr "Posição"
 
 #: templates/music/album.html:64
 #: templates/music/public_event_repertory.html:21
-#: templates/music/rehearsal.html:42
+#: templates/music/rehearsal.html:44
 msgid "Duration"
 msgstr "Duração"
 
@@ -8189,6 +8235,7 @@ msgid "Submit"
 msgstr "Submeter"
 
 #: templates/music/event_repertory_item_content.html:17
+#, python-format
 msgid ""
 "\n"
 "                    Interval of %(interval)s\n"
@@ -8489,7 +8536,7 @@ msgstr "Notas"
 msgid "Rehearsals"
 msgstr "Ensaios"
 
-#: templates/music/rehearsal.html:30
+#: templates/music/rehearsal.html:32
 #, python-format
 msgid ""
 "\n"
@@ -8500,35 +8547,35 @@ msgstr ""
 "                Ensaio em %(name)s\n"
 "            "
 
-#: templates/music/rehearsal.html:36 templates/music/rehearsals_table.html:6
+#: templates/music/rehearsal.html:38 templates/music/rehearsals_table.html:6
 msgid "When"
 msgstr "Quando"
 
-#: templates/music/rehearsal.html:39
+#: templates/music/rehearsal.html:41
 msgid "Where:"
 msgstr "Onde:"
 
-#: templates/music/rehearsal.html:45 templates/music/rehearsals_table.html:7
+#: templates/music/rehearsal.html:47 templates/music/rehearsals_table.html:7
 msgid "Cost"
 msgstr "Custo"
 
-#: templates/music/rehearsal.html:47
+#: templates/music/rehearsal.html:49
 msgid "paid by"
 msgstr "pago por"
 
-#: templates/music/rehearsal.html:65
+#: templates/music/rehearsal.html:67
 msgid "Create a repertory based on songs of the last rehearsal."
 msgstr "Criar um repertório baseado nas músicas do último ensaio."
 
-#: templates/music/rehearsal.html:67
+#: templates/music/rehearsal.html:69
 msgid "Create a repertory through statistics"
 msgstr "Criar um repertório através de estatísticas"
 
-#: templates/music/rehearsal.html:72
+#: templates/music/rehearsal.html:74
 msgid "Notes:"
 msgstr "Notas:"
 
-#: templates/music/rehearsal.html:79
+#: templates/music/rehearsal.html:81
 #, python-format
 msgid ""
 "\n"
@@ -8749,8 +8796,8 @@ msgstr "Clique aqui para adicionar músicas no repertório principal."
 
 #: templates/music/repertories_table_content.html:33
 msgid "Or click here to add new repertory based on event."
-msgstr "Ou clique aqui para adicionar um novo repertório baseado em algum "
-"evento."
+msgstr ""
+"Ou clique aqui para adicionar um novo repertório baseado em algum evento."
 
 #: templates/music/song_line.html:20
 msgid "Upload audio song"
@@ -8767,18 +8814,6 @@ msgstr "Ok"
 #: templates/music/song_line.html:86
 msgid "Add to Main Repertory"
 msgstr "Adicionar no Repertório Principal"
-
-#: templates/music/notification/event_repertory_created.html:5
-#: templates/music/notification/rehearsal_created.html:5
-#, python-format
-msgid ""
-"\n"
-"        Hi %(user)s,\n"
-"    "
-msgstr ""
-"\n"
-"        Olá %(user)s,\n"
-"    "
 
 #: templates/music/notification/event_repertory_created.html:12
 #, python-format
@@ -8801,11 +8836,6 @@ msgstr ""
 "\n"
 "            Existe um repertório criado para o show em %(show)s.\n"
 "        "
-
-#: templates/music/notification/event_repertory_created.html:23
-#: templates/music/notification/rehearsal_created.html:17
-msgid "For further information click on the following link:"
-msgstr "Para informações adicionais, clique no seguinte link:"
 
 #: templates/music/notification/rehearsal_created.html:11
 #, python-format
