@@ -183,7 +183,8 @@ ul {
 }
 
 .table_list .even {
-    background-color: #afbfcf;
+    /*background-color: #afbfcf;*/
+    background-image: url(/media/img/content_bg_2.png);
 }
 
 .table_list tr {
@@ -1578,7 +1579,7 @@ thead tr.table_head_actions th {
 }
 
 thead tr.table_head_actions th div.action {
-    background: #00008b;
+    background: #2b3543;
     color: #ffffff;
     padding: 2px 4px 2px 4px;
     border-radius: 3px;
