@@ -27,14 +27,15 @@ Debug False in production and logs
      - Put gettext in all __unicode__
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
- - Highlight in whole table when filter, and highlight column when sorting
- - Music management dashboard: put day of week in tables of rehearsals
+
  - Create a view per user to rating absence items not rated
  - Improve header stats view
  - Repertory for event actions like: order by dynamic
  - Music management best menu navigation
  - Permissions for manage past events repertories
  - Remove maybe actions column from album view
+ - Events view, improve showing like photo albums, item more detailed with
+   image event flyer etc.
  - Print action for event repertory
  - Print action for main repertory
  - Replace all alerts to an beautiful alert box

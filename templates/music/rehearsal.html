@@ -35,7 +35,7 @@
         </h1>
 
         <p>
-            <strong>{% trans "When" %}:</strong> {{ rehearsal.date }}
+            <strong>{% trans "When" %}:</strong> {{ rehearsal.date|date:"l" }}, {{ rehearsal.date }}
         </p>
         <p>
             <strong>{% trans "Where:" %}</strong> {{ rehearsal.studio.name }}

@@ -37,9 +37,11 @@
     <div class="clear"></div>
     <div>
         <div style="width: 450px; float: left;">
-            <h2>{% trans "Upcoming Rehearsals" %}</h2>
+            <a href="{% url rehearsals %}" alt="{% trans "Click here to see all rehearsals" %}" title="{% trans "Click here to see all rehearsals" %}">
+                <h2>{% trans "Upcoming Rehearsals" %}</h2>
+            </a>
             {% if all_rehearsals.upcoming %}
-                {% with all_rehearsals.upcoming as rehearsals %}
+                {% with all_rehearsals.upcoming as rehearsals and 1 as short_table %}
                     {% include "music/rehearsals_table.html" %}
                 {% endwith %}
             {% else %}
@@ -47,9 +49,11 @@
             {% endif %}
         </div>
         <div style="width: 450px; float: right;">
-            <h2>{% trans "Past 5 Rehearsals" %}</h2>
+            <a href="{% url rehearsals %}" alt="{% trans "Click here to see all rehearsals" %}" title="{% trans "Click here to see all rehearsals" %}">
+                <h2>{% trans "Past 5 Rehearsals" %}</h2>
+            </a>
             {% if all_rehearsals.past %}
-                {% with all_rehearsals.past as rehearsals %}
+                {% with all_rehearsals.past as rehearsals and 1 as short_table %}
                     {% include "music/rehearsals_table.html" %}
                 {% endwith %}
             {% else %}
@@ -58,7 +62,7 @@
         </div>
         <div class="clear"></div>
         <p>
-            <a href="{% url rehearsals %}">
+            <a href="{% url rehearsals %}" alt="{% trans "Click here to see all rehearsals" %}" title="{% trans "Click here to see all rehearsals" %}">
                 {% trans "Click here to see all rehearsals" %}
             </a>
         </p>

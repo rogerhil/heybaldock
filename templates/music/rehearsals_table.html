@@ -4,15 +4,19 @@
         <tr>
             <th>{% trans "Studio" %}</th>
             <th>{% trans "When" %}</th>
-            <th>{% trans "Cost" %}</th>
-            <th>{% trans "Paid By" %}</th>
+            {% if not short_table %}
+                <th>{% trans "Cost" %}</th>
+                <th>{% trans "Paid By" %}</th>
+            {% endif %}
         </tr>
         {% for rehearsal in rehearsals %}
             <tr class="{% cycle odd,even %}" onclick="window.location = '{% url rehearsal rehearsal.id %}'">
                 <td>{{ rehearsal.studio.name }}</td>
-                <td>{{ rehearsal.date }}</td>
-                <td>{{ rehearsal.cost }}</td>
-                <td>{{ rehearsal.paid_by.first_name }}</td>
+                <td>{{ rehearsal.date|date:"l" }}, {{ rehearsal.date }}</td>
+                {% if not short_table %}
+                    <td>{{ rehearsal.cost }}</td>
+                    <td>{{ rehearsal.paid_by.nick }}</td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>

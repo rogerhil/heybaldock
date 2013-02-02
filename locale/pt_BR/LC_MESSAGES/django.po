@@ -8409,7 +8409,7 @@ msgstr "Repertórios"
 
 #: templates/music/music_management.html:40 templates/music/rehearsals.html:15
 msgid "Upcoming Rehearsals"
-msgstr "Eventos recentes"
+msgstr "Próximos ensaios"
 
 #: templates/music/music_management.html:46 templates/music/rehearsals.html:21
 msgid "There's no upcoming rehearsals."
