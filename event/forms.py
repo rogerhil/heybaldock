@@ -2,7 +2,7 @@
 from django.forms import ValidationError
 from django.utils.translation import ugettext as _
 
-from models import Event, Location
+from models import Event, Location, LocationType
 from draft import forms
 
 
@@ -12,6 +12,12 @@ class EventForm(forms.CmsForm):
         model = Event
         fields = ('name', 'description', 'content', 'starts_at', 'ends_at',
                   'location')
+
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+        choices = Location.objects.filter(location_type=LocationType.show)
+        self.fields['location'].choices = [(i.id, i) for i in choices]
+
 
 
 class LocationForm(forms.CmsForm):

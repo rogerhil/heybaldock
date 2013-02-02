@@ -23,15 +23,14 @@ Debug False in production and logs
      actions
 
 * Music Management
- - Put gettext in all __unicode__
- - Translate remaining items, mainly ChooseOptions
- - Modify all event names to show name
  - Filter locations in select box in Event Creation form
  - Hover in header tables to sort
  - Music management dashboard: put day of week in tables of rehearsals
  - Highlight in whole table when filter, and highlight column when sorting
  - Create a view per user to rating absence items not rated
  - Improve header stats view
+ - Put gettext in all __unicode__
+ - Translate remaining items, mainly ChooseOptions
  - Repertory for event actions like: order by dynamic
  - Music management best menu navigation
  - Permissions for manage past events repertories
