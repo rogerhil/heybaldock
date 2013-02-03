@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-03 13:21-0200\n"
+"POT-Creation-Date: 2013-02-03 20:20-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-#: contact/forms.py:13 event/models.py:62 event/models.py:129
+#: contact/forms.py:13 event/models.py:64 event/models.py:131
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/forms.py:96
 #: photo/models.py:16 templates/event/event_list.html:11
 #: templates/event/location_list.html:22
@@ -116,75 +116,75 @@ msgstr "Favor fornecer o telefone somente com dígitos"
 msgid "Phone must have at least 8 digits"
 msgstr "Favor fornecer o telefone com no mínimo 8 dígitos"
 
-#: event/models.py:63 event/models.py:130 photo/models.py:17
+#: event/models.py:65 event/models.py:132 photo/models.py:17
 #: photo/models.py:54 section/models.py:27 video/models.py:14
 #: video/models.py:70
 msgid "Description"
 msgstr "Descrição"
 
-#: event/models.py:64
+#: event/models.py:66
 msgid "Zip code"
 msgstr "CEP"
 
-#: event/models.py:65
+#: event/models.py:67
 msgid "Street"
 msgstr "Logradouro"
 
-#: event/models.py:66
+#: event/models.py:68
 msgid "District"
 msgstr "Bairro"
 
-#: event/models.py:67
+#: event/models.py:69
 msgid "Number"
 msgstr "Número"
 
-#: event/models.py:68
+#: event/models.py:70
 msgid "Complement"
 msgstr "Complemento"
 
-#: event/models.py:69 templates/event/location_list.html:28
+#: event/models.py:71 templates/event/location_list.html:28
 msgid "City"
 msgstr "Cidade"
 
-#: event/models.py:70
+#: event/models.py:72
 msgid "State"
 msgstr "Estado"
 
-#: event/models.py:71
+#: event/models.py:73 music/forms.py:63
 msgid "Country"
 msgstr "País"
 
-#: event/models.py:74 photo/models.py:55
+#: event/models.py:76 music/forms.py:62 photo/models.py:55
 #: templates/music/public_event_repertory.html:15
 #: templates/music/repertories_statistics_actions.html:98
 #: templates/music/repertories_statistics_content.html:37 video/models.py:71
 msgid "Album"
 msgstr "Álbum"
 
-#: event/models.py:75
+#: event/models.py:77
 msgid "Phone 1"
 msgstr "Telefone 1"
 
-#: event/models.py:76
+#: event/models.py:78
 msgid "Phone 2"
 msgstr "Telefone 2"
 
-#: event/models.py:77
+#: event/models.py:79
 msgid "Phone 3"
 msgstr "Telefone 3"
 
-#: event/models.py:131
+#: event/models.py:133
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/admin.py:12
 #: section/models.py:29
 msgid "Content"
 msgstr "Conteúdo"
 
-#: event/models.py:134 hbauth/models.py:15 section/decorators.py:23
+#: event/models.py:136 hbauth/models.py:15 section/decorators.py:23
 #: templates/event/event_list.html:14
 msgid "Location"
 msgstr "Local"
 
-#: event/models.py:154
+#: event/models.py:156
 #, python-format
 msgid "from %(start)s to %(end)s"
 msgstr "de %(start)s até %(end)s"
@@ -7094,102 +7094,112 @@ msgstr "%s minuto"
 msgid "%s minutes"
 msgstr "%s minutos"
 
-#: music/models.py:933
+#: music/forms.py:61 templates/music/public_event_repertory.html:12
+#: templates/music/repertories_statistics_actions.html:94
+#: templates/music/repertories_statistics_content.html:34
+msgid "Artist"
+msgstr "Artista"
+
+#: music/forms.py:64
+msgid "From Year"
+msgstr "Do ano"
+
+#: music/models.py:948
 #, python-format
 msgid "%(user)s sings \"%(song)s\" as %(as_member)s"
 msgstr "%(user)s canta \"%(song)s\" como %(as_member)s"
 
-#: music/models.py:935
+#: music/models.py:950
 #, python-format
 msgid "%(user)s plays %(instrument)s in \"%(song)s\" as %(as_member)s"
 msgstr "%(user)s toca %(instrument)s em \"%(song)s\" como %(as_member)s"
 
-#: music/models.py:939
+#: music/models.py:954
 #, python-format
 msgid "%(user)s sings \"%(song)s\""
 msgstr "%(user)s canta \"%(song)s\""
 
-#: music/models.py:941
+#: music/models.py:956
 #, python-format
 msgid "%(user)s plays %(instrument)s in \"%(song)s\""
 msgstr "%(user)s toca %(instrument)s em \"%(song)s\""
 
-#: music/views.py:105
+#: music/views.py:115
 #, python-format
 msgid "The permissions of %s was successfully modified."
 msgstr "As permissões de %s foram modificadas com sucesso."
 
-#: music/views.py:124
+#: music/views.py:134
 msgid "The band settings was successfully changed."
 msgstr "As configurações da banda foram modificadas com sucesso."
 
-#: music/views.py:161
+#: music/views.py:171
 msgid "The band was successfully added."
 msgstr "A banda foi adicionada com sucesso."
 
-#: music/views.py:205
+#: music/views.py:215
 msgid "The rehearsal was successfully created."
 msgstr "O ensaio foi criado com sucesso."
 
-#: music/views.py:229
+#: music/views.py:239
 msgid "The rehearsal was successfully removed."
 msgstr "O ensaio foi removido com sucesso."
 
-#: music/views.py:247
+#: music/views.py:257
 msgid "The rehearsal was successfully modified."
 msgstr "O ensaio foi modificado com sucesso."
 
-#: music/views.py:275 music/views.py:374 music/views.py:421
+#: music/views.py:285 music/views.py:384 music/views.py:431
 msgid "The repertory was successfully created."
 msgstr "O repertório foi criado com sucesso."
 
-#: music/views.py:378 music/views.py:427
+#: music/views.py:388 music/views.py:437
 #, python-format
 msgid "Some error occurred while trying to create the repertory. %s"
 msgstr "Erro ocorrido ao tentar criar um repertório. %s"
 
-#: music/views.py:489 music/views.py:534
+#: music/views.py:499 music/views.py:544
 msgid "The repertory is locked for edition by you."
 msgstr "O repertório está bloqueado para edição por você."
 
-#: music/views.py:492 music/views.py:537
+#: music/views.py:502 music/views.py:547
 msgid "You can't unlock a repertory already locked."
 msgstr "Você não pode bloquear um repertório já bloqueado."
 
-#: music/views.py:496 music/views.py:541
+#: music/views.py:506 music/views.py:551
 msgid "This repertory is already unlocked."
 msgstr "Este repertório já está desbloqueado."
 
-#: music/views.py:501 music/views.py:546
+#: music/views.py:511 music/views.py:556
 msgid "This repertory was successfully unlocked."
 msgstr "O repertório foi debloqueado com sucesso."
 
-#: music/views.py:567
+#: music/views.py:577
 #, python-format
 msgid "The \"%s\" was successfully removed."
 msgstr "O \"%s\" foi removido com sucesso."
 
-#: music/views.py:820
+#: music/views.py:830
 msgid "The album was successfully registered."
 msgstr "O álbum foi registrado com sucesso."
 
-#: music/views.py:852
+#: music/views.py:862
 msgid "The album was successfully removed."
 msgstr "O álbum foi removido com sucesso."
 
-#: music/views.py:1015
+#: music/views.py:1025
 msgid "This song is in trash, you can restore it from there!"
 msgstr "Esta música está na lixeira, você pode restaurá-la se quiser."
 
-#: music/views.py:1018 music/views.py:1035
+#: music/views.py:1028 music/views.py:1045
 msgid "Song already exist in repertory!"
 msgstr "Esta música já se encontra no repertório."
 
-#: music/views.py:1377
+#: music/views.py:1387
 msgid "The instrument was successfully added."
 msgstr "O instrumento foi adicionado com sucesso."
 
-#: music/views.py:1799
+#: music/views.py:1809
 msgid "The instrument tag type was successfully added."
 msgstr "A tag de instrumento foi adicionada com sucesso."
 
@@ -7616,7 +7626,7 @@ msgstr "Não existem próximos eventos agora."
 msgid "You can look at the past events by clicking in the button below."
 msgstr "Você pode ver os eventos passados clicando no botão abaixo."
 
-#: templates/event/location_address.html:5 templates/music/rehearsal.html:88
+#: templates/event/location_address.html:5 templates/music/rehearsal.html:87
 msgid "ZIpcode: "
 msgstr "CEP: "
 
@@ -7649,7 +7659,7 @@ msgstr "Listagem de locais cuja banda Hey Baldock costuma fazer apresentações"
 msgid "Locations list"
 msgstr "Listagem de locais"
 
-#: templates/event/location_list.html:25 templates/music/rehearsal.html:83
+#: templates/event/location_list.html:25 templates/music/rehearsal.html:84
 msgid "Address"
 msgstr "Endereço"
 
@@ -7713,8 +7723,16 @@ msgid "Please, fill the fields below to make a search first"
 msgstr "Favor, preencha os campos abaixo para fazer um busca primeiro"
 
 #: templates/music/add_album.html:37
-msgid "Custom info"
-msgstr "Informação personalizada"
+msgid "Research"
+msgstr "Pesquisar"
+
+#: templates/music/add_album.html:42
+msgid "Album information results"
+msgstr "Resultados das informações do álbum"
+
+#: templates/music/add_album.html:44
+msgid "No results yet."
+msgstr "Nenhum resultado ainda."
 
 #: templates/music/add_band.html:9
 msgid "Add band"
@@ -7967,27 +7985,27 @@ msgid "Time total:"
 msgstr "Tempo total:"
 
 #: templates/music/event_repertory.html:88
-#: templates/music/main_repertory.html:82
+#: templates/music/main_repertory.html:84
 msgid "Lock this repertory for edition"
 msgstr "Bloquear este repertório para edição"
 
 #: templates/music/event_repertory.html:98
-#: templates/music/main_repertory.html:92
+#: templates/music/main_repertory.html:94
 msgid "Unlock this repertory"
 msgstr "Desbloquear este repertório"
 
 #: templates/music/event_repertory.html:104
-#: templates/music/main_repertory.html:98
+#: templates/music/main_repertory.html:100
 msgid "This repertory is locked by"
 msgstr "Este repertório está bloqueado por"
 
 #: templates/music/event_repertory.html:105
-#: templates/music/main_repertory.html:99
+#: templates/music/main_repertory.html:101
 msgid "It's avaliable for read only."
 msgstr "Está disponível para somente leitura."
 
 #: templates/music/event_repertory.html:111
-#: templates/music/main_repertory.html:105
+#: templates/music/main_repertory.html:107
 msgid ""
 "This repertory is available for read only since you don't have permission to "
 "manage the Main Repertory."
@@ -8490,12 +8508,6 @@ msgstr "Selecione tag"
 #: templates/music/public_event_repertory.html:9
 msgid "Cover"
 msgstr "Capa"
-
-#: templates/music/public_event_repertory.html:12
-#: templates/music/repertories_statistics_actions.html:94
-#: templates/music/repertories_statistics_content.html:34
-msgid "Artist"
-msgstr "Artista"
 
 #: templates/music/public_event_repertory.html:33
 #, python-format
@@ -9042,6 +9054,9 @@ msgid "Error while trying to delete the \"%(name)s\" video album. %(err)s"
 msgstr ""
 "Erro occorrido ao tentar remover o álbum de vídeos \"%(name)s\". %(err)s"
 
+#~ msgid "Custom info"
+#~ msgstr "Informação personalizada"
+
 #~ msgid "Actions"
 #~ msgstr "Ações"
 
@@ -9092,6 +9107,3 @@ msgstr ""
 
 #~ msgid "EDIT MODE"
 #~ msgstr "MODO DE EDIÇÃO"
-
-#~ msgid "No results found"
-#~ msgstr "Nenhum resultado encontrado"

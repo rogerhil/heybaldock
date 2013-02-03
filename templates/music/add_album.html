@@ -34,14 +34,14 @@
             {% csrf_token %}
             {{ form.as_ul }}
             <div class="clear"></div>
-            <input type="button" class="submit" value="{% trans "Custom info" %}" name="custom_info" style="float: none; margin-left: 140px;" />
+            <input type="button" class="submit" value="{% trans "Research" %}" name="custom_info" style="float: none; margin-left: 140px;" />
         </form>
     </div>
 
     <div>
-        <h2>Album information results</h2>
+        <h2>{% trans "Album information results" %}</h2>
         <div id="album_info_results">
-            Nothing yet.
+            {% trans "No results yet." %}
         </div>
     </div>
     <br />

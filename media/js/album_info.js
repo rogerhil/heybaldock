@@ -15,7 +15,7 @@ $(window).load(function () {
 	});
 	tillYear = 1960 + maxYears;
 	tillYear = tillYear <= currentYear ? tillYear : currentYear;
-	$("<strong>till " + tillYear + "</strong>").insertAfter($fromYear);
+	$("<strong>até " + tillYear + "</strong>").insertAfter($fromYear);
 });
 
 function registerAlbum() {

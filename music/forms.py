@@ -5,6 +5,7 @@ from datetime import datetime
 
 from django import forms
 from django.utils import simplejson
+from django.utils.translation import ugettext as _
 
 from models import EventRepertory, Album, Artist, Song, AlbumStyle, \
                    AlbumGenre, Composer, ComposerRole, Instrument, Player, \
@@ -57,12 +58,11 @@ class AlbumInfoForm(forms.Form):
 
     YEAR_CHOICES = [(i, i) for i in range(1955, datetime.now().year)]
 
-    artist = forms.CharField(max_length=128, required=True)
-    album = forms.CharField(max_length=128, required=True)
-    country = forms.ChoiceField(choices=COUNTRY_CHOICES)
-    from_year = forms.ChoiceField(choices=YEAR_CHOICES, initial=1960)
-    #composers_info = forms.BooleanField(initial=True)
-    #track_list_enumeration = forms.BooleanField(initial=True)
+    artist = forms.CharField(label=_("Artist"), max_length=128, required=True)
+    album = forms.CharField(label=_("Album"), max_length=128, required=True)
+    country = forms.ChoiceField(label=_("Country"), choices=COUNTRY_CHOICES)
+    from_year = forms.ChoiceField(label=_("From Year"), choices=YEAR_CHOICES,
+                                  initial=1960)
 
 
 class SongForm(forms.Form):
