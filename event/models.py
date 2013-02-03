@@ -5,6 +5,7 @@ from datetime import datetime
 from django.db import models
 from django.db.models.signals import pre_save, pre_delete
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 from contact.models import Notification

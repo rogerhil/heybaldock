@@ -27,7 +27,6 @@ Debug False in production and logs
      - Put gettext in all __unicode__
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
- - Remove event is not working
  - Translate better the Add Album page
  - Repertory for event actions like: order by dynamic
  - Permissions for manage past events repertories
