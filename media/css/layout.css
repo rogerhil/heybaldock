@@ -1285,7 +1285,7 @@ div.pretty_select h3 {
     background-color: #2b3543;
     color: #eae6cc;
     border-radius: 5px;
-    margin-bottom: 10px;
+    float: none !important;
 }
 
 div.pretty_select h3.play,

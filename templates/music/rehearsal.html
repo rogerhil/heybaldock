@@ -10,7 +10,7 @@
 {% block actions %}
     {% if permissions.manage_rehearsals %}
         {% if rehearsal.is_upcoming %}
-            {% notify rehearsal "created" %}
+            <a href="javascript:;" id="notify_users">{% trans "Notify users about this rehearsal" %}</a>
         {% endif %}
         <a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a>
         <a href="{% url add_rehearsal %}">{% trans "Add" %}</a>
@@ -25,6 +25,9 @@
 {% endblock %}
 
 {% block music_content %}
+    {% if rehearsal.is_upcoming %}
+        {% notify rehearsal "created" %}
+    {% endif %}
     <h1>
         {% blocktrans with rehearsal.studio.name as name %}
             Rehearsal in {{ name }}
@@ -59,28 +62,27 @@
                 </p>
             {% else %}
                 <p>
-                    <strong style="float: left; height: 40px; margin-right: 5px;">{% trans "Repertory:" %}</strong>
-                    <div>
-                        <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
-                        <br/>
-                        <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last rehearsal." %}</a>{% trans " or" %}
-                        <br/>
-                        <a href="{% url repertories_statistics %}?rehearsal={{ rehearsal.id }}" style="text-decoration: underline;">{% trans "Create a repertory through statistics" %}</a>
-                    </div>
+                    <strong>{% trans "Repertory:" %}</strong>
+                    <br/>
+                    1. <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
+                    <br/>
+                    2. <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last rehearsal." %}</a>{% trans " or" %}
+                    <br/>
+                    3. <a href="{% url repertories_statistics %}?rehearsal={{ rehearsal.id }}" style="text-decoration: underline;">{% trans "Create a repertory through statistics" %}</a>
+
                 </p>
             {% endif %}
+            {% if rehearsal.notes %}
+                <strong>{% trans "Notes:" %}</strong>
+                <br/>
+                {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
+                <br/>
+                <div class="clear"></div>
+            {% endif %}
 
-            <strong>{% trans "Notes:" %}</strong>
-            <br/>
-            {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
-            <br/>
-            <div class="clear"></div>
             <p>
-                <strong>
-                    {% trans "Address" %}
-                </strong>
-            </p>
-            <p>
+                <strong>{% trans "Address" %}</strong>
+                <br/>
                 {{ location.address }}<br />
                 {% trans 'ZIpcode: ' %}{{ location.zipcode_display }}<br />
                 {{ location.city }} - {{ location.state }}<br />

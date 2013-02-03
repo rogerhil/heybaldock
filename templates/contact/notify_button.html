@@ -1,9 +1,7 @@
 {% load i18n %}
 
-<a href="javascript:;" id="notify_users">{% trans "Notify users" %}</a>
-
-<div style="position: relative;">
-    <div id="notification_menu" class="simple_menu pretty_form" style="width: 490px;">
+<div class="manage_buttons" style="position: relative;">
+    <div id="notification_menu" class="simple_menu pretty_form" style="width: 490px; padding: 3px;">
         <h3 class="pretty_title">{% trans "Notify members" %}</h3>
         {% if notified %}
             <h2 class="center">

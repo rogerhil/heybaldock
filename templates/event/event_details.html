@@ -28,9 +28,9 @@
 {% endblock %}
 
 {% block management_menu_items %}
-    {% object_manage_buttons user 'event' event.id %}
     {% if user.is_authenticated %}
-        {% notify event 'created' %}
+        <a href="javascript:;" id="notify_users">{% trans "Notify users about this show" %}</a>
+        {% object_manage_buttons user 'event' event.id %}
         <form action="{% url delete_event event.id %}" method="post" name="delete_action">
             <a href="javascript:deleteEvent();" class="red">{% trans "Delete this Event" %}</a>
         </form>
@@ -38,17 +38,20 @@
 {% endblock %}
 
 {% block content %}
+    {% if user.is_authenticated %}
+        {% notify event 'created' %}
+    {% endif %}
 
-<div class="clear"></div>
-{% include "event/details.html" %}
-<div class="clear"></div>
-<br />
-<a class="button" href="/eventos/">{% trans 'More events' %}</a>
+    <div class="clear"></div>
+    {% include "event/details.html" %}
+    <div class="clear"></div>
+    <br />
+    <a class="button" href="/eventos/">{% trans 'More events' %}</a>
 
-{% with event.url as url %}
-    {% include "facebook_comments.html" %}
-{% endwith %}
+    {% with event.url as url %}
+        {% include "facebook_comments.html" %}
+    {% endwith %}
 
-<div class="clear"></div>
+    <div class="clear"></div>
 
 {% endblock %}
