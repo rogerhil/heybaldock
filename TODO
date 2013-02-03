@@ -27,6 +27,9 @@ Debug False in production and logs
      - Put gettext in all __unicode__
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
+ - Fix /auth/login, currently with Comming soon
+ - Verify deleted items and Notification box (for example: delete rehearsal)
+ - Fix some layout issues like in repertory stats
  - Repertory for event actions like: order by dynamic
  - Permissions for manage past events repertories
  - Events view, improve showing like photo albums, item more detailed with

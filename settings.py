@@ -225,7 +225,7 @@ S3_BUCKET_NAME = 'heybaldock'
 
 ENABLE_REPERTORY_FEATURES = True
 
-SITE_URL = "http://heybaldock.com.br"
+SITE_URL = "http://www.heybaldock.com.br"
 
 import os
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'dev')  # dev, production, qa, etc
