@@ -49,6 +49,8 @@ def main(request):
     return c
 
 def repertories_unrated(user):
+    if not user.is_authenticated:
+        return
     now = datetime.now()
     rehearsals = Rehearsal.objects.filter(date__lte=now)
     for rehearsal in rehearsals:
