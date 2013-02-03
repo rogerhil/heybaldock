@@ -70,7 +70,9 @@
     </h3>
     <div class="clear"></div>
     <br/>
-    {% include "music/repertories_stats.html" %}
+    <div id="stats" updateurl="{% url repertories_stats %}">
+        {% include "music/repertories_stats.html" %}
+    </div>
     <div class="clear"></div>
     <br/>
     {% if has_perm %}

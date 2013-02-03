@@ -1,28 +1,32 @@
 {% load i18n %}
-<div id="stats">
-    <div style="float: left; width: 435px; background: url(/media/img/content_bg_2.png); padding: 10px; border-radius: 7px;">
-        <strong style="font-size: 15px;">{% trans "Statuses" %} ({% trans "total" %}: {{ stats.total }})</strong>
-        <br/>
-        <br/>
-        <div style="float: left; width: 150px;">
-            <div class="song_status status1"><strong>{% trans "New: " %}</strong>{{ stats.new }}</div>
-            <div class="song_status status5"><strong>{% trans "Ready: " %}</strong>{{ stats.ready }}</div>
-            <div class="song_status status4"><strong>{% trans "Working: " %}</strong>{{ stats.working }}</div>
-        </div>
-        <div style="width: 150px; float: right; margin-right: 125px;">
-            <div class="song_status status6"><strong>{% trans "Abandoned: " %}</strong>{{ stats.abandoned }}</div>
-            <div class="song_status status3"><strong>{% trans "Restored: " %}</strong>{{ stats.restored }}</div>
-            <div class="song_status status2"><strong>{% trans "In trash: " %}</strong>{{ stats.trash }}</div>
-        </div>
-        <div class="clear"></div>
+
+<div style="float: left; width: 435px; background: url(/media/img/content_bg_2.png); padding: 10px; border-radius: 7px;">
+    <strong style="font-size: 15px;">{% trans "Statuses" %} ({% trans "total" %}: {{ stats.total }})</strong>
+    <br/>
+    <br/>
+    <div style="float: left; width: 180px;">
+        <div class="song_status status1"><strong>{% trans "New: " %}</strong>{{ stats.new }}</div>
+        <div class="song_status status5"><strong>{% trans "Ready: " %}</strong>{{ stats.ready }}</div>
+        <div class="song_status status4"><strong>{% trans "Working: " %}</strong>{{ stats.working }}</div>
     </div>
-    <div style="margin-left: 465px; width: 435px; background: url(/media/img/content_bg_2.png); padding: 10px; border-radius: 7px;" class="stats_by_artist" >
-        <strong style="font-size: 15px;">{% trans "Artists" %}</strong>
-        <br/>
-        <br/>
-        {% for artist in stats.artists %}
+    <div style="width: 180px; float: right; margin-right: 75px;">
+        <div class="song_status status6"><strong>{% trans "Abandoned: " %}</strong>{{ stats.abandoned }}</div>
+        <div class="song_status status3"><strong>{% trans "Restored: " %}</strong>{{ stats.restored }}</div>
+        <div class="song_status status2"><strong>{% trans "In trash: " %}</strong>{{ stats.trash }}</div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div style="margin-left: 465px; width: 435px; background: url(/media/img/content_bg_2.png); padding: 10px; border-radius: 7px;" class="stats_by_artist" >
+    <strong style="font-size: 15px;">{% trans "Artists" %}</strong>
+    <br/>
+    <br/>
+    {% for artist in stats.artists %}
+        <div style="margin-bottom: 13px; height: 13px;">
+            <strong style="width: 120px; display: block; float: left; padding-top: 2px;">
+                {{ artist.name }}:
+            </strong>
             <div>
-                <strong>{{ artist.name }}: {{ artist.total }}</strong> &nbsp;
+                <span class="status0">{{ artist.total }}</span>
                 {% if artist.stats.new %}<span class="status1">{{ artist.stats.new }}</span>{% endif %}
                 {% if artist.stats.ready %}<span class="status5">{{ artist.stats.ready }}</span>{% endif %}
                 {% if artist.stats.working %}<span class="status4">{{ artist.stats.working }}</span>{% endif %}
@@ -30,6 +34,8 @@
                 {% if artist.stats.restored %}<span class="status3">{{ artist.stats.restored }}</span>{% endif %}
                 {% if artist.stats.trash %}<span class="status2">{{ artist.stats.trash }}</span>{% endif %}
             </div>
-        {% endfor %}
-    </div>
+            <div class="clear"></div>
+        </div>
+    {% endfor %}
+    <div class="clear"></div>
 </div>

@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^rehearsal/(?P<id>\d+)/delete/$', views.remove_rehearsal, name='remove_rehearsal'),
 
     url(r'^repertory/$', views.repertories, name='repertories'),
+    url(r'^repertory/stats/$', views.repertories_stats, name='repertories_stats'),
     url(r'^repertory/statistics/$', views.repertories_statistics, name='repertories_statistics'),
     url(r'^repertory/statistics/sort/$', views.sort_repertories_statistics, name='sort_repertories_statistics'),
 

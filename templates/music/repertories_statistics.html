@@ -32,7 +32,9 @@
     <h1>{% trans "Repertories statistics" %}</h1>
     <div class="clear"></div>
     <br/>
-    {% include "music/repertories_stats.html" %}
+    <div id="stats" updateurl="{% url repertories_stats %}">
+        {% include "music/repertories_stats.html" %}
+    </div>
     <div class="clear"></div>
     {% include "music/repertories_statistics_actions.html" %}
     <div id="repertory_content" repertory_id="{{ repertory.id }}" class="table_list" main="{% if repertory.is_main %}1{% else %}0{% endif %}">

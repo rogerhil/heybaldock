@@ -1593,10 +1593,11 @@ div.metadata ul li a {
 }
 
 .repertory .name_column {
-    width: 160px;
+    width: 150px;
 }
 
 .repertory .name_column div {
+    width: 150px;
     white-space: nowrap;
     overflow-x: hidden !important;
 }
@@ -1630,6 +1631,7 @@ div.metadata ul li a {
 
 .repertory .ratings_column {
     width: 100px;
+    white-space: nowrap;
 }
 
 .repertory .mode_column {
@@ -1745,8 +1747,8 @@ thead tr.table_head_actions th div.action.selected {
     text-align: left;
     padding: 3px 10px 3px 10px;
     margin-bottom: 5px;
-    width: 130px;
-    min-width: 100px;
+    width: 150px;
+    min-width: 150px;
     font-size: 13px;
 }
 
@@ -1759,6 +1761,17 @@ thead tr.table_head_actions th div.action.selected {
     border-radius: 5px;
     font-weight: bold;
     color: white;
+    width: 30px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    text-align: center;
+}
+
+#stats .stats_by_artist span.status0 {
+    color: black;
+    border: 1px solid;
+    margin-right: 20px;
 }
 
 #stats .stats_by_artist span.status3,

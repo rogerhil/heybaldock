@@ -90,6 +90,16 @@ def repertories_statistics(request):
                 stats=stats, items=items, band=band, statuses=statuses,
                 modes=modes, rehearsal_id=rehearsal_id, event_id=event_id)
 
+@json
+@login_required
+def repertories_stats(request):
+    band = request.band
+    main_repertory = band.repertory
+    stats = repertory_stats(main_repertory)
+    template = loader.get_template("music/repertories_stats.html")
+    content = template.render(RequestContext(request, dict(stats=stats)))
+    return dict(success=True, content=content)
+
 @login_required
 @render_to("music/band_settings.html")
 def band_settings(request, id):

@@ -26,6 +26,21 @@ function loadGlobalCancelActions() {
 	});
 }
 
+function updateRepertoryStats() {
+	var $stats = $("#stats");
+	var url = $stats.attr("updateurl");
+	$.ajax({
+		url: url,
+		type: 'get',
+		dataType: 'json',
+		success: function (data) {
+			if (data.success) {
+				$stats.html(data.content);
+			}
+		}
+	});
+}
+
 function calculateTimeTotal() {
 	var totalSeconds = 0;
 	var splited, minutes, seconds;
@@ -523,6 +538,7 @@ function addNewSong(sid, $el) {
 				loadMetronome($("td.tempo_cel span.tempo_metronome"));
 				loadAudio();
 				loadRatings($tr.find("td.ratings_cel"));
+				updateRepertoryStats();
 			} else {
 				var $msg = $el.parent().find('span.message');
 				$msg.html(data.message);
