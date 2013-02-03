@@ -7,6 +7,7 @@ from django.db.models.signals import pre_save, pre_delete
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext, ugettext_lazy as _
 
+from contact.models import Notification
 
 STATE_CHOICES = [
     (u'AC', u'Acre'),
@@ -222,6 +223,10 @@ class Event(models.Model):
         repertories = EventRepertory.objects.filter(event=instance)
         # make sure all repertories related will go on too
         repertories.delete()
+        ct = ContentType.objects.get_for_model(type(instance))
+        notifications = Notification.objects.filter(content_type=ct,
+                                                    object_id=instance.id)
+        notifications.delete()
 
 
 pre_save.connect(Event.pre_save, Event)

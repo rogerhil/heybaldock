@@ -15,6 +15,7 @@ from django.template.loader import get_template_from_string
 from django.utils.translation import ugettext as _, ugettext_lazy as l_
 
 from lib.fields import JSONField, PickleField
+from contact.models import Notification
 from defaults import Tonality, Rating, Tempo, DocumentType, SongMode, \
                      TimeDuration, RepertoryItemStatus
 from event.models import Event, Location
@@ -71,6 +72,10 @@ class Rehearsal(models.Model):
         repertories = EventRepertory.objects.filter(rehearsal=instance)
         # make sure all repertories related will go on too
         repertories.delete()
+        ct = ContentType.objects.get_for_model(type(instance))
+        notifications = Notification.objects.filter(content_type=ct,
+                                                    object_id=instance.id)
+        notifications.delete()
 
 pre_save.connect(Rehearsal.pre_save, Rehearsal)
 pre_delete.connect(Rehearsal.pre_delete, Rehearsal)
@@ -763,6 +768,16 @@ class EventRepertory(RepertoryBase):
     @property
     def url(self):
         return reverse("event_repertory", args=(self.id,))
+
+    @classmethod
+    def pre_delete(cls, instance, **kwargs):
+        ct = ContentType.objects.get_for_model(type(instance))
+        notifications = Notification.objects.filter(content_type=ct,
+                                                    object_id=instance.id)
+        notifications.delete()
+
+
+pre_delete.connect(EventRepertory.pre_delete, EventRepertory)
 
 
 class EventRepertoryItem(models.Model):
