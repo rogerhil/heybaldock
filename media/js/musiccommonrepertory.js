@@ -112,6 +112,7 @@ function removeSongFromRepertory() {
 				});
 				if (isMainRepertory) {
 					loadRepertoryTrash(data);
+					updateRepertoryStats();
 				}
 			} else {
 				var msg = data.message || "An error occured";

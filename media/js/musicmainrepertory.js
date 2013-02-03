@@ -429,6 +429,7 @@ function trashAction(url) {
 		success: function (data) {
 			if (data.success) {
 				loadRepertoryTrash(data);
+				updateRepertoryStats();
 			} else {
 				alert(data.message || 'An error occurred!');
 			}
