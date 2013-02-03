@@ -23,6 +23,11 @@
     <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
 {% endblock %}
 
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url repertories %}">{% trans "Repertories" %}</a></h3>
+    <h3>&gt;<a href="{% url repertories_statistics %}">{% trans "Statistics" %}</a></h3>
+{% endblock %}
+
 {% block music_content %}
     <h1>{% trans "Repertories statistics" %}</h1>
     <div class="clear"></div>

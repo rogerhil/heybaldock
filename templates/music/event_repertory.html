@@ -43,6 +43,15 @@
     {% endif %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url repertories %}">{% trans "Repertories" %}</a></h3>
+    {% if repertory.event %}
+        <h3>&gt;<a href="{% url event_repertory repertory.id %}">{% trans "Show Repertory" %}</a></h3>
+    {% else %}
+        <h3>&gt;<a href="{% url event_repertory repertory.id %}">{% trans "Rehearsal Repertory" %}</a></h3>
+    {% endif %}
+{% endblock %}
+
 {% block music_content %}
     {% include "music/audio_player.html" %}
     <h1>{{ repertory }}</h1>

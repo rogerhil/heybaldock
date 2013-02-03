@@ -5,6 +5,7 @@ $(window).load(function () {
 	});
 	$("#search input").placeholder('Search...');
 	animateImages();
+	loadManagementMenu();
 });
 
 $(window).bind('hashchange', function() {
@@ -85,4 +86,18 @@ function dropAllLoadingIcons() {
 
 function closeSimpleMenus() {
 	$('.simple_menu').slideUp();
+}
+
+function loadManagementMenu() {
+	$("#management_menu .menu_button").click(function () {
+		var $menu = $("#management_menu .content_menu");
+		if ($menu.is(':hidden')) {
+			$menu.slideDown();
+		} else {
+			$menu.slideUp();
+		}
+	});
+	$("#management_menu .content_menu").mouseleave(function () {
+		$(this).slideUp();
+	});
 }

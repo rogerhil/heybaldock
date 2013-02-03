@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
 {% endblock %}
 
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url instruments %}">{% trans "Instruments" %}</a></h3>
+    <h3>&gt;<a href="{% url add_instrument_tag_type %}">{% trans "Add instrument tag type" %}</a></h3>
+{% endblock %}
+
 {% block music_content %}
     <h1>{% trans "Add instrument tag type" %}</h1>
     <div class="pretty_form">

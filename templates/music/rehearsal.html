@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n notification %}
 
 {% block stylesheet %}
@@ -7,85 +7,107 @@
     <script type="text/javascript" src="/media/js/maps.js"></script>
 {% endblock %}
 
-{% block content %}
-
-    <div class="manage_buttons">
+{% block actions %}
+    {% if permissions.manage_rehearsals %}
+        {% if rehearsal.is_upcoming %}
+            {% notify rehearsal "created" %}
+        {% endif %}
         <a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a>
-        {% if permissions.manage_rehearsals %}
-            <a href="{% url add_rehearsal %}">{% trans "Add" %}</a>
+        <a href="{% url add_rehearsal %}">{% trans "Add" %}</a>
+        <a href="{% url change_rehearsal rehearsal.id %}">{% trans "Change" %}</a>
+        <a href="{% url remove_rehearsal rehearsal.id %}" class="red">{% trans "Remove" %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a></h3>
+    <h3>&gt;<a href="{% url rehearsal rehearsal.id %}">{% trans "This rehearsal" %}</a></h3>
+{% endblock %}
+
+{% block music_content %}
+    <h1>
+        {% blocktrans with rehearsal.studio.name as name %}
+            Rehearsal in {{ name }}
+        {% endblocktrans %}
+    </h1>
+    <div class="clear"></div>
+    {% with rehearsal.studio as location %}
+        <div style="width: 300px; float: left;">
+            <p>
+                <strong>{% trans "When" %}:</strong> {{ rehearsal.date|date:"l" }}, {{ rehearsal.date }}
+            </p>
+            <p>
+                <strong>{% trans "Where:" %}</strong> {{ rehearsal.studio.name }}
+            </p>
+            <p>
+                <strong>{% trans "Duration" %}:</strong> {{ rehearsal.duration_display }}
+            </p>
+            <p>
+                <strong>{% trans "Cost" %}:</strong> {{ rehearsal.cost }}
+                {% if rehearsal.paid_by %}
+                    {% trans "paid by" %} {{ rehearsal.paid_by.get_full_name }}
+                {% endif %}
+            </p>
+            {% if rehearsal.repertories.count %}
+                <p>
+                    <strong>{% trans "Repertory: " %}</strong>
+                    {% for repertory in rehearsal.repertories.all %}
+                        <a href="{% url event_repertory repertory.id %}">
+                            {% trans "click here to see the repertory" %}
+                        </a>
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p>
+                    <strong style="float: left; height: 40px; margin-right: 5px;">{% trans "Repertory:" %}</strong>
+                    <div>
+                        <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
+                        <br/>
+                        <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last rehearsal." %}</a>{% trans " or" %}
+                        <br/>
+                        <a href="{% url repertories_statistics %}?rehearsal={{ rehearsal.id }}" style="text-decoration: underline;">{% trans "Create a repertory through statistics" %}</a>
+                    </div>
+                </p>
+            {% endif %}
+
+            <strong>{% trans "Notes:" %}</strong>
+            <br/>
+            {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
             <br/>
             <div class="clear"></div>
-            <br/>
-            <a href="{% url change_rehearsal rehearsal.id %}">{% trans "Change" %}</a>
-            <a href="{% url remove_rehearsal rehearsal.id %}" class="red">{% trans "Remove" %}</a>
-            <br/>
-            <div class="clear"></div>
-            <br/>
-            {% if rehearsal.is_upcoming %}
-                {% notify rehearsal "created" %}
-            {% endif %}
-        {% endif %}
-    </div>
-
-    <div style="min-height: 250px;">
-        <h1>
-            {% blocktrans with rehearsal.studio.name as name %}
-                Rehearsal in {{ name }}
-            {% endblocktrans %}
-        </h1>
-
-        <p>
-            <strong>{% trans "When" %}:</strong> {{ rehearsal.date|date:"l" }}, {{ rehearsal.date }}
-        </p>
-        <p>
-            <strong>{% trans "Where:" %}</strong> {{ rehearsal.studio.name }}
-        </p>
-        <p>
-            <strong>{% trans "Duration" %}:</strong> {{ rehearsal.duration_display }}
-        </p>
-        <p>
-            <strong>{% trans "Cost" %}:</strong> {{ rehearsal.cost }}
-            {% if rehearsal.paid_by %}
-                {% trans "paid by" %} {{ rehearsal.paid_by.get_full_name }}
-            {% endif %}
-        </p>
-        {% if rehearsal.repertories.count %}
             <p>
-                <strong>{% trans "Repertory: " %}</strong>
-                {% for repertory in rehearsal.repertories.all %}
-                    <a href="{% url event_repertory repertory.id %}">
-                        {% trans "click here to see the repertory" %}
-                    </a>
-                {% endfor %}
+                <strong>
+                    {% trans "Address" %}
+                </strong>
             </p>
-        {% else %}
             <p>
-                <strong style="float: left; height: 40px; margin-right: 5px;">{% trans "Repertory:" %}</strong>
-                <div>
-                    <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}" style="text-decoration: underline;">{% trans "Create a new one from scratch" %}</a>{% trans " or" %}
-                    <br/>
-                    <a href="{% url add_event_repertory_for_rehearsal rehearsal.id %}?import_from_last=1" style="text-decoration: underline;">{% trans "Create a repertory based on songs of the last rehearsal." %}</a>{% trans " or" %}
-                    <br/>
-                    <a href="{% url repertories_statistics %}?rehearsal={{ rehearsal.id }}" style="text-decoration: underline;">{% trans "Create a repertory through statistics" %}</a>
-                </div>
+                {{ location.address }}<br />
+                {% trans 'ZIpcode: ' %}{{ location.zipcode_display }}<br />
+                {{ location.city }} - {{ location.state }}<br />
+                Telefones: {{ location.phones_display }}
             </p>
-        {% endif %}
+            <p>{{ location.description }}</p>
 
-        <strong>{% trans "Notes:" %}</strong>
-        <br/>
-        {% autoescape off %}{{ rehearsal.notes }}{% endautoescape %}
-        <br/>
-        <div class="clear"></div>
-        <br/>
-        <h3>
-            {% blocktrans with rehearsal.studio.name as name %}
-                {{ name }} address
-            {% endblocktrans %}
-        </h3>
-        <div class="clear"></div>
-        {% with rehearsal.studio as location %}
-            {% include "event/location_address.html" %}
-        {% endwith %}
-    </div>
+        </div>
+
+        <div style="float: right; min-width: 610px;">
+            <div id="map_area">
+                <div class="clear"></div>
+                <div id="map_canvas"></div>
+                <div class="clear"></div>
+                <script type="text/javascript">
+                    $(window).load(function () {
+                        if ($("#map_canvas").length) {
+                            initialize();
+                            {# HACK: using |title filter to avoid brazilizan format using commas... #}
+                            codeLatLng({{ location.latitude|title }}, {{ location.longitude|title }});
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    {% endwith %}
+
+
 
 {% endblock %}

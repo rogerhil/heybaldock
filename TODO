@@ -27,7 +27,6 @@ Debug False in production and logs
      - Put gettext in all __unicode__
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
- - Music management best menu navigation
  - Repertory for event actions like: order by dynamic
  - Permissions for manage past events repertories
  - Events view, improve showing like photo albums, item more detailed with
@@ -36,7 +35,7 @@ Debug False in production and logs
    rehearsal
  - Print action for event repertory
  - Print action for main repertory
- - Replace all alerts to an beautiful alert box
+ - Replace all alerts to a beautiful alert box
  - Slide show offline for event repertory
  - Mogg upload option for song
  - Option to add/change composers in album view
@@ -46,7 +45,6 @@ Debug False in production and logs
  - Event Repertory: option for add song in a list by album and full list
    ordered by columns (very usefull for a beginning of a rehearsal, to have
    an overview)
- - Add song by category (below and above # of plays in shows)
  - Add require_POST, requery_method, etc decorators in music functions
  - Chat
  - Main Repertory: option for add song in a list by album

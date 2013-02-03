@@ -11,6 +11,10 @@
     {% endif %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url repertories %}">{% trans "Repertories" %}</a></h3>
+{% endblock %}
+
 {% block music_content %}
     <br/>
     <div style="width: 660px; margin: 0 auto 0 auto;">

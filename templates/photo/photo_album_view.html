@@ -15,25 +15,25 @@
 {% endblock %}
 
 
-{% block content %}
-{% object_manage_buttons user 'photoalbum' album.id %}
-<div class="manage_buttons">
-    <a href="{% url section_view 'fotos' %}">{% trans "View all" %}</a>
-</div>
-{% if user.is_authenticated %}
-    <div class="clear"></div><br />
-    <div class="manage_buttons">
+{% block management_menu_items %}
+    {% if user.is_authenticated %}
+        <a href="{% url section_view 'fotos' %}">{% trans "View all" %}</a>
+        {% object_manage_buttons user 'photoalbum' album.id %}
         <form action="{% url delete_photo_album album.id %}" method="post" name="delete_action">
             <a href="javascript:deletePhotoAlbum();" class="red">{% trans "Delete this Photo Album" %}</a>
         </form>
-    </div>
-{% endif %}
-{% include "photo/album_details.html" %}
+    {% endif %}
+{% endblock %}
 
-{% with album.url as url %}
-    {% include "facebook_comments.html" %}
-{% endwith %}
 
-<div class="clear"></div>
+{% block content %}
+
+    {% include "photo/album_details.html" %}
+
+    {% with album.url as url %}
+        {% include "facebook_comments.html" %}
+    {% endwith %}
+
+    <div class="clear"></div>
 
 {% endblock %}

@@ -1,15 +1,20 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n %}
 
 {% block stylesheet %}
 {% endblock %}
 
-{% block content %}
-    <div class="manage_buttons">
-        {% if permissions.manage_rehearsals %}
-            <a href="{% url add_rehearsal %}">{% trans "Add rehearsal" %}</a>
-        {% endif %}
-    </div>
+{% block actions %}
+    {% if permissions.manage_rehearsals %}
+        <a href="{% url add_rehearsal %}">{% trans "Add rehearsal" %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a></h3>
+{% endblock %}
+
+{% block music_content %}
     <div style="min-height: 350px;">
         <h1>{% trans "Rehearsals" %}</h1>
         <h2>{% trans "Upcoming Rehearsals" %}</h2>

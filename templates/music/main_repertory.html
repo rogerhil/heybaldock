@@ -41,6 +41,11 @@
     {% endif %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url repertories %}">{% trans "Repertories" %}</a></h3>
+    <h3>&gt;<a href="{% url main_repertory %}">{% trans "Main repertory" %}</a></h3>
+{% endblock %}
+
 {% block music_content %}
     {% include "music/audio_player.html" %}
     <h1>{% trans "Repertory:" %} {{ repertory }}</h1>

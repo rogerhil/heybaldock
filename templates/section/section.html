@@ -19,8 +19,11 @@
     <meta property="og:url" content="http://{{ site_domain }}{{ section.url }}"/>
 {% endblock %}
 
+{% block management_menu_items %}
+    {% object_manage_buttons user 'section' section.id %}
+{% endblock %}
+
 {% block content %}
-{% object_manage_buttons user 'section' section.id %}
 <div class="section_content">
     {% include "section/section_content.html" %}
 </div>

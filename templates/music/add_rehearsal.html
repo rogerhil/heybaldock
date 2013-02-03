@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "music/base.html" %}
 {% load i18n %}
 
 {% block stylesheet %}
@@ -12,7 +12,16 @@
     <script type="text/javascript" src="/media/js/rehearsalform.js"></script>
 {% endblock %}
 
-{% block content %}
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a></h3>
+    {% if form.instance %}
+        <h3>&gt;<a href="{% url change_rehearsal form.instance.id %}">{% trans "Change rehearsal" %}</a></h3>
+    {% else %}
+        <h3>&gt;<a href="{% url add_rehearsal %}">{% trans "Add rehearsal" %}</a></h3>
+    {% endif %}
+{% endblock %}
+
+{% block music_content %}
     <h1>{% if change %}{% trans "Modify rehearsal" %}{% else %}{% trans "Add rehearsal" %}{% endif %}</h1>
     <div class="pretty_form">
         <form action="" method="post" name="band_form" enctype="multipart/form-data">

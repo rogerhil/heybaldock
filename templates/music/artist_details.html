@@ -17,6 +17,11 @@
     {% endif %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url artists %}">{% trans "Artists" %}</a></h3>
+    <h3>&gt;<a href="{% url artist_details artist.id %}">{{ artist }}</a></h3>
+{% endblock %}
+
 {% block music_content %}
 
     <div id="artist_{{ artist.id }}">

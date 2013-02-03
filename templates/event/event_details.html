@@ -27,17 +27,18 @@
     <meta property="og:url" content="http://{{ site_domain }}{{ event.url }}"/>
 {% endblock %}
 
-{% block content %}
-
-{% object_manage_buttons user 'event' event.id %}
-{% if user.is_authenticated %}
-    <div class="manage_buttons">
+{% block management_menu_items %}
+    {% object_manage_buttons user 'event' event.id %}
+    {% if user.is_authenticated %}
         {% notify event 'created' %}
         <form action="{% url delete_event event.id %}" method="post" name="delete_action">
             <a href="javascript:deleteEvent();" class="red">{% trans "Delete this Event" %}</a>
         </form>
-    </div>
-{% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
 <div class="clear"></div>
 {% include "event/details.html" %}
 <div class="clear"></div>

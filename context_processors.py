@@ -59,7 +59,6 @@ def repertories_unrated(user):
                                 notification__object_id=rep.id,
                                 notification__action='rate_reminder',
                                 user=user).count()
-            print notified
             if notified:
                 continue
             Notification.notify(rep, 'rate_reminder', users=[user], mail=False)

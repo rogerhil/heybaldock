@@ -13,27 +13,27 @@
 {% endblock %}
 
 
-{% block content %}
-{% object_manage_buttons user 'videoalbum' album.id %}
-<div class="manage_buttons">
+{% block management_menu_items %}
     <a href="{% url section_view 'videos' %}">{% trans "View all" %}</a>
-</div>
-<h1>{% trans "Video album" %}</h1>
-{% if user.is_authenticated %}
-    <div class="clear"></div><br />
-    <div class="manage_buttons">
+    {% if user.is_authenticated %}
+        {% object_manage_buttons user 'videoalbum' album.id %}
         <form action="{% url delete_video_album album.id %}" method="post" name="delete_action">
             <a href="javascript:deleteVideoAlbum();" class="red">{% trans "Delete this Video Album" %}</a>
         </form>
-    </div>
-{% endif %}
-{% include "facebook_like.html" %}
-{% include "video/album_details.html" %}
+    {% endif %}
+{% endblock %}
 
-{% with album.url as url %}
-    {% include "facebook_comments.html" %}
-{% endwith %}
+{% block content %}
 
-<div class="clear"></div>
+    <h1>{% trans "Video album" %}</h1>
+
+    {% include "facebook_like.html" %}
+    {% include "video/album_details.html" %}
+
+    {% with album.url as url %}
+        {% include "facebook_comments.html" %}
+    {% endwith %}
+
+    <div class="clear"></div>
 
 {% endblock %}

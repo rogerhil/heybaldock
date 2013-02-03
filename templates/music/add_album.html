@@ -19,6 +19,11 @@
     <a href="{% url artists %}">{% trans 'View all artists' %}</a>
 {% endblock %}
 
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url artists %}">{% trans "Artists" %}</a></h3>
+    <h3>&gt;<a href="{% url add_album %}">{% trans "Add album" %}</a></h3>
+{% endblock %}
+
 {% block music_content %}
     <h1>{% trans "Add album" %}</h1>
     <h3>{% trans "Please, fill the fields below to make a search first" %}</h3>
