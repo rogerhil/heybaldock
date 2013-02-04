@@ -10,57 +10,50 @@ Debug False in production and logs
 
 * Nice to have:
  - Photo Album associated to Event for flyers, like for location
- - Contact - captcha
- - Contact HTML
+ - Contact - Use honeypot
+ - Contact HTML or split replace \n by <br />
  - Icons: success, warning, error, info, etc...
  - Code Comments, Doc tests, License
-
-
-* Bugs:
- - Album view:
-   - Firefox: tempo display in vertical
-   - When change tempo, the line breaks, not showing the icon for download and
-     actions
 
 * Music Management
  - Cosmetic improvements:
      - Put gettext in all __unicode__
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
+ - When change tempo, the line breaks, not showing the icon for download and
+   actions
  - Dynamic Ordering: by less player change
- - Permissions for manage past events repertories
  - Events view, improve showing like photo albums, item more detailed with
    image event flyer etc.
  - Find a way to include notify changed/deleted(canceled) repertory, event,
    rehearsal
- - Print action for event repertory
- - Print action for main repertory
- - Replace all alerts to a beautiful alert box
- - Slide show offline for event repertory
- - Mogg upload option for song
- - Option to add/change composers in album view
- - Undo action
- - Repertory item (Event or Main) comments for users (think about using auto-
-   complete user tag, like in facebook tags)
- - Event Repertory: option for add song in a list by album and full list
-   ordered by columns (very usefull for a beginning of a rehearsal, to have
-   an overview)
- - Add require_POST, requery_method, etc decorators in music functions
- - Chat
- - Main Repertory: option for add song in a list by album
+ - Show/Hide repertory actions (ratings by global, user, my votes)
+ - Show history by Object (example: repertory created/changed by user)
  - Think about ratings per player (I think is very usefull, but maybe is not
    practical for user. Maybe create a view for user to allow him to vote
    your instruments and have own statistics)
-
+ - Show 3 new items in dashboard: Rehearsals, History (improve history view)
+   and My Instruments ratings. (cursor pointer for big icons links)
+ - Permissions for manage past events repertories
+ - Add require_POST, requery_method, etc decorators in music functions
+ - Replace all alerts to a beautiful alert box
+ - Print action for event repertory
+ - Print action for main repertory
+ - Slide show offline for event repertory
+ - Option to add/change composers in album view
+ - Mogg upload option for song
+ - Repertory item (Event or Main) comments for users (think about using auto-
+   complete user tag, like in facebook tags)
+ - Undo action
+ - Chat
+ - Main Repertory: option for add song in a list by album
  - Think about remove QUICK actions for instruments plays in table (for
    performance reasons). Will be a bad idea for the cases which user may
    want add lots of instruments at once in repertory. But, maybe would be
    better remove quick actions like Documents, Audio Segments, Music Score,
    etc.
-
  - Verify song line, to avoid lots of repeatedely html elements in table,
    for example (menus status, mode, tonality, MAYBE add player)
-
  - Create a repertory item view, for best edition, and include inside:
    - Document upload;
    - Notes;
