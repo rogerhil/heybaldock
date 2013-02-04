@@ -7695,7 +7695,7 @@ msgstr ""
 #: templates/music/notification/event_repertory_created.html:23
 #: templates/music/notification/rehearsal_created.html:17
 msgid "For further information click on the following link:"
-msgstr "Para informações adicionais, clique no seguinte link:"
+msgstr "Para maiores informações, clique no link seguinte:"
 
 #: templates/music/add_album.html:19 templates/music/album.html:18
 #: templates/music/artist_albums.html:15
