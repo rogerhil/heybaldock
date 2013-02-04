@@ -17,6 +17,7 @@ function loadRepertory() {
 	$repertory_content.find('img.player').click(changePlayerButton);
 	calculateTimeTotal();
 	initSortTable();
+	loadRepertoryActions();
 }
 
 function loadActions() {

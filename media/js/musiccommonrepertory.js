@@ -1,4 +1,14 @@
 
+function loadRepertoryActions() {
+	return;
+	$("table.repertory thead .head_titles").mouseover(function () {
+		$("table.repertory thead .table_head_actions").fadeIn();
+	});
+	$("table.repertory thead .head_titles").mouseleave(function () {
+		$("table.repertory thead .table_head_actions").fadeOut();
+	});
+}
+
 function loadGlobalCancelActions() {
 	// CLICK OUTSIDE
 	$('html').click(function (e) {

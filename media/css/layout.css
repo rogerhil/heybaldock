@@ -1661,6 +1661,9 @@ div.metadata ul li a {
     padding-top: 8px;
     width: 20px;
 }
+.table_head_actions {
+    /*display: none;*/
+}
 
 thead tr.table_head_actions th {
     background: none;

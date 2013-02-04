@@ -23,7 +23,7 @@ function fullHeight() {
 	}
 	if ($footer.length) {
 		var cdiff = $footer.position().top - $content.position().top - 30;
-		$content.css("height", cdiff + 'px');
+		$content.css("min-height", cdiff + 'px');
 	}
 	contentHeightAuto();
 }

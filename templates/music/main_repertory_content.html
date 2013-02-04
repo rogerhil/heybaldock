@@ -71,7 +71,7 @@
             <th  class="actions_column">&nbsp;</th>
             {% endif %}
         </tr>
-        <tr>
+        <tr class="head_titles">
             <th class="center cover_column {% if sort.song__album__name %}sort_down{% else %}sort_up{% endif %}" sort="{% if sort.song__album__name %}-song__album__name{% else %}song__album__name{% endif %}">
                 {% trans "Cov" %}
             </th>

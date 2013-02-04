@@ -197,6 +197,7 @@ function loadRepertory() {
 	calculateTimeTotal();
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
 	loadAddSongsByCategoryMenu();
+	loadRepertoryActions();
 }
 
 function addInterval() {
