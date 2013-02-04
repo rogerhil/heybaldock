@@ -1,0 +1,46 @@
+{% load i18n %}
+
+<div id="dynamic_ordering" class="simple_menu" dynamicorderingurl="{% url event_repertory_items_dynamic_ordering repertory.id %}">
+    <h3 class="pretty_title">{% trans "Dynamic Ordering" %}</h3>
+    <p>{% trans "Define your dynamic graphic mode" %}</p>
+    <div class="graphic">
+        <div class="p1">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="p2">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="p3">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="p4">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="p5">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="p6">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    {% comment %}
+    <p>
+        {% trans "Less change of the following player between songs" %}
+    </p>
+    {% endcomment %}
+    <div class="center">
+        <input type="button" class="small_button submit" value="{% trans "Sort" %}" />
+    </div>
+</div>

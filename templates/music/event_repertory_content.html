@@ -49,7 +49,8 @@
         </tr>
         <tr>
             {% if editable %}
-            <th  class="center sort_column">
+            <th class="center sort_column" id="sort_id" title="{% trans "Dynamic Ordering" %}">
+                {% include "music/dynamic_ordering.html" %}
             </th>
             {% endif %}
             <th  class="center cover_column">

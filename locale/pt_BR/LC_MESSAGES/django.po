@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-03 20:20-0200\n"
+"POT-Creation-Date: 2013-02-04 03:03-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: hbenv/lib/python2.7/site-packages/django/contrib/comments/forms.py:96
 #: photo/models.py:16 templates/event/event_list.html:11
 #: templates/event/location_list.html:22
-#: templates/music/event_repertory_content.html:59
+#: templates/music/event_repertory_content.html:60
 #: templates/music/main_repertory_content.html:79
 #: templates/music/main_repertory_trash.html:17
 #: templates/music/public_event_repertory.html:18
@@ -7195,11 +7195,11 @@ msgstr "Esta música está na lixeira, você pode restaurá-la se quiser."
 msgid "Song already exist in repertory!"
 msgstr "Esta música já se encontra no repertório."
 
-#: music/views.py:1387
+#: music/views.py:1431
 msgid "The instrument was successfully added."
 msgstr "O instrumento foi adicionado com sucesso."
 
-#: music/views.py:1809
+#: music/views.py:1853
 msgid "The instrument tag type was successfully added."
 msgstr "A tag de instrumento foi adicionada com sucesso."
 
@@ -7480,7 +7480,7 @@ msgstr "Enviar também email para os usuários"
 #: templates/music/add_event_repertory.html:51
 #: templates/music/add_instrument.html:20
 #: templates/music/add_instrument_tag_type.html:20
-#: templates/music/event_repertory_content.html:221
+#: templates/music/event_repertory_content.html:222
 #: templates/music/player_repertory_item_menu.html:113
 #: templates/music/song_line.html:59
 msgid "Cancel"
@@ -7828,14 +7828,14 @@ msgid "Composers"
 msgstr "Compositores"
 
 #: templates/music/album.html:77
-#: templates/music/event_repertory_content.html:73
+#: templates/music/event_repertory_content.html:74
 #: templates/music/main_repertory_content.html:91
 #: templates/music/public_event_repertory.html:24
 msgid "Tempo"
 msgstr "Tempo"
 
 #: templates/music/album.html:80
-#: templates/music/event_repertory_content.html:82
+#: templates/music/event_repertory_content.html:83
 #: templates/music/main_repertory_content.html:100
 msgid "Tonality"
 msgstr "Tonalidade"
@@ -7953,9 +7953,22 @@ msgstr "Modificar as permissões de %(member)s"
 msgid "Register Album"
 msgstr "Registrar álbum"
 
+#: templates/music/dynamic_ordering.html:4
+#: templates/music/event_repertory_content.html:52
+msgid "Dynamic Ordering"
+msgstr "Ordenação Dinâmica"
+
+#: templates/music/dynamic_ordering.html:5
+msgid "Define your dynamic graphic mode"
+msgstr "Defina seu gráfico de dinâmica (lenta, média, rápida)"
+
+#: templates/music/dynamic_ordering.html:45
+msgid "Sort"
+msgstr "Ordenar"
+
 #: templates/music/event_repertory.html:38
 msgid "Notify users about this repertory"
-msgstr ""
+msgstr "Notificar usuários sobre este repertório"
 
 #: templates/music/event_repertory.html:40
 #: templates/music/main_repertory.html:38
@@ -8071,233 +8084,233 @@ msgstr "Usuário"
 msgid "My votes only"
 msgstr "Minhas notas"
 
-#: templates/music/event_repertory_content.html:56
+#: templates/music/event_repertory_content.html:57
 #: templates/music/main_repertory_content.html:76
 #: templates/music/main_repertory_trash.html:14
 #: templates/music/repertories_statistics_content.html:31
 msgid "Cov"
 msgstr "Cap"
 
-#: templates/music/event_repertory_content.html:62
+#: templates/music/event_repertory_content.html:63
 #: templates/music/main_repertory_content.html:82
 #: templates/music/repertories_statistics_content.html:43
 msgid "Dur"
 msgstr "Dur"
 
-#: templates/music/event_repertory_content.html:66
+#: templates/music/event_repertory_content.html:67
 #: templates/music/main_repertory_content.html:85
 #: templates/music/repertories_statistics_actions.html:109
 #: templates/music/repertories_statistics_content.html:58
 msgid "Status"
 msgstr "Estado"
 
-#: templates/music/event_repertory_content.html:70
+#: templates/music/event_repertory_content.html:71
 msgid "X"
 msgstr "X"
 
-#: templates/music/event_repertory_content.html:76
+#: templates/music/event_repertory_content.html:77
 #: templates/music/main_repertory_content.html:94
 #: templates/music/player_repertory_item_menu.html:80
 #: templates/music/repertories_statistics_content.html:52
 msgid "Ratings"
 msgstr "Notas"
 
-#: templates/music/event_repertory_content.html:79
+#: templates/music/event_repertory_content.html:80
 #: templates/music/main_repertory_content.html:97
 #: templates/music/repertories_statistics_actions.html:117
 #: templates/music/repertories_statistics_content.html:61
 msgid "Mode"
 msgstr "Modo"
 
-#: templates/music/event_repertory_content.html:85
+#: templates/music/event_repertory_content.html:86
 #: templates/music/main_repertory_content.html:103
 #: templates/music/main_repertory_trash.html:20
 msgid "Players"
 msgstr "Instrumentistas"
 
-#: templates/music/event_repertory_content.html:113
+#: templates/music/event_repertory_content.html:114
 msgid "or add interval of:"
 msgstr "ou adicione um intervalo de:"
 
-#: templates/music/event_repertory_content.html:115
+#: templates/music/event_repertory_content.html:116
 msgid "Chosse one"
 msgstr "Escolha um"
 
-#: templates/music/event_repertory_content.html:116
+#: templates/music/event_repertory_content.html:117
 msgid "5 minutes"
 msgstr "5 minutos"
 
-#: templates/music/event_repertory_content.html:117
+#: templates/music/event_repertory_content.html:118
 msgid "10 minutes"
 msgstr "10 minutos"
 
-#: templates/music/event_repertory_content.html:118
+#: templates/music/event_repertory_content.html:119
 msgid "15 minutes"
 msgstr "15 minutos"
 
-#: templates/music/event_repertory_content.html:119
+#: templates/music/event_repertory_content.html:120
 msgid "20 minutes"
 msgstr "20 minutos"
 
-#: templates/music/event_repertory_content.html:120
+#: templates/music/event_repertory_content.html:121
 msgid "30 minutes"
 msgstr "30 minutos"
 
-#: templates/music/event_repertory_content.html:121
+#: templates/music/event_repertory_content.html:122
 msgid "40 minutes"
 msgstr "40 minutos"
 
-#: templates/music/event_repertory_content.html:122
+#: templates/music/event_repertory_content.html:123
 msgid "50 minutes"
 msgstr "50 minutos"
 
-#: templates/music/event_repertory_content.html:123
+#: templates/music/event_repertory_content.html:124
 msgid "1 hour"
 msgstr "1 hora"
 
-#: templates/music/event_repertory_content.html:124
+#: templates/music/event_repertory_content.html:125
 msgid "1 hour and 30 minutes"
 msgstr "1 hora e 30 minutos"
 
-#: templates/music/event_repertory_content.html:125
+#: templates/music/event_repertory_content.html:126
 msgid "2 hours"
 msgstr "2 horas"
 
-#: templates/music/event_repertory_content.html:126
+#: templates/music/event_repertory_content.html:127
 msgid "3 hours"
 msgstr "3 horas"
 
-#: templates/music/event_repertory_content.html:134
+#: templates/music/event_repertory_content.html:135
 msgid "or add songs by category"
 msgstr "ou adicione músicas por categoria"
 
-#: templates/music/event_repertory_content.html:141
+#: templates/music/event_repertory_content.html:142
 msgid "Add songs by category"
 msgstr "Adicione músicas por categoria"
 
-#: templates/music/event_repertory_content.html:147
+#: templates/music/event_repertory_content.html:148
 msgid "Below"
 msgstr "Notas abaixo de"
 
-#: templates/music/event_repertory_content.html:156
-#: templates/music/event_repertory_content.html:171
+#: templates/music/event_repertory_content.html:157
+#: templates/music/event_repertory_content.html:172
 msgid "stars voted by"
 msgstr "votadas por"
 
-#: templates/music/event_repertory_content.html:157
-#: templates/music/event_repertory_content.html:172
+#: templates/music/event_repertory_content.html:158
+#: templates/music/event_repertory_content.html:173
 msgid "all"
 msgstr "todos"
 
-#: templates/music/event_repertory_content.html:158
-#: templates/music/event_repertory_content.html:173
+#: templates/music/event_repertory_content.html:159
+#: templates/music/event_repertory_content.html:174
 msgid "me"
 msgstr "mim"
 
-#: templates/music/event_repertory_content.html:162
+#: templates/music/event_repertory_content.html:163
 msgid "Above"
 msgstr "Notas acima de"
 
-#: templates/music/event_repertory_content.html:177
-#: templates/music/event_repertory_content.html:194
+#: templates/music/event_repertory_content.html:178
+#: templates/music/event_repertory_content.html:195
 msgid "Played in rehearsals"
 msgstr "Tocadas em ensaios"
 
-#: templates/music/event_repertory_content.html:180
+#: templates/music/event_repertory_content.html:181
 #, python-format
 msgid "below 10%%"
 msgstr "abaixo de 10%%"
 
-#: templates/music/event_repertory_content.html:181
+#: templates/music/event_repertory_content.html:182
 #, python-format
 msgid "below 20%%"
 msgstr "abaixo de 20%%"
 
-#: templates/music/event_repertory_content.html:182
+#: templates/music/event_repertory_content.html:183
 #, python-format
 msgid "below 30%%"
 msgstr "abaixo de 30%%"
 
-#: templates/music/event_repertory_content.html:183
+#: templates/music/event_repertory_content.html:184
 #, python-format
 msgid "below 40%%"
 msgstr "abaixo de 40%%"
 
-#: templates/music/event_repertory_content.html:184
+#: templates/music/event_repertory_content.html:185
 #, python-format
 msgid "below 50%%"
 msgstr "abaixo de 50%%"
 
-#: templates/music/event_repertory_content.html:185
+#: templates/music/event_repertory_content.html:186
 #, python-format
 msgid "below 60%%"
 msgstr "abaixo de 60%%"
 
-#: templates/music/event_repertory_content.html:186
+#: templates/music/event_repertory_content.html:187
 #, python-format
 msgid "below 70%%"
 msgstr "abaixo de 70%%"
 
-#: templates/music/event_repertory_content.html:187
+#: templates/music/event_repertory_content.html:188
 #, python-format
 msgid "below 80%%"
 msgstr "abaixo de 80%%"
 
-#: templates/music/event_repertory_content.html:188
+#: templates/music/event_repertory_content.html:189
 #, python-format
 msgid "below 90%%"
 msgstr "abaixo de 90%%"
 
-#: templates/music/event_repertory_content.html:197
+#: templates/music/event_repertory_content.html:198
 #, python-format
 msgid "above 10%%"
 msgstr "acima de 10%%"
 
-#: templates/music/event_repertory_content.html:198
+#: templates/music/event_repertory_content.html:199
 #, python-format
 msgid "above 20%%"
 msgstr "acima de 20%%"
 
-#: templates/music/event_repertory_content.html:199
+#: templates/music/event_repertory_content.html:200
 #, python-format
 msgid "above 30%%"
 msgstr "acima de 30%%"
 
-#: templates/music/event_repertory_content.html:200
+#: templates/music/event_repertory_content.html:201
 #, python-format
 msgid "above 40%%"
 msgstr "acima de 40%%"
 
-#: templates/music/event_repertory_content.html:201
+#: templates/music/event_repertory_content.html:202
 #, python-format
 msgid "above 50%%"
 msgstr "acima de 50%%"
 
-#: templates/music/event_repertory_content.html:202
+#: templates/music/event_repertory_content.html:203
 #, python-format
 msgid "above 60%%"
 msgstr "acima de 60%%"
 
-#: templates/music/event_repertory_content.html:203
+#: templates/music/event_repertory_content.html:204
 #, python-format
 msgid "above 70%%"
 msgstr "acima de 70%%"
 
-#: templates/music/event_repertory_content.html:204
+#: templates/music/event_repertory_content.html:205
 #, python-format
 msgid "above 80%%"
 msgstr "acima de 80%%"
 
-#: templates/music/event_repertory_content.html:205
+#: templates/music/event_repertory_content.html:206
 #, python-format
 msgid "above 90%%"
 msgstr "acima de 90%%"
 
-#: templates/music/event_repertory_content.html:211
+#: templates/music/event_repertory_content.html:212
 msgid "By status"
 msgstr "Por estado"
 
-#: templates/music/event_repertory_content.html:222
+#: templates/music/event_repertory_content.html:223
 msgid "Submit"
 msgstr "Submeter"
 

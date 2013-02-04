@@ -1109,6 +1109,50 @@ def add_event_repertory_items_by_category(request, id):
     content = get_event_repertory_content(request, repertory)
     return dict(success=True, content=content, items_ids=items_ids)
 
+@json
+@login_required
+@ajax_check_locked_event_repertory
+@permission_required('music.manage_event_repertories', '/permission/denied/')
+def event_repertory_items_dynamic_ordering(request, id):
+    repertory = get_object_or_404(EventRepertory, id=id)
+    levels = [int(i) for i in request.POST.getlist('levels[]')]
+    items = repertory.all_items.all()
+    count = items.count()
+    slow = items.filter(item__mode=SongMode.slow)
+    medium = items.filter(item__mode=SongMode.medium)
+    fast = items.filter(item__mode=SongMode.fast)
+    items_by_level = {
+        1: (slow, slow.count(), 0),
+        2: (medium, medium.count(), 0),
+        3: (fast, fast.count(), 0)
+    }
+    intervals = items.filter(item=None)
+    ic = intervals.count()
+    intervals_div = count / (ic + 1)
+    nlevels_dict = {1: 0, 2: 0, 3: 0}
+    for level in levels:
+        nlevels_dict[level] += 1
+    oitems = []
+    for level in levels:
+        if intervals and \
+           len(oitems) / intervals_div == (ic + 1 - len(intervals)):
+            oitems.append(intervals[0])
+            intervals = intervals[1:]
+        its, count, cc = items_by_level[level]
+        cc += 1
+        c = count / nlevels_dict[level]
+        if cc >= nlevels_dict[level]:
+            oitems += its
+        else:
+            oitems += its[:c]
+        items_by_level[level] = (its[c:], count, cc)
+    for i, item in enumerate(oitems):
+        item.order = i + 1
+    for item in oitems:
+        item.save()
+    content = get_event_repertory_content(request, repertory)
+    return dict(success=True, content=content)
+
 
 @json
 @login_required

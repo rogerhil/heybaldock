@@ -1586,6 +1586,7 @@ div.metadata ul li a {
 
 .repertory .sort_column {
     width: 8px;
+    text-align: center;
 }
 
 .repertory .cover_column {
@@ -2184,4 +2185,55 @@ td.date_cel:hover {
     font-weight: bold;
     color: #993300;
     background-color: #ffffff;
+}
+
+#sort_id {
+    position: relative !important;
+    background-image: url(/media/img/dynamic_ordering_icon_24.png);
+    background-repeat: no-repeat;
+    background-position: 3px 4px;
+    width: 21px;
+}
+
+#sort_id:hover {
+    background-color: #91af62;
+}
+
+#dynamic_ordering {
+    width: 205px;
+    top: 230px;
+    left: 10px;
+}
+
+#dynamic_ordering div.graphic div {
+    margin-bottom: 10px;
+}
+
+#dynamic_ordering div.graphic div {
+    float: left;
+}
+
+#dynamic_ordering div.graphic span {
+    width: 30px;
+    height: 30px;
+    display: block;
+    background-image: url(/media/img/content_bg.png);
+    cursor: pointer;
+    margin: 3px 2px;
+    border-radius: 5px;
+}
+
+#dynamic_ordering div.graphic span.slow {
+    background-color: #7CA0C7;
+    background-image: none;
+}
+
+#dynamic_ordering div.graphic span.medium {
+    background-color: #f7c413;
+    background-image: none;
+}
+
+#dynamic_ordering div.graphic span.fast {
+    background-color: #993300;
+    background-image: none;
 }

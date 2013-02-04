@@ -21,6 +21,82 @@ $(window).load(function () {
 
 });
 
+function loadDynamicOrdering() {
+	var $repertory_content = $("#repertory_content");
+	var $ds = $("#dynamic_ordering");
+	var c = ['fast', 'medium', 'slow'];
+	var modes = {
+		slow: 1,
+		medium: 2,
+		fast: 3
+	};
+	$ds.find("span").mouseover(function () {
+		var cl = c[$(this).index()];
+		$(this).addClass(cl);
+		var $n = $(this).next();
+		$n.addClass(cl);
+		var $n = $n.next();
+		$n.addClass(cl);
+	});
+	$ds.find("span").mouseleave(function () {
+		var $par = $(this).parent();
+		var cl = c[$(this).index()];
+		if ($par.attr("mode") == modes[cl]) {
+			return;
+		}
+		$(this).removeClass(cl);
+		var $n = $(this).next();
+		$n.removeClass(cl);
+		var $n = $n.next();
+		$n.removeClass(cl);
+	});
+	$ds.find("span").click(function (e) {
+		var $par = $(this).parent();
+		var $spans = $par.find("span");
+		$spans.removeClass("slow");
+		$spans.removeClass("medium");
+		$spans.removeClass("fast");
+		var cl = c[$(this).index()];
+		$(this).addClass(cl);
+		var $n = $(this).next();
+		$n.addClass(cl);
+		var $n = $n.next();
+		$n.addClass(cl);
+		$par.attr("mode", modes[cl]);
+		e.stopPropagation();
+	});
+
+	$("#sort_id").unbind('click').click(function (e) {
+		var $menu = $("#dynamic_ordering");
+		if ($menu.is(":hidden")) {
+			$menu.slideDown();
+		} else {
+			$menu.slideUp();
+		}
+		e.stopPropagation();
+	});
+
+	$ds.find("input.submit").unbind('click').click(function () {
+		var url = $ds.attr("dynamicorderingurl");
+		var levels = [];
+		$ds.find(".graphic div").each(function () {
+			levels.push($(this).attr("mode"));
+		});
+		$.ajax({
+			url: url,
+			type: 'post',
+			dataType: 'json',
+			data: {levels: levels},
+			success: function (data) {
+				if (data.success) {
+					$repertory_content.html(data.content);
+					loadRepertory();
+				}
+			}
+		});
+	});
+}
+
 function loadAddSongsByCategoryMenu() {
 	var $menu = $("#songs_by_category_menu");
 	$("#add_songs_by_category a.add_songs_button").unbind('click').click(function (e) {
@@ -116,6 +192,7 @@ function loadRepertory() {
 				});
 			}
 		});
+		loadDynamicOrdering();
 	}
 	calculateTimeTotal();
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
