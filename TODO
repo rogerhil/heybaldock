@@ -27,6 +27,7 @@ Debug False in production and logs
    image event flyer etc.
  - Find a way to include notify changed/deleted(canceled) repertory, event,
    rehearsal
+ - Nice view per user, "Select the songs you play such instrument"
  - Show/Hide repertory actions (ratings by global, user, my votes)
  - Show history by Object (example: repertory created/changed by user)
  - Think about ratings per player (I think is very usefull, but maybe is not
