@@ -78,6 +78,10 @@ class FileSystemStorageBackend(BaseStorageBackend):
     def remove_base_contents(self, except_files=[]):
         if os.path.isdir(self.base_path):
             for filename in os.listdir(self.base_path):
+                try:
+                    filename = unicode(filename)
+                except:
+                    filename = filename.decode('utf-8')
                 if filename in except_files:
                     continue
                 self.remove_file(filename)

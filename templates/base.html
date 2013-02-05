@@ -171,13 +171,15 @@
                 {% block large_content %}
                     <div class="grid_2">
                         <div id="content">
-                            <div id="management_menu">
-                                <div class="menu_button">{% trans "Menu" %}</div>
-                                <h2>{% trans "Site Management" %}</h2>
-                                <div class="content_menu">
-                                    {% block management_menu_items %}{% endblock %}
+                            {% if user.is_authenticated %}
+                                <div id="management_menu">
+                                    <div class="menu_button">{% trans "Menu" %}</div>
+                                    <h2>{% trans "Site Management" %}</h2>
+                                    <div class="content_menu">
+                                        {% block management_menu_items %}{% endblock %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                             {% block content %}{% endblock %}
                         </div>
                     </div>

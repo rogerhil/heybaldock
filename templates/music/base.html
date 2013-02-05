@@ -6,14 +6,16 @@
     <div id="content">
         <div class="clear"></div>
         <div class="section_content" style="position: relative;">
-            <div id="management_menu" style="width: 928px; margin-bottom: 10px;">
-                <div class="menu_button">{% trans "Menu" %}</div>
-                <h2><a href="{% url music_management %}">{% trans "Music Management" %}</a></h2>
-                {% block breadcrumbs %}{% endblock %}
-                <div class="content_menu">
-                    {% block actions %}{% endblock %}
+            {% if user.is_authenticated %}
+                <div id="management_menu" style="width: 928px; margin-bottom: 10px;">
+                    <div class="menu_button">{% trans "Menu" %}</div>
+                    <h2><a href="{% url music_management %}">{% trans "Music Management" %}</a></h2>
+                    {% block breadcrumbs %}{% endblock %}
+                    <div class="content_menu">
+                        {% block actions %}{% endblock %}
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             {% block music_content %}
             {% endblock %}
         </div>

@@ -8,7 +8,11 @@ $(window).load(function () {
 	$ul.append($photosBlock);
 	var $form = $('form[name=draft_form]');
 	var $submit = $form.find('input[type=submit]');
-	$submit.attr('disabled', 'disabled');
+	if (!$form.find('.photos img').length) {
+		$submit.attr('disabled', 'disabled');
+	} else {
+		$submit.removeAttr('disabled');
+	}
 	$('#fileupload').fileupload({
         dataType: 'json',
 		beforeSend: function (e, data) {
@@ -26,7 +30,11 @@ $(window).load(function () {
 		fail: function (e, data) {
 			uploadCount--;
 			if (uploadCount == 0) {
-				$submit.removeAttr('disabled');
+				if (!$form.find('.photos img').length) {
+					$submit.attr('disabled', 'disabled');
+				} else {
+					$submit.removeAttr('disabled');
+				}
 			}
 		},
         done: function (e, data) {
@@ -72,6 +80,13 @@ function loadPhotos(photos) {
 			$uploadBlock.css('height', '115px');
 			$uploadBlock.find('ul.errorlist li').css('margin', '0');
 		}
+	}
+	var $form = $('form[name=draft_form]');
+	var $submit = $form.find('input[type=submit]');
+	if (photos.length) {
+		$submit.removeAttr('disabled');
+	} else {
+		$submit.attr('disabled', 'disabled');
 	}
 }
 
