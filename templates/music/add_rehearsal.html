@@ -14,7 +14,7 @@
 
 {% block breadcrumbs %}
     <h3>&gt;<a href="{% url rehearsals %}">{% trans "Rehearsals" %}</a></h3>
-    {% if form.instance %}
+    {% if form.instance and form.instance.id %}
         <h3>&gt;<a href="{% url change_rehearsal form.instance.id %}">{% trans "Change rehearsal" %}</a></h3>
     {% else %}
         <h3>&gt;<a href="{% url add_rehearsal %}">{% trans "Add rehearsal" %}</a></h3>
