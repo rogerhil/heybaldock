@@ -78,6 +78,7 @@ def repertories(request):
 @render_to("music/repertories_statistics.html")
 def repertories_statistics(request):
     band = request.band
+    band.update_counts()
     main_repertory = band.repertory
     items = main_repertory.items.all()
     repertories = EventRepertory.objects.all()
