@@ -1,0 +1,176 @@
+{% extends "music/base.html" %}
+{% load i18n common %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="/media/css/form.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.css" type="text/css" media="screen" title="default" />
+    <link rel="stylesheet" href="/media/css/cleditor/jquery.cleditor.cmsplugin.css" type="text/css" media="screen" title="default" />
+    <script type="text/javascript" src="/media/js/utils.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/cleditor/jquery.cleditor.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/cleditor/jquery.cleditor.cmsplugin.js"></script>
+    <script type="text/javascript" src="/media/js/jquery/jquery.ui.timepicker.addon.js"></script>
+    <script type="text/javascript" src="/media/js/hbeditor.js"></script>
+    <script type="text/javascript" src="/media/js/buzz.js"></script>
+    <script type="text/javascript" src="/media/js/MIDI.js"></script>
+    <script type="text/javascript" src="/media/js/base64binary.js"></script>
+    <script type="text/javascript" src="/media/js/metronome.js"></script>
+    <script type="text/javascript" src="/media/js/audioplayer.js"></script>
+    <script type="text/javascript">
+        var is_locked = {% if is_locked %}true{% else %}false{% endif %};
+        var is_free = {% if repertory.is_free %}true{% else %}false{% endif %};
+        var is_editable = {% if editable %}true{% else %}false{% endif %};
+        var has_perm = {% if has_perm %}true{% else %}false{% endif %};
+        var isMainRepertory = true;
+        var RepertoryConfig = {
+            ratings: {
+                view: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" src="/media/js/musiccommonrepertory.js"></script>
+    <script type="text/javascript" src="/media/js/musicmainrepertory.js"></script>
+{% endblock %}
+
+{% block actions %}
+    <a href="{% url repertories %}">{% trans 'Show repertories List' %}</a>
+    <a href="{% url main_repertory %}">{% trans "Main repertory" %}</a>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <h3>&gt;<a href="{% url repertories %}">{% trans "Repertories" %}</a></h3>
+    <h3>&gt;<a href="{% url main_repertory %}">{% trans "Main repertory" %}</a></h3>
+    <h3>&gt;<a href="#">{% trans "Song Details" %}</a></h3>
+{% endblock %}
+
+{% block music_content %}
+    {% include "music/audio_player.html" %}
+    <h1>{% trans "Song:" %} {{ item }}</h1>
+
+    <div id="song_details" itemid="{{ item.id }}" songid="{{ item.song.id }}" repertoryid="{{ item.repertory.id }}">
+
+        <div class="name" style="float: left; width: 435px; background-image: url(/media/img/content_bg_2.png); padding: 10px; border-radius: 5px; margin-right: 5px;">
+            <div style="float: left; margin-right: 10px;">
+                <a href="{% url album item.song.album.id %}">
+                    <img src="{{ item.song.album.thumb_url }}" alt="{{ item.song.album }}" title="{{ item.song.album }}" style="border-radius: 3px;" />
+                </a>
+            </div>
+            <div>
+                <ul style="margin: 0px 0px 10px 0px;">
+                    <li>
+                        {% if item.song.audio %}
+                            <img src="/media/img/play_icon_16.png" class="play_audio" name="{{ item.song.name }}" audiourl="{{ item.song.audio_url }}" alt="{% trans "Play this song" %}" title="{% trans "Play this song" %}" style="cursor: pointer;" />
+                        {% endif %}
+                        <strong>{{ item.song.album.artist }} - {{ item.song.album }} - {{ item.song.name }}</strong>
+                    </li>
+                    <li>
+                        <strong>{% trans "Duration" %}</strong> {{ item.song.duration_display }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="date" date="{{ item.date|date:"Y-m-d" }}" changedateurl="{% url change_repertory_item_date item.id %}">
+                            <strong>{% trans "Date:" %}</strong> {{ item.date|date:"d/m/y" }}
+                        </span>
+                    </li>
+                </ul>
+                <div>
+                    <div class="status" changestatusurl="{% url change_repertory_item_status item.id %}" style="float: left; margin-right: 10px;">
+                        <label>{% trans "Status" %}</label> {% autoescape off %}{{ item.status_html_display }}{% endautoescape %}
+                    </div>
+                    <div class="mode" changemodeurl="{% url change_repertory_item_song_mode item.id %}" style="float: left; margin-right: 10px;">
+                        <label>{% trans "Mode" %}</label> {% autoescape off %}{{ item.mode_html_display }}{% endautoescape %}
+                    </div>
+                    <div class="tonality" changetonalityurl="{% url change_repertory_item_tonality item.id %}" style="float: left; margin-right: 10px;">
+                        <label>{% trans "Tonality" %}</label> {% autoescape off %}{{ item.tonality_html_display }}{% endautoescape %}
+                    </div>
+                    <div class="tempo">
+                        <label>{% trans "Tempo" %}</label>
+                        <span class="tempo_metronome" tempo="{{ item.song.tempo }}" signaturebeats="{{ item.song.signature_beats }}">
+                            {% autoescape off %}{{ item.song.tempo_html_display }}{% endautoescape %}
+                        </span>
+                        <div class="metronome_graphic">
+                            {% for i in item.song.signature_beats_range %}
+                                <div class="led led_{{ i }}"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div style="float: right; width: 435px; background-image: url(/media/img/content_bg_2.png); padding: 10px; border-radius: 5px;">
+
+            {% call item.has_voted with user as voted %}
+            <div class="ratings" ratingurl="{% url rate_repertory_item item.id %}" voted="{% if voted %}1{% else %}0{% endif %}"
+                title="{% if voted %}{% trans "You've already voted. To change your vote just hold SHIFT button." %}{% else %}{% trans "Vote" %}{% endif %}">
+                <label>{% trans "Ratings:" %}</label>
+                <div class="rating_stars">
+                    <img src="/media/img/star_selected_24.png" class="inactive" width="20" />
+                    {% trans "Global" %}:
+                    {% for r in item.ratings_range %}
+                        {% if r.active %}
+                            <img src="/media/img/star_16.png" class="active change_star" rate="{{ r.rate }}" />
+                        {% else %}
+                            <img src="/media/img/star_gray_16.png" class="inactive change_star" rate="{{ r.rate }}" />
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="ratings_by_use">
+                    {% for user_rating in item.users_ratings.all %}
+                        <div class="user_rating">
+                            <img src="{{ user_rating.user.profile.icon_url }}" alt="{{ user_rating.user.nick }}" title="{{ user_rating.user.nick }}" height="20" />
+                            {{ user_rating.user.nick }}:
+                            {% for r in user_rating.ratings_range %}
+                                {% if r.active %}
+                                    <img src="/media/img/star_16.png" class="active change_star" rate="{{ r.rate }}" />
+                                {% else %}
+                                    <img src="/media/img/star_gray_16.png" class="inactive change_star" rate="{{ r.rate }}" />
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div style="margin-top: 10px; width: 435px; background-image: url(/media/img/content_bg_2.png); padding: 10px; border-radius: 5px;">
+            <div class="td_players players_column">
+                <div style="position: relative;">
+                    <div class="players_menu simple_menu" addplayerurl="{% url add_player_repertory_item item.id %}">
+                        {% include "music/players_menu.html" %}
+                    </div>
+                    <div class="change_player_menu simple_menu" itemid="{{ item.id }}">
+
+                    </div>
+                </div>
+                <div>
+                    {% for player in item.players.all %}
+                        <div>
+                            <img class="player"
+                                 src="{{ player.player.user.profile.icon_url }}"
+                                 alt="{{ player }}"
+                                 title="{{ player }}"
+                                 changeplayermenuurl="{% url player_repertory_item_menu player.id %}" />
+                            <img class="player {% if player.is_lead %}player_is_lead{% endif %}"
+                                 src="{{ player.player.instrument.icon_url }}"
+                                 alt="{{ player }}"
+                                 title="{{ player }}"
+                                 changeplayermenuurl="{% url player_repertory_item_menu player.id %}" />
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                {% if editable %}
+                    <img src="/media/img/plus_16.png" class="add_player" url="{% url players_menu item.id %}" alt="Add a player for this song" />
+                    {% trans "Add player" %}
+                {% endif %}
+            </div>
+        </div>
+    
+    </div>
+
+{% endblock %}

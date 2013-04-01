@@ -1732,6 +1732,17 @@ thead tr.table_head_actions th div.action.selected {
     color: white;
 }
 
+.lyrics_menu {
+    width: 600px;
+    overflow: auto;
+    left: 150px;
+}
+
+.lyrics_menu:hover {
+    color: #000000;
+    cursor: default;
+}
+
 .song_status {
     padding: 0px;
     border-radius: 3px;
@@ -1747,13 +1758,22 @@ thead tr.table_head_actions th div.action.selected {
     text-align: center;
 }
 
-#stats .song_status {
-    text-align: left;
-    padding: 3px 10px 3px 10px;
+#song_details .song_status,
+#song_details .song_mode,
+#song_details .tonality_block {
+    display: inline-block;
+}
+
+#song_details .song_status {
+    padding: 0px 10px 0px 10px;
     margin-bottom: 5px;
-    width: 150px;
-    min-width: 150px;
     font-size: 13px;
+}
+
+
+#song_details label {
+    font-weight: bold;
+    display: block;
 }
 
 #stats .stats_by_artist {

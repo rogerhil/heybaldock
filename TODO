@@ -20,6 +20,8 @@ Debug False in production and logs
      - Put gettext in all __unicode__
      - Translate remaining items, mainly ChooseOptions
      - Create suggestion box (not important at all)
+ - Change user instrument in Player in event repertories, it's not working
+   yet and must work. I don't know if it is already implemented, must check it
  - When change tempo, the line breaks, not showing the icon for download and
    actions
  - Dynamic Ordering: by less player change
@@ -74,6 +76,17 @@ Debug False in production and logs
 
  - Lyrics easy download, will be very usefull for the feature below.
 
+ - http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=beatles&song=yesterday
+
+ - Put notes easily in lyrics, like Odir does in his documents, and find a way
+   to parse notes and play easily when mouse over or something:
+   E0        E7 / E5
+   Blablabla blablabla blablabla blablabla
+   ps.: think about the alternative below, which is better, or make it
+   together, or partially together, I don't know.
+   ps2.: take care about the cifra notation which is very similar with the
+   Odir's tablature notation, think too much about it.
+
  - Music score, tablature, cifra, audio segments, notes:
    - Could be an unique infra structure based on LYRICS!
    - 3 options:
@@ -82,6 +95,13 @@ Debug False in production and logs
      2. from scratch based on a time signature, free editing, free lyrics,
         blank "pautas"
      bdlabdlfbald pensar muito, pq tem ainda o lance do MIDI
+  - Think about recording sound in the section of lyrics, instead of put notes
+    by hand. And maybe, find a way to recognize the note recorded and transform
+    to a real note in music score.
+  - Think about: Tablature, Music Score, Cifra, what is the best, or use the 3
+    ways, whatever, maybe make a relation between each other, for example:
+    Music Score -> Tablature, which means that from a music score we can
+    extract a tablature or "maybe" a cifra.
 
 
 1    -    2    -    3    -    4

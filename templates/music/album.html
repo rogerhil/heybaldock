@@ -17,6 +17,7 @@
     <a href="{% url artist_albums album.artist.id %}">{% trans 'View all albums' %}</a>
     <a href="{% url artists %}">{% trans 'View all artists' %}</a>
     {% if has_perm %}
+        <a href="#" class="update_lyrics">{% trans 'Update lyrics' %}</a>
         <a href="{% url add_album %}">{% trans 'Add album' %}</a>
         <a href="#" class="red" id="remove_album">{% trans 'Remove this album' %}</a>
     {% endif %}
@@ -58,7 +59,7 @@
             <strong>Style</strong><br />{{ album.style_display }}
         </p>
     </div>
-    <div class="table_list">
+    <div class="table_list" id="album">
         <table style="width: 820px;">
             <thead>
                 <th width="30px">

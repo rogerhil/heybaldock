@@ -24,6 +24,9 @@ $(window).load(function () {
 	$("#remove_album").click(removeAlbum);
 	loadUploadAudio();
 	$("img.add_to_main_repertory").click(addToMainRepertory);
+
+	$("a.get_lyrics").click(getLyrics);
+	$("a.update_lyrics").click(updateLyrics);
 });
 
 
@@ -232,4 +235,45 @@ function addToMainRepertory() {
 			}
 		}
 	});
+}
+
+function getLyrics() {
+	_getLyrics(this);
+}
+
+function _getLyrics(o, trs, count, total) {
+	if (!o) {
+		hideOverlay();
+		return;
+	}
+	var url = $(o).attr('getlyricsurl');
+	var $menu = $(o).parent().find('.lyrics_menu');
+	showOverlay("DOWNLOADING LYRICS");
+	$.ajax({
+		url: url,
+		dataType: 'json',
+		success: function (data) {
+			if (trs) {
+				var value = Math.floor((count / total) * 100);
+				updateOverlayProgressBar(value, count + " of " + total);
+				count++;
+				_getLyrics(trs.pop(), trs, count, total);
+			} else {
+				hideOverlay();
+				if (data.success) {
+					$menu.find('.lyrics').html(data.lyrics);
+					$menu.fadeIn();
+				} else {
+					alert(data.message);
+				}
+			}
+		}
+	});
+}
+
+function updateLyrics() {
+	var $album = $("#album");
+	var trs = $album.find("tr").toArray();
+	var total = trs.length;
+	_getLyrics(trs.pop(), trs, 1, total);
 }

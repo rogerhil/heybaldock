@@ -8,6 +8,7 @@ $(window).load(function () {
 
 	loadGlobalCancelActions();
 
+	loadSongDetails();
 });
 
 function loadRepertory() {
@@ -27,6 +28,26 @@ function loadRepertory() {
 	}
 	calculateTimeTotal();
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
+	initSortTable();
+	loadRepertoryActions();
+}
+
+function loadSongDetails() {
+	var $song_details = $("#song_details");
+	var repertory_id = $song_details.attr("repertory_id");
+	loadRatings($("div.ratings"));
+	loadAudio();
+	$song_details.find('img.player').click(changePlayerButton);
+	if (is_editable) {
+		$song_details.find('img.remove_song').click(removeSongFromRepertory);
+		$song_details.find('img.add_player').click(addPlayerButton);
+		tonalityClick($("div.tonality"));
+		modeClick($("div.mode"));
+		statusClick($("div.status"));
+		dateClick($("div.date"));
+	}
+	calculateTimeTotal();
+	loadMetronome($("div.tempo span.tempo_metronome"));
 	initSortTable();
 	loadRepertoryActions();
 }

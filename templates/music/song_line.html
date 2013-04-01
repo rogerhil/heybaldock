@@ -4,7 +4,8 @@
     songid="{{ song.id }}"
     changetemposignatureurl="{% url change_tempo_signature song.id %}"
     changetonalityurl="{% url change_tonality song.id %}"
-    songtempo="{{ song.tempo }}">
+    songtempo="{{ song.tempo }}"
+    getlyricsurl="{% url get_lyrics song.id %}">
     <td style="text-align: center;">
         {{ song.position }}
     </td>
@@ -20,7 +21,13 @@
             <img src="/media/img/music_icon_16.png" class="upload_audio" alt="{% trans "Upload audio song" %}" title="{% trans "Upload audio song" %}" />
         </div>
         {% endif %}
-        {{ song.name }}
+        <a href="javascript:;" class="get_lyrics" alt="{% trans "Get Lyrics" %}" title="{% trans "Get Lyrics" %}" getlyricsurl="{% url get_lyrics song.id %}">
+            {{ song.name }}
+        </a>
+        <div class="simple_menu lyrics_menu">
+            <h3 class="pretty_title">Lyrics</h3>
+            <div class="lyrics" style="margin-top: 10px;"></div>
+        </div>
     </td>
     <td style="text-align: center;">{{ song.duration_display }}</td>
     <td>{{ song.composer_display }}</td>

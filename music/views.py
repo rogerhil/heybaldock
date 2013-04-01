@@ -19,7 +19,7 @@ from django.utils import simplejson
 
 from hbauth.decorators import login_required
 from section.decorators import render_to, json
-from discogs import Discogs
+from discogs import Discogs, Lyrics
 from photo.image import FileHandlerSongAudio
 from forms import EventRepertoryForm, AlbumInfoForm, AlbumForm, SongForm, \
                   InstrumentForm, PlayerForm, ArtistForm, \
@@ -1035,6 +1035,20 @@ def add_song_to_main_repertory(request):
     song_line = get_main_repertory_item_content(request, item)
     return dict(success=True, song_line=song_line)
 
+
+@json
+@login_required
+@permission_required('music.manage_music', '/permission/denied/')
+def get_lyrics(request, id):
+    song = get_object_or_404(Song, id=id)
+    lyrics = song.lyrics
+    if not song.lyrics:
+        lyrics = Lyrics.get_lyrics(song.album.artist.name, song.name)
+        song.lyrics = lyrics
+        song.save()
+    lyrics = lyrics.replace('\n', '<br />') if lyrics else u'Nothing found.'
+    return dict(success=True, lyrics=lyrics)
+
 @json
 @login_required
 @ajax_check_locked_event_repertory
@@ -1183,6 +1197,25 @@ def remove_song_from_main_repertory(request, id):
     new_history_entry(request.user, repertory, summary)
     trash_content = get_trash_content(request, repertory)
     return dict(success=True, trash_content=trash_content)
+
+@login_required
+@ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
+@render_to("music/main_repertory_item_details.html")
+def main_repertory_item_details(request, id):
+    user = request.user
+    item = get_object_or_404(RepertoryItem, id=id)
+    repertory = item.repertory
+    tc = dict(
+        item=item,
+        repertory=repertory,
+        statuses=RepertoryItemStatus.active_choices(),
+        is_locked=repertory.is_locked(user),
+        editable=repertory.is_editable(user),
+        has_perm=user.has_perm('music.manage_event_repertories')
+    )
+    return tc
+
 
 def get_event_repertory_content(request, repertory):
     user = request.user
