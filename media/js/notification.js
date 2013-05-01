@@ -44,12 +44,13 @@ $(window).load(function () {
 		loadMyNotifications();
 	});
 	closeActions();
-	startNotificationsCountUpdate();
-
+	if (is_authenticated) {
+		startNotificationsCountUpdate();
+	}
 });
 
 function startNotificationsCountUpdate() {
-	//intervalNotificationCount = window.setInterval(notificationsCountUpdate, 1000 * 20);
+	intervalNotificationCount = window.setInterval(notificationsCountUpdate, 1000 * 20);
 }
 
 function stopNotificationsCountUpdate() {

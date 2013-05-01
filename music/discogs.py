@@ -8,6 +8,8 @@ from urllib import urlencode, quote_plus
 from urllib2 import urlopen
 from BeautifulSoup import BeautifulStoneSoup
 
+from music.lyricsdownloader import getlyrics
+
 class Discogs:
 
     SEARCH_URL = 'http://api.discogs.com/database/search'
@@ -49,6 +51,13 @@ class Lyrics:
 
     @staticmethod
     def get_lyrics(artist, song):
+        # try first the lyricsdownloader script
+        lyrics = getlyrics(artist, song)
+        if lyrics:
+            return '\n'.join(lyrics)
+        else:
+            # disabling api chartlyrics for a while
+            return
         action = "SearchLyric"
         p = lambda x: quote_plus(x)
         params = "artist=%s&song=%s" % (p(artist), p(song))

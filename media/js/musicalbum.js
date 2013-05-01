@@ -242,7 +242,7 @@ function getLyrics() {
 }
 
 function _getLyrics(o, trs, count, total) {
-	if (!o) {
+	if (!o || !$(o).attr('getlyricsurl')) {
 		hideOverlay();
 		return;
 	}
@@ -253,12 +253,14 @@ function _getLyrics(o, trs, count, total) {
 		url: url,
 		dataType: 'json',
 		success: function (data) {
+			console.log(trs);
 			if (trs) {
 				var value = Math.floor((count / total) * 100);
 				updateOverlayProgressBar(value, count + " of " + total);
 				count++;
 				_getLyrics(trs.pop(), trs, count, total);
 			} else {
+				console.log('empty');
 				hideOverlay();
 				if (data.success) {
 					$menu.find('.lyrics').html(data.lyrics);
