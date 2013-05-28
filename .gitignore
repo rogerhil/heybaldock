@@ -2,3 +2,8 @@ hbenv
 .idea
 *.pyc
 *.db
+media/upload/*
+songs.pickle
+settings.ini
+distribute-0.6.15.tar.gz
+

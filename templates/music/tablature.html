@@ -1,0 +1,55 @@
+{% load i18n %}
+
+{% with tablature.get_code_object as code %}
+    <div class="tablature" saveurl="{% url save_tablature_repertory_item tablature.item.id tablature.id %}">
+        <a href="javascript:;" class="edit">
+            {% trans "Edit" %}
+        </a>
+        <a href="javascript:;" class="save">
+            {% trans "Save" %}
+        </a>
+        <br/>
+        <br/>
+        <ul>
+            {% for line in code.lines %}
+                <li id="line_{{ forloop.counter0 }}" class="code_line">
+                    <div class="view">
+                        <div class="lyrics">
+                            <pre>{{ line.lyrics }}</pre>
+                        </div>
+                        <div class="players">
+                            <ul>
+                                {% for user in line.users %}
+                                    <li userid="{{ user.user_id }}" class="user_code">
+                                        <img src="" style="float: left;" />
+                                        <pre>{{ user.code }}</pre>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="edition">
+                        <div class="lyrics">
+                            <input type="text" name="lyrics" value="{{ line.lyrics }}" />
+                        </div>
+                        <div class="players">
+                            <ul>
+                                {% for user in line.users %}
+                                    <li userid="{{ user.user_id }}" class="user_code">
+                                        <img src="" />
+                                        <input type="text" name="code" value="{{ user.code }}" />
+                                    </li>
+                                {% endfor %}
+                                <li>
+                                    <a href="javascript:;" class="add_tablature_player">Add</a>
+                                    <input type="text" name="new_code" value="" disabled="disabled" />
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endwith %}
