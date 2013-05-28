@@ -1,6 +1,11 @@
 {% load common %}
 
 {% call section.content_rendered with request as rendered %}
+{% comment %}
 <h1>{{ section.title }}</h1>
 <h3>{{ section.description }}</h3>
-<p>{{ rendered }}</p>
+{% endcomment %}
+{{ rendered }}
+<br/>
+<br/>
+<br/>

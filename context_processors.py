@@ -9,7 +9,7 @@ from section.models import Section
 from music.models import Rehearsal
 
 
-SECTIONS = [i for i in Section.objects.all().order_by('order')]
+SECTIONS = [i for i in Section.objects.filter(active=True).order_by('order')]
 SECTIONS_MAP = dict([(i.slug, i) for i in SECTIONS])
 SECTIONS_MAP_ID = dict([(i.id, i) for i in SECTIONS])
 SECTIONS_MAP_SLUG_ID = dict([(i.slug, i.id) for i in SECTIONS])

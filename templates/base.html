@@ -134,14 +134,14 @@
                         <div class="clear"></div>
                     </div>
                     {% endif %}
-                    <div id="logo">
+                    <div id="logo" onclick="window.location = '/';">
                         <div>Hey Baldock</div>
                         <div class="shadow"><span class="shadow_big">Hey Baldock</span></div>
                     </div>
                 </div>
                 <div class="clear"></div>
 
-                <div class="grid_2">
+                <div class="grid_3">
                     <div id="menu">
                         {% for s in sections %}
                             <a href="{% ifequal s.slug 'home' %}/{% else %}{% url section_view s.slug %}{% endifequal %}">
@@ -153,6 +153,7 @@
                         <div class="clear"></div>
                     </div>
                 </div>
+                {% comment %}
                 <div class="grid_1">
                     <div id="search">
                         <form action="{% url search %}" method="get">
@@ -160,6 +161,7 @@
                         </form>
                     </div>
                 </div>
+                {% endcomment %}
                 <div class="clear"></div>
                 <div class="grid_3">
                     {% if messages %}

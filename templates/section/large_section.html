@@ -1,0 +1,29 @@
+{% extends "section/base_section.html" %}
+{% load i18n draftutils %}
+
+{% block large_content %}
+    <div class="grid_3">
+        <div id="content">
+            {% if user.is_authenticated %}
+            <div id="management_menu" style="width: 928px; margin-bottom: 10px;">
+                <div class="menu_button">{% trans "Menu" %}</div>
+                <h2>{% trans "Site Management" %}</h2>
+                <div class="content_menu">
+                    {% object_manage_buttons user 'section' section.id %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="section_content">
+                {% include "section/section_content.html" %}
+            </div>
+            <div class="clear"></div>
+            <div class="last_updated">
+                {% blocktrans with updated=section.updated user_updated=section.user_updated %}
+                    Last updated at {{ updated }} by {{ user_updated }}
+                {% endblocktrans %}
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+{% endblock %}

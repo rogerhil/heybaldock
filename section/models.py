@@ -30,6 +30,7 @@ class Section(models.Model):
     updated = models.DateField(auto_now=True)
     user_updated = models.ForeignKey(User)
     order = models.IntegerField()
+    active = models.BooleanField(default=True)
 
     template_view = "section/section_content.html"
     template_varname = 'section'

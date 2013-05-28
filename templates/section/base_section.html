@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n draftutils %}
+
+{% block stylesheet %}
+    {% if section.media %}
+        {% for script in section.media.scripts %}
+            <script type="text/javascript" src="{{ script }}"></script>
+        {% endfor %}
+        {% for style in section.media.styles %}
+            <link rel="stylesheet" href="{{ style }}" type="text/css" />
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block open_grap_tags %}
+    <meta property="og:title" content="{% blocktrans with title=section.title %}Hey Baldock {{ title }}{% endblocktrans %}"/>
+    <meta property="og:description" content="{{ section.description }}"/>
+    <meta property="og:image" content="http://{{ site_domain }}/media/img/profile_fb.png"/>
+    <meta property="og:url" content="http://{{ site_domain }}{{ section.url }}"/>
+{% endblock %}
+
+{% block management_menu_items %}
+    {% object_manage_buttons user 'section' section.id %}
+{% endblock %}

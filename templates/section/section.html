@@ -1,42 +1,22 @@
-{% extends "base.html" %}
+{% extends "section/base_section.html" %}
 {% load i18n draftutils %}
 
-{% block stylesheet %}
-    {% if section.media %}
-        {% for script in section.media.scripts %}
-            <script type="text/javascript" src="{{ script }}"></script>
-        {% endfor %}
-        {% for style in section.media.styles %}
-            <link rel="stylesheet" href="{{ style }}" type="text/css" />
-        {% endfor %}
-    {% endif %}
-{% endblock %}
-
-{% block open_grap_tags %}
-    <meta property="og:title" content="{% blocktrans with title=section.title %}Hey Baldock {{ title }}{% endblocktrans %}"/>
-    <meta property="og:description" content="{{ section.description }}"/>
-    <meta property="og:image" content="http://{{ site_domain }}/media/img/profile_fb.png"/>
-    <meta property="og:url" content="http://{{ site_domain }}{{ section.url }}"/>
-{% endblock %}
-
-{% block management_menu_items %}
-    {% object_manage_buttons user 'section' section.id %}
-{% endblock %}
-
 {% block content %}
-<div class="section_content">
-    {% include "section/section_content.html" %}
-</div>
-<div class="clear"></div>
-<div class="last_updated">
-    {% blocktrans with updated=section.updated user_updated=section.user_updated %}
-        Last updated at {{ updated }} by {{ user_updated }}
-    {% endblocktrans %}
-</div>
+    <div class="section_content">
+        {% include "section/section_content.html" %}
+    </div>
+    <div class="clear"></div>
+    <div class="last_updated">
+        {% blocktrans with updated=section.updated user_updated=section.user_updated %}
+            Last updated at {{ updated }} by {{ user_updated }}
+        {% endblocktrans %}
+    </div>
 
-{% with section.url as url %}
-    {% include "facebook_comments.html" %}
-{% endwith %}
+    {% comment %}
+    {% with section.url as url %}
+        {% include "facebook_comments.html" %}
+    {% endwith %}
+    {% endcomment %}
 
- <div class="clear"></div>
+    <div class="clear"></div>
 {% endblock %}
