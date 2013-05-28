@@ -14,7 +14,7 @@ $(window).load(function () {
 function loadRepertory() {
 	var $repertory_content = $("#repertory_content");
 	var repertory_id = $repertory_content.attr("repertory_id");
-	loadRatings($("td.ratings_cel"));
+	loadRatings($(".ratings_cel"));
 	loadAudio();
 	$repertory_content.find('img.player').click(changePlayerButton);
 	if (is_editable) {
@@ -35,7 +35,7 @@ function loadRepertory() {
 function loadSongDetails() {
 	var $song_details = $("#song_details");
 	var repertory_id = $song_details.attr("repertory_id");
-	loadRatings($("div.ratings"));
+	//loadRatings($("div.ratings"));
 	loadAudio();
 	$song_details.find('img.player').click(changePlayerButton);
 	if (is_editable) {

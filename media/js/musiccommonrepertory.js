@@ -368,7 +368,7 @@ function updateSongLine(data, callback) {
 	}
 	$newTr.find('img.player').click(changePlayerButton);
 	loadMetronome($("td.tempo_cel span.tempo_metronome"));
-	loadRatings($newTr.find("td.ratings_cel"));
+	loadRatings($newTr.find(".ratings_cel"));
 	loadAudio();
 	if (callback) {
 		callback();
@@ -396,6 +396,7 @@ function loadRatingsView() {
 }
 
 function loadRatings($els) {
+	console.log($els);
 	$els.unbind('click').click(function (e) {
 		if (e.shiftKey) return;
 		$(this).find('.rating_stars_by_user').fadeIn();
@@ -415,7 +416,7 @@ function loadRatings($els) {
 		var $par = $(this).parent().parent().parent();
 		if (Number($par.attr('voted')) && !e.shiftKey) return;
 		$(this).attr('src', '/media/img/star_selected_16.png');
-		$(this).prevAll().attr('src', '/media/img/star_selected_16.png');
+		$(this).prevAll('.change_star').attr('src', '/media/img/star_selected_16.png');
 	});
 	$els.find('img.change_star').unbind('mouseleave').mouseleave(function (e) {
 		if ($(this).hasClass('inactive')) {
@@ -423,7 +424,7 @@ function loadRatings($els) {
 		} else {
 			$(this).attr('src', '/media/img/star_16.png');
 		}
-		$(this).prevAll().each(function () {
+		$(this).prevAll('.change_star').each(function () {
 			if ($(this).hasClass('inactive')) {
 				$(this).attr('src', '/media/img/star_gray_16.png');
 			} else {
@@ -432,9 +433,10 @@ function loadRatings($els) {
 		});
 	});
 	$els.find('img.change_star').unbind('click').click(function (e) {
-		var $par = $(this).parents('td');
+		var $par = $(this).parents('.ratings_cel');
 		if (Number($par.attr('voted')) && !$(this).hasClass('rating_owner') && !e.shiftKey) return;
 		var url = $par.attr('ratingurl');
+		if (!url) return;
 		var data = {
 			rate: $(this).attr('rate'),
 			is_main: Number(isMainRepertory)
@@ -548,7 +550,7 @@ function addNewSong(sid, $el) {
                                 }
 				loadMetronome($("td.tempo_cel span.tempo_metronome"));
 				loadAudio();
-				loadRatings($tr.find("td.ratings_cel"));
+				loadRatings($tr.find(".ratings_cel"));
 				updateRepertoryStats();
 			} else {
 				var $msg = $el.parent().find('span.message');

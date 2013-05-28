@@ -1286,6 +1286,7 @@ div.pretty_select h3 {
     color: #eae6cc;
     border-radius: 5px;
     float: none !important;
+    margin: -2px;
 }
 
 div.pretty_select h3.play,
@@ -2055,6 +2056,16 @@ td.ratings_cel .rating_stars_owner {
     border-bottom: 1px solid red;
 }
 
+.rating_label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    line-height: 30px;
+    vertical-align: middle;
+    margin-right: 10px;
+    font-size: 15px;
+}
+
 #audio_player {
     width: 340px;
     min-height: 65px;
@@ -2259,4 +2270,56 @@ td.date_cel:hover {
 #dynamic_ordering div.graphic span.fast {
     background-color: #993300;
     background-image: none;
+}
+
+.tablature {
+    background-image: url(/media/img/content_bg_2.png);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.tablature ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tablature li {
+    background-image: url(/media/img/content_bg.png);
+    padding: 5px;
+    margin: 0 0 5px 0;
+}
+
+.tablature .lyrics {
+    padding-left: 30px;
+}
+
+.tablature .players {
+    
+}
+
+.tablature .players img {
+    margin-right: 5px;
+}
+
+.tablature a.add_tablature_player {
+    display: inline-block;
+    width: 30px;
+}
+
+.tablature .players li {
+    padding: 5px 0 5px 0;
+}
+
+.tablature .edition {
+    display: none;
+}
+
+.tablature input[type=text] {
+    width: 800px;
+}
+
+.tablature input[type=text][disabled=disabled] {
+    background-color: #eee;
+    
 }

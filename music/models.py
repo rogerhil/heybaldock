@@ -24,6 +24,7 @@ from photo.image import ImageHandlerAlbumCover, ImageHandlerInstrument, \
                         FileHandlerSongAudio
 from video.models import VideoBase
 from utils import metadata_display
+from music.tablature import TablatureCode
 
 add_introspection_rules([], ["^lib\.fields\.PickleField"])
 
@@ -513,6 +514,10 @@ class Song(models.Model):
         return self.audio_handler.single_url()
 
     @property
+    def lyrics_html_display(self):
+        return '<br />'.join(self.lyrics.splitlines())
+
+    @property
     def tempo_display(self):
         if self.tempo and self.tempo >= 10:
             return "%s bpm"% Tempo.display(self.tempo)
@@ -683,6 +688,20 @@ class RepertoryItem(models.Model):
         r = [{'rate': i + 1,
               'active': self.ratings > i} for i in xrange(Rating.length())]
         return r
+
+    def instruments(self):
+        instruments = []
+        for player in self.players.all():
+            if player.player.instrument not in instruments:
+                instruments.append(player.player.instrument)
+        return instruments
+
+    def users_players(self):
+        users = []
+        for player in self.players.all():
+            if player.player.user not in users:
+                users.append(player.player.user)
+        return users
 
     def has_voted(self, user):
         return bool(self.users_ratings.filter(user=user).count())
@@ -975,6 +994,29 @@ class PlayerRepertoryItem(models.Model):
     @property
     def has_tag_types(self):
         return bool(self.tag_types.all().count())
+
+
+class Tablature(models.Model):
+    item = models.ForeignKey(RepertoryItem, related_name="tablatures")
+    instrument = models.ForeignKey(Instrument)
+    code = PickleField()
+
+    def __unicode__(self):
+        return _("Tablature for %s" % self.instrument)
+
+    def generate_tablature_by_lyrics(self):
+        lyrics = self.item.song.lyrics or ''
+        tablature = TablatureCode.generate_by_lyrics(lyrics)
+        self.code = tablature.serialize()
+
+    def generate_tablature_by_data(self, data):
+        tablature = TablatureCode.generate(data)
+        self.code = tablature.serialize()
+
+    def render(self):
+        template = loader.get_template('music/tablature.html')
+        c = dict(tablature=self)
+        return template.render(Context(c))
 
 
 class MusicScoreSegment(models.Model):

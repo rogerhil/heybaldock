@@ -29,7 +29,8 @@ from models import Repertory, EventRepertory, Song, Album, Artist, \
                    RepertoryItem, EventRepertoryItem, Instrument, \
                    Player, InstrumentTagType, PlayerRepertoryItem, \
                    MusicHistoryChanges, UserRepertoryItemRating, \
-                   PlayerRepertoryItemRating, Band, BandArtist, Rehearsal
+                   PlayerRepertoryItemRating, Band, BandArtist, Rehearsal,\
+                   Tablature
 from decorators import check_locked_event_repertory, \
                        ajax_check_locked_repertory_item, \
                        ajax_check_locked_player_repertory_item, \
@@ -1849,6 +1850,37 @@ def add_player_repertory_item(request, id):
         content = get_main_repertory_item_content(request, item)
         return dict(success=True, content=content, item_id=item.id)
     return dict(success=False, message=str(form.errors))
+
+@json
+@login_required
+@ajax_check_locked_repertory_item
+@permission_required('music.manage_main_repertory', '/permission/denied/')
+def add_tablature_repertory_item(request, id):
+    data = request.POST
+    item = RepertoryItem.objects.get(id=id)
+    instrument = Instrument.objects.get(id=data['instrument_id'])
+    tablature = Tablature(item=item, instrument=instrument)
+    tablature.generate_tablature_by_lyrics()
+    tablature.save()
+    return dict(success=True, content=tablature.render())
+
+@json
+@login_required
+def show_tablature_repertory_item(request, id, tablature_id):
+    item = RepertoryItem.objects.get(id=id)
+    tablature = Tablature.objects.get(id=tablature_id, item=item)
+    return dict(success=True, content=tablature.render())
+
+@json
+@login_required
+def save_tablature_repertory_item(request, id, tablature_id):
+    item = RepertoryItem.objects.get(id=id)
+    tablature = Tablature.objects.get(id=tablature_id, item=item)
+    print request.POST.keys()
+    data = simplejson.loads(request.POST['data'])
+    tablature.generate_tablature_by_data(data)
+    tablature.save()
+    return dict(success=True, content=tablature.render())
 
 @json
 @login_required
