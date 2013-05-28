@@ -42,7 +42,7 @@ def video_albums():
 
 @register.simple_tag()
 def photo_albums():
-    albums = PhotoAlbum.objects.filter(listable=True).order_by('-updated')
+    albums = PhotoAlbum.objects.filter(listable=True).order_by('-event__starts_at')
     c = dict(albums=albums)
     return render_to_string("photo/photo_albums.html", Context(c))
 

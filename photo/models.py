@@ -48,6 +48,7 @@ class PhotoAlbum(models.Model):
         handler.load_by_album(self)
         return handler
 
+
 class Photo(models.Model):
     """
     """
