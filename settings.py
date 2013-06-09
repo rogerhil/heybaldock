@@ -114,6 +114,7 @@ MIDDLEWARE_CLASSES = (
     'hbauth.middleware.ComingSoonMiddleware',
     'hbauth.middleware.UnderMaintenanceMiddleware',
     'music.middleware.MusicMiddleware',
+    'middleware.HeybaldockMiddleware',
 )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

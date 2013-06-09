@@ -7,6 +7,9 @@
 <div class="table_list">
     <table>
         <thead>
+            <th width="120px">
+                Flyer
+            </th>
             <th width="200px">
                 {% trans "Name" %}
             </th>
@@ -16,11 +19,11 @@
             <th width="140px">
                 {% trans "Date" %}
             </th>
-
         </thead>
         <tbody>
             {% for event in events %}
             <tr class="{% cycle odd,even %}" onclick="window.location = '{% url event_details event.id %}'">
+                <td style="text-align: center;"><img src="{{ event.first_flyer.image_small_url }}" /></td>
                 <td>{{ event.name }}</td>
                 <td>{{ event.location.name }}</td>
                 <td>{{ event.starts_at|date:"l" }} {{ event.datetime }}</td>

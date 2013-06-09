@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
@@ -18,8 +18,10 @@ from lib.decorators import ajax
 def event_details(request, id):
     event = get_object_or_404(Event, id=id)
     repertory = None
-    if event.repertories.count():
+    end = datetime.now() + timedelta(hours=3)
+    if event.starts_at < end and event.repertories.count():
         repertory = event.repertories.all()[0]
+    print XXX
     return dict(event=event, repertory=repertory)
 
 @render_to("event/event_history.html")

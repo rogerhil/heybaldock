@@ -11,9 +11,9 @@ DATABASES = {
     }
 }
 
-DEBUG = True
+DEBUG = False
 
-COMMING_SOON = True
+COMMING_SOON = False
 UNDER_MAINTENANCE = False
 
 S3_STORAGE = False
