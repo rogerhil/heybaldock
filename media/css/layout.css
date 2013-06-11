@@ -2324,3 +2324,7 @@ td.date_cel:hover {
     background-color: #eee;
     
 }
+
+.photo_album_info p {
+    text-align: left;
+}
