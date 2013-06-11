@@ -26,6 +26,10 @@
         {% endblock %}
         <script type="text/javascript" src="/media/js/last.js"></script>
 
+        <script type="text/javascript">
+            var IS_MAIN_PAGE = {% if is_main_page %}true{% else %}false{% endif %};
+        </script>
+
         {% block open_grap_tags %}
         {% endblock %}
         <meta property="og:type" content="band"/>

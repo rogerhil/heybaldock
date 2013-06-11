@@ -13,6 +13,7 @@ $(window).bind('hashchange', function() {
 });
 
 function fullHeight() {
+	if (IS_MAIN_PAGE) return;
 	contentHeightAuto();
 	var $content = $("#content");
 	var $emptyPortlet = $("#empty_portlet");
@@ -29,6 +30,7 @@ function fullHeight() {
 }
 
 function contentHeightAuto() {
+	if (IS_MAIN_PAGE) return;
 	$content = $("#content");
 	$content.css('height', 'auto');
 }
