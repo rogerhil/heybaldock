@@ -8,7 +8,7 @@
         <div class="photo_album_info">
             <p><strong>{{ album.name }}</strong></p>
             <p>{{ album.description }}</p>
-            {% if album.event %}<p>{{ album.event.starts_at }}</p>{% endif %}
+            {% if album.event %}<p>{{ album.event.date }}</p>{% endif %}
             <p>
                 {% blocktrans count counter=album.count %}
                     {{ counter }} photo

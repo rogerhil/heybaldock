@@ -180,6 +180,10 @@ class Event(models.Model):
                 return photos[0]
 
     @property
+    def date(self):
+        return self.starts_at.strftime("%d/%m/%Y")
+
+    @property
     def is_upcoming(self):
         now = datetime.now()
         return self.starts_at > now
