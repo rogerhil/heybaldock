@@ -21,7 +21,6 @@ def event_details(request, id):
     end = datetime.now() + timedelta(hours=3)
     if event.starts_at < end and event.repertories.count():
         repertory = event.repertories.all()[0]
-    print XXX
     return dict(event=event, repertory=repertory)
 
 @render_to("event/event_history.html")

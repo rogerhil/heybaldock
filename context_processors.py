@@ -44,7 +44,8 @@ def main(request):
         site_domain=settings.SITE_DOMAIN,
         facebook_app_id=settings.FACEBOOK_APP_ID,
         enable_repertory_features=settings.ENABLE_REPERTORY_FEATURES,
-        permissions=permissions
+        permissions=permissions,
+        is_main_page=request.get_full_path() in ['/', '/home/']
     )
     return c
 

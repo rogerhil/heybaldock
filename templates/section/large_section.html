@@ -2,7 +2,7 @@
 {% load i18n draftutils %}
 
 {% block large_content %}
-    <div class="grid_3">
+    <div class="grid_3" {% if is_main_page %}style="position: relative;" {% endif %}>
         <div id="content">
             {% if user.is_authenticated %}
             <div id="management_menu" style="width: 928px; margin-bottom: 10px;">
@@ -17,13 +17,15 @@
                 {% include "section/section_content.html" %}
             </div>
             <div class="clear"></div>
-            <div class="last_updated">
-                {% blocktrans with updated=section.updated user_updated=section.user_updated %}
-                    Last updated at {{ updated }} by {{ user_updated }}
-                {% endblocktrans %}
-            </div>
-
-            <div class="clear"></div>
+            {% if not is_main_page %}
+                <br/>
+                <div class="last_updated">
+                    {% blocktrans with updated=section.updated user_updated=section.user_updated %}
+                        Last updated at {{ updated }} by {{ user_updated }}
+                    {% endblocktrans %}
+                </div>
+                <div class="clear"></div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
