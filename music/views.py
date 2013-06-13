@@ -1043,7 +1043,7 @@ def add_song_to_main_repertory(request):
 def get_lyrics(request, id):
     song = get_object_or_404(Song, id=id)
     lyrics = song.lyrics
-    if not song.lyrics:
+    if not song.lyrics or request.GET.get('update'):
         lyrics = Lyrics.get_lyrics(song.album.artist.name, song.name)
         song.lyrics = lyrics
         song.save()

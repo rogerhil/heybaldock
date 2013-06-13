@@ -3,6 +3,7 @@ var dogWoof = new buzz.sound("/media/audio/dog_woof.mp3");
 var intervalNotificationCount;
 
 $(window).load(function () {
+	return;
 	$("#notify_users").unbind("click").click(function () {
 		$("#notification_menu").slideDown();
 	});

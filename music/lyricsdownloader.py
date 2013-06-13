@@ -4,6 +4,7 @@
 #         eightmillion@gmail.com
 
 import urllib, os, sys, string, re, BeautifulSoup
+import urllib2
 from optparse import OptionParser, SUPPRESS_HELP
 
 from django.conf import settings
@@ -675,7 +676,19 @@ def songlyrics(artist,title):
             if verbose: print "Lyrics not found at songlyrics.com"
             return
         #this removes formatting and an advertisement.
-        return '\n'.join(filter(lambda x: not x.endswith('www.songlyrics.com ]'),map(lambda x: x.strip(),str(lyrics[0]).split('<br />')))[1:-4])
+        convert = lambda x: str(BeautifulSoup.BeautifulStoneSoup(x, convertEntities=BeautifulSoup.BeautifulStoneSoup.HTML_ENTITIES))
+        ls = [convert(str(i)).replace('<br></br>', '').strip() for i in lyrics[0].contents if i]
+        rlyrics = []
+        s = False
+        for l in ls:
+            if not l and not s:
+                s = True
+                continue
+            if not l and s:
+                s = False
+            rlyrics.append(l)
+            s = False
+        return '\n'.join(rlyrics)
 
 def lyricstime(artist,title):
     artist = urllib.quote(artist.lower().replace(' ','-'))
@@ -729,7 +742,7 @@ def lyricwiki(artist,title):
     title = urllib.quote(title)
     if verbose: print "Trying to fetch lyrics from lyricwiki.org"
     try:
-        lyrics = urllib.urlopen('http://lyricwiki.org/%s:%s' % (artist, title))
+        lyrics = urllib2.urlopen('http://lyricwiki.org/%s:%s' % (artist, title), timeout=10)
     except:
         if verbose: print "Could not connect to lyricwiki.org. Exiting..."
         return
@@ -758,7 +771,8 @@ def getlyrics(artistname,songname):
     lyricssite='lyricwiki'
     #get lyrics from lyric wiki who nicely return just the lyrics in plain text. well, they used to anyway :(
     #check if beautifulsoup found any lyrics on the page. if not, we'll try some other sites
-    lyrics = lyricwiki(artistname,songname)
+
+    lyrics = ''
     if not test_valid_lyrics(lyrics):
         print "songlyrics"
         lyrics = songlyrics(artistname,songname)
@@ -777,6 +791,9 @@ def getlyrics(artistname,songname):
     if not test_valid_lyrics(lyrics):
         print "leoslyrics"
         lyrics = leoslyrics(artistname,songname)
+    if not test_valid_lyrics(lyrics):
+        lyrics = lyricwiki(artistname, songname)
+        print 'lyricwiki'
     if test_valid_lyrics(lyrics):
         lyrics = str(BeautifulSoup.BeautifulStoneSoup(lyrics,convertEntities=BeautifulSoup.BeautifulStoneSoup.HTML_ENTITIES))
         lyrics = mReplace(lyrics, wordDict).split('\n')

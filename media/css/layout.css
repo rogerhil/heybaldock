@@ -468,7 +468,7 @@ div.yellow_submarine_title .shadow_small {
     1px -1px 0 #000,
     -1px -1px 0 #000;
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
 div.yellow_submarine_title {

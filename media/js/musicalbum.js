@@ -252,8 +252,8 @@ function _getLyrics(o, trs, count, total) {
 	$.ajax({
 		url: url,
 		dataType: 'json',
+		data: {'update': 1},
 		success: function (data) {
-			console.log(trs);
 			if (trs) {
 				var value = Math.floor((count / total) * 100);
 				updateOverlayProgressBar(value, count + " of " + total);
