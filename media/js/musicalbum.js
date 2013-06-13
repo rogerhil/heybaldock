@@ -241,7 +241,7 @@ function getLyrics() {
 	_getLyrics(this);
 }
 
-function _getLyrics(o, trs, count, total) {
+function _getLyrics(o, trs, count, total, update) {
 	if (!o || !$(o).attr('getlyricsurl')) {
 		hideOverlay();
 		return;
@@ -249,16 +249,20 @@ function _getLyrics(o, trs, count, total) {
 	var url = $(o).attr('getlyricsurl');
 	var $menu = $(o).parent().find('.lyrics_menu');
 	showOverlay("DOWNLOADING LYRICS");
+	var data = {};
+	if (update) {
+		data = {'update': update};
+	}
 	$.ajax({
 		url: url,
 		dataType: 'json',
-		data: {'update': 1},
+		data: data,
 		success: function (data) {
 			if (trs) {
 				var value = Math.floor((count / total) * 100);
 				updateOverlayProgressBar(value, count + " of " + total);
 				count++;
-				_getLyrics(trs.pop(), trs, count, total);
+				_getLyrics(trs.pop(), trs, count, total, update);
 			} else {
 				console.log('empty');
 				hideOverlay();
@@ -277,5 +281,5 @@ function updateLyrics() {
 	var $album = $("#album");
 	var trs = $album.find("tr").toArray();
 	var total = trs.length;
-	_getLyrics(trs.pop(), trs, 1, total);
+	_getLyrics(trs.pop(), trs, 1, total, 1);
 }
