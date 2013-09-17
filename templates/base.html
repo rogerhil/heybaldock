@@ -22,8 +22,7 @@
         <script type="text/javascript" src="/media/js/main.js"></script>
         <script type="text/javascript" src="/media/js/buzz.js"></script>
         <script type="text/javascript" src="/media/js/notification.js"></script>
-
-
+        <script type="text/javascript" src="/media/js/hbslideshow.js"></script>
 
         {% block stylesheet %}
         {% endblock %}
@@ -38,71 +37,6 @@
         <meta property="og:type" content="band"/>
         <meta property="og:site_name" content="Hey Baldock - Beatles Tribute"/>
         <meta property="fb:admins" content="1520271889"/>
-
-        <style>
-            #slideshow {
-                position:relative;
-                height:390px;
-                width: 700px;
-                margin: 0 auto;
-            }
-
-            #slideshow figure {
-                position:absolute;
-                top:0;
-                left:0;
-                z-index:8;
-            }
-
-            #slideshow figure.active {
-                z-index:10;
-            }
-
-            #slideshow figure.last-active {
-                z-index:9;
-            }
-
-            #slideshow figure {
-                clear: both;
-            }
-        </style>
-        <script>
-            var sliderInterval;
-            function slideSwitch() {
-                var $active = $('#slideshow figure.active');
-
-                if ( $active.length == 0 ) $active = $('#slideshow figure:last');
-
-                var $next =  $active.next().length ? $active.next()
-                    : $('#slideshow figure:first');
-
-                $active.addClass('last-active');
-
-                $next.css({opacity: 0.0})
-                    .addClass('active')
-                    .animate({opacity: 1.0}, 1000, function() {
-                        $active.removeClass('active last-active');
-                    });
-                $active.animate({opacity: 0.0}, 1000, function() {
-                        ;
-                    });
-            }
-
-            $(function() {
-                $('#slideshow figure').css('opacity', '0');
-                $('#slideshow figure:last').css('opacity', '1');
-                sliderInterval = setInterval( "slideSwitch()", 5000 );
-            });
-            $('.youtube-player').click(function () {
-                console.log('clicked');
-                clearInterval(sliderInterval);
-            });
-
-            $('.youtube-player').mouseover(function () {
-                console.log('over');
-                clearInterval(sliderInterval);
-            });
-        </script>
 
     </head>
     <body id="body">
@@ -318,5 +252,7 @@
                 </div>
             {% endblock %}
         </div>
+        {% block scriptsbottom %}
+        {% endblock %}
     </body>
 </html>

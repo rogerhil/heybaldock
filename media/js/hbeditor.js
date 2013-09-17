@@ -12,7 +12,7 @@ function loadCLEditor($el) {
 		  controls:     // controls to add to the toolbar
 						"bold italic underline superscript | color | bullets numbering | " +
 						"alignleft center alignright justify | " +
-						"link unlink | removeformat source cmstags addimage",
+						"link unlink | removeformat source cmstags addimage slideshow",
 		  colors:       // colors in the color popup
 						"FFF FCC FC9 FF9 FFC 9F9 9FF CFF CCF FCF " +
 						"CCC F66 F96 FF6 FF3 6F9 3FF 6FF 99F F9F " +

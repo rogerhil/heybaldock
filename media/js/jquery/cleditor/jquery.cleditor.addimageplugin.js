@@ -36,7 +36,7 @@
 
 	function buildPopupContent() {
 		load();
-		var ul = $('<ul class="wysiwyg_box"></ul>');
+		var ul = $('<ul class="wysiwyg_box addimage"></ul>');
 		var li = $('<li></li>');
 		li.css('max-height', '250px');
 		li.css('overflow', 'auto');
@@ -65,7 +65,7 @@
 				IMAGES_URLS.push(url);
 			}
 		});
-		$('.wysiwyg_box div').click(function () {
+		$('.addimage div').click(function () {
 			var src = $(this).find('img').attr('src');
 			var $img = $('<div><img src="' + src + '" /></div>');
 			editor.execCommand(command, $img.html(), null, button);

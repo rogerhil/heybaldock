@@ -85,10 +85,10 @@ def _edit(request, object, model=None, draft=None):
             form = form_class(user=user, draft=draft)
     ui_tags = simplejson.dumps(UI_TAGS)
     images_urls = ImageHandlerSections.list_all_urls()
-    images_urls = simplejson.dumps(images_urls)
+    images_urls_json = simplejson.dumps(images_urls)
     return dict(form=form, object=object, model=model, draft=draft,
-                ui_tags=ui_tags, images_urls=images_urls,
-                model_class=model_class)
+                ui_tags=ui_tags, images_urls_json=images_urls_json,
+                images_urls=images_urls, model_class=model_class)
 
 @login_required
 @require_POST

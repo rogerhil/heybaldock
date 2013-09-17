@@ -209,3 +209,58 @@ form ul.errorlist {
 form ul.errorlist li {
     color: #e44b49;
 }
+
+.slideshow {
+    position:relative;
+    margin: 0 auto;
+}
+
+.slideshow figure {
+    position:absolute;
+    top: -10px;
+    left: -35px;
+    z-index:8;
+}
+
+.slideshow figure.active {
+    z-index:10;
+}
+
+.slideshow figure.last-active {
+    z-index:9;
+}
+
+.slideshow figure {
+    clear: both;
+}
+
+.slideshow_description {
+    position: absolute;
+    right: 0;
+    bottom: 50px;
+    background-color: white;
+    opacity: .7;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+a.slideshow_edit {
+    color: white;
+    display: block;
+    position: absolute;
+    z-index: 99999;
+    background: green;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: .8;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+a.slideshow_edit:hover {
+    opacity: 1;
+}

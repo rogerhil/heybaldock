@@ -1,0 +1,35 @@
+<div id="slide_show_menu_box" style="display: none;">
+    <div class="slide_show_menu wysiwyg_box">
+        <strong>Select an image below:</strong>
+        <div class="clear"></div>
+        <div class="image_selector">
+            {% for url in images_urls %}
+                <div class="item"><img src="{{ url }}" /></div>
+            {% endfor %}
+        </div>
+        <div class="clear"></div>
+        <br/>
+        <div class="add_new_image">
+            <label><strong>Or add new:</strong></label>
+            <input id="slideshow_fileupload" type="file" name="image" data-url="/fotos/upload/single/ajax/" />
+        </div>
+        <br/>
+        <br/>
+        <strong style="color: #993300;">Selected images:</strong>
+        <div class="selected_images">
+        </div>
+        <br/>
+        <br/>
+        <div class="slide_form">
+            <label>Time:</label> <input name="slideshow_time" id="id_slideshow_time" value="5" style="width: 30px" /> s&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Width:</label> <input name="slideshow_width" id="id_slideshow_width" value="200" style="width: 30px" /> px&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Height:</label> <input name="slideshow_height" id="id_slideshow_height" value="100" style="width: 30px" /> px
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" name="slideshow_submit" id="id_slideshow_submit" value="&nbsp;&nbsp;CREATE&nbsp;&nbsp;&nbsp;&nbsp;" />
+            <input type="button" name="slideshow_edit_submit" id="id_slideshow_edit_submit" style="display: none;" value="&nbsp;&nbsp;EDIT&nbsp;&nbsp;&nbsp;&nbsp;" />
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>

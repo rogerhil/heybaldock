@@ -8,22 +8,29 @@
         CMS_TAGS = {{ ui_tags|safe }};
         {% endif %}
         {% if images_urls %}
-        IMAGES_URLS = {{ images_urls|safe }};
+        IMAGES_URLS = {{ images_urls_json|safe }};
         {% endif %}
         JS_FIELDS = {{ form.js_fields_json|safe }};
     </script>
+{% endblock %}
+
+{% block scriptsbottom %}
     {{ form.media }}
+    {% if model_class.media %}
+        {% for style in model_class.media.styles %}
+            <link rel="stylesheet" href="{{ style }}" type="text/css" />
+        {% endfor %}
+    {% endif %}
     {% if model_class.media %}
         {% for script in model_class.media.scripts %}
             <script type="text/javascript" src="{{ script }}"></script>
-        {% endfor %}
-        {% for style in model_class.media.styles %}
-            <link rel="stylesheet" href="{{ style }}" type="text/css" />
         {% endfor %}
     {% endif %}
 {% endblock %}
 
 {% block content %}
+
+{% include "slide_show_menu.html" %}
 
 <div class="manage_buttons margin10">
     <a class="red" href="{% url section_view section.slug %}">{% trans "Cancel" %}</a>
