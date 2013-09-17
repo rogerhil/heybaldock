@@ -4,15 +4,15 @@ function loadCLEditor($el) {
 	}
 	$.cleditor.imagesPath = function() {
 		return '/media/img/cleditor/';
-	}
+	};
 	$el.cleditor({
 
 		  width:        605, // width not including margins, borders or padding
 		  height:       350, // height not including margins, borders or padding
 		  controls:     // controls to add to the toolbar
-						"bold italic underline subscript superscript | color | bullets numbering | " +
+						"bold italic underline superscript | color | bullets numbering | " +
 						"alignleft center alignright justify | " +
-						"image link unlink | removeformat source cmstags",
+						"link unlink | removeformat source cmstags addimage",
 		  colors:       // colors in the color popup
 						"FFF FCC FC9 FF9 FFC 9F9 9FF CFF CCF FCF " +
 						"CCC F66 F96 FF6 FF3 6F9 3FF 6FF 99F F9F " +

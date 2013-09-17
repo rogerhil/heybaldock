@@ -7,6 +7,9 @@
         {% if ui_tags %}
         CMS_TAGS = {{ ui_tags|safe }};
         {% endif %}
+        {% if images_urls %}
+        IMAGES_URLS = {{ images_urls|safe }};
+        {% endif %}
         JS_FIELDS = {{ form.js_fields_json|safe }};
     </script>
     {{ form.media }}

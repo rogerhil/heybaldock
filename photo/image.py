@@ -284,3 +284,17 @@ class FileHandlerSongAudio(ImageHandlerSimple):
             return
         self.storage.save_file(self._rimage.read(), self.storage.filename)
         self._rimage.close()
+
+class ImageHandlerSections(ImageHandlerSimple):
+    BASE_DIR = 'sections'
+
+    @classmethod
+    def list_all_urls(cls):
+        st = StorageBackend(cls.BASE_DIR, '')
+        dirs = st.list_dir('.')
+        urls = []
+        for d in dirs:
+            st = StorageBackend(cls.BASE_DIR, d)
+            for f in st.list_dir('.'):
+                urls.append("/media/upload/%s/%s/%s" % (cls.BASE_DIR, d, f))
+        return urls

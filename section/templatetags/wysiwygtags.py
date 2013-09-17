@@ -64,3 +64,7 @@ def contact_form(context):
 @register.simple_tag()
 def facebook_like_button():
     return render_to_string("facebook_like.html", Context({}))
+
+@register.simple_tag()
+def add_image():
+    return render_to_string("section/add_image.html", Context({}))

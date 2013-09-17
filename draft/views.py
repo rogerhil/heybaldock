@@ -10,8 +10,10 @@ from hbauth.decorators import login_required, draft_permission_required, \
                               draft_model_permission_required
 from draft.models import ContentDraft
 from event.models import Event
+from photo.image import ImageHandlerSections
 from section.decorators import render_to
 from section.templatetags.wysiwygtags import UI_TAGS
+
 
 @login_required
 @render_to("draft/view.html")
@@ -82,8 +84,11 @@ def _edit(request, object, model=None, draft=None):
         elif draft:
             form = form_class(user=user, draft=draft)
     ui_tags = simplejson.dumps(UI_TAGS)
+    images_urls = ImageHandlerSections.list_all_urls()
+    images_urls = simplejson.dumps(images_urls)
     return dict(form=form, object=object, model=model, draft=draft,
-                ui_tags=ui_tags, model_class=model_class)
+                ui_tags=ui_tags, images_urls=images_urls,
+                model_class=model_class)
 
 @login_required
 @require_POST

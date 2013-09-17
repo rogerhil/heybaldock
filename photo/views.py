@@ -10,7 +10,9 @@ from section.decorators import render_to
 from lib.decorators import ajax
 from models import PhotoAlbum
 
-from image import ImageHandler
+from image import ImageHandler, ImageHandlerSections
+from music.utils import generate_filename
+
 
 @render_to("photo/photo_album_view.html")
 def photo_album_view(request, id):
@@ -54,3 +56,16 @@ def delete_photo_album(request, id):
         messages.add_message(request, messages.ERROR, msg)
     url = reverse('section_view', args=('fotos',))
     return HttpResponseRedirect(url)
+
+@login_required
+@ajax
+def single_upload_ajax(request):
+    name = request.FILES['image'].name
+    filename = generate_filename(name)
+    handler = ImageHandlerSections()
+    handler.load(filename, request.FILES['image'])
+    handler.save()
+    url = handler.single_url()
+    name = handler.original_filename()
+    data = {'url': url, 'name': name}
+    return {'success': True, 'data': data}

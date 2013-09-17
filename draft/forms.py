@@ -11,8 +11,10 @@ class CmsForm(forms.ModelForm):
             'all': ('/media/css/cleditor/jquery.cleditor.css',
                     '/media/css/cleditor/jquery.cleditor.cmsplugin.css')
         }
-        js = ('/media/js/jquery/cleditor/jquery.cleditor.js',
+        js = ('/media/js/jquery/jquery.fileupload.js',
+              '/media/js/jquery/cleditor/jquery.cleditor.js',
               '/media/js/jquery/cleditor/jquery.cleditor.cmsplugin.js',
+              '/media/js/jquery/cleditor/jquery.cleditor.addimageplugin.js',
               '/media/js/hbeditor.js',
               '/media/js/draftform.js')
 

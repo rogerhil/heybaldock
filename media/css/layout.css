@@ -2322,9 +2322,42 @@ td.date_cel:hover {
 
 .tablature input[type=text][disabled=disabled] {
     background-color: #eee;
-    
 }
 
 .photo_album_info p {
     text-align: left;
+}
+
+.cleditorPopup {
+    background-image: url(/media/img/content_bg.png);
+}
+
+.wysiwyg_box {
+    width:400px !important;
+    max-height: 350px;
+    display: block;
+    margin: 0px;
+    padding: 0px;
+}
+
+.wysiwyg_box li {
+    clear: both;
+    display: block;
+    list-style: none;
+    padding: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.wysiwyg_box li .item {
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    float: left;
+}
+
+.wysiwyg_box li .item:hover {
+    background-image: url(/media/img/content_bg_2.png);
 }
