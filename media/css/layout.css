@@ -2361,7 +2361,7 @@ td.date_cel:hover {
 .slideshow_description {
     position: absolute;
     right: 0;
-    bottom: 50px;
+    bottom: 30%;
     background-color: white;
     opacity: .7;
     padding: 10px;
