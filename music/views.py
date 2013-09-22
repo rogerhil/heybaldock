@@ -1,8 +1,11 @@
 # -*- coding: utf-8; Mode: Python -*-
 
+import os
 import decimal
+import math
 import pickle
 from datetime import datetime
+from weasyprint import HTML, CSS
 
 from django.db.models import Q
 from django.conf import settings
@@ -10,7 +13,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -40,7 +43,7 @@ from decorators import check_locked_event_repertory, \
 
 from event.models import Event
 from utils import get_or_create_temporary, mzip, str_list_in_list, \
-                  generate_filename
+                  generate_filename, chunks
 from defaults import Tempo, Tonality, SongMode, RepertoryItemStatus
 
 DISCOGS_PAGES = 500
@@ -566,6 +569,54 @@ def event_repertory(request, id):
         is_locked=repertory.is_locked(user),
         editable=repertory.is_editable(user),
         has_perm=user.has_perm('music.manage_event_repertories')
+    )
+    return c
+
+@login_required
+def export_repertory_to_pdf(request, rtype, id):
+    if rtype == 'event':
+        repertory = get_object_or_404(EventRepertory, id=id)
+    elif rtype == 'main':
+        repertory = get_object_or_404(Repertory, id=id)
+    else:
+        return Http404()
+    template = loader.get_template('music/repertory_preview_two_columns.html')
+    size = int(math.ceil(float(repertory.items.count()) / 2))
+    group1, group2 = chunks(repertory.items, size)
+    c = dict(
+        repertory=repertory,
+        items=repertory.items,
+        group1=group1,
+        group2=group2
+    )
+    content = template.render(RequestContext(request, c))
+    host = 'http://%s' % settings.SITE_DOMAIN
+    content = content.replace('src="', host)
+    filename = "%s.pdf" % repertory.slug
+    path = os.path.join(settings.UPLOAD_PATH, 'repertories/pdf', filename)
+    css = os.path.join(settings.MEDIA_ROOT, 'css/layout.css')
+    doc = HTML(string=content)
+    doc.write_pdf(path, stylesheets=[CSS(filename=css)])
+    response = HttpResponse(content, mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="%s"' % path
+    return response
+
+@login_required
+@render_to('music/repertory_preview_popup.html')
+def preview_repertory(request, rtype, id):
+    if rtype == 'event':
+        repertory = get_object_or_404(EventRepertory, id=id)
+    elif rtype == 'main':
+        repertory = get_object_or_404(Repertory, id=id)
+    else:
+        return Http404()
+    size = int(math.ceil(float(repertory.items.count()) / 2))
+    group1, group2 = chunks(repertory.items, size)
+    c = dict(
+        repertory=repertory,
+        items=repertory.items,
+        group1=group1,
+        group2=group2,
     )
     return c
 

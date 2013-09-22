@@ -111,3 +111,13 @@ def metadata_display(metadata):
     ignorekeys = ['resource_url', 'id', 'releases_url', 'active']
     pretty_items(r, metadata, ignorekeys=ignorekeys, valuetag=valuetag)
     return '\n'.join(r)
+
+def chunks(alist, n):
+    """ Creates a generator for partitions of lists with length n.
+    >>> chunks(range(15), 3)
+    <generator object chunks at 0x100594f50>
+    >>> list(chunks(range(15), 3))
+    [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 13, 14]]
+    """
+    for i in xrange(0, len(alist), n):
+        yield alist[i:i+n]

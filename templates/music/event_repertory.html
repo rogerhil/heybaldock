@@ -79,6 +79,10 @@
     </h3>
     <div class="clear"></div>
     <br/>
+    <div>
+
+        <a href="#" onclick="window.open('{% url preview_repertory 'event' repertory.id %}', '', 'menubar=no,toolbar=no,width=900,height=700');">Preview Popup</a>
+    </div>
     {% if has_perm %}
         {% if repertory.is_free %}
             <div class="pretty_form">

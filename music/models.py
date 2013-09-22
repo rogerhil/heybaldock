@@ -764,6 +764,15 @@ class EventRepertory(RepertoryBase):
         return u"Repertório do %s" % (unicode(self.event) if self.event else
                                      unicode(self.rehearsal))
 
+    @property
+    def slug(self):
+        if self.event:
+            d = self.event.starts_at.strftime("%d-%m-%Y")
+            return "repertorio_show_%s" % d
+        else:
+            d = self.rehearsal.starts_at.strftime("%d-%m-%Y")
+            return "repertorio_ensaio_%s" % d
+
     def import_items_from(self, base):
         for item in base.items.all():
             new_item = item.clone_object(self)
@@ -902,11 +911,11 @@ class Player(models.Model):
         unique_together = ('instrument', 'user')
 
     def __unicode__(self):
+        kwargs = dict(
+            user=self.user.nick,
+            instrument=self.instrument
+        )
         if self.instrument.is_vocal:
-            kwargs = dict(
-                user=self.user.nick,
-                instrument=self.instrument
-            )
             return "%(user)s sings" % kwargs
         else:
             return "%(user)s plays %(instrument)s" % kwargs

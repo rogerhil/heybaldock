@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^repertory/stats/$', views.repertories_stats, name='repertories_stats'),
     url(r'^repertory/statistics/$', views.repertories_statistics, name='repertories_statistics'),
     url(r'^repertory/statistics/sort/$', views.sort_repertories_statistics, name='sort_repertories_statistics'),
+    url(r'^repertory/(?P<rtype>\w+)/(?P<id>\d+)/preview/$', views.preview_repertory, name='preview_repertory'),
+    url(r'^repertory/(?P<rtype>\w+)/(?P<id>\d+)/download/pdf/$', views.export_repertory_to_pdf, name='export_repertory_to_pdf'),
 
     url(r'^repertory/main/$', views.main_repertory, name='main_repertory'),
     url(r'^repertory/main/sort/$', views.sort_main_repertory, name='sort_main_repertory'),
