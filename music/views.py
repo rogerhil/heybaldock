@@ -5,7 +5,6 @@ import decimal
 import math
 import pickle
 from datetime import datetime
-from weasyprint import HTML, CSS
 
 from django.db.models import Q
 from django.conf import settings
@@ -574,6 +573,7 @@ def event_repertory(request, id):
 
 @login_required
 def export_repertory_to_pdf(request, rtype, id):
+    from weasyprint import HTML, CSS
     if rtype == 'event':
         repertory = get_object_or_404(EventRepertory, id=id)
     elif rtype == 'main':
