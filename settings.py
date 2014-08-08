@@ -213,8 +213,8 @@ MAIL_PASSWORD = cfg.get('gmail', 'specific_password')
 
 MAX_DRAFTS_PER_OBJECT = 20
 
-FACEBOOK_APP_ID = 407367935973504
-FACEBOOK_SECRET_KEY = "29613824f0098dbf6ffe85324052a36d"
+FACEBOOK_APP_ID = cfg.get('facebook', 'app_id')
+FACEBOOK_SECRET_KEY = cfg.get('facebook', 'secret_key')
 
 SITE_DOMAIN = "localhost:8000"
 
